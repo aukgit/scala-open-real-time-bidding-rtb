@@ -1,2 +1,48 @@
+# compiled output
+/dist
+/tmp
+/out-tsc
+/logs/
+
+# scala specifics
 *.class
 *.log
+
+# sbt specific
+.cache/
+.history/
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.idea
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+**/.vscode/*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+# misc
+/coverage
+
+# Logs
+logs
+*.log
+
+# Others
+.temp
+report.*.json
