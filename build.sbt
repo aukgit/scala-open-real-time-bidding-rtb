@@ -4,9 +4,15 @@ version := "1.0"
 
 scalaVersion := "2.13.1"
 
-lazy val akkaVersion = "2.6.4"
+lazy val log4Version = "2.11.0"
 
-libraryDependencies += "org.apache.logging.log4j" % "log4j-api-scala_2.10" % "11.0"
+libraryDependencies ++= Seq(
+  "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0",
+  "org.apache.logging.log4j" % "log4j-api" % log4Version,
+  "org.apache.logging.log4j" % "log4j-core" % log4Version % Runtime
+)
+
+lazy val akkaVersion = "2.6.4"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
