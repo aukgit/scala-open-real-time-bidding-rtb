@@ -4,6 +4,7 @@ object Sample {
   def main(args: Array[String]): Unit = {
     println("Hello World")
     Logger.debug("hello debug");
-    Logger.error("hello error");
+    Logger.warn("hello Warn");
+    Logger.error("hello error 2");
   }
 }

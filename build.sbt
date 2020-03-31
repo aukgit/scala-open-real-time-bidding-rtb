@@ -6,6 +6,7 @@ scalaVersion := "2.13.1"
 
 lazy val log4Version = "2.11.0"
 
+libraryDependencies += "io.sentry" % "sentry-log4j2" % "1.7.30"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.13.1"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.13.1"
 
