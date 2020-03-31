@@ -6,7 +6,7 @@ object Logger {
   def methodName(): String = Thread.currentThread().getStackTrace()(3).getMethodName
 
   val header = "[Open RTB]"
-  val log: Logger = LogManager.getLogger(header)
+  val log: Logger = LogManager.getRootLogger()
 
   def info(msg: String = ""): Unit = {
     if (msg.length > 0) {
