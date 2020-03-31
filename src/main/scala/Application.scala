@@ -17,8 +17,7 @@ object Application {
     }
     catch {
       case e: Exception =>
-        Sentry.capture(e);
-        Logger.error(e.toString)
+        Logger.error(e)
     }
   }
 }
