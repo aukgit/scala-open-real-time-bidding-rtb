@@ -1,4 +1,4 @@
-import com.ortb.logger.Logger
+import com.ortb.Logger
 import io.sentry.Sentry
 
 object Application {
@@ -7,12 +7,12 @@ object Application {
   def main(args: Array[String]): Unit = {
     Sentry.init(sentryDsn)
 
-      println("Hello World")
-      Logger.debug("hello debug");
-      Logger.warn("hello Warn");
-      Logger.error("hello error 2");
+    println("Hello World")
+    Logger.debug("hello debug");
+    Logger.warn("hello Warn");
+    Logger.error("hello error 2");
 
-      try {
+    try {
       throw new Exception("Wait a little XX")
     }
     catch {

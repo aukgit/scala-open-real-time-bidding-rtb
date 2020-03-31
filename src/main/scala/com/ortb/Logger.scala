@@ -1,4 +1,4 @@
-package com.ortb.logger
+package com.ortb
 
 import org.apache.logging.log4j.{LogManager, Logger}
 
