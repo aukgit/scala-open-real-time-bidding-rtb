@@ -1,4 +1,4 @@
-import com.ortb.Logger
+import io.{AppLogger, JsonParser}
 import io.sentry.Sentry
 
 object Application {
@@ -6,18 +6,18 @@ object Application {
 
   def main(args: Array[String]): Unit = {
     Sentry.init(sentryDsn)
-
+    JsonParser.main("");
     println("Hello World")
-    Logger.debug("hello debug");
-    Logger.warn("hello Warn");
-    Logger.error("hello error 2");
+    AppLogger.debug("hello debug");
+    AppLogger.warn("hello Warn");
+    AppLogger.error("hello error 2");
 
-    try {
-      throw new Exception("Wait a little XX")
-    }
-    catch {
-      case e: Exception =>
-        Logger.error(e)
-    }
+//    try {
+//      throw new Exception("Wait a little XX")
+//    }
+//    catch {
+//      case e: Exception =>
+//        AppLogger.error(e)
+//    }
   }
 }

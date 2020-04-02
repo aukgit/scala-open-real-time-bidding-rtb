@@ -1,9 +1,9 @@
-package com.ortb
+package io
 
 import io.sentry.Sentry
 import org.apache.logging.log4j.{LogManager, Logger}
 
-object Logger {
+object AppLogger {
   def methodName(): String = {
     val stack = Thread.currentThread().getStackTrace()(3);
     val message = s"${stack.getFileName}.${stack.getClassName}.${stack.getMethodName}() [Line: ${stack.getLineNumber}] ";
