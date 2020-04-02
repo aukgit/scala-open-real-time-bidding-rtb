@@ -6,7 +6,6 @@ object Application {
 
   def main(args: Array[String]): Unit = {
     Sentry.init(sentryDsn)
-    JsonParser.main("");
     println("Hello World")
     AppLogger.debug("hello debug");
     AppLogger.warn("hello Warn");
