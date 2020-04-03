@@ -1,8 +1,14 @@
 package io
 
-object JsonParser {
-  def toJsonFromPath[Type](path: String): Type = {
 
+object JsonParser {
+  val fileReader = new FileReader();
+
+  def toJsonFromPath[Type >: Null](path: String): Type = {
+    try{
+      val getContents = fileReader.getContents(path)
+      if()
+    }
 
     //
 //    val foo: Foo = Qux(13, Some(14.0))
@@ -25,6 +31,7 @@ object JsonParser {
 //      case e: Exception =>
 //        Logger.error(e)
 //    }
+    return null
   }
 }
 

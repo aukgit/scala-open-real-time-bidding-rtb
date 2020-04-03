@@ -7,7 +7,6 @@ scalaVersion := "2.13.1"
 lazy val log4Version = "2.11.0"
 
 libraryDependencies += "io.sentry" % "sentry-log4j2" % "1.7.30"
-libraryDependencies += "io.spray" % "spray-json_2.12" % "1.3.5"
 
 val akkaVersion = "2.6.4"
 val circeVersion = "0.12.3"
@@ -21,5 +20,6 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
-  "io.circe" %% "circe-parser" % circeVersion
+  "io.circe" %% "circe-parser" % circeVersion,
+  "io.rbricks" %% "itemized" % "0.2.0"
 )

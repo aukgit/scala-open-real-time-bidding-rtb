@@ -1,0 +1,17 @@
+{
+  "applicationName": "RealTime Bidding Using OpenRTB and Akka",
+  "displayVersion": "1.0",
+  "server": {
+    "domain": "",
+    "port": "",
+    "agentServers": [
+      {
+        "domain": "",
+        "port": ""
+      }
+    ]
+  },
+  "isDebug": true,
+  "isLogError": true,
+  "author": "Md. Alim Ul Karim"
+}

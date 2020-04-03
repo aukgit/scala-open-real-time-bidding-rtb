@@ -1,3 +1,3 @@
-package com.ortb.biddingRequests
+package com.ortb.model.biddingRequests
 
 case class Device(id: String, geo: Option[Geo])
