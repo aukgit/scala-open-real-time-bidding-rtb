@@ -1,30 +1,31 @@
 package io
 
-import java.nio.file.{Files, Paths}
+import java.nio.file.{Files, Path, Paths}
 import java.util
 
-import io.traits.ExecuteInputOutputAction
+import io.traits.file.ExecuteInputOutputAction
+
+import scala.io.{BufferedSource, Source}
 
 
 class FileReader extends ExecuteInputOutputAction {
   override def executeInputOutputAction[ReturnType](
-    path: String,
+    path: Path,
     performingAction: () => ReturnType,
     emptyResult: ReturnType
   ): ReturnType = {
     try {
-      val givenPath = Paths.get(path);
-      if (Files.exists(givenPath)) {
-        return performingAction();
+      if (Files.exists(path)) {
+        return performingAction()
       }
     }
     catch {
       case e: Exception =>
-        AppLogger.error(e);
+        AppLogger.error(e)
     }
 
-    AppLogger.debug(s"${path} doesn't exist or cannot (something went wrong) read from file system.");
-    return emptyResult;
+    AppLogger.debug(s"${path} doesn't exist or cannot (something went wrong) read from file system.")
+    return emptyResult
   }
 
   /**
@@ -35,12 +36,26 @@ class FileReader extends ExecuteInputOutputAction {
    * @return content in string format.
    */
   def getContents(path: String): String = {
-    val pgiv
-    def action() {
-      return Files.readAllLines()
-    }
+    val givenPath = Paths.get(path)
 
-    executeInputOutputAction(path, )
+    def action() = Files.readString(givenPath)
+
+    executeInputOutputAction(givenPath, action, "")
+  }
+
+  /**
+   * return buffered source using Source.fromFile
+   *
+   * @param path : file system path
+   *
+   * @return content in string format.
+   */
+  def getBufferedSource(path: String): BufferedSource = {
+    val givenPath = Paths.get(path)
+
+    def action() = Source.fromFile(path)
+
+    executeInputOutputAction(givenPath, action, null)
   }
 
   /**
@@ -51,19 +66,10 @@ class FileReader extends ExecuteInputOutputAction {
    * @return contents in Java List
    */
   def getLines(path: String): util.List[String] = {
-    try {
-      val givenPath = Paths.get(path);
-      if (Files.exists(givenPath)) {
-        return Files.readAllLines(givenPath);
-      }
-    }
-    catch {
-      case e: Exception =>
-        AppLogger.error(e);
-    }
+    val givenPath = Paths.get(path)
 
-    AppLogger.debug(s"${path} doesn't exist or cannot read from file system.");
-    return null;
+    def action() = Files.readAllLines(givenPath)
+
+    executeInputOutputAction(givenPath, action, null)
   }
-
 }
