@@ -1,5 +1,6 @@
 package io
 
+import com.ortb.model.error.FileErrorModel
 import io.sentry.Sentry
 import org.apache.logging.log4j.{LogManager, Logger}
 
@@ -55,6 +56,18 @@ object AppLogger {
     } else {
       log.error("")
     }
+  }
+
+  def getFileErrorMessage(fileError: FileErrorModel): String = {
+    val newLine = "\n <br >"
+    s"Error Title: ${fileError.title}, ${newLine}FilePath: ${fileError.filePath},${newLine}Cause: ${fileError.cause},${newLine}Content: ${fileError.content}"
+  }
+
+  def fileError(fileError: FileErrorModel): Unit = {
+    val message = getFileErrorMessage(fileError);
+    Sentry.getContext.addTag("level", "error");
+    log.error(message)
+    Sentry.capture(message);
   }
 
   def error(exception: Exception): Unit = {

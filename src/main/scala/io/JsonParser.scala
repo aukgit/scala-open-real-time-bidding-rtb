@@ -1,22 +1,36 @@
 package io
 
+import com.ortb.model.error.FileErrorModel
 import io.circe._
 
 object JsonParser {
   def toObjectFromJSONPath[Type](
     path: String,
-    converter: () => Either[Error, Type]): Option[Type] = {
+    converter: () => Either[Error, Type]
+  ): Option[Type] = {
     try {
-      val contents = File.getContents(path)
-      if (contents.isEmpty) {
+      val jsonContents = File.getContents(path)
+      if (jsonContents.isEmpty) {
         return null
       }
 
       val convertedEitherItem = converter()
-      val convertedItem = convertedEitherItem.asInstanceOf[Type]
+      val result = convertedEitherItem.getOrElse(null)
 
-      if (convertedItem != null) {
-        return Some(convertedItem)
+      if (result != null) {
+        return Some(result.asInstanceOf[Type])
+      }
+      else {
+        val errorContext = convertedEitherItem.left.getOrElse(null).toString
+        val fileErrorModel = new FileErrorModel(
+          title = s"Json Parsing Failed for : ${path}",
+          cause = errorContext,
+          filePath = path,
+          content = jsonContents);
+
+        val errorMessage = AppLogger.getFileErrorMessage(fileErrorModel)
+        println(errorMessage)
+        throw new Exception(errorMessage)
       }
     }
     catch {
