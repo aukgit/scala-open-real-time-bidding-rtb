@@ -2,11 +2,14 @@ package io
 
 import com.ortb.model.error.FileErrorModel
 import io.circe._
+import io.circe.generic.auto._
+import io.circe.parser._
+import io.circe.syntax._
 
 object JsonParser {
   def toObjectFromJSONPath[Type](
     path: String,
-    converter: () => Either[Error, Type]
+    converter: (String) => Either[Error, Type]
   ): Option[Type] = {
     try {
       val jsonContents = File.getContents(path)
@@ -14,7 +17,7 @@ object JsonParser {
         return null
       }
 
-      val convertedEitherItem = converter()
+      val convertedEitherItem = converter(jsonContents)
       val result = convertedEitherItem.getOrElse(null)
 
       if (result != null) {
