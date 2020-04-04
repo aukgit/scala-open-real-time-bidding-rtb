@@ -3,13 +3,7 @@
   "displayVersion": "1.0",
   "server": {
     "domain": "",
-    "port": "",
-    "agentServers": [
-      {
-        "domain": "",
-        "port": ""
-      }
-    ]
+    "port": 0
   },
   "isDebug": true,
   "isLogError": true,

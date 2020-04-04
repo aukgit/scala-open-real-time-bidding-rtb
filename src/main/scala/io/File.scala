@@ -3,12 +3,13 @@ package io
 import java.nio.file.{Files, Path, Paths}
 import java.util
 
+import com.ortb.general.AppConstants
 import io.traits.file.ExecuteInputOutputAction
 
-import scala.io.{BufferedSource, Source}
+import scala.io.{Source, BufferedSource}
 
 
-class FileReader extends ExecuteInputOutputAction {
+object File extends ExecuteInputOutputAction {
   override def executeInputOutputAction[ReturnType](
     path: Path,
     performingAction: () => ReturnType,
@@ -25,7 +26,7 @@ class FileReader extends ExecuteInputOutputAction {
     }
 
     AppLogger.debug(s"${path} doesn't exist or cannot (something went wrong) read from file system.")
-    return emptyResult
+    emptyResult
   }
 
   /**
@@ -56,6 +57,45 @@ class FileReader extends ExecuteInputOutputAction {
     def action() = Source.fromFile(path)
 
     executeInputOutputAction(givenPath, action, null)
+  }
+
+  /**
+   * Input relative path from resource and get the contents of the file.
+   *
+   * @param relativePathToResource : file system (relative path) in resource directory
+   *
+   * @return contents of the file.
+   */
+  def getContentsFromResources(relativePathToResource: String): String = {
+    val actualPath = PathHelper.getResourceFileAbsolutePath(relativePathToResource)
+
+    getContents(actualPath)
+  }
+
+  /**
+   * (In memory operation) Input relative path from resource and get the lines list of the file.
+   *
+   * @param relativePathToResource : file system (relative path) in resource directory
+   *
+   * @return contents of the file.
+   */
+  def getLinesFromResources(relativePathToResource: String): util.List[String] = {
+    val actualPath = PathHelper.getResourceFileAbsolutePath(relativePathToResource)
+
+    getLines(actualPath)
+  }
+
+  /**
+   * (In memory operation) Input relative path from resource and get the lines list of the file.
+   *
+   * @param relativePathToResource : file system (relative path) in resource directory
+   *
+   * @return contents of the file.
+   */
+  def getBufferedSourceFromResources(relativePathToResource: String): BufferedSource = {
+    val actualPath = PathHelper.getResourceFileAbsolutePath(relativePathToResource)
+
+    getBufferedSource(actualPath)
   }
 
   /**

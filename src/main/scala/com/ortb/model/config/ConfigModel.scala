@@ -15,7 +15,7 @@ package com.ortb.model.config
 case class ConfigModel(
   applicationName: String,
   displayVersion: String,
-  server: ServerInfoModel,
+  server: Server,
   isDebug: Boolean,
   isLogError: Boolean,
   // commands: Array[CommandModel],
