@@ -1,4 +1,4 @@
-package com.ortb.config
+package com.ortb.manager
 
 import com.ortb.general.AppConstants
 import com.ortb.model.config.ConfigModel
@@ -9,11 +9,11 @@ import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
 
-trait GetConfig {
+trait ConfigurationManagerType {
   def getConfig(path: String): ConfigModel
 }
 
-object ConfigurationManager extends GetConfig {
+class ConfigurationManager extends ConfigurationManagerType {
   def getConfig(path: String): ConfigModel = {
     try {
 
@@ -27,7 +27,7 @@ object ConfigurationManager extends GetConfig {
 
 
       if (result.isEmpty) {
-        val fileError = new FileErrorModel(
+        val fileError = FileErrorModel(
           title = "Config Model Failed to Read",
           filePath = path,
           cause = "Result came as empty",
@@ -37,8 +37,6 @@ object ConfigurationManager extends GetConfig {
         val errorMessage = AppLogger.getFileErrorMessage(fileError)
         throw new Exception(errorMessage)
       }
-
-      println(result.get)
 
       return result.get;
     }

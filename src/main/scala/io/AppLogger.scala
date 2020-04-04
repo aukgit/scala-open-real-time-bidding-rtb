@@ -71,6 +71,7 @@ object AppLogger {
   }
 
   def error(exception: Exception): Unit = {
+    log.error(exception.toString)
     Sentry.capture(exception);
   }
 

@@ -1,5 +1,5 @@
-import com.ortb.config.ConfigurationManager
 import com.ortb.general.AppConstants
+import com.ortb.manager.{ConfigurationManager, AppManager}
 import com.ortb.model.config.ConfigModel
 import io.{AppLogger, JsonParser, File}
 import io.sentry.Sentry
@@ -11,8 +11,9 @@ import io.circe.syntax._
 object Application {
   def main(args: Array[String]): Unit = {
     Sentry.init(AppConstants.SentryDSN)
-    val config = ConfigurationManager.getConfig(AppConstants.PathConstants.ConfigDefaultPath)
-    println(config.asJson.noSpaces);
+    val appManager = new AppManager()
+
+    println(appManager.config.asJson.noSpaces);
 
 
 //    val decodedFoo = decode[Foo](json)

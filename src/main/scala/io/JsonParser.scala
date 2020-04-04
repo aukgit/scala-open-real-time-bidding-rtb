@@ -32,7 +32,6 @@ object JsonParser {
           content = jsonContents);
 
         val errorMessage = AppLogger.getFileErrorMessage(fileErrorModel)
-        println(errorMessage)
         throw new Exception(errorMessage)
       }
     }
