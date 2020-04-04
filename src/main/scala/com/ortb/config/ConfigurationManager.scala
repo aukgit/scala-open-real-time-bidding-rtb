@@ -23,11 +23,10 @@ object ConfigurationManager extends GetConfig {
 
       val result = JsonParser.toObjectFromJSONPath[ConfigModel](
         AppConstants.PathConstants.ConfigDefaultPath,
-        decoder).getOrElse(None)
+        decoder)
 
-      println(result)
 
-      if (result == None) {
+      if (result.isEmpty) {
         val fileError = new FileErrorModel(
           title = "Config Model Failed to Read",
           filePath = path,
@@ -39,7 +38,9 @@ object ConfigurationManager extends GetConfig {
         throw new Exception(errorMessage)
       }
 
-      result.asInstanceOf[ConfigModel];
+      println(result.get)
+
+      return result.get;
     }
     catch {
       case e: Exception => AppLogger.error(e)

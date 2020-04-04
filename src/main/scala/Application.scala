@@ -12,7 +12,7 @@ object Application {
   def main(args: Array[String]): Unit = {
     Sentry.init(AppConstants.SentryDSN)
     val config = ConfigurationManager.getConfig(AppConstants.PathConstants.ConfigDefaultPath)
-    println(config.asJson);
+    println(config.asJson.noSpaces);
 
 
 //    val decodedFoo = decode[Foo](json)
