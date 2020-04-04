@@ -1,5 +1,7 @@
 package com.ortb.model.config
 
+import io.circe.Decoder
+
 //sealed class HttpMethod extends Enumeration {
 //  type HttpMethod = Value
 //  val PUT, POST, DELETE, GET = Value

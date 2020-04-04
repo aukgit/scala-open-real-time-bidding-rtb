@@ -8,11 +8,8 @@ import io.circe.parser._
 import io.circe.syntax._
 
 object Application {
-  val sentryDsn = "https://3540a18396eb4373b3c843b149c55f5d@sentry.io/5183951";
-
-
   def main(args: Array[String]): Unit = {
-    Sentry.init(sentryDsn)
+    Sentry.init(AppConstants.SentryDSN)
 
     sealed trait Foo
     case class Bar(xs: Vector[String]) extends Foo
@@ -28,7 +25,11 @@ object Application {
     val o = decode[ConfigModel](json)
     println(o.getOrElse(null).asJson)
 
-    val data2 =  JsonParser.toObjectFromJSONPath(AppConstants.PathConstants.ConfigDefaultPath)(ConfigModel)
+    def x() = decode[ConfigModel](json)
+
+    val data2 =  JsonParser.toObjectFromJSONPath[ConfigModel](
+      AppConstants.PathConstants.ConfigDefaultPath,
+      x)
     println(data2)
 
 //    val decodedFoo = decode[Foo](json)
