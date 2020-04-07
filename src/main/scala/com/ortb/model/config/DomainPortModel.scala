@@ -1,6 +1,6 @@
 package com.ortb.model.config
 
-trait DomainPortModel {
-  var domain: String
-  var port: Int
-}
+case class DomainPortModel(
+  domain: String,
+  port: Int
+)

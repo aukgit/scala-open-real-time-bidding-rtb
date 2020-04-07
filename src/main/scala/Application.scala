@@ -14,7 +14,7 @@ object Application {
     val appManager = new AppManager()
 
     AppLogger.info("Help", isPrintStack = true)
-    // println(x = appManager.config.asJson.noSpaces);
+    println(appManager.config.asJson.noSpaces);
 
 
 //    val decodedFoo = decode[Foo](json)
