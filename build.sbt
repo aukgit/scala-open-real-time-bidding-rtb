@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
 
   ///////////////////////////////////////////////////
   // Serialization frameworks
