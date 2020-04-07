@@ -11,8 +11,7 @@ trait PrintStacks {
       return
     }
 
-    val stackIndex2 = stackIndex + 1
-    val message = getStackTraceInfoUpToIndex(stackIndex2)
-    info(message, stackIndex2)
+    val message = getStackTraceInfoUpToIndex
+    this.info(message)
   }
 }

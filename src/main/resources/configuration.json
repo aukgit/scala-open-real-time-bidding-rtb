@@ -2,8 +2,73 @@
   "applicationName": "RealTime Bidding Using OpenRTB and Akka",
   "displayVersion": "1.0",
   "server": {
-    "domain": "",
-    "port": 0
+    "commonDomain": "",
+    "isUseDefaultDomainForAll": true,
+    "services": {
+      "root": {
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "requestSimulatorService": {
+        "domain": "",
+        "port": 0,
+        "title": "Request Simulator Service",
+        "description": "Gives a JSON BID REQUEST Sample based on request.",
+        "routing": [
+          "bannerRequest",
+          "geoRequest",
+          "wmax",
+          "hmax",
+          "hmaxMin",
+          "contextExample"
+        ]
+      },
+      "monitorService": {
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "exchangeService": {
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "advertiserService": {
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "bidderService": {
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      }
+    },
+    "requestDefaultHeaders": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "x-openrtb-version",
+        "value": "2.3"
+      }
+    ],
+    "redisServer":{
+      "domain": "",
+      "port": 0
+    }
   },
   "isDebug": true,
   "isLogError": true,

@@ -13,7 +13,8 @@ object Application {
     Sentry.init(AppConstants.SentryDSN)
     val appManager = new AppManager()
 
-    println(appManager.config.asJson.noSpaces);
+    AppLogger.info("Help", isPrintStack = true)
+    // println(x = appManager.config.asJson.noSpaces);
 
 
 //    val decodedFoo = decode[Foo](json)

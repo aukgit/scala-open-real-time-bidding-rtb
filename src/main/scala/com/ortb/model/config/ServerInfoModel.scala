@@ -1,6 +1,9 @@
 package com.ortb.model.config
 
 case class ServerInfoModel(
-  domain: String,
-  port: Int,
+  commonDomain: String,
+  services: List[ServiceModel],
+  isUseDefaultDomainForAll: Boolean,
+  requestDefaultHeaders: List[KeyValuePairModel],
+  redisServer: DomainPortModel
 )

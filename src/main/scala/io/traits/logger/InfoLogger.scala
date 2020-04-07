@@ -11,6 +11,6 @@ trait InfoLogger {
     log.info(message)
     Sentry.getContext.addTag("level", "info")
     Sentry.capture(message)
-    printStacks(stackIndex, isPrintStack)
+    printStacks(stackIndex + 6, isPrintStack)
   }
 }

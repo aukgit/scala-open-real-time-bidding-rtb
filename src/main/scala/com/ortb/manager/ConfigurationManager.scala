@@ -17,8 +17,8 @@ class ConfigurationManager extends ConfigurationManagerType {
   def getConfig(path: String): ConfigModel = {
     try {
 
-      def decoder(jsonContents: String) = {
-        decode[ConfigModel](jsonContents)
+      def decoder(jsonContents: String): Either[Error, ConfigModel] = {
+        return decode[ConfigModel](jsonContents)
       }
 
       val result = JsonParser.toObjectFromJSONPath[ConfigModel](

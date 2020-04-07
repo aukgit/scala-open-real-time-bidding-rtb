@@ -19,4 +19,9 @@ object AppConstants {
    * ",\n <br >"
    */
   val NewLineForSentry = ",\n <br >"
+
+  /**
+   * "-> "
+   */
+  val HyphenRightAngel = "-> "
 }
