@@ -6,6 +6,7 @@
     "isUseDefaultDomainForAll": true,
     "services": {
       "root": {
+        "prefix":"",
         "domain": "",
         "port": 0,
         "title": "",
@@ -13,6 +14,7 @@
         "routing": []
       },
       "requestSimulatorService": {
+        "prefix":"",
         "domain": "",
         "port": 0,
         "title": "Request Simulator Service",
@@ -27,6 +29,7 @@
         ]
       },
       "monitorService": {
+        "prefix":"",
         "domain": "",
         "port": 0,
         "title": "",
@@ -34,6 +37,7 @@
         "routing": []
       },
       "exchangeService": {
+        "prefix":"",
         "domain": "",
         "port": 0,
         "title": "",
@@ -41,6 +45,7 @@
         "routing": []
       },
       "advertiserService": {
+        "prefix":"",
         "domain": "",
         "port": 0,
         "title": "",
@@ -48,6 +53,7 @@
         "routing": []
       },
       "bidderService": {
+        "prefix":"",
         "domain": "",
         "port": 0,
         "title": "",

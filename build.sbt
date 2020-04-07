@@ -4,17 +4,20 @@ scalaVersion := "2.13.1"
 
 lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
+lazy val akkaHttpVersion = "10.1.8"
 lazy val circeVersion = "0.12.3"
 
 libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
   // Akka core
   ///////////////////////////////////////////////////
+
   // "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-remote" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+  "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
 
   ///////////////////////////////////////////////////
   // Serialization frameworks
@@ -45,11 +48,9 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
 
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-  "org.scalatest" %% "scalatest" % "3.1.0" % Test,
+  "org.scalatest" %% "scalatest" % "3.1.0" % Test
 
   ///////////////////////////////////////////////////
   // Others
   ///////////////////////////////////////////////////
-
-  "io.rbricks" %% "itemized" % "0.2.0"
 )
