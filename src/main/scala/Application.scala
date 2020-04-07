@@ -1,32 +1,9 @@
-import akka.actor.ActorSystem
-import akka.stream.{Materializer, ActorMaterializer}
 import com.ortb.constants.AppConstants
-import com.ortb.manager.{AppManager, ConfigurationManager}
-import com.ortb.model.config.ConfigModel
-import com.ortb.serverAkka.framework.softler.client.ClientRequest
-import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
-import io.{AppLogger, JsonParser, File}
+import com.ortb.manager.AppManager
+import io.AppLogger
 import io.sentry.Sentry
-import io.circe._
 import io.circe.generic.auto._
-import io.circe.parser._
 import io.circe.syntax._
-
-import scala.concurrent.{Future, ExecutionContext}
-
-object AkkaHttpClientCirceSample extends App with FailFastCirceSupport {
-
-  implicit lazy val system: ActorSystem = ActorSystem()
-  implicit lazy val materializer: Materializer = ActorMaterializer()
-  implicit lazy val executionContext: ExecutionContext = system.dispatcher
-
-  case class GithubUser(login: String)
-
-  val clientRequest: Future[GithubUser] = ClientRequest("https://api.github.com/users/Freshwood")
-    .get[GithubUser]
-
-  clientRequest.foreach(println)
-}
 
 object Application {
   def main(args: Array[String]): Unit = {

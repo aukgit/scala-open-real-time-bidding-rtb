@@ -19,6 +19,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
   "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
+  "com.typesafe.akka" %% "akka-http-caching" % "10.1.11",
+  "com.typesafe.akka" %% "akka-stream" % "2.5.26",
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.7",
 
   ///////////////////////////////////////////////////
   // Serialization frameworks

@@ -1,57 +1,65 @@
 package com.ortb.serverAkka.framework
 
+import akka.http.scaladsl.server._
+
+import scala.concurrent.ExecutionContextExecutor
+import akka.http.scaladsl.model._
+
+
+// Server definition
+object WebServer extends HttpApp {
+  override def routes: Route =
+    path("hello") {
+      get {
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+      }
+      post{
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+      }
+    }
+}
+
+// Starting the server
+object Runner1 extends App{
+  WebServer.startServer("localhost", 8080)
+}
+
+
 import akka.actor.ActorSystem
-import akka.stream.{Materializer, ActorMaterializer}
-import com.ortb.serverAkka.framework.softler.client.{RequestState, ClientRequest, ClientResponse}
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.HttpMethods._
+import akka.http.scaladsl.model._
+import akka.stream.ActorMaterializer
 
-import scala.concurrent.{Future, ExecutionContext}
+import scala.io.StdIn
 
-/**
-  * @author Freshwood
-  * @since 13.08.2018
-  */
-sealed trait AkkaHttpContext {
-  implicit lazy val system: ActorSystem = ActorSystem()
-  implicit lazy val materializer: Materializer = ActorMaterializer()
-  implicit lazy val executionContext: ExecutionContext = system.dispatcher
+object Server2 extends App {
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  // needed for the future map/flatmap in the end
+  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
+  val requestHandler: HttpRequest => HttpResponse = {
+    case HttpRequest(GET, Uri.Path("/"), _, _, _) =>
+      HttpResponse(entity = HttpEntity(
+        ContentTypes.`text/html(UTF-8)`,
+        "<html><body>Hello world!</body></html>"))
+
+    case HttpRequest(GET, Uri.Path("/ping"), _, _, _) =>
+      HttpResponse(entity = "PONG!")
+
+    case HttpRequest(GET, Uri.Path("/crash"), _, _, _) =>
+      sys.error("BOOM!")
+
+    case r: HttpRequest =>
+      r.discardEntityBytes() // important to drain incoming HTTP Entity stream
+      HttpResponse(404, entity = "Unknown resource!")
+  }
+
+  val bindingFuture = Http().bindAndHandleSync(requestHandler, "localhost", 8080)
+  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+  StdIn.readLine() // let it run until user presses return
+  bindingFuture
+    .flatMap(_.unbind()) // trigger unbinding from the port
+    .onComplete(_ => system.terminate()) // and shutdown when done
 }
-
-sealed trait AkkaHttpRequest {
-  lazy val request: ClientRequest[RequestState.Idempotent] = ClientRequest(
-    "https://github.com/Freshwood/akka-http-rest-client/blob/master/README.md")
-}
-
-sealed trait AkkaHttpResponse {
-
-  implicit def system: ActorSystem
-
-  implicit def materializer: Materializer
-
-  implicit def executionContext: ExecutionContext
-
-  def request: ClientRequest[RequestState.Idempotent]
-
-  lazy val response: Future[ClientResponse] = request.get()
-}
-
-sealed trait AkkaHttpResponseHandler {
-
-  implicit def executionContext: ExecutionContext
-
-  implicit def materializer: Materializer
-
-  def response: Future[ClientResponse]
-
-  response flatMap (_.as[String]) foreach println
-}
-
-/**
-  * This sample shows how to fire a single request
-  * The project configuration file will be included inside the client library
-  */
-object AkkaHttpClientSample
-    extends App
-    with AkkaHttpRequest
-    with AkkaHttpResponse
-    with AkkaHttpResponseHandler
-    with AkkaHttpContext
