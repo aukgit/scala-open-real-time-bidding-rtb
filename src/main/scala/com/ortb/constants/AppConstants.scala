@@ -1,4 +1,4 @@
-package com.ortb.general
+package com.ortb.constants
 
 object AppConstants {
   /**

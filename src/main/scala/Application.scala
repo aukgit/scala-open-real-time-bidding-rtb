@@ -1,4 +1,4 @@
-import com.ortb.general.AppConstants
+import com.ortb.constants.AppConstants
 import com.ortb.manager.{ConfigurationManager, AppManager}
 import com.ortb.model.config.ConfigModel
 import io.{AppLogger, JsonParser, File}

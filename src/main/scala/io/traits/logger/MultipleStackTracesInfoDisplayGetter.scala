@@ -1,6 +1,6 @@
 package io.traits.logger
 
-import com.ortb.general.AppConstants
+import com.ortb.constants.AppConstants
 
 trait MultipleStackTracesInfoDisplayGetter extends StackTraceInfoDisplayGetter {
   def getStackTraceInfoUpToIndex: String = {

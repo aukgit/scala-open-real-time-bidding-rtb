@@ -1,6 +1,6 @@
 package io.traits.logger
 
-import com.ortb.general.AppConstants
+import com.ortb.constants.AppConstants
 
 trait MethodNameHeaderGetter extends StackTraceInfoDisplayGetter {
   def getMethodNameHeader(stackIndex: Int): String = {

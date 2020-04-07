@@ -1,6 +1,6 @@
 package com.ortb.manager
 
-import com.ortb.general.AppConstants
+import com.ortb.constants.AppConstants
 import com.ortb.model.config.ConfigModel
 
 trait AppManagerType {

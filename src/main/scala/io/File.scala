@@ -3,7 +3,7 @@ package io
 import java.nio.file.{Files, Path, Paths}
 import java.util
 
-import com.ortb.general.AppConstants
+import com.ortb.constants.AppConstants
 import io.traits.file.ExecuteInputOutputAction
 
 import scala.io.{Source, BufferedSource}

@@ -1,6 +1,6 @@
 package com.ortb.manager
 
-import com.ortb.general.AppConstants
+import com.ortb.constants.AppConstants
 import com.ortb.model.config.ConfigModel
 import com.ortb.model.error.FileErrorModel
 import io.{AppLogger, JsonParser}
