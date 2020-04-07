@@ -11,8 +11,8 @@ import akka.http.scaladsl.model.StatusCodes
 import scala.concurrent.ExecutionContextExecutor
 // for JSON serialization/deserialization following dependency is required:
 // "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.7"
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import spray.json.DefaultJsonProtocol._
+//import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+//import spray.json.DefaultJsonProtocol._
 
 import scala.io.StdIn
 
@@ -31,10 +31,6 @@ object WebServer {
   // domain model
   final case class Item(name: String, id: Long)
   final case class Order(items: List[Item])
-
-  // formats for unmarshalling and marshalling
-  implicit val itemFormat = jsonFormat2(Item)
-  implicit val orderFormat = jsonFormat1(Order)
 
   // (fake) async database query api
   def fetchItem(itemId: Long): Future[Option[Item]] = Future {
@@ -58,7 +54,7 @@ object WebServer {
             val maybeItem: Future[Option[Item]] = fetchItem(id)
 
             onSuccess(maybeItem) {
-              case Some(item) => complete(item)
+              case Some(item) => complete("ok")
               case None       => complete(StatusCodes.NotFound)
             }
           }
