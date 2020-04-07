@@ -6,7 +6,7 @@ import io.AppLogger.getStackTraceInfoUpToIndex
 trait PrintStacks {
   this: AppLogger.type =>
 
-  def printStacks(stackIndex: Int, isPrintStack: Boolean = false): Unit = {
+  def printStacks(isPrintStack: Boolean = false): Unit = {
     if (!isPrintStack) {
       return
     }

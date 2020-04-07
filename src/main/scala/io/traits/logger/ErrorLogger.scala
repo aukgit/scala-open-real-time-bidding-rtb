@@ -21,7 +21,7 @@ trait ErrorLogger {
     logErrorLevel()
     log.error(message)
     Sentry.capture(message)
-    printStacks(stackIndex, isPrintStack)
+    printStacks(isPrintStack)
   }
 
   def getFileErrorMessage(fileError: FileErrorModel): String = {
@@ -34,7 +34,7 @@ trait ErrorLogger {
     logErrorLevel()
     log.error(finalMessage)
     Sentry.capture(finalMessage)
-    printStacks(stackIndex, isPrintStack)
+    printStacks(isPrintStack)
   }
 
   def error(
@@ -50,6 +50,6 @@ trait ErrorLogger {
     Sentry.capture(newError) // combine error log
     log.error(exception.toString) // keep the actual error log as is.
     Sentry.capture(exception) // keep the actual error log as is.
-    printStacks(stackIndex, isPrintStack)
+    printStacks(isPrintStack)
   }
 }

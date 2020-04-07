@@ -1,8 +1,9 @@
 package com.ortb.model.config
 
 case class ServiceModel(
+  title: String,
+  description: String,
   domain: String,
   port: Int,
-  title: String,
-  description: String
+  routing: Array[String]
 )

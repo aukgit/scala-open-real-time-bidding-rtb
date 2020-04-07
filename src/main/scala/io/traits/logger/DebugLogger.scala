@@ -9,6 +9,6 @@ trait DebugLogger {
     Sentry.getContext.addTag("level", "debug")
     log.debug(message)
     Sentry.capture(message)
-    printStacks(stackIndex, isPrintStack)
+    printStacks(isPrintStack)
   }
 }

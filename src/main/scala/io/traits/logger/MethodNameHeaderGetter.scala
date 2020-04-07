@@ -4,7 +4,15 @@ import com.ortb.general.AppConstants
 
 trait MethodNameHeaderGetter extends StackTraceInfoDisplayGetter {
   def getMethodNameHeader(stackIndex: Int): String = {
-    val stack: StackTraceElement = Thread.currentThread().getStackTrace()(stackIndex)
-    getStackTraceInfo(stack)
+    val stacks = Thread.currentThread().getStackTrace
+    val len = stacks.length
+    val lastIndex = len - 1
+    if(lastIndex <= stackIndex ){
+      return getStackTraceInfo(stacks(stackIndex))
+    } else if(stacks.nonEmpty) {
+      return  getStackTraceInfo(stacks(lastIndex))
+    }
+
+    ""
   }
 }

@@ -11,7 +11,6 @@ trait WarnLogger {
     Sentry.getContext.addTag("level", "warn")
     log.warn(message)
     Sentry.capture(message)
-
-    printStacks(stackIndex, isPrintStack)
+    printStacks(isPrintStack)
   }
 }
