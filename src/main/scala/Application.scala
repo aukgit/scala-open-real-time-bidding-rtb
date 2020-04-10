@@ -1,5 +1,6 @@
 import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
+import com.ortb.persistent.DatabaseEngine
 import io.AppLogger
 import io.sentry.Sentry
 import io.circe.generic.auto._
@@ -12,7 +13,8 @@ object Application {
 
     AppLogger.info("Help", isPrintStack = true)
     println(appManager.config.asJson.noSpaces);
-
+    val engine = new DatabaseEngine(appManager)
+    engine.db.run()
 
 //    val decodedFoo = decode[Foo](json)
 //    println(decodedFoo)

@@ -9,7 +9,7 @@ lazy val circeVersion = "0.12.3"
 
 // More details at https://github.com/tototoshi/slick-joda-mapper
 lazy val slickVersion = "3.3.2"
-lazy val slickJodaMapperVersion = "2.4.0"
+lazy val slickJodaMapperVersion = "2.4"
 
 libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
@@ -56,9 +56,6 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
 
   "com.typesafe.slick" %% "slick" % slickVersion,
-  "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapperVersion,
-  "joda-time" % "joda-time" % "2.7",
-  "org.joda" % "joda-convert" % "1.7", // workaround https://bit.ly/2Xqrkg4
 
   ///////////////////////////////////////////////////
   // Unit Test Frameworks

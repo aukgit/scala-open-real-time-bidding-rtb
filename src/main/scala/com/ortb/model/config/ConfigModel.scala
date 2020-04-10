@@ -6,5 +6,6 @@ case class ConfigModel(
   server: ServerInfoModel,
   isDebug: Boolean,
   isLogError: Boolean,
-  author: String
+  author: String,
+  databaseRelativePath: String
 )

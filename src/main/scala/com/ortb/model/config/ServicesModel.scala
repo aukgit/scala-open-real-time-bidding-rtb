@@ -6,5 +6,8 @@ case class ServicesModel(
   monitorService: ServiceModel,
   exchangeService: ServiceModel,
   advertiserService: ServiceModel,
-  bidderService: ServiceModel
+  bidderService: ServiceModel,
+  preCachedBidService: ServiceModel,
+  supplySidePlatformService: ServiceModel,
+  demandSidePlatForms: Array[ServiceModel]
 )

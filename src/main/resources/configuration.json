@@ -119,6 +119,7 @@
       "port": 0
     }
   },
+  "databaseRelativePath": "openRTBSample.db",
   "isDebug": true,
   "isLogError": true,
   "author": "Md. Alim Ul Karim"
