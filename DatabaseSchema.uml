@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Transaction</OriginalElement>
+  <nodes>
+    <node x="1207.25" y="0.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.ContentCategory</node>
+    <node x="0.0" y="1929.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.sqlite_sequence</node>
+    <node x="849.0147058823529" y="1676.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Transaction</node>
+    <node x="67.0" y="1404.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.NoBidResponse</node>
+    <node x="674.0" y="1362.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Impression</node>
+    <node x="879.0" y="1376.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.GeoMapping</node>
+    <node x="774.0441176470588" y="684.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise</node>
+    <node x="356.25000000000006" y="0.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.DemandSidePlatform</node>
+    <node x="288.0" y="796.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidRequest</node>
+    <node x="1395.4117647058824" y="908.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.CampaignTargetCity</node>
+    <node x="444.00000000000006" y="1334.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidResponse</node>
+    <node x="808.6617647058825" y="342.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BannerAdvertiseType</node>
+    <node x="556.6617647058825" y="342.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.ContentContext</node>
+    <node x="1124.25" y="174.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Campaign</node>
+    <node x="1106.4117647058824" y="908.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.CampaignTargetSite</node>
+    <node x="0.0" y="922.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.NoBidResponseType</node>
+    <node x="1710.4117647058824" y="0.0">ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.sqlite_master</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.NoBidResponse" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.NoBidResponseType">
+      <point x="-67.0" y="-76.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Campaign" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.DemandSidePlatform">
+      <point x="-69.0" y="-230.0" />
+      <point x="1193.25" y="149.0" />
+      <point x="568.5" y="149.0" />
+      <point x="70.74999999999994" y="62.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.CampaignTargetCity" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Campaign">
+      <point x="0.0" y="-76.0" />
+      <point x="1530.4117647058824" y="659.0" />
+      <point x="1354.25" y="659.0" />
+      <point x="92.0" y="230.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Campaign" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.ContentCategory">
+      <point x="69.0" y="-230.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BannerAdvertiseType">
+      <point x="1.1368683772161603E-13" y="-300.0" />
+      <point x="912.044117647059" y="659.0" />
+      <point x="946.6617647058825" y="659.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.CampaignTargetSite" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Campaign">
+      <point x="0.0" y="-76.0" />
+      <point x="1240.9117647058824" y="659.0" />
+      <point x="1262.25" y="659.0" />
+      <point x="0.0" y="230.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidResponse" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise">
+      <point x="52.5" y="-146.0" />
+      <point x="601.5" y="1304.0" />
+      <point x="808.5441176470588" y="1304.0" />
+      <point x="-103.5" y="300.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Campaign">
+      <point x="92.00000000000011" y="-300.0" />
+      <point x="1004.044117647059" y="659.0" />
+      <point x="1170.25" y="659.0" />
+      <point x="-92.0" y="230.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Transaction" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Impression">
+      <point x="-50.0" y="-104.0" />
+      <point x="899.0147058823529" y="1651.0" />
+      <point x="766.5" y="1651.0" />
+      <point x="0.0" y="118.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Transaction" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise">
+      <point x="50.0" y="-104.0" />
+      <point x="999.0147058823529" y="1651.0" />
+      <point x="1099.5" y="1651.0" />
+      <point x="1099.5" y="1314.0" />
+      <point x="1015.5441176470588" y="1314.0" />
+      <point x="103.5" y="300.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.ContentContext">
+      <point x="-91.99999999999989" y="-300.0" />
+      <point x="820.044117647059" y="659.0" />
+      <point x="672.6617647058825" y="659.0" />
+      <point x="0.0" y="62.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.NoBidResponse" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidRequest">
+      <point x="67.0" y="-76.0" />
+      <point x="268.0" y="1314.0" />
+      <point x="357.5" y="1314.0" />
+      <point x="-69.5" y="188.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.GeoMapping" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise">
+      <point x="0.0" y="-104.0" />
+      <point x="984.0" y="1314.0" />
+      <point x="946.5441176470588" y="1314.0" />
+      <point x="34.5" y="300.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidResponse" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidRequest">
+      <point x="-52.5" y="-146.0" />
+      <point x="69.5" y="188.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.BidRequest" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.DemandSidePlatform">
+      <point x="0.0" y="-188.0" />
+      <point x="-70.75" y="62.0" />
+    </edge>
+    <edge source="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Impression" target="ce1ca6eb-a463-4079-8506-e362ecd3f1c8.TABLE:main.Advertise">
+      <point x="0.0" y="-118.0" />
+      <point x="766.5" y="1314.0" />
+      <point x="877.5441176470588" y="1314.0" />
+      <point x="-34.5" y="300.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6599567099567099" x="623.9816333224009" y="1431.9816333224007" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
