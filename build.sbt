@@ -56,6 +56,8 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
 
   "com.typesafe.slick" %% "slick" % slickVersion,
+  "com.typesafe.slick" %% "slick-codegen" % slickVersion,
+  "org.xerial" % "sqlite-jdbc" % "3.30.1",
 
   ///////////////////////////////////////////////////
   // Unit Test Frameworks

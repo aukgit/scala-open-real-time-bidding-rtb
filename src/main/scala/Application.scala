@@ -14,7 +14,7 @@ object Application {
     AppLogger.info("Help", isPrintStack = true)
     println(appManager.config.asJson.noSpaces);
     val engine = new DatabaseEngine(appManager)
-    engine.db.run()
+//    engine.db.run()
 
 //    val decodedFoo = decode[Foo](json)
 //    println(decodedFoo)
