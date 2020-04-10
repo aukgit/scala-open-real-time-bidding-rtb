@@ -58,7 +58,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % slickVersion,
   "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapperVersion,
   "joda-time" % "joda-time" % "2.7",
-  "org.joda" % "joda-convert" % "1.7",
+  "org.joda" % "joda-convert" % "1.7", // workaround https://bit.ly/2Xqrkg4
 
   ///////////////////////////////////////////////////
   // Unit Test Frameworks

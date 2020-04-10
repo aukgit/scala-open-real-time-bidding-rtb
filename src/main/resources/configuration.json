@@ -37,16 +37,16 @@
         "routing": []
       },
       "exchangeService": {
+        "title": "Exchange Server",
+        "description": "Decides to take pre-cached bid or take a bidding from DSPs and selects the final winner",
         "prefix":"",
         "domain": "",
         "port": 0,
-        "title": "",
-        "description": "",
         "routing": []
       },
       "advertiserService": {
         "prefix":"",
-        "domain": "",
+        "domain": "First root request receiver. Like give me an advertise.",
         "port": 0,
         "title": "",
         "description": "",
@@ -59,7 +59,50 @@
         "title": "",
         "description": "",
         "routing": []
-      }
+      },
+      "supplySidePlatformService": {
+        "prefix":"",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "preCachedBidService": {
+        "prefix":"",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "demandSidePlatForms": [
+        {
+          "title": "DSP - Demand Side Platform - 1",
+          "description": "Final stage where bidding happens, agent 1",
+          "prefix":"",
+          "domain": "",
+          "port": 0,
+          "routing": []
+        },
+        {
+          "title": "DSP - Demand Side Platform - 2",
+          "description": "Final stage where bidding happens, agent 2",
+          "prefix":"",
+          "domain": "",
+          "port": 0,
+          "routing": []
+        },
+        {
+          "title": "DSP - Demand Side Platform - 3",
+          "description": "Final stage where bidding happens, agent 3",
+          "prefix":"",
+          "domain": "",
+          "port": 0,
+          "routing": []
+        }
+      ]
+
     },
     "requestDefaultHeaders": [
       {
