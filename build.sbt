@@ -4,7 +4,7 @@ scalaVersion := "2.13.1"
 
 lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
-lazy val akkaHttpVersion = "10.1.8"
+lazy val akkaHttpVersion = "10.1.11"
 lazy val circeVersion = "0.12.3"
 
 libraryDependencies ++= Seq(
@@ -19,10 +19,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
   "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
-  "com.typesafe.akka" %% "akka-http-caching" % "10.1.11",
+  "com.typesafe.akka" %% "akka-http-caching" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.26",
-  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.7",
-
+  "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
   ///////////////////////////////////////////////////
   // Serialization frameworks
   ///////////////////////////////////////////////////

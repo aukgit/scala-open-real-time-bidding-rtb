@@ -9,10 +9,38 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpResponse, HttpRequest, StatusCodes, HttpEntity, HttpMethods, Uri, ContentTypes}
 import akka.stream.ActorMaterializer
 import io.circe.generic.auto._
-import io.circe.parser._
+import io.circe.{ Decoder, Encoder }
+import io.circe.generic.semiauto._
+import io.circe.{Decoder, Encoder}
+import io.circe.generic.semiauto._
+import io.circe.generic.auto._
 import io.circe.syntax._
 
-class SampleServer() {
+import shapeless.Unwrapped
+
+trait AnyValCirceEncoding {
+  implicit def anyValEncoder[V, U](implicit ev: V <:< AnyVal,
+    V: Unwrapped.Aux[V, U],
+    encoder: Encoder[U]): Encoder[V] = {
+    val _ = ev
+    encoder.contramap(V.unwrap)
+  }
+
+  implicit def anyValDecoder[V, U](implicit ev: V <:< AnyVal,
+    V: Unwrapped.Aux[V, U],
+    decoder: Decoder[U]): Decoder[V] = {
+    val _ = ev
+    decoder.map(V.wrap)
+  }
+}
+
+object AnyValCirceEncoding extends AnyValCirceEncoding
+
+object CirceSupport
+  extends de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
+    with AnyValCirceEncoding
+
+class SampleServer() extends AnyValCirceEncoding{
   def startServerAt(port: Int): Future[Http.ServerBinding] = {
     implicit val system: ActorSystem = ActorSystem("SampleServer")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -37,7 +65,7 @@ class SampleServer() {
       case HttpRequest(HttpMethods.POST, uri@Uri.Path("/api/anything"), seqHeaders, entity, _) =>
         println("hello POST")
         println(seqHeaders)
-        println(entity)
+        // println(entity.asJson.noSpaces)
         println("Query")
         println(uri.query())
 
