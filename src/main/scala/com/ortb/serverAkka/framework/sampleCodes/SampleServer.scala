@@ -1,21 +1,13 @@
 package com.ortb.serverAkka.framework.sampleCodes
 
-import akka.util.Timeout
 import com.ortb.serverAkka.framework.sampleCodes.GuitarDB.CreateGuitar
 
-import scala.concurrent.{duration, Future}
+import scala.concurrent.Future
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{HttpResponse, HttpRequest, StatusCodes, HttpEntity, HttpMethods, Uri, ContentTypes}
+import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
-import io.circe.generic.auto._
-import io.circe.{ Decoder, Encoder }
-import io.circe.generic.semiauto._
-import io.circe.{Decoder, Encoder}
-import io.circe.generic.semiauto._
-import io.circe.generic.auto._
-import io.circe.syntax._
-
+import io.circe.{Encoder, Decoder}
 import shapeless.Unwrapped
 
 trait AnyValCirceEncoding {

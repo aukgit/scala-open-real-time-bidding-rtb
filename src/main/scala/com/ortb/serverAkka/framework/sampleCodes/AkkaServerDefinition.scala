@@ -22,9 +22,16 @@ class AkkaServerDefinition(endPointPrefixes: String)
       // println(entity.asJson.noSpaces)
       println(entity)
       println("Query")
-      println(uri.query())
 
-      return Future(ClientResponse())
+      println(uri.query())
+      Future {
+        HttpResponse(
+          status = StatusCodes.Accepted,
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            "POST : You Get to Anything"
+          ))
+      }
 
     case HttpRequest(HttpMethods.GET, uri@Uri.Path(s"/api/$endPointPrefixes"), seqHeaders, entity, _) =>
       println("hello GET")
