@@ -7,6 +7,10 @@ lazy val akkaVersion = "2.6.4"
 lazy val akkaHttpVersion = "10.1.11"
 lazy val circeVersion = "0.12.3"
 
+// More details at https://github.com/tototoshi/slick-joda-mapper
+lazy val slickVersion = "3.3.2"
+lazy val slickJodaMapperVersion = "2.4.0"
+
 libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
   // Akka core
@@ -22,6 +26,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-caching" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.26",
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+
   ///////////////////////////////////////////////////
   // Serialization frameworks
   ///////////////////////////////////////////////////
@@ -45,6 +50,15 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-api" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
   "io.sentry" % "sentry-log4j2" % "1.7.30",
+
+  ///////////////////////////////////////////////////
+  // Persistent or ORM frameworks
+  ///////////////////////////////////////////////////
+
+  "com.typesafe.slick" %% "slick" % slickVersion,
+  "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapperVersion,
+  "joda-time" % "joda-time" % "2.7",
+  "org.joda" % "joda-convert" % "1.7",
 
   ///////////////////////////////////////////////////
   // Unit Test Frameworks

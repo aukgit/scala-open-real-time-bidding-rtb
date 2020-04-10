@@ -1,8 +1,8 @@
-package com.ortb.serverAkka.framework.rest.jsonParser.circe
+package com.ortb.serverAkka.framework.restClient.jsonParser.circe
 
 import akka.actor.ActorSystem
 import akka.stream.{Materializer, ActorMaterializer}
-import com.ortb.serverAkka.framework.rest.softler.client.ClientRequest
+import com.ortb.serverAkka.framework.restClient.softler.client.ClientRequest
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 

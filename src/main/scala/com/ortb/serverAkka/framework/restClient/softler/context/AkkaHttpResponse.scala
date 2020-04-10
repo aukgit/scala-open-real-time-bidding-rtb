@@ -1,10 +1,10 @@
-package com.ortb.serverAkka.framework.rest.softler.context
+package com.ortb.serverAkka.framework.restClient.softler.context
 
 import akka.stream.Materializer
 import akka.actor.ActorSystem
 
 import scala.concurrent.{Future, ExecutionContext}
-import com.ortb.serverAkka.framework.rest.softler.client.{RequestState, ClientResponse, ClientRequest}
+import com.ortb.serverAkka.framework.restClient.softler.client.{RequestState, ClientResponse, ClientRequest}
 
 trait AkkaHttpResponse {
 

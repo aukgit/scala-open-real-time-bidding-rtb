@@ -24,4 +24,9 @@ object AppConstants {
    * "-> "
    */
   val HyphenRightAngel = "-> "
+
+  /**
+   * "localhost"
+   */
+  val LocalHost = "localhost"
 }

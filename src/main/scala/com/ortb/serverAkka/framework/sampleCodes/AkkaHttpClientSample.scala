@@ -1,6 +1,6 @@
 package com.ortb.serverAkka.framework.sampleCodes
 
-import com.ortb.serverAkka.framework.rest.softler.context._
+import com.ortb.serverAkka.framework.restClient.softler.context._
 
 
 /**

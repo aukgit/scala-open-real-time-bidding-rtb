@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.rest.softler.client
+package com.ortb.serverAkka.framework.restClient.softler.client
 
 /**
   * The http methods implementation which can be mixed in

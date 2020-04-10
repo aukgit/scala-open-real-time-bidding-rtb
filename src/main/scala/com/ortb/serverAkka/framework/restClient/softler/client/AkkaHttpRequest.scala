@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.rest.softler.client
+package com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.model.HttpRequest
 

@@ -1,11 +1,11 @@
-package com.ortb.serverAkka.framework.rest.softler.client
+package com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.coding._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.HttpEncodings
 import akka.http.scaladsl.unmarshalling.{Unmarshal, Unmarshaller}
 import akka.stream.Materializer
-import com.ortb.serverAkka.framework.rest.softler.processor._
+import com.ortb.serverAkka.framework.restClient.softler.processor._
 
 import scala.collection.immutable
 import scala.concurrent.{Future, ExecutionContext}

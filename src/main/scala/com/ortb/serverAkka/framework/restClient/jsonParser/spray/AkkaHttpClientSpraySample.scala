@@ -1,9 +1,9 @@
-package com.ortb.serverAkka.framework.rest.jsonParser.spray
+package com.ortb.serverAkka.framework.restClient.jsonParser.spray
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.stream.{Materializer, ActorMaterializer}
-import com.ortb.serverAkka.framework.rest.softler.client.ClientRequest
+import com.ortb.serverAkka.framework.restClient.softler.client.ClientRequest
 import spray.json.{RootJsonFormat, DefaultJsonProtocol}
 
 import scala.concurrent.{Future, ExecutionContext}

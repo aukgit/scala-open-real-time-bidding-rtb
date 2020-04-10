@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.rest.softler.client
+package com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -6,7 +6,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.Accept
 import akka.http.scaladsl.unmarshalling.{Unmarshal, Unmarshaller}
 import akka.stream.Materializer
-import com.ortb.serverAkka.framework.rest.softler.processor._
+import com.ortb.serverAkka.framework.restClient.softler.processor._
 
 import scala.annotation.implicitNotFound
 import scala.collection._
