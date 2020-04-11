@@ -128,8 +128,8 @@
     "jdbcDriver": "org.sqlite.JDBC",
     "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:src*:main*:resources*:openRTBSample.db",
     "compiledDatabaseUrl": "",
-    "outputDir": "${WorkingDirectory}*:src*:main*:scala*:com*:ortb*:persistent",
+    "outputDir": "${WorkingDirectory}*:src*:main*:scala",
     "compiledOutputDir": "",
-    "pkg": "om.ortb.persistent.schema"
+    "pkg": "com.ortb.persistent.schema"
   }
 }
