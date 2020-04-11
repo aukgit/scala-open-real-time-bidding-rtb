@@ -1,9 +1,16 @@
 package com.ortb.persistent.schema
 
+import com.ortb.manager.AppManager
 import com.ortb.persistent.schema.Tables._
 import slick.lifted.TableQuery
+import slick.jdbc.SQLiteProfile.api._
+import slick.lifted.{TableQuery, Query}
+import slick.profile._
+import slick.jdbc.SQLiteProfile.api._
 
-class DatabaseSchema {
+import scala.concurrent.Future
+
+class DatabaseSchema(appManager: AppManager) {
   lazy val advertises = TableQuery[Advertise]
   lazy val auctions = TableQuery[Auction]
   lazy val bannerAdvertiseTypes = TableQuery[Banneradvertisetype]
@@ -89,4 +96,20 @@ class DatabaseSchema {
     publishers,
     transactions
   )
+
+
+  def getRowsOf[T, T2](
+    tableQuery: TableQuery[T],
+    isPrint: Boolean = false
+  ): Future[Seq[T2]] = {
+    val query = for {
+      c <- campaigns
+    } yield (c)
+
+    if (isPrint) {
+      query.result.statements.foreach(println)
+    }
+
+    appManager.databaseEngine.db.run(query.result)
+  }
 }

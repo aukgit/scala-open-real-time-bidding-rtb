@@ -18,22 +18,12 @@ object Application {
 
     AppLogger.info("Help", isPrintStack = true)
     println(appManager.config.asJson.noSpaces);
-    val dbEngine = new DatabaseEngine(appManager)
-    val db = dbEngine.db
-    val campaigns = dbEngine.databaseSchemas
+    val dbEngine = appManager.databaseEngine
+    val campaigns = dbEngine.databaseSchema
       .campaigns
 
-    def sampleTest: Future[Seq[CampaignRow]] = {
-      val query = for {
-        c <- campaigns
-      } yield (c)
-
-      query.result.statements.foreach(println)
-      db.run(query.result)
-    }
-
-    sampleTest
-
+    val rows = dbEngine.databaseSchema.getRowsOf
+      [Campaign, CampaignRow](campaigns, isPrint = true)
 //    val campaigns = TableQuery[Campaign].filter(c => c.campaignid >= 0)
 //
 //    campaigns.result.statements.foreach(println)

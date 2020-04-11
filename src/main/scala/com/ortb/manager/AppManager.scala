@@ -2,6 +2,7 @@ package com.ortb.manager
 
 import com.ortb.constants.AppConstants
 import com.ortb.model.config.ConfigModel
+import com.ortb.persistent.DatabaseEngine
 import io.sentry.Sentry
 
 trait AppManagerBase {
@@ -11,5 +12,5 @@ trait AppManagerBase {
 }
 
 class AppManager extends AppManagerBase {
-
+  lazy val databaseEngine: DatabaseEngine = new DatabaseEngine(this)
 }
