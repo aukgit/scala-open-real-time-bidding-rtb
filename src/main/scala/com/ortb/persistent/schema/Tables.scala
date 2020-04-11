@@ -538,17 +538,17 @@ trait Tables {
   lazy val Geomapping = new TableQuery(tag => new Geomapping(tag))
 
   /** Entity class storing rows of table Impression
-   *  @param impressionid Database column ImpressionId SqlType(TEXT), PrimaryKey
+   *  @param impressionid Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey
    *  @param advertiseid Database column AdvertiseId SqlType(INTEGER)
    *  @param dated Database column Dated SqlType(INTEGER)
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER)
    *  @param price Database column Price SqlType(REAL)
    *  @param currency Database column Currency SqlType(TEXT) */
-  case class ImpressionRow(impressionid: String, advertiseid: Int, dated: Int, bidrequestid: Int, price: Double, currency: String)
+  case class ImpressionRow(impressionid: Int, advertiseid: Int, dated: Int, bidrequestid: Int, price: Double, currency: String)
   /** GetResult implicit for fetching ImpressionRow objects using plain SQL queries */
-  implicit def GetResultImpressionRow(implicit e0: GR[String], e1: GR[Int], e2: GR[Double]): GR[ImpressionRow] = GR{
+  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[String]): GR[ImpressionRow] = GR{
     prs => import prs._
-    ImpressionRow.tupled((<<[String], <<[Int], <<[Int], <<[Int], <<[Double], <<[String]))
+    ImpressionRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[String]))
   }
   /** Table description of table Impression. Objects of this class serve as prototypes for rows in queries. */
   class Impression(_tableTag: Tag) extends profile.api.Table[ImpressionRow](_tableTag, "Impression") {
@@ -556,8 +556,8 @@ trait Tables {
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(impressionid), Rep.Some(advertiseid), Rep.Some(dated), Rep.Some(bidrequestid), Rep.Some(price), Rep.Some(currency))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
-    /** Database column ImpressionId SqlType(TEXT), PrimaryKey */
-    val impressionid: Rep[String] = column[String]("ImpressionId", O.PrimaryKey)
+    /** Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val impressionid: Rep[Int] = column[Int]("ImpressionId", O.AutoInc, O.PrimaryKey)
     /** Database column AdvertiseId SqlType(INTEGER) */
     val advertiseid: Rep[Int] = column[Int]("AdvertiseId")
     /** Database column Dated SqlType(INTEGER) */

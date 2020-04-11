@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 11/04/2020 16:48:34
+ Date: 11/04/2020 17:43:23
 */
 
 PRAGMA foreign_keys = false;
@@ -214,13 +214,12 @@ CREATE TABLE "GeoMapping" (
 -- ----------------------------
 DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
-  "ImpressionId" TEXT NOT NULL,
+  "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER NOT NULL,
   "Dated" INTEGER NOT NULL,
   "BidRequestId" INTEGER NOT NULL,
   "Price" REAL NOT NULL,
   "Currency" TEXT NOT NULL,
-  PRIMARY KEY ("ImpressionId"),
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -335,6 +334,10 @@ UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
 -- Auto increment value for DemandSidePlatform
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
+
+-- ----------------------------
+-- Auto increment value for Impression
+-- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for LostBid
