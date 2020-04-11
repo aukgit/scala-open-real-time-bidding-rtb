@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Demandsideplatform.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Lostbid.schema, Nobidresponsetype.schema, Publisher.schema, Transaction.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Demandsideplatform.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Lostbid.schema, Nobidresponsetype.schema, Publisher.schema, Transaction.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -403,6 +403,35 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Campaigntargetcity */
   lazy val Campaigntargetcity = new TableQuery(tag => new Campaigntargetcity(tag))
+
+  /** Entity class storing rows of table Campaigntargetoperatingsystem
+   *  @param campaigntargetoperatingsystemid Database column CampaignTargetOperatingSystemId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param campaigntargetoperatingsystem Database column CampaignTargetOperatingSystem SqlType(TEXT)
+   *  @param campaignid Database column CampaignId SqlType(INTEGER) */
+  case class CampaigntargetoperatingsystemRow(campaigntargetoperatingsystemid: Int, campaigntargetoperatingsystem: String, campaignid: Int)
+  /** GetResult implicit for fetching CampaigntargetoperatingsystemRow objects using plain SQL queries */
+  implicit def GetResultCampaigntargetoperatingsystemRow(implicit e0: GR[Int], e1: GR[String]): GR[CampaigntargetoperatingsystemRow] = GR{
+    prs => import prs._
+    CampaigntargetoperatingsystemRow.tupled((<<[Int], <<[String], <<[Int]))
+  }
+  /** Table description of table CampaignTargetOperatingSystem. Objects of this class serve as prototypes for rows in queries. */
+  class Campaigntargetoperatingsystem(_tableTag: Tag) extends profile.api.Table[CampaigntargetoperatingsystemRow](_tableTag, "CampaignTargetOperatingSystem") {
+    def * = (campaigntargetoperatingsystemid, campaigntargetoperatingsystem, campaignid) <> (CampaigntargetoperatingsystemRow.tupled, CampaigntargetoperatingsystemRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(campaigntargetoperatingsystemid), Rep.Some(campaigntargetoperatingsystem), Rep.Some(campaignid))).shaped.<>({r=>import r._; _1.map(_=> CampaigntargetoperatingsystemRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column CampaignTargetOperatingSystemId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val campaigntargetoperatingsystemid: Rep[Int] = column[Int]("CampaignTargetOperatingSystemId", O.AutoInc, O.PrimaryKey)
+    /** Database column CampaignTargetOperatingSystem SqlType(TEXT) */
+    val campaigntargetoperatingsystem: Rep[String] = column[String]("CampaignTargetOperatingSystem")
+    /** Database column CampaignId SqlType(INTEGER) */
+    val campaignid: Rep[Int] = column[Int]("CampaignId")
+
+    /** Foreign key referencing Campaign (database name Campaign_FK_1) */
+    lazy val campaignFk = foreignKey("Campaign_FK_1", campaignid, Campaign)(r => r.campaignid, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
+  }
+  /** Collection-like TableQuery object for table Campaigntargetoperatingsystem */
+  lazy val Campaigntargetoperatingsystem = new TableQuery(tag => new Campaigntargetoperatingsystem(tag))
 
   /** Entity class storing rows of table Campaigntargetsite
    *  @param campaigntargetsiteid Database column CampaignTargetSiteId SqlType(INTEGER), AutoInc, PrimaryKey

@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 11/04/2020 17:43:16
+ Date: 11/04/2020 18:02:07
 */
 
 PRAGMA foreign_keys = false;
@@ -159,6 +159,17 @@ DROP TABLE IF EXISTS "CampaignTargetCity";
 CREATE TABLE "CampaignTargetCity" (
   "CampaignTargetCityId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignTargetCity" TEXT NOT NULL,
+  "CampaignId" integer NOT NULL,
+  CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Table structure for CampaignTargetOperatingSystem
+-- ----------------------------
+DROP TABLE IF EXISTS "CampaignTargetOperatingSystem";
+CREATE TABLE "CampaignTargetOperatingSystem" (
+  "CampaignTargetOperatingSystemId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CampaignTargetOperatingSystem" TEXT NOT NULL,
   "CampaignId" integer NOT NULL,
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -400,6 +411,7 @@ INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
+INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
@@ -420,6 +432,10 @@ UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
 
 -- ----------------------------
 -- Auto increment value for CampaignTargetCity
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for CampaignTargetOperatingSystem
 -- ----------------------------
 
 -- ----------------------------

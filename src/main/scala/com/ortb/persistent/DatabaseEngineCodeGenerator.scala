@@ -3,9 +3,9 @@ package com.ortb.persistent
 import com.ortb.manager.AppManager
 
 object DatabaseEngineCodeGenerator extends App {
-  val appManager = new AppManager
-  val config = appManager.config
-  val databaseGenerateConfig = config.databaseGenerate
+  lazy val appManager = new AppManager
+  lazy val config = appManager.config
+  lazy val databaseGenerateConfig = config.databaseGenerate
 
   slick.codegen.SourceCodeGenerator.run(
     profile = databaseGenerateConfig.profile,// "slick.jdbc.SQLiteProfile",
