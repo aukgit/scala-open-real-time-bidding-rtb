@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 11/04/2020 16:10:47
+ Date: 11/04/2020 16:48:05
 */
 
 PRAGMA foreign_keys = false;
@@ -76,7 +76,7 @@ DROP TABLE IF EXISTS "BidRequest";
 CREATE TABLE "BidRequest" (
   "BidRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "DemandSidePlatformId" INTEGER NOT NULL,
-  "AuctionId" INTEGER NOT NULL,
+  "AuctionId" INTEGER,
   "IsBanner" integer(1) NOT NULL DEFAULT 0,
   "IsVideo" integer(1) NOT NULL DEFAULT 0,
   "Height" integer,
@@ -86,14 +86,14 @@ CREATE TABLE "BidRequest" (
   "TargetedSites" TEXT,
   "TargetedCities" TEXT,
   "RawBidRequest" TEXT,
-  "Price1" real NOT NULL DEFAULT 0,
-  "Price2" real NOT NULL DEFAULT 0,
-  "Price3" real NOT NULL DEFAULT 0,
+  "Price1" real DEFAULT 0,
+  "Price2" real DEFAULT 0,
+  "Price3" real DEFAULT 0,
   "Currency" TEXT(5) DEFAULT USD,
   "ContentContextId" INTEGER,
   "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -110,8 +110,14 @@ CREATE TABLE "BidResponse" (
   "IUrl" TEXT,
   "AdvertiseId" INTEGER NOT NULL,
   "BidRequestId" INTEGER,
+  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
+  "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
+  "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
+  "NoBidResponseTypeId" INTEGER,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -130,19 +136,21 @@ CREATE TABLE "Campaign" (
   "ImpressionCount" integer NOT NULL DEFAULT 0,
   "DemandSidePlatformId" integer NOT NULL,
   "IsRunning" integer(1) NOT NULL DEFAULT 0,
-  "Priority" integer NOT NULL DEFAULT 999,
+  "Priority" integer(3) NOT NULL DEFAULT 999,
   "IsRetrictToUserGender" integer(1) NOT NULL DEFAULT 0,
   "ExpectedUserGender" TEXT(2),
+  "PublisherId" INTEGER,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE SET NULL ON UPDATE SET NULL,
   UNIQUE ("CampaignId" ASC)
 );
 
 -- ----------------------------
 -- Records of Campaign
 -- ----------------------------
-INSERT INTO "Campaign" VALUES (1, 'First Cricket Campaign', 'IAB17', 10.0, 0.0, 10.0, NULL, NULL, 0, 1, 1, 999, 0, NULL);
-INSERT INTO "Campaign" VALUES (2, 'Business Campaing', 'IAB3', 5.0, 0.0, 5.0, 0.0, 0.0, 0, 2, 1, 999, 0, NULL);
+INSERT INTO "Campaign" VALUES (1, 'First Cricket Campaign', 'IAB17', 10.0, 0.0, 10.0, 0.0, 0.0, 0, 1, 1, 999, 0, '', 1);
+INSERT INTO "Campaign" VALUES (2, 'Business Campaing', 'IAB3', 5.0, 0.0, 5.0, 0.0, 0.0, 0, 2, 1, 999, 0, '', 2);
 
 -- ----------------------------
 -- Table structure for CampaignTargetCity
@@ -278,6 +286,27 @@ CREATE TABLE "Impression" (
 );
 
 -- ----------------------------
+-- Table structure for Keyword
+-- ----------------------------
+DROP TABLE IF EXISTS "Keyword";
+CREATE TABLE "Keyword" (
+  "KeywordId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Keyword" TEXT
+);
+
+-- ----------------------------
+-- Table structure for KeywordAdvertiseMapping
+-- ----------------------------
+DROP TABLE IF EXISTS "KeywordAdvertiseMapping";
+CREATE TABLE "KeywordAdvertiseMapping" (
+  "KeywordAdvertiseMappingId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "AdvertiseId" INTEGER NOT NULL,
+  "KeywordId" INTEGER NOT NULL,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "KeywordIdFK" FOREIGN KEY ("KeywordId") REFERENCES "Keyword" ("KeywordId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
 -- Table structure for LostBid
 -- ----------------------------
 DROP TABLE IF EXISTS "LostBid";
@@ -286,18 +315,6 @@ CREATE TABLE "LostBid" (
   "BidRequestId" INTEGER NOT NULL,
   "Reason" TEXT,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-
--- ----------------------------
--- Table structure for NoBidResponse
--- ----------------------------
-DROP TABLE IF EXISTS "NoBidResponse";
-CREATE TABLE "NoBidResponse" (
-  "NoBidResponseId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BidRequestId" INTEGER,
-  "NoBidResponseTypeId" INTEGER,
-  CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ----------------------------
@@ -321,6 +338,26 @@ INSERT INTO "NoBidResponseType" VALUES (5, 'Cloud, Data Center or Proxy IP');
 INSERT INTO "NoBidResponseType" VALUES (6, 'Unsupported Device');
 INSERT INTO "NoBidResponseType" VALUES (7, 'Blocked Publisher or Site');
 INSERT INTO "NoBidResponseType" VALUES (8, 'Unmatched User');
+
+-- ----------------------------
+-- Table structure for Publisher
+-- ----------------------------
+DROP TABLE IF EXISTS "Publisher";
+CREATE TABLE "Publisher" (
+  "PublisherId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "PublisherName" TEXT NOT NULL,
+  "PublisherWebsite" TEXT NOT NULL,
+  "PublisherAddress" TEXT NOT NULL,
+  "DemandSidePlatformId" INTEGER NOT NULL,
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Records of Publisher
+-- ----------------------------
+INSERT INTO "Publisher" VALUES (1, 'Alim Advertise Server', 'alim1.com', 'alim address', 1);
+INSERT INTO "Publisher" VALUES (2, 'Alim Advertise Server 2', 'alim2.com', 'alim 2 address', 2);
+INSERT INTO "Publisher" VALUES (3, 'Alim Advertise Server 3', 'alim3.com', 'alim 3 address', 3);
 
 -- ----------------------------
 -- Table structure for Transaction
@@ -348,18 +385,21 @@ CREATE TABLE "sqlite_sequence" (
 -- ----------------------------
 -- Records of sqlite_sequence
 -- ----------------------------
+INSERT INTO "sqlite_sequence" VALUES ('ContentContext', 7);
+INSERT INTO "sqlite_sequence" VALUES ('DemandSidePlatform', 3);
+INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
 INSERT INTO "sqlite_sequence" VALUES ('DemandSidePlatform', 3);
 INSERT INTO "sqlite_sequence" VALUES ('ContentContext', 7);
-INSERT INTO "sqlite_sequence" VALUES ('NoBidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetCity', 0);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
+INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 
 -- ----------------------------
 -- Auto increment value for Advertise
@@ -401,13 +441,14 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
 -- ----------------------------
 
 -- ----------------------------
--- Auto increment value for NoBidResponse
--- ----------------------------
-
--- ----------------------------
 -- Auto increment value for NoBidResponseType
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
+
+-- ----------------------------
+-- Auto increment value for Publisher
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
 -- Auto increment value for Transaction
