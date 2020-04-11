@@ -122,5 +122,14 @@
   "databaseRelativePath": "openRTBSample.db",
   "isDebug": true,
   "isLogError": true,
-  "author": "Md. Alim Ul Karim"
+  "author": "Md. Alim Ul Karim",
+  "databaseGenerate": {
+    "profile": "slick.jdbc.SQLiteProfile",
+    "jdbcDriver": "org.sqlite.JDBC",
+    "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:src*:main*:resources*:openRTBSample.db",
+    "compiledDatabaseUrl": "",
+    "outputDir": "${WorkingDirectory}*:src*:main*:scala*:com*:ortb*:persistent",
+    "compiledOutputDir": "",
+    "pkg": "om.ortb.persistent.schema"
+  }
 }

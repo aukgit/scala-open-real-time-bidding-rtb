@@ -3,7 +3,8 @@ package com.ortb.manager
 import com.ortb.constants.AppConstants
 import com.ortb.model.config.ConfigModel
 import com.ortb.model.error.FileErrorModel
-import io.{AppLogger, JsonParser}
+import io.PathHelper._
+import io.{AppLogger, JsonParser, PathHelper}
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
@@ -18,7 +19,7 @@ class ConfigurationManager extends ConfigurationManagerType {
     try {
 
       def decoder(jsonContents: String): Either[Error, ConfigModel] = {
-        return decode[ConfigModel](jsonContents)
+        decode[ConfigModel](jsonContents)
       }
 
       val result = JsonParser.toObjectFromJSONPath[ConfigModel](
@@ -38,7 +39,13 @@ class ConfigurationManager extends ConfigurationManagerType {
         throw new Exception(errorMessage)
       }
 
-      return result.get;
+      val returningResult = result.get
+      val databaseGenerate = returningResult.databaseGenerate;
+
+      databaseGenerate.compiledDatabaseUrl = getExpendedPath(databaseGenerate.databaseUrl)
+      databaseGenerate.compiledOutputDir = getExpendedPath(databaseGenerate.outputDir)
+
+      return returningResult;
     }
     catch {
       case e: Exception => AppLogger.error(e)

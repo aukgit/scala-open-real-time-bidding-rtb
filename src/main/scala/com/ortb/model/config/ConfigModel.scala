@@ -7,5 +7,6 @@ case class ConfigModel(
   isDebug: Boolean,
   isLogError: Boolean,
   author: String,
-  databaseRelativePath: String
+  databaseRelativePath: String,
+  databaseGenerate: DatabaseGenerateConfigModel
 )

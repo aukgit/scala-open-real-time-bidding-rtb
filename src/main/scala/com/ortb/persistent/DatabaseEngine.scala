@@ -16,16 +16,4 @@ class DatabaseEngine(appManager: AppManager) {
   val db = Database.forConfig(databasePath)
 }
 
-object DatabaseEngineCodeGenerator extends App {
-  slick.codegen.SourceCodeGenerator.run(
-    profile = "slick.jdbc.SQLiteProfile",
-    jdbcDriver = "org.sqlite.JDBC",
-    url = "jdbc:sqlite:D:\\PersonalWork\\Github\\scala-rtb-example\\src\\main\\resources\\openRTBSample.db",
-    outputDir = "D:\\PersonalWork\\Github\\scala-rtb-example\\src\\main\\scala\\com\\ortb\\persistent\\schema",
-    pkg = "models",
-    user = None,
-    password = None,
-    ignoreInvalidDefaults = true,
-    outputToMultipleFiles = false
-  )
-}
+
