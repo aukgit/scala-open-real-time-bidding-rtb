@@ -5,6 +5,8 @@ import com.ortb.persistent.schema.Tables.{profile, _}
 import slick.lifted.TableQuery
 
 class DatabaseSchema(appManager: AppManager) {
+  protected def db = appManager.getDb
+
   /**
    * Advertise available in the system
    */

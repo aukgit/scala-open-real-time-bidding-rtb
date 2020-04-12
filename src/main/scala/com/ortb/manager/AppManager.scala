@@ -6,5 +6,7 @@ import slick.jdbc.SQLiteProfile
 
 class AppManager extends AppManagerBaseType {
   lazy val databaseEngine: DatabaseEngineManager = new DatabaseEngineManager(this)
+  lazy val executionContextManager =  new ExecutionContextManager(this)
+
   def getDb: SQLiteProfile.backend.DatabaseDef = databaseEngine.db
 }

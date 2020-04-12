@@ -13,4 +13,10 @@ trait InfoLogger {
     Sentry.capture(message)
     printStacks(isPrintStack)
   }
+
+  def info(isPrint: Boolean, msg: String, stackIndex: Int = 4, isPrintStack: Boolean = false): Unit = {
+    if(isPrint){
+      info(msg, stackIndex, isPrintStack)
+    }
+  }
 }

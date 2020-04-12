@@ -10,5 +10,4 @@ trait AppManagerBaseType {
   lazy val ConfigManager = new ConfigurationManager
   lazy val config: ConfigModel = ConfigManager
     .getConfig(AppConstants.PathConstants.ConfigDefaultPath)
-  lazy val executionContextManager =  new ExecutionContextManager
 }
