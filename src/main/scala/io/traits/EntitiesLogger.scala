@@ -6,10 +6,14 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Future, Await}
 import io.AppLogger
 
-trait printResultsLogger {
+trait EntitiesLogger {
   this: InfoLogger =>
 
-  def printResults[T](f: Future[Iterable[T]]): Unit = {
+  def logEntities[T](isExecute: Boolean, f: Future[Iterable[T]]): Unit = {
+    if(!isExecute) {
+      return
+    }
+
     Await.result(f, Duration.Inf).foreach(i => {
       AppLogger.info(i.toString)
       println(i)

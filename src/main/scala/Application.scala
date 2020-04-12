@@ -1,7 +1,7 @@
 import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
-import com.ortb.persistent.DatabaseEngine
-import com.ortb.persistent.schema.Tables.{Campaign, CampaignRow}
+import com.ortb.persistent.DatabaseEngineManager
+import com.ortb.persistent.schema.Tables.{CampaignRow, Campaign}
 import io.AppLogger
 import io.sentry.Sentry
 import io.circe.generic.auto._
@@ -10,7 +10,9 @@ import slick.lifted.{TableQuery, Query}
 import slick.profile._
 import slick.jdbc.SQLiteProfile.api._
 
-import scala.concurrent.Future
+import scala.concurrent.{Future, ExecutionContextExecutor}
+import scala.concurrent
+
 
 object Application {
   def main(args: Array[String]): Unit = {
@@ -22,8 +24,14 @@ object Application {
     val campaigns = dbEngine.databaseSchema
       .campaigns
 
-    val rows = dbEngine.databaseSchema.getRowsOf
-      [Campaign, CampaignRow](campaigns, isPrint = true)
+    val q = for {
+      c <- campaigns
+    } yield c;
+
+    val res = dbEngine.db.run(q.result)
+    implicit val defaultExecutionContext: ExecutionContextExecutor = appManager.executionContextManager.createDefault()
+    res.foreach(println)
+
 //    val campaigns = TableQuery[Campaign].filter(c => c.campaignid >= 0)
 //
 //    campaigns.result.statements.foreach(println)

@@ -6,7 +6,9 @@ case class ConfigModel(
   server: ServerInfoModel,
   isDebug: Boolean,
   isLogError: Boolean,
+  isLogDatabaseQueryLogs: Boolean,
   author: String,
   databaseRelativePath: String,
-  databaseGenerate: DatabaseGenerateConfigModel
+  databaseGenerate: DatabaseGenerateConfigModel,
+  defaultTimeout: Int,
 )

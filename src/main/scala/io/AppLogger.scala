@@ -1,7 +1,7 @@
 package io
 
 import io.traits.logger._
-import io.traits.printResultsLogger
+import io.traits._
 
 object AppLogger extends
   LoggerProperties with
@@ -12,6 +12,6 @@ object AppLogger extends
   InfoLogger with
   DebugLogger with
   WarnLogger with
-  printResultsLogger {
+  EntitiesLogger {
   def title(): Unit = log.warn(header)
 }
