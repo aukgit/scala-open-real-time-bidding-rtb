@@ -1,24 +1,31 @@
 package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.model.results.RepositoryOperationResult
+import com.ortb.persistent.repositoryPattern.Repository
+import io.AppLogger
+import slick.lifted.AbstractTable
 
-trait EntityResponseCreator[TRow >: Null] {
+import scala.concurrent.Future
+
+trait EntityResponseCreator[TTable <: AbstractTable[_], TRow <: Null, TKey] {
+  this: Repository[TTable, TRow, TKey] =>
+
   lazy protected val emptyResponse = new RepositoryOperationResult[TRow](false, entity = None)
 
   protected def createResponseFor(
-    entity: TRow,
-    message: String = "",
-    isSuccess: Boolean = true
-  ): RepositoryOperationResult[TRow] = {
+                                   entity: TRow,
+                                   message: String = "",
+                                   isSuccess: Boolean = true
+                                 ): RepositoryOperationResult[TRow] = {
     new RepositoryOperationResult[TRow](isSuccess, Some(entity), message)
   }
 
   protected def createResponseForAffectedRow(
-    affectedRow: Int,
-    entity: TRow,
-    message: String = "",
-    isSuccess: Boolean = true
-  ): RepositoryOperationResult[TRow] = {
+                                              affectedRow: Int,
+                                              entity: TRow,
+                                              message: String = "",
+                                              isSuccess: Boolean = true
+                                            ): RepositoryOperationResult[TRow] = {
     var message2 = message;
     if (message2.isEmpty) {
       message2 = "Operation successful."
@@ -29,5 +36,13 @@ trait EntityResponseCreator[TRow >: Null] {
     }
 
     emptyResponse;
+  }
+
+  protected def getEmptyResponse: Future[RepositoryOperationResult[TRow]] = {
+    AppLogger.conditionalInfo(isLogQueries, s"Operation Skipped.")
+
+    Future {
+      emptyResponse
+    }
   }
 }

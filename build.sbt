@@ -30,22 +30,22 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
   // Serialization frameworks
   ///////////////////////////////////////////////////
-  
+
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
-  
+
   ///////////////////////////////////////////////////
   // Serialization frameworks : AKKA Enhanced Serializing
   ///////////////////////////////////////////////////
 
-  "io.altoo" %% "akka-kryo-serialization" % "1.0.0" excludeAll(ExclusionRule("com.esotericsoftware", "kryo-shaded")),
+  "io.altoo" %% "akka-kryo-serialization" % "1.0.0" excludeAll (ExclusionRule("com.esotericsoftware", "kryo-shaded")),
   "com.esotericsoftware" % "kryo" % "4.0.2",
-  
+
   ///////////////////////////////////////////////////
   // Logging frameworks
   ///////////////////////////////////////////////////
-  
+
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "org.apache.logging.log4j" % "log4j-api" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
@@ -64,9 +64,13 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
 
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-  "org.scalatest" %% "scalatest" % "3.1.0" % Test
+  "org.scalatest" %% "scalatest" % "3.1.0" % Test,
 
   ///////////////////////////////////////////////////
   // Others
   ///////////////////////////////////////////////////
+
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+  // "org.scala-lang" % "scala-reflect" % "2.10.0",
+  "org.scala-lang" % "scala-compiler" % scalaVersion.value
 )

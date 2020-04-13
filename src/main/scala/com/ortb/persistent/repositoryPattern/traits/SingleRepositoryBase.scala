@@ -1,12 +1,17 @@
 package com.ortb.persistent.repositoryPattern.traits
 
-import slick.lifted.{TableQuery, Query, AbstractTable}
+import com.ortb.persistent.repositoryPattern.Repository
+import slick.lifted.{TableQuery, AbstractTable, Query}
 
-import scala.concurrent.Future
+import scala.concurrent.{Future, Await}
 
-trait SingleRepositoryBase[TTable<: AbstractTable[_], TRow >: Null, TKey]
+trait SingleRepositoryBase[TTable <: AbstractTable[_], TRow <: Null, TKey]
   extends
-    RepositoryOperationsAsync[TRow, TKey] {
+    RepositoryOperationsAsync[TTable, TRow, TKey] with
+    SingleRepositoryBase[TTable, TRow, TKey] with
+    EntityResponseCreator[TTable, TRow, TKey] with
+    DatabaseActionExecutor[TTable, TRow, TKey] {
+  this: Repository[TTable, TRow, TKey] =>
 
   def table: TableQuery[TTable]
 
@@ -18,13 +23,17 @@ trait SingleRepositoryBase[TTable<: AbstractTable[_], TRow >: Null, TKey]
 
   def isExists(entityId: TKey): Boolean
 
-  protected def getFirstOrDefault(rows: Seq[TRow]): TRow = {
+  protected def getFirstOrDefault(rows: Future[Seq[TRow]]): Option[TRow] = {
+    this.getFirstOrDefault(Await.result(rows, defaultTimeout))
+  }
+
+  protected def getFirstOrDefault(rows: Seq[TRow]): Option[TRow] = {
     if (rows != null && rows.nonEmpty) {
-      rows.head
+      Some(rows.head)
     } else {
-      null
+      None
     }
   }
 
-  def getQueryById(id: Int): Query[TTable, TRow, Seq]
+  def getQueryById(id: TKey): Query[TTable, TRow, Seq]
 }

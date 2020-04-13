@@ -1,24 +1,20 @@
 package com.ortb.persistent.repositoryPattern
 
-import scala.concurrent.{Future, ExecutionContext, ExecutionContextExecutor}
-import com.ortb.persistent.repositoryPattern.traits.{EntityResponseCreator, SingleRepositoryBase}
+import scala.concurrent.ExecutionContext
+import com.ortb.persistent.repositoryPattern.traits.{EntityResponseCreator, SingleRepositoryBase, DatabaseActionExecutor}
 
 import scala.concurrent.duration._
 import com.ortb.model.config.ConfigModel
 import com.ortb.manager.AppManager
-import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.schema.DatabaseSchema
-import io.AppLogger
-import slick.dbio.{NoStream, Effect}
-import slick.lifted.{Rep, TableQuery, AbstractTable}
-import slick.profile
-import slick.sql.FixedSqlAction
+import io.traits.FutureToRegular
+import slick.lifted.AbstractTable
 
-abstract class Repository[TTable <: AbstractTable[_], TRow >: Null, TKey](appManager: AppManager)
+abstract class Repository[TTable <: AbstractTable[_], TRow <: Null, TKey]
+(appManager: AppManager)
   extends
     DatabaseSchema(appManager) with
-    SingleRepositoryBase[TTable, TRow, TKey] with
-    EntityResponseCreator[TRow] {
+    SingleRepositoryBase[TTable, TRow, TKey] {
 
   lazy protected implicit val executionContext: ExecutionContext = appManager.executionContextManager.createDefault().prepare()
   lazy protected val config: ConfigModel = appManager.config
@@ -27,40 +23,4 @@ abstract class Repository[TTable <: AbstractTable[_], TRow >: Null, TKey](appMan
    */
   lazy protected implicit val defaultTimeout: Duration = if (config.defaultTimeout < 0) Duration.Inf else config.defaultTimeout.seconds
   lazy protected val isLogQueries: Boolean = config.isLogDatabaseQueryLogs;
-
-  protected def executeDbActionAsync(
-                                      entityKey: TKey,
-                                      entity: TRow,
-                                      dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
-                                      isPerformActionOnExist: Boolean
-                                    ): Future[RepositoryOperationResult[TRow]] = {
-    val isPerform = isExists(entityKey) == isPerformActionOnExist
-    if (isPerform) {
-      executeDbActionAsync(entity, dbAction = dbAction)
-    }
-
-    getEmptyResponse
-  }
-
-  private def getEmptyResponse = {
-    AppLogger.conditionalInfo(isLogQueries, s"Operation Skipped.")
-
-    Future {
-      emptyResponse
-    }
-  }
-
-  protected def executeDbActionAsync(
-                                      entity: TRow,
-                                      dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
-                                    ): Future[RepositoryOperationResult[TRow]] = {
-    try {
-      return db.run(dbAction).map(r => createResponseForAffectedRow(r, entity))
-    }
-    catch {
-      case e: Exception => AppLogger.error(e)
-    }
-
-    getEmptyResponse
-  }
 }

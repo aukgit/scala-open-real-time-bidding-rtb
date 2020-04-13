@@ -1,7 +1,7 @@
 import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
 import com.ortb.persistent.DatabaseEngineManager
-import com.ortb.persistent.repositoryPattern.CampaignRepository
+//import com.ortb.persistent.repositories.CampaignRepository
 import com.ortb.persistent.schema.Tables.{CampaignRow, Campaign}
 import io.AppLogger
 import io.sentry.Sentry
@@ -21,9 +21,14 @@ object Application {
 
     AppLogger.info("Help", isPrintStack = true)
     println(appManager.config.asJson.spaces2);
+//
+//    val repository = new CampaignRepository(appManager)
+//    repository.getAll
 
-    val repository = new CampaignRepository(appManager)
-    repository.getAll
+//    import scala.reflect.runtime.universe._
+//    val m = typeOf[List[Int]]
+//    println(m.getClass.getName)
+//    println(typeOf[List[Int]])
 
 //    val dbEngine = appManager.databaseEngine
 //    val campaigns = dbEngine.databaseSchema
