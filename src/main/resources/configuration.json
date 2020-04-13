@@ -122,7 +122,7 @@
   "databaseRelativePath": "openRTBSample.db",
   "isDebug": true,
   "isLogError": true,
-  "isLogDatabaseQueryLogs": true,
+  "isLogDatabaseQueryLogs": false,
   "author": "Md. Alim Ul Karim",
   "databaseGenerate": {
     "profile": "slick.jdbc.SQLiteProfile",

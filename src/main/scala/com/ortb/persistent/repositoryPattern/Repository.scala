@@ -7,14 +7,18 @@ import scala.concurrent.duration._
 import com.ortb.model.config.ConfigModel
 import com.ortb.manager.AppManager
 import com.ortb.model.results.RepositoryOperationResult
+import com.ortb.persistent.schema.DatabaseSchema
 import io.AppLogger
 import slick.dbio.{NoStream, Effect}
-import slick.lifted.{Rep, TableQuery}
+import slick.lifted.{Rep, TableQuery, AbstractTable}
 import slick.profile
 import slick.sql.FixedSqlAction
 
-abstract class Repository[TTable, TRow >: null, TKey](appManager: AppManager)
-  extends SingleRepositoryBase[TTable, TRow, TKey] with EntityResponseCreator[TRow] {
+abstract class Repository[TTable <: AbstractTable[_], TRow >: Null, TKey](appManager: AppManager)
+  extends
+    DatabaseSchema(appManager) with
+    SingleRepositoryBase[TTable, TRow, TKey] with
+    EntityResponseCreator[TRow] {
 
   lazy protected implicit val executionContext: ExecutionContext = appManager.executionContextManager.createDefault().prepare()
   lazy protected val config: ConfigModel = appManager.config
@@ -25,11 +29,11 @@ abstract class Repository[TTable, TRow >: null, TKey](appManager: AppManager)
   lazy protected val isLogQueries: Boolean = config.isLogDatabaseQueryLogs;
 
   protected def executeDbActionAsync(
-    entityKey: TKey,
-    entity: TRow,
-    dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
-    isPerformActionOnExist: Boolean
-  ): Future[RepositoryOperationResult[TRow]] = {
+                                      entityKey: TKey,
+                                      entity: TRow,
+                                      dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
+                                      isPerformActionOnExist: Boolean
+                                    ): Future[RepositoryOperationResult[TRow]] = {
     val isPerform = isExists(entityKey) == isPerformActionOnExist
     if (isPerform) {
       executeDbActionAsync(entity, dbAction = dbAction)
@@ -39,7 +43,7 @@ abstract class Repository[TTable, TRow >: null, TKey](appManager: AppManager)
   }
 
   private def getEmptyResponse = {
-    AppLogger.info(isLogQueries, s"Operation Skipped.")
+    AppLogger.conditionalInfo(isLogQueries, s"Operation Skipped.")
 
     Future {
       emptyResponse
@@ -47,9 +51,9 @@ abstract class Repository[TTable, TRow >: null, TKey](appManager: AppManager)
   }
 
   protected def executeDbActionAsync(
-    entity: TRow,
-    dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
-  ): Future[RepositoryOperationResult[TRow]] = {
+                                      entity: TRow,
+                                      dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
+                                    ): Future[RepositoryOperationResult[TRow]] = {
     try {
       return db.run(dbAction).map(r => createResponseForAffectedRow(r, entity))
     }
@@ -58,8 +62,5 @@ abstract class Repository[TTable, TRow >: null, TKey](appManager: AppManager)
     }
 
     getEmptyResponse
-
   }
 }
-
-

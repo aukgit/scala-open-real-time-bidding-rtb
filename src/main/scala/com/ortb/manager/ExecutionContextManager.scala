@@ -5,6 +5,7 @@ import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 class ExecutionContextManager(appManager: AppManager) {
   lazy val globalExecutionContext: ExecutionContextExecutor = ExecutionContext.global
   lazy val defaultParallelProcessing: Int = appManager.config.defaultParallelProcessing
+  lazy val globalContext: ExecutionContext = concurrent.ExecutionContext.Implicits.global
 
   def createDefault(initialParallelism: Int = defaultParallelProcessing): ExecutionContextExecutor = createNew(initialParallelism)
 

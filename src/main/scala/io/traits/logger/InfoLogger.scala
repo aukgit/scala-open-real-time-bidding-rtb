@@ -14,7 +14,7 @@ trait InfoLogger {
     printStacks(isPrintStack)
   }
 
-  def info(isPrint: Boolean, msg: String, stackIndex: Int = 4, isPrintStack: Boolean = false): Unit = {
+  def conditionalInfo(isPrint: Boolean, msg: String, stackIndex: Int = 4, isPrintStack: Boolean = false): Unit = {
     if(isPrint){
       info(msg, stackIndex, isPrintStack)
     }

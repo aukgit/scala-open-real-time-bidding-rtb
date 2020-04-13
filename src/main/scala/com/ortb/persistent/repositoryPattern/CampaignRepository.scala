@@ -1,18 +1,16 @@
 package com.ortb.persistent.repositoryPattern
 
-import com.ortb
-import com.ortb.persistent.schema.Tables
-import slick.sql.FixedSqlAction
+import slick.sql.{FixedSqlAction, FixedSqlStreamingAction}
 
 import scala.concurrent._
 import io.AppLogger
-import slick.dbio.{NoStream, Effect}
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent
 import com.ortb.persistent.schema
+import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
+import slick.dbio.{Effect, DBIOAction}
 import slick.lifted.Query
 //import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -23,7 +21,8 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
 
   override def getById(entityId: Int): Tables.CampaignRow = {
     val records = (for (record <- table if record.campaignid === entityId) yield record).take(1)
-    val results = this.runAsync(records.result)
+    val x: FixedSqlStreamingAction[Seq[Tables.CampaignRow], Tables.CampaignRow, Effect.Read] = records.result
+    val results = db.run(x)
     val finalResult = Await.result(results, defaultTimeout)
     this.getFirstOrDefault(finalResult)
   }
@@ -33,20 +32,20 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
       record <- table
     } yield record
 
-    val results = appManager.getDb.run(records.result)
+    val results = db.run(records.result)
     AppLogger.logEntities(isLogQueries, results)
     results
   }
 
   override def runAsync(
-    dbAction: FixedSqlAction[Seq[Tables.CampaignRow], NoStream, Effect.Write]
+    dbAction: DBIOAction[Seq[Tables.CampaignRow], NoStream, Effect.Write]
   ): Future[Seq[Tables.CampaignRow]] = {
     val results = db.run(dbAction)
     AppLogger.logEntities(isLogQueries, results)
     results
   }
 
-  override def addAsync(entity: Tables.CampaignRow): Future[RepositoryOperationResult[schema.Tables.CampaignRow]] = {
+  override def addAsync(entity: Tables.CampaignRow): Future[RepositoryOperationResult[Tables.CampaignRow]] = {
     this.executeDbActionAsync(
       entityKey = entity.campaignid,
       entity = entity,
@@ -56,8 +55,8 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
 
   override def isExists(entityId: Int): Boolean = entityId > -1 && getById(entityId) != null
 
-  override def delete(entity: schema.Tables.CampaignRow):
-  Future[RepositoryOperationResult[schema.Tables.CampaignRow]] = {
+  override def delete(entity: Tables.CampaignRow):
+  Future[RepositoryOperationResult[Tables.CampaignRow]] = {
     this.executeDbActionAsync(
       entityKey = entity.campaignid,
       entity = entity,
@@ -65,7 +64,7 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
       isPerformActionOnExist = true)
   }
 
-  override def addOrUpdate(entityId: Int, entity: schema.Tables.CampaignRow): Future[RepositoryOperationResult[schema.Tables.CampaignRow]] = {
+  override def addOrUpdate(entityId: Int, entity: Tables.CampaignRow): Future[RepositoryOperationResult[Tables.CampaignRow]] = {
     if (isExists(entityId)) {
       // update
       return updateAsync(entityId, entity)
@@ -75,20 +74,18 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
     addAsync(entity)
   }
 
-  def getById(id: Int): Query[Campaign, CampaignRow, Seq] = {
+  def getQueryById(id: Int): Query[Campaign, CampaignRow, Seq] = {
     table.filter(c => c.campaignid === id)
   }
 
   override def updateAsync(
     entityId: Int,
-    entity: schema.Tables.CampaignRow
+    entity: Tables.CampaignRow
   ):
-  Future[RepositoryOperationResult[schema.Tables.CampaignRow]] = {
-    return this executeDbActionAsync (
-      entityKey = entity.campaignid,
+  Future[RepositoryOperationResult[Tables.CampaignRow]] = {
+    this.executeDbActionAsync (
       entity = entity,
-      dbAction =.take(1).update(entity)
-    isPerformActionOnExist = false
+      dbAction = getQueryById(entityId).take(1).update(entity)
     )
   }
 }

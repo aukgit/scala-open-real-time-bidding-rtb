@@ -2,7 +2,7 @@ package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.model.results.RepositoryOperationResult
 
-trait EntityResponseCreator[TRow] {
+trait EntityResponseCreator[TRow >: Null] {
   lazy protected val emptyResponse = new RepositoryOperationResult[TRow](false, entity = None)
 
   protected def createResponseFor(

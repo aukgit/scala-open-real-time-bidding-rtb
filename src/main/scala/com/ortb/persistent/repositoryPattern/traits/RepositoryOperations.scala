@@ -4,14 +4,14 @@ import slick.sql.FixedSqlAction
 import slick.dbio.{NoStream, Effect}
 import com.ortb.model.results.RepositoryOperationResult
 
-trait RepositoryOperations[T, TKey] extends RepositoryOperationsBase[T] {
-  def run[TResult](dbAction: FixedSqlAction[T, NoStream, Effect.Write]): TResult
+trait RepositoryOperations[TRow, TKey] extends RepositoryOperationsBase[TRow] {
+  def run[TResult](dbAction: FixedSqlAction[TRow, NoStream, Effect.Write]): TResult
 
-  def save(dbAction: FixedSqlAction[T, NoStream, Effect.Write]): RepositoryOperationResult[T]
+  def save(dbAction: FixedSqlAction[TRow, NoStream, Effect.Write]): RepositoryOperationResult[TRow]
 
-  def add(entity: T): RepositoryOperationResult[T]
+  def add(entity: TRow): RepositoryOperationResult[TRow]
 
-  def delete(entity: T): RepositoryOperationResult[T]
+  def delete(entity: TRow): RepositoryOperationResult[TRow]
 
-  def addOrUpdate(entityId: TKey, entity: T): RepositoryOperationResult[T]
+  def addOrUpdate(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow]
 }

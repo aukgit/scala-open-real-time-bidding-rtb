@@ -1,11 +1,13 @@
 package com.ortb.persistent.repositoryPattern.traits
 
-trait RepositoryJsonOperations[T] extends RepositoryOperationsBase[T] {
-  def add(json: String)
+import com.ortb.model.results.RepositoryOperationResult
 
-  def update(json: String)
+trait RepositoryJsonOperations[T] extends RepositoryOperationsBase[T] {
+  def add(json: String): RepositoryOperationResult[T]
+
+  def update(json: String): RepositoryOperationResult[T]
 
   def toJson(entity: T): String
 
-  def toJson(entity: Array[T]): String
+  def toJson(entity: Iterable[T]): String
 }

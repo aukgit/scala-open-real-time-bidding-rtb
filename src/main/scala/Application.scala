@@ -1,6 +1,7 @@
 import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
 import com.ortb.persistent.DatabaseEngineManager
+import com.ortb.persistent.repositoryPattern.CampaignRepository
 import com.ortb.persistent.schema.Tables.{CampaignRow, Campaign}
 import io.AppLogger
 import io.sentry.Sentry
@@ -19,18 +20,22 @@ object Application {
     val appManager = new AppManager()
 
     AppLogger.info("Help", isPrintStack = true)
-    println(appManager.config.asJson.noSpaces);
-    val dbEngine = appManager.databaseEngine
-    val campaigns = dbEngine.databaseSchema
-      .campaigns
+    println(appManager.config.asJson.spaces2);
 
-    val q = for {
-      c <- campaigns
-    } yield c;
+    val repository = new CampaignRepository(appManager)
+    repository.getAll
 
-    val res = dbEngine.db.run(q.result)
-    implicit val defaultExecutionContext: ExecutionContextExecutor = appManager.executionContextManager.createDefault()
-    res.foreach(println)
+//    val dbEngine = appManager.databaseEngine
+//    val campaigns = dbEngine.databaseSchema
+//      .campaigns
+//
+//    val q = for {
+//      c <- campaigns
+//    } yield c;
+//
+//    val res = dbEngine.db.run(q.result)
+//    implicit val defaultExecutionContext: ExecutionContextExecutor = appManager.executionContextManager.createDefault()
+//    res.foreach(println)
 
 //    val campaigns = TableQuery[Campaign].filter(c => c.campaignid >= 0)
 //

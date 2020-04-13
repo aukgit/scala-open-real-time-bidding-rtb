@@ -1,13 +1,11 @@
 package com.ortb.persistent.repositoryPattern.traits
 
-import com.ortb.persistent.schema.DatabaseSchema
-import slick.lifted.{TableQuery, Query, Rep}
+import slick.lifted.{TableQuery, Query, AbstractTable}
 
 import scala.concurrent.Future
 
-trait SingleRepositoryBase[TTable, TRow >: null, TKey]
+trait SingleRepositoryBase[TTable<: AbstractTable[_], TRow >: Null, TKey]
   extends
-    DatabaseSchema with
     RepositoryOperationsAsync[TRow, TKey] {
 
   def table: TableQuery[TTable]
@@ -28,5 +26,5 @@ trait SingleRepositoryBase[TTable, TRow >: null, TKey]
     }
   }
 
-  def getById(id: Int): Query[TTable, TRow, Seq]
+  def getQueryById(id: Int): Query[TTable, TRow, Seq]
 }
