@@ -1,9 +1,11 @@
+import com.ortb.enumeration.DatabaseActionType
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositories.CampaignRepository
-//import com.ortb.persistent.repositories.CampaignRepository
 import com.ortb.persistent.schema.Tables.CampaignRow
 import io.AppLogger
-
+import slick.dbio.Effect
+import slick.jdbc.SQLiteProfile.api._
+import slick.sql.FixedSqlAction
 
 object Application {
   def main(args : Array[String]) : Unit = {
@@ -41,6 +43,12 @@ object Application {
 //
 //    println(repository.toRegular(id))
     repository.delete(3)
+    val removeall : FixedSqlAction[Int, NoStream, Effect.Write] = repository.table.filter(w=> w.campaignid > 2).delete
+
+//    repository.saveAsync(
+//      repository.db.run(removeall), DatabaseActionType.Delete
+//      );
+
     val l = repository.getAll
     println(l.length)
     l.foreach(println)

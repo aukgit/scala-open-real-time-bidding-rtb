@@ -36,11 +36,10 @@ class CampaignRepository(appManager : AppManager)
 
   override def getAddAction(entity : CampaignRow) : FixedSqlAction[CampaignRow, NoStream, Effect.Write]
   =
-  // votes returning votes.map(_.id) into ((vote, id) => vote.copy(id = Some(id))) += vote
     table returning table.map(_.campaignid) into
-      ((entityx, entityId) => entityx.copy(campaignid = entityId)) += entity
+      ((entityProjection, entityId) => entityProjection.copy(campaignid = entityId)) += entity
 
   override def table = this.campaigns
 
-  override def getIdOf(entity : CampaignRow) : Int = entity.campaignid
+  override def getIdOf(entity : Option[CampaignRow]) : Int = if(entity.isDefined) entity.get.campaignid else -1
 }

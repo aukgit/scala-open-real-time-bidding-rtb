@@ -29,7 +29,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
       val deleteAction = getDeleteAction(entityId)
 
       return this.saveAsync(
-        entity = entity,
+        entity = Some(entity),
         dbAction = deleteAction,
         actionType)
     }
@@ -77,7 +77,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
     try {
       return this.saveAsync(
-        entity = entity,
+        entity = Some(entity),
         dbAction = getQueryByIdSingle(entityId).update(entity),
         DatabaseActionType.Update)
     }

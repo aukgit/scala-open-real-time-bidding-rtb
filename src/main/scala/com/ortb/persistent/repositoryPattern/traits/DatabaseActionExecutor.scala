@@ -15,29 +15,16 @@ import com.ortb.persistent.repositoryPattern.Repository
 trait DatabaseActionExecutor[TTable, TRow, TKey] {
   this : Repository[TTable, TRow, TKey] =>
 
-  protected def saveAsync(
-    entityKey : TKey,
-    entity : TRow,
-    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
-    isPerformActionOnExist : Boolean,
-    actionType : DatabaseActionType
-  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
-    val isPerform = this.isExists(entityKey) == isPerformActionOnExist
-    if (isPerform) {
-      return saveAsync(entity, dbAction = dbAction, actionType)
-    }
-
-    getEmptyResponse(actionType)
-  }
-
-  protected def saveAsync(
-    entity : TRow,
+  def quickSaveAsync(
     dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
       return db.run(dbAction).map((affectedRowsCount : Int) =>
-                                    createResponseForAffectedRowCount(affectedRowsCount, entity, actionType))
+                                    createResponseForAffectedRowCount(
+                                      affectedRow = affectedRowsCount,
+                                      entity = None,
+                                      actionType = actionType))
     }
     catch {
       case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
@@ -46,14 +33,48 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     getEmptyResponse(actionType)
   }
 
-  protected def saveAsync(
+  def saveAsync(
+    entityKey : TKey,
+    entity : TRow,
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
+    isPerformActionOnExist : Boolean,
+    actionType : DatabaseActionType
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+    val isPerform = this.isExists(entityKey) == isPerformActionOnExist
+    if (isPerform) {
+      return saveAsync(Some(entity), dbAction = dbAction, actionType)
+    }
+
+    getEmptyResponse(actionType)
+  }
+
+  def saveAsync(
+    entity : Option[TRow],
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
+    actionType : DatabaseActionType
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+    try {
+      return db.run(dbAction).map((affectedRowsCount : Int) =>
+                                    createResponseForAffectedRowCount(
+                                      affectedRowsCount,
+                                      entity,
+                                      actionType))
+    }
+    catch {
+      case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
+    }
+
+    getEmptyResponse(actionType)
+  }
+
+  def saveAsync(
     dbAction : FixedSqlAction[TRow, NoStream, Effect.Write],
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
       return db.run(dbAction).map((entity : TRow) =>
                                     this.createResponseForAffectedRow(
-                                      affectedEntity = entity,
+                                      affectedEntity = Some(entity),
                                       actionType = actionType,
                                       isSuccess = entity != null))
     }
@@ -72,7 +93,6 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
    *
    * @return
    */
-  protected
   def run[T >: Null <: AnyRef](dbAction : T) : Seq[TRow] = {
     Await.result(this.runAsync(dbAction), defaultTimeout)
   }
@@ -85,7 +105,6 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
    *
    * @return
    */
-  protected
   def runAsync[T >: Null <: AnyRef](dbAction : T) : Future[Seq[TRow]] = {
     try {
       val results = getRunResult(dbAction).get
@@ -99,7 +118,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     null
   }
 
-  protected def getRunResult[T >: Null <: AnyRef](dbAction : T) : Option[Future[Seq[TRow]]] = {
+  def getRunResult[T >: Null <: AnyRef](dbAction : T) : Option[Future[Seq[TRow]]] = {
     dbAction match {
       case fixedSql : FixedSqlAction[Seq[TRow], _, _]
       =>

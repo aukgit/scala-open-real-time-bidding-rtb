@@ -28,7 +28,7 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
 
   def getAllAsync : Future[Seq[TRow]]
 
-  def getIdOf(entity : TRow) : TKey
+  def getIdOf(entity : Option[TRow]) : TKey
 
   protected def getFirstOrDefault(rows : Future[Seq[TRow]]) : Option[TRow] = {
     this.getFirstOrDefault(Await.result(rows, defaultTimeout))
