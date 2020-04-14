@@ -21,7 +21,7 @@ import scala.concurrent
 
 object Application {
   def main (args : Array[String]) : Unit = {
-    val appManager = new AppManager()
+    val appManager = new AppManager
 
     AppLogger.info("Help", isPrintStack = true)
     // println(appManager.config.asJson.spaces2);
