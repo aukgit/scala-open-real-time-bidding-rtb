@@ -2,6 +2,9 @@ import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
 import com.ortb.persistent.DatabaseEngineManager
 import com.ortb.persistent.repositories.CampaignRepository
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 //import com.ortb.persistent.repositories.CampaignRepository
 import com.ortb.persistent.schema.Tables.{CampaignRow, Campaign}
 import io.AppLogger
@@ -17,14 +20,42 @@ import scala.concurrent
 
 
 object Application {
-  def main(args: Array[String]): Unit = {
+  def main (args : Array[String]) : Unit = {
     val appManager = new AppManager()
 
     AppLogger.info("Help", isPrintStack = true)
     println(appManager.config.asJson.spaces2);
 
     val repository = new CampaignRepository(appManager)
-    repository.getAllAsync
+    // repository.getAllAsync
+
+    repository.getById(1)
+    val x = CampaignRow(
+      campaignid = -1,
+      campaignname = "Second Cricket Campaign",
+      contentcategoryid = "IAB17",
+      totalbudgetcpm = 10.0,
+      spendalready = 0.0,
+      remainingamount = 10.0,
+      startdate = Some(0.0), enddate = Some(0.0),
+      impressioncount = 0,
+      demandsideplatformid = 1,
+      isrunning = 1,
+      priority = 999,
+      isretricttousergender = 0,
+      expectedusergender = Some(""),
+      publisherid = Some(1))
+
+    var response = repository.add(x)
+
+    println(response)
+    var id = repository.db.run{
+       repository.getAddAction(x)
+    }
+
+    println(repository.toRegular(id))
+
+    repository.getAll
 
 //    import scala.reflect.runtime.universe._
 //    val m = typeOf[List[Int]]

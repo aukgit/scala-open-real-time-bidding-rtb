@@ -4,9 +4,9 @@ import io.AppLogger
 import io.AppLogger.getStackTraceInfoUpToIndex
 
 trait PrintStacks {
-  this: AppLogger.type =>
+  this : AppLogger.type =>
 
-  def printStacks(isPrintStack: Boolean = false): Unit = {
+  def printStacks(isPrintStack : Boolean = false) : Unit = {
     if (!isPrintStack) {
       return
     }

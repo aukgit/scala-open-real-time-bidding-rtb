@@ -8,9 +8,9 @@ import io.circe.syntax._
 
 object JsonParser {
   def toObjectFromJSONPath[Type](
-    path: String,
-    converter: (String) => Either[Error, Type]
-  ): Option[Type] = {
+    path      : String,
+    converter : (String) => Either[Error, Type]
+  ) : Option[Type] = {
     try {
       val jsonContents = File.getContents(path)
       if (jsonContents.isEmpty) {
@@ -18,13 +18,13 @@ object JsonParser {
       }
 
       val convertedEitherItem = converter(jsonContents)
-      val result = convertedEitherItem.getOrElse(null)
+      val result              = convertedEitherItem.getOrElse(null)
 
       if (result != null) {
         return Some(result.asInstanceOf[Type])
       }
       else {
-        val errorContext = convertedEitherItem.left.getOrElse(null).toString
+        val errorContext   = convertedEitherItem.left.getOrElse(null).toString
         val fileErrorModel = new FileErrorModel(
           title = s"Json Parsing Failed for : ${path}",
           cause = errorContext,
@@ -36,7 +36,7 @@ object JsonParser {
       }
     }
     catch {
-      case e: Exception =>
+      case e : Exception =>
         AppLogger.error(e)
     }
 

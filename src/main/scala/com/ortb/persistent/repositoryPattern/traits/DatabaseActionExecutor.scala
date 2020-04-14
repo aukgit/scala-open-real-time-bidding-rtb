@@ -3,7 +3,7 @@ package com.ortb.persistent.repositoryPattern.traits
 import java.awt.dnd.InvalidDnDOperationException
 
 import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import slick.lifted.{AbstractTable, TableQuery}
+import com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
 
 import scala.concurrent.{Future, Await}
 import slick.dbio.{NoStream, DBIOAction, Effect}
@@ -13,31 +13,32 @@ import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
 
 trait DatabaseActionExecutor[TTable, TRow, TKey] {
-  this: Repository[TTable, TRow, TKey] =>
+  this : Repository[TTable, TRow, TKey] =>
 
-  protected def getRunResult[T](dbAction: T): Option[Future[Seq[TRow]]] = {
+  protected def getRunResult[T >: Null <: AnyRef](dbAction : T) : Option[Future[Seq[TRow]]] = {
     dbAction match {
-      case fixedSql: FixedSqlAction[Seq[TRow], NoStream, Effect.All]
+      case fixedSql : FixedSqlAction[Seq[TRow], NoStream, Effect.All]
       =>
         Some(db.run(fixedSql))
-      case fixedSqlStreaming: FixedSqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
+      case fixedSqlStreaming : FixedSqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
         Some(db.run(fixedSqlStreaming))
-      case sqlStreaming: SqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
+      case sqlStreaming : SqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
         Some(db.run(sqlStreaming))
-      case dbAction2: DBIOAction[Seq[TRow], NoStream, Effect.All] =>
-        Some(db.run(dbAction2))
+      case dbAction2 : DBIOAction[_, _, _] =>
+        val x = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow]]];
+        Some(x)
       case _ =>
-        throw new InvalidDnDOperationException("Invalid operation for runAsync.")
+        throw new InvalidDnDOperationException(s"Invalid operation for runAsync. Operation $dbAction")
     }
   }
 
   protected def saveAsync(
-                           entityKey: TKey,
-                           entity: TRow,
-                           dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
-                           isPerformActionOnExist: Boolean,
-                           actionType: DatabaseActionType
-                         ): Future[RepositoryOperationResult[TRow]] = {
+    entityKey : TKey,
+    entity : TRow,
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
+    isPerformActionOnExist : Boolean,
+    actionType             : DatabaseActionType
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val isPerform = this.isExists(entityKey) == isPerformActionOnExist
     if (isPerform) {
       return saveAsync(entity, dbAction = dbAction, actionType)
@@ -47,15 +48,15 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   }
 
   protected def saveAsync(
-                           entity: TRow,
-                           dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
-                           actionType: DatabaseActionType
-                         ): Future[RepositoryOperationResult[TRow]] = {
+    entity : TRow,
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
+    actionType : DatabaseActionType
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
-      return db.run(dbAction).map(r => createResponseForAffectedRow(r, entity))
+      return db.run(dbAction).map(r => createResponseForAffectedRow(r, None, entity))
     }
     catch {
-      case e: Exception => AppLogger.error(e, s"Failed at performing $actionType")
+      case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
     }
 
     getEmptyResponse
@@ -69,7 +70,8 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
    *
    * @return
    */
-  protected def run[T](dbAction: T): Seq[TRow] = {
+  protected
+  def run[T >: Null <: AnyRef](dbAction : T) : Seq[TRow] = {
     Await.result(this.runAsync(dbAction), defaultTimeout)
   }
 
@@ -81,14 +83,15 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
    *
    * @return
    */
-  protected def runAsync[T](dbAction: T): Future[Seq[TRow]] = {
+  protected
+  def runAsync[T >: Null <: AnyRef](dbAction : T) : Future[Seq[TRow]] = {
     try {
       val results = getRunResult(dbAction).get
       AppLogger.logEntities(isLogQueries, results)
       return results
     }
     catch {
-      case e: Exception => AppLogger.error(e)
+      case e : Exception => AppLogger.error(e)
     }
 
     null

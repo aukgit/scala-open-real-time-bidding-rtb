@@ -11,14 +11,14 @@ import io.circe.parser._
 import io.circe.syntax._
 
 trait ConfigurationManagerType {
-  def getConfig(path: String): ConfigModel
+  def getConfig(path : String) : ConfigModel
 }
 
 class ConfigurationManager extends ConfigurationManagerType {
-  def getConfig(path: String): ConfigModel = {
+  def getConfig(path : String) : ConfigModel = {
     try {
 
-      def decoder(jsonContents: String): Either[Error, ConfigModel] = {
+      def decoder(jsonContents : String) : Either[Error, ConfigModel] = {
         decode[ConfigModel](jsonContents)
       }
 
@@ -33,13 +33,13 @@ class ConfigurationManager extends ConfigurationManagerType {
           filePath = path,
           cause = "Result came as empty",
           content = ""
-        )
+          )
 
         val errorMessage = AppLogger.getFileErrorMessage(fileError)
         throw new Exception(errorMessage)
       }
 
-      val returningResult = result.get
+      val returningResult  = result.get
       val databaseGenerate = returningResult.databaseGenerate;
 
       databaseGenerate.compiledDatabaseUrl = getExpendedPath(databaseGenerate.databaseUrl)
@@ -48,7 +48,7 @@ class ConfigurationManager extends ConfigurationManagerType {
       return returningResult;
     }
     catch {
-      case e: Exception => AppLogger.error(e)
+      case e : Exception => AppLogger.error(e)
     }
 
     null

@@ -6,15 +6,15 @@ import com.ortb.persistent.repositoryPattern.Repository
 trait RepositoryOperations[TTable, TRow, TKey] extends RepositoryOperationsBase[TRow] {
   this: Repository[TTable, TRow, TKey] =>
 
-  def add(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow] =
-    toRegular(addAsync(entityId, entity), defaultTimeout)
+  def add(entity: TRow): RepositoryOperationResult[TRow, TKey] =
+    toRegular(addAsync(entity), defaultTimeout)
 
-  def update(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow] =
+  def update(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey] =
     toRegular(updateAsync(entityId, entity), defaultTimeout)
 
-  def delete(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow]=
-    toRegular(deleteAsync(entityId, entity), defaultTimeout)
+  def delete(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey]=
+    toRegular(deleteAsync(entityId), defaultTimeout)
 
-  def addOrUpdate(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow] =
+  def addOrUpdate(entityId: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey] =
     toRegular(addOrUpdateAsync(entityId, entity), defaultTimeout)
 }

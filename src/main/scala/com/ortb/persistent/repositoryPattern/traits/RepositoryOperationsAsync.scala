@@ -12,67 +12,75 @@ import slick.sql.FixedSqlAction
 import scala.concurrent.Future
 
 trait RepositoryOperationsAsync[TTable, TRow, TKey]
-  extends RepositoryOperationsBase[TRow] {
-  this: Repository[TTable, TRow, TKey] =>
+  extends
+  RepositoryOperationsBase[TRow] {
+  this : Repository[TTable, TRow, TKey] =>
 
-  def addAsync(entityId: TKey, entity: TRow): Future[RepositoryOperationResult[TRow]]= {
+  def getAddAction(entity : TRow) : FixedSqlAction[Int, NoStream, Effect.Write]
+  // def getDeleteAction : FixedSqlAction[Int, NoStream, Effect.Write]
+
+  def addAsync(entity    : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
-      this.saveAsync(
-        entityKey = entityId,
+      val action = getAddAction(entity)
+      return this.saveAsync(
         entity = entity,
-        dbAction = table.forceInsert(entity.asInstanceOf),
-        isPerformActionOnExist = false,
+        dbAction = action,
         DatabaseActionType.Create)
-    } catch {
-      case e: Exception => AppLogger.error(e,
-        s"Add failed on [id:$entityId, entity: $entity]")
+    }
+    catch {
+      case e : Exception => AppLogger.error(
+        e,
+        s"Add failed on [entity: $entity]")
     }
 
     getEmptyResponse
   }
 
-  def deleteAsync(entityId: TKey, entity: TRow):
-  Future[RepositoryOperationResult[TRow]] = {
+  def deleteAsync(entityId : TKey) :
+  Future[RepositoryOperationResult[TRow, TKey]] = {
+    val entity = getById(entityId)
+
     try {
       return this.saveAsync(
-        entityKey = entityId,
         entity = entity,
         dbAction = getQueryByIdSingle(entityId)
           .call("delete")
           .asInstanceOf[FixedSqlAction[Int, NoStream, Effect.Write]],
-        isPerformActionOnExist = true,
         DatabaseActionType.Delete)
-    } catch {
-      case e: Exception => AppLogger.error(e,
+    }
+    catch {
+      case e : Exception => AppLogger.error(
+        e,
         s"Delete failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse
   }
 
-  def updateAsync(entityId: TKey, entity: TRow): Future[RepositoryOperationResult[TRow]] = {
+  def updateAsync(entityId : TKey, entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
       return this.saveAsync(
         entity = entity,
         dbAction = getQueryByIdSingle(entityId).update(entity),
-        DatabaseActionType.Update
-      )
+        DatabaseActionType.Update)
     }
     catch {
-      case e: Exception => AppLogger.error(e,
+      case e : Exception => AppLogger.error(
+        e,
         s"Update failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse
   }
 
-  def addOrUpdateAsync(entityId: TKey, entity: TRow): Future[RepositoryOperationResult[TRow]] = {
+  def addOrUpdateAsync(entityId : TKey, entity : TRow) :
+  Future[RepositoryOperationResult[TRow, TKey]] = {
     if (isExists(entityId)) {
       // update
       return updateAsync(entityId, entity)
     }
 
     // add
-    addAsync(entityId, entity)
+    addAsync(entity)
   }
 }

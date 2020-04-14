@@ -9,16 +9,24 @@ import io.AppLogger
 import scala.concurrent.duration.Duration._
 
 
-
 trait EntitiesLogger {
-  this: InfoLogger =>
+  this : InfoLogger =>
 
-  def logEntities[T](isExecute: Boolean, f: Future[Iterable[T]]): Unit = {
+  def logEntities[T](isExecute : Boolean, f : Future[Iterable[T]]) : Unit = {
     if (!isExecute) {
       return
     }
 
-    Await.result(f, Inf).foreach(i => {
+    val results = Await.result(f, Inf)
+    logEntitiesNonFuture(isExecute, results)
+  }
+
+  def logEntitiesNonFuture[T](isExecute : Boolean, f : Iterable[T]) : Unit = {
+    if (!isExecute) {
+      return
+    }
+
+    f.foreach(i => {
       AppLogger.info(i.toString)
       println(i)
     })
