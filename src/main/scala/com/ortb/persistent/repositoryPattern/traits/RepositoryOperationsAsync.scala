@@ -1,24 +1,13 @@
 package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType
-import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositoryPattern.Repository
-import com.ortb.persistent.schema.Tables
 import slick.lifted.AbstractTable
 import slick.jdbc.SQLiteProfile.api._
-
-import scala.concurrent._
-import io.AppLogger
-import slick.jdbc.SQLiteProfile.api._
-import slick.jdbc.JdbcActionComponent
-import com.ortb.manager.AppManager
+import com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
-import com.ortb.persistent.schema.Tables
-import com.ortb.persistent.schema.Tables._
-import slick.collection.heterogeneous.Zero.+
-import slick.dbio._
-import slick.lifted.Query
+import slick.dbio.{Effect, NoStream}
+import slick.sql.FixedSqlAction
 
 import scala.concurrent.Future
 
@@ -33,7 +22,9 @@ trait RepositoryOperationsAsync[TTable <: AbstractTable[_], TRow <: Null, TKey]
     this.saveAsync(
       entityKey = entityKey,
       entity = entity,
-      dbAction = getQueryByIdSingle(entityKey).delete,
+      dbAction = getQueryByIdSingle(entityKey)
+        .call("delete")
+        .asInstanceOf[FixedSqlAction[Int, NoStream, Effect.Write]],
       isPerformActionOnExist = true,
       DatabaseActionType.Delete)
   }

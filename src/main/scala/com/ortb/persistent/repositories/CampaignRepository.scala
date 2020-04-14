@@ -42,16 +42,6 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
       DatabaseActionType.Create)
   }
 
-  override def delete(entityKey: Int, entity: Tables.CampaignRow):
-  Future[RepositoryOperationResult[Tables.CampaignRow]] = {
-    this.saveAsync(
-      entityKey = entity.campaignid,
-      entity = entity,
-      dbAction = table.filter(c => c.campaignid === entity.campaignid).take(1).delete,
-      isPerformActionOnExist = true,
-      DatabaseActionType.Delete)
-  }
-
   def getQueryById(id: Int): Query[Campaign, CampaignRow, Seq] = {
     table.filter(c => c.campaignid === id)
   }
