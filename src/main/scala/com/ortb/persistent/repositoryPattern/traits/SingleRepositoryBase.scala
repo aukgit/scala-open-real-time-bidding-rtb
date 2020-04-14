@@ -18,17 +18,19 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
 
   def getAll : List[TRow] = toRegular(getAllAsync, defaultTimeout).toList
 
-  def isExists(entityId : TKey) : Boolean = getById(entityId) != null
+  def isExists(entityId : TKey) : Boolean = getById(entityId).isDefined
 
   def getQueryByIdSingle(id : TKey) : Query[TTable, TRow, Seq] = getQueryById(id).take(1)
 
   def getQueryById(id : TKey) : Query[TTable, TRow, Seq]
 
-  def getById(entityId : TKey) : TRow
+  def getById(entityId : TKey) : Option[TRow]
 
   def getAllAsync : Future[Seq[TRow]]
 
   def getIdOf(entity : Option[TRow]) : TKey
+
+  def setEntityId(entityId : Option[TKey], entity : Option[TRow]) : Option[TRow]
 
   protected def getFirstOrDefault(rows : Future[Seq[TRow]]) : Option[TRow] = {
     this.getFirstOrDefault(Await.result(rows, defaultTimeout))

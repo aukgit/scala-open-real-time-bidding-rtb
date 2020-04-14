@@ -34,24 +34,27 @@ object Application {
       expectedusergender = Some(""),
       publisherid = Some(1))
 
-    val response = repository.addEntities(x, 50)
+//    val response = repository.addEntities(x, 1)
 
-    println(response)
-//    var id = repository.db.run{
-//       repository.getAddAction(x)
-//    }
-//
-//    println(repository.toRegular(id))
-//    repository.delete(3)
+//    println(response)
     repository.getAll
-    val removeall : FixedSqlAction[Int, NoStream, Effect.Write] = repository.table.filter(w=> w.campaignid > 2).delete
+//    val removeall : FixedSqlAction[Int, NoStream, Effect.Write] = repository.table.filter(w=> w.campaignid > 500000).delete
+//
+//    val rs5 = repository.quickSave(
+//      removeall,
+//      DatabaseActionType.Delete
+//      )
 
-    val rs5 = repository.quickSave(
-      removeall,
-      DatabaseActionType.Delete
-      )
+//    println(rs5)
 
-    println(rs5)
+    val y = x.copy(
+      campaignid = 330,
+      campaignname = "Alim is now okay WWW")
+    var rs1 = repository.addOrUpdate(330, y)
+    var rs2 = repository.addOrUpdate(395, y)
+
+    println(rs1)
+    println(rs2)
 
     val l = repository.getAll
 

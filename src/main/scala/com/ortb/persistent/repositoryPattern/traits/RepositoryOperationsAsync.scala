@@ -29,7 +29,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
       val deleteAction = getDeleteAction(entityId)
 
       return this.saveAsync(
-        entity = Some(entity),
+        entity = entity,
         dbAction = deleteAction,
         actionType)
     }
@@ -72,13 +72,28 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     getEmptyResponse(actionType)
   }
 
+  /**
+   * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform the action.
+   * @param entityId
+   * @param entity
+   * @return
+   */
   def updateAsync(entityId : TKey, entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val actionType = DatabaseActionType.Update
 
     try {
+      if(entityId != getIdOf(Some(entity))){
+        val entity2 = setEntityId(Some(entityId), Some(entity))
+
+        return this.saveAsync(
+          entity = entity2,
+          dbAction = getQueryById(entityId).update(entity2.get),
+          DatabaseActionType.Update)
+      }
+
       return this.saveAsync(
         entity = Some(entity),
-        dbAction = getQueryByIdSingle(entityId).update(entity),
+        dbAction = getQueryById(entityId).update(entity),
         DatabaseActionType.Update)
     }
     catch {

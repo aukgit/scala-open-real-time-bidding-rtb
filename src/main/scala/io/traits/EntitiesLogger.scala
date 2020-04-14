@@ -29,9 +29,10 @@ trait EntitiesLogger {
       println(additionalMessage)
     }
 
-
     if (f.isEmpty) {
       println("No item present in the entities for logging.")
+
+      return;
     }
 
     val entityName = f.head.getClass.getTypeName.replace("$", ".")

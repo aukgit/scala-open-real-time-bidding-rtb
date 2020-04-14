@@ -4,7 +4,6 @@ import scala.concurrent._
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositoryPattern.Repository
-import com.ortb.persistent.schema
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
@@ -17,8 +16,13 @@ class CampaignRepository(appManager : AppManager)
 
   override def tableName : String = this.campaignTableName
 
-  override def getById(entityId : Int) : Tables.CampaignRow = {
-    this.run(getQueryByIdSingle(entityId).result).head
+  override def getById(entityId : Int) : Option[Tables.CampaignRow] = {
+    val result = this.run(getQueryByIdSingle(entityId).result)
+    if (result.isEmpty) {
+      return None
+    }
+
+    Some(result.head)
   }
 
   override def getDeleteAction(
@@ -41,5 +45,16 @@ class CampaignRepository(appManager : AppManager)
 
   override def table = this.campaigns
 
-  override def getIdOf(entity : Option[CampaignRow]) : Int = if(entity.isDefined) entity.get.campaignid else -1
+  override def getIdOf(entity : Option[CampaignRow]) : Int = if (entity.isDefined) entity.get.campaignid
+                                                             else -1
+
+  override def setEntityId(
+    entityId : Option[Int],
+    entity   : Option[CampaignRow]) : Option[CampaignRow] = {
+    if (entityId.isEmpty || entity.isEmpty) {
+      return None
+    }
+
+    Some(entity.get.copy(campaignid = entityId.get))
+  }
 }
