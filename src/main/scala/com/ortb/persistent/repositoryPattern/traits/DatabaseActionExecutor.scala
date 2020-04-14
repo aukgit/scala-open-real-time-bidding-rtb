@@ -15,22 +15,24 @@ import com.ortb.persistent.repositoryPattern.Repository
 trait DatabaseActionExecutor[TTable, TRow, TKey] {
   this : Repository[TTable, TRow, TKey] =>
 
-  def quickSaveAsync(
+  def quickSave(
     dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
     actionType : DatabaseActionType
-  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+  ) : RepositoryOperationResult[TRow, TKey] = {
     try {
-      return db.run(dbAction).map((affectedRowsCount : Int) =>
+      val result = db.run(dbAction).map((affectedRowsCount : Int) =>
                                     createResponseForAffectedRowCount(
                                       affectedRow = affectedRowsCount,
                                       entity = None,
                                       actionType = actionType))
+
+      return toRegular(result, defaultTimeout)
     }
     catch {
       case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
     }
 
-    getEmptyResponse(actionType)
+    getEmptyResponseFor(actionType)
   }
 
   def saveAsync(
@@ -76,7 +78,8 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
                                     this.createResponseForAffectedRow(
                                       affectedEntity = Some(entity),
                                       actionType = actionType,
-                                      isSuccess = entity != null))
+                                      isSuccess = entity != null,
+                                      affectedRowsCount = Some(1)))
     }
     catch {
       case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")

@@ -26,20 +26,20 @@ trait EntitiesLogger {
     }
 
     if (additionalMessage.nonEmpty) {
-      AppLogger.info(additionalMessage)
+      println(additionalMessage)
     }
 
 
     if (f.isEmpty) {
-      AppLogger.info("No item present in the entities for logging.")
+      println("No item present in the entities for logging.")
     }
 
-    val entityName = f.head.getClass.getTypeName
+    val entityName = f.head.getClass.getTypeName.replace("$", ".")
 
-    AppLogger.info(s"Printing Entities ($entityName):")
+    println(s"Printing Entities ($entityName):")
 
     f.foreach(i => {
-      AppLogger.info(i.toString)
+      println(i.toString)
     })
   }
 }

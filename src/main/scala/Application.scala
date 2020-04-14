@@ -34,7 +34,7 @@ object Application {
       expectedusergender = Some(""),
       publisherid = Some(1))
 
-    val response = repository.add(x)
+    val response = repository.addEntities(x, 50)
 
     println(response)
 //    var id = repository.db.run{
@@ -42,18 +42,18 @@ object Application {
 //    }
 //
 //    println(repository.toRegular(id))
-    repository.delete(3)
+//    repository.delete(3)
+    repository.getAll
     val removeall : FixedSqlAction[Int, NoStream, Effect.Write] = repository.table.filter(w=> w.campaignid > 2).delete
 
-//    repository.saveAsync(
-//      repository.db.run(removeall), DatabaseActionType.Delete
-//      );
+    val rs5 = repository.quickSave(
+      removeall,
+      DatabaseActionType.Delete
+      )
+
+    println(rs5)
 
     val l = repository.getAll
-    println(l.length)
-    l.foreach(println)
-
-
 
 //    import scala.reflect.runtime.universe._
 //    val m = typeOf[List[Int]]

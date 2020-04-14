@@ -18,6 +18,7 @@ trait ErrorLogger {
     val message = s"Error : (${getMethodNameHeader(stackIndex)}) - ${msg}"
     logErrorLevel()
     log.error(message)
+    println(message)
     Sentry.capture(message)
     printStacks(isPrintStack)
   }
@@ -27,6 +28,7 @@ trait ErrorLogger {
     val finalMessage = s"File Error : (${getMethodNameHeader(stackIndex)}) - ${message}"
     logErrorLevel()
     log.error(finalMessage)
+    println(finalMessage)
     Sentry.capture(finalMessage)
     printStacks(isPrintStack)
   }
@@ -48,6 +50,7 @@ trait ErrorLogger {
     val message           = s"Exception Error: ${methodNameDisplay} - ${exception
       .toString}${newLine}${additionalMessage}"
     log.error(message)
+    println(message)
     val newError = new Error(message)
     Sentry.capture(newError) // combine error log
     log.error(exception.toString) // keep the actual error log as is.

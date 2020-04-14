@@ -18,16 +18,19 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
   protected def createResponseForAffectedRowCount(
     affectedRow : Int,
-    entity      : Option[TRow],
+    entity : Option[TRow],
     actionType  : DatabaseActionType,
     message     : String = "",
     isSuccess   : Boolean = true,
   ) : RepositoryOperationResult[TRow, TKey] = {
-    val message2 = getMessageForEntity(entity, actionType, message)
+    val message2    = getMessageForEntity(Some(affectedRow), actionType, message)
+    val hasAffected = affectedRow > 0
 
-    if (affectedRow > 0) {
-      AppLogger.logEntitiesNonFuture(isLogQueries && entity.isDefined, Seq(entity.get), message2)
+    if (hasAffected && entity.isDefined) {
+      AppLogger.logEntitiesNonFuture(isLogQueries, Seq(entity.get), message2)
+    }
 
+    if (hasAffected) {
       return createResponseFor(
         entityId = Some(getIdOf(entity)),
         entity = entity,
@@ -41,7 +44,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
   protected def createResponseFor(
     entityId : Option[TKey],
-    entity : Option[TRow],
+    entity     : Option[TRow],
     actionType : DatabaseActionType,
     message    : String = "",
     isSuccess  : Boolean = true
@@ -50,12 +53,16 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   private def getMessageForEntity(
-    entity     : Option[TRow],
-    actionType : DatabaseActionType,
-    message    : String) = {
+    affectedRowsCount : Option[Int],
+    actionType        : DatabaseActionType,
+    message           : String) = {
     var message2 = message;
     if (message2.isEmpty) {
-      message2 = s"Operation [$actionType] successful."
+      var affectedCount = ""
+      if (affectedRowsCount.isDefined) {
+        affectedCount = s" (affected rows = ${affectedRowsCount.get})"
+      }
+      message2 = s"[$actionType] operation is successful$affectedCount."
     }
 
     message2
@@ -63,11 +70,12 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
   protected def createResponseForAffectedRow(
     affectedEntity : Option[TRow],
+    affectedRowsCount : Option[Int],
     actionType     : DatabaseActionType,
     message        : String = "",
     isSuccess      : Boolean = true
   ) : RepositoryOperationResult[TRow, TKey] = {
-    val message2 : String = getMessageForEntity(affectedEntity, actionType, message)
+    val message2 : String = getMessageForEntity(affectedRowsCount, actionType, message)
 
     if (affectedEntity != null) {
       AppLogger.logEntitiesNonFuture(isLogQueries, Seq(affectedEntity), message2)
