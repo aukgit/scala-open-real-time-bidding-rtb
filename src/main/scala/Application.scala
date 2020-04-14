@@ -40,8 +40,12 @@ object Application {
 //    }
 //
 //    println(repository.toRegular(id))
+    repository.delete(3)
+    val l = repository.getAll
+    println(l.length)
+    l.foreach(println)
 
-    repository.getAll
+
 
 //    import scala.reflect.runtime.universe._
 //    val m = typeOf[List[Int]]

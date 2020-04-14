@@ -2,6 +2,7 @@ package io
 
 import io.traits.logger._
 import io.traits._
+import slick.util.Logging
 
 object AppLogger extends
   LoggerProperties with
@@ -12,6 +13,7 @@ object AppLogger extends
   InfoLogger with
   DebugLogger with
   WarnLogger with
-  EntitiesLogger {
-  def title(): Unit = log.warn(header)
+  EntitiesLogger with
+  Logging {
+  def title() : Unit = log.warn(header)
 }

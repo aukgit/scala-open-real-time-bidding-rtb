@@ -122,7 +122,7 @@
   "isDebug": true,
   "isLogError": true,
   "isLogDatabaseQueryLogs": true,
-  "isEnableSentry": false,
+  "isEnableSentry": true,
   "author": "Md. Alim Ul Karim",
   "databaseGenerate": {
     "profile": "slick.jdbc.SQLiteProfile",

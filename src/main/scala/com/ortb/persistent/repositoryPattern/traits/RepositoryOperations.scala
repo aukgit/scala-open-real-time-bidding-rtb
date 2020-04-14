@@ -13,7 +13,7 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
   def update(entityId : TKey, entity : TRow) : RepositoryOperationResult[TRow, TKey] =
     toRegular(updateAsync(entityId, entity), defaultTimeout)
 
-  def delete(entityId : TKey, entity : TRow) : RepositoryOperationResult[TRow, TKey] =
+  def delete(entityId : TKey) : RepositoryOperationResult[TRow, TKey] =
     toRegular(deleteAsync(entityId), defaultTimeout)
 
   def addOrUpdate(entityId : TKey, entity : TRow) : RepositoryOperationResult[TRow, TKey] =
