@@ -2,13 +2,13 @@ package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType
 import slick.jdbc.SQLiteProfile.api._
-import com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
 import io.AppLogger
 import slick.dbio.{NoStream, Effect}
 import slick.sql.FixedSqlAction
 
+import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
 trait RepositoryOperationsAsync[TTable, TRow, TKey]
@@ -18,17 +18,20 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
 
+  def getDeleteAction(entityId : TKey) : FixedSqlAction[Int, NoStream, Effect.Write]
+
   def deleteAsync(entityId : TKey) :
   Future[RepositoryOperationResult[TRow, TKey]] = {
     val entity = getById(entityId)
+    val actionType = DatabaseActionType.Delete
 
     try {
+      val deleteAction = getDeleteAction(entityId)
+
       return this.saveAsync(
         entity = entity,
-        dbAction = getQueryByIdSingle(entityId)
-          .call("delete")
-          .asInstanceOf[FixedSqlAction[Int, NoStream, Effect.Write]],
-        DatabaseActionType.Delete)
+        dbAction = deleteAction,
+        actionType)
     }
     catch {
       case e : Exception => AppLogger.error(
@@ -36,7 +39,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
         s"Delete failed on [id:$entityId, entity: $entity]")
     }
 
-    getEmptyResponse
+    getEmptyResponse(actionType)
   }
 
   def addOrUpdateAsync(entityId : TKey, entity : TRow) :
@@ -51,8 +54,11 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   }
 
   def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
+    val actionType = DatabaseActionType.Create
+
     try {
       val action = getAddAction(entity)
+
       return this.saveAsync(
         dbAction = action,
         DatabaseActionType.Create)
@@ -63,10 +69,12 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
         s"Add failed on [entity: $entity]")
     }
 
-    getEmptyResponse
+    getEmptyResponse(actionType)
   }
 
   def updateAsync(entityId : TKey, entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
+    val actionType = DatabaseActionType.Update
+
     try {
       return this.saveAsync(
         entity = entity,
@@ -79,6 +87,6 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
         s"Update failed on [id:$entityId, entity: $entity]")
     }
 
-    getEmptyResponse
+    getEmptyResponse(actionType)
   }
 }

@@ -27,7 +27,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
       return saveAsync(entity, dbAction = dbAction, actionType)
     }
 
-    getEmptyResponse
+    getEmptyResponse(actionType)
   }
 
   protected def saveAsync(
@@ -43,7 +43,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
       case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
     }
 
-    getEmptyResponse
+    getEmptyResponse(actionType)
   }
 
   protected def saveAsync(
@@ -61,7 +61,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
       case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
     }
 
-    getEmptyResponse
+    getEmptyResponse(actionType)
   }
 
   /**

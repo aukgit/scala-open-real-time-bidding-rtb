@@ -4,6 +4,7 @@ import scala.concurrent._
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.schema
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
@@ -19,6 +20,10 @@ class CampaignRepository(appManager : AppManager)
   override def getById(entityId : Int) : Tables.CampaignRow = {
     this.run(getQueryByIdSingle(entityId).result).head
   }
+
+  override def getDeleteAction(
+    entityId : Int) : FixedSqlAction[Int, NoStream, Effect.Write] =
+    getQueryById(entityId).delete
 
   override def getAllAsync : Future[Seq[CampaignRow]] = {
     val query = for {record <- table} yield record
