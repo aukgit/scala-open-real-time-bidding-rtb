@@ -31,7 +31,6 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     }
   }
 
-
   protected def saveAsync(
                            entityKey: TKey,
                            entity: TRow,
@@ -61,7 +60,6 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
 
     getEmptyResponse
   }
-
 
   /**
    * Runs db.run(..) and returns the non async result.

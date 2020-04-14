@@ -3,7 +3,6 @@ package com.ortb.persistent.repositoryPattern.traits
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
 import io.AppLogger
-import slick.lifted.{AbstractTable, TableQuery}
 
 import scala.concurrent.Future
 

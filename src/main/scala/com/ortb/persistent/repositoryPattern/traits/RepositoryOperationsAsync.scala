@@ -1,7 +1,6 @@
 package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType
-import slick.lifted.{AbstractTable, TableQuery}
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
 import com.ortb.model.results.RepositoryOperationResult
@@ -17,12 +16,18 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   this: Repository[TTable, TRow, TKey] =>
 
   def addAsync(entityId: TKey, entity: TRow): Future[RepositoryOperationResult[TRow]]= {
-//    this.saveAsync(
-//      entityKey = entityId,
-//      entity = entity,
-//      dbAction = table.forceInsert(entity.asInstanceOf),
-//      isPerformActionOnExist = false,
-//      DatabaseActionType.Create)
+    try {
+      this.saveAsync(
+        entityKey = entityId,
+        entity = entity,
+        dbAction = table.forceInsert(entity.asInstanceOf),
+        isPerformActionOnExist = false,
+        DatabaseActionType.Create)
+    } catch {
+      case e: Exception => AppLogger.error(e,
+        s"Add failed on [id:$entityId, entity: $entity]")
+    }
+
     getEmptyResponse
   }
 

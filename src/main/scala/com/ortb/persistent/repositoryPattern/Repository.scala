@@ -12,8 +12,9 @@ import com.ortb.model.config.ConfigModel
 import com.ortb.manager.AppManager
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.schema.DatabaseSchema
-import slick.lifted.{AbstractTable, TableQuery}
+import slick.lifted.{TableQuery, AbstractTable}
 import io.AppLogger
+import io.traits.FutureToRegular
 import slick.dbio.{NoStream, DBIOAction, Effect}
 import slick.lifted.AbstractTable
 import slick.sql.{FixedSqlAction, FixedSqlStreamingAction, SqlStreamingAction}
@@ -24,7 +25,8 @@ abstract class Repository[TTable, TRow, TKey]
     DatabaseSchema(appManager) with
     SingleRepositoryBase[TTable, TRow, TKey] with
     EntityResponseCreator[TTable, TRow, TKey] with
-    DatabaseActionExecutor [TTable, TRow, TKey]{
+    DatabaseActionExecutor[TTable, TRow, TKey] with
+    FutureToRegular {
 
   lazy protected implicit val executionContext: ExecutionContext = appManager.executionContextManager.createDefault().prepare()
   lazy protected val config: ConfigModel = appManager.config

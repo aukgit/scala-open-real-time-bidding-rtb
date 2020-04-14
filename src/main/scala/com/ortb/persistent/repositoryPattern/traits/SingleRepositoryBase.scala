@@ -1,22 +1,19 @@
 package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.persistent.repositoryPattern.Repository
-import slick.lifted.{TableQuery, AbstractTable, Query}
-import slick.jdbc.SQLiteProfile.api._
+import slick.lifted.{TableQuery, Query}
+
 import scala.concurrent.{Future, Await}
 
 trait SingleRepositoryBase[TTable, TRow, TKey]
   extends
-    RepositoryOperationsAsync[TTable, TRow, TKey] {
+    RepositoryOperationsAsync[TTable, TRow, TKey] with
+    RepositoryOperations[TTable, TRow, TKey] {
   this: Repository[TTable, TRow, TKey] =>
 
   def table: TableQuery[_]
 
-  def getAll: List[TRow]
-
-  def getById(entityId: TKey): TRow
-
-  def getAllAsync: Future[Seq[TRow]]
+  def getAll: List[TRow] = toRegular(getAllAsync, defaultTimeout).toList
 
   def isExists(entityId: TKey): Boolean = getById(entityId) != null
 
@@ -32,7 +29,11 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
     }
   }
 
+  def getQueryByIdSingle(id: TKey): Query[TTable, TRow, Seq] = getQueryById(id).take(1)
+
   def getQueryById(id: TKey): Query[TTable, TRow, Seq]
 
-  def getQueryByIdSingle(id: TKey): Query[TTable, TRow, Seq] = getQueryById(id).take(1)
+  def getById(entityId: TKey): TRow
+
+  def getAllAsync: Future[Seq[TRow]]
 }
