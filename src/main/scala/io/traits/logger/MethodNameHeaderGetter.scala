@@ -5,11 +5,13 @@ trait MethodNameHeaderGetter extends
   def getMethodNameHeader(stackIndex : Int) : String = {
     val stacks    = Thread.currentThread().getStackTrace
     val len       = stacks.length
-    val lastIndex = len - 1
+    val lastIndex = len - 2
+
     if (lastIndex <= stackIndex) {
-      return getStackTraceInfo(stacks(stackIndex))
+      return getStackTraceInfo(stacks(stackIndex)) + getStackTraceInfo(stacks(lastIndex))
     }
-    else if (stacks.nonEmpty) {
+
+    if (stacks.nonEmpty) {
       return getStackTraceInfo(stacks(lastIndex))
     }
 
