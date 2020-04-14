@@ -7,6 +7,9 @@ import com.ortb.persistent.repositoryPattern.Repository
 import com.ortb.persistent.schema
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
+import slick.dbio.Effect
+import slick.jdbc
+import slick.jdbc.SQLiteProfile
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
 
@@ -30,7 +33,11 @@ class CampaignRepository(appManager : AppManager)
     table.filter(c => c.campaignid === id)
   }
 
-  override def getAddAction(entity : CampaignRow) : SQLiteProfile.ProfileAction[CampaignRow, NoStream, Effect.Write]
+  override def getAddAction(entity : CampaignRow) : FixedSqlAction[CampaignRow, NoStream, Effect.Write]
   =
-    table returning table.map(_.campaignid)  into ((entity, entityId) => entity.copy(campaignid = entityId)) += entity
+  // votes returning votes.map(_.id) into ((vote, id) => vote.copy(id = Some(id))) += vote
+    table returning table.map(_.campaignid) into
+      ((entityx, entityId) => entityx.copy(campaignid = entityId)) += entity
+
+  override def getIdOf(entity : CampaignRow) : Int = entity.campaignid
 }

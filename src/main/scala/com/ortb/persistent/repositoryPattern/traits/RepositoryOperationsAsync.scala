@@ -16,14 +16,12 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   RepositoryOperationsBase[TRow] {
   this : Repository[TTable, TRow, TKey] =>
 
-  def getAddAction(entity : TRow) : FixedSqlAction[Int, NoStream, Effect.Write]
-  // def getDeleteAction : FixedSqlAction[Int, NoStream, Effect.Write]
+  def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
 
-  def addAsync(entity    : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
+  def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
       val action = getAddAction(entity)
       return this.saveAsync(
-        entity = entity,
         dbAction = action,
         DatabaseActionType.Create)
     }

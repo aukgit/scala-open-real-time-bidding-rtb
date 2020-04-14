@@ -46,14 +46,14 @@ object Application {
       expectedusergender = Some(""),
       publisherid = Some(1))
 
-    var response = repository.add(x)
+    val response = repository.add(x)
 
     println(response)
-    var id = repository.db.run{
-       repository.getAddAction(x)
-    }
-
-    println(repository.toRegular(id))
+//    var id = repository.db.run{
+//       repository.getAddAction(x)
+//    }
+//
+//    println(repository.toRegular(id))
 
     repository.getAll
 

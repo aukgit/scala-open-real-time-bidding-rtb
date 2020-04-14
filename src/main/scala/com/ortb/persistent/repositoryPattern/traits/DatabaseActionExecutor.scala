@@ -17,7 +17,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
 
   protected def getRunResult[T >: Null <: AnyRef](dbAction : T) : Option[Future[Seq[TRow]]] = {
     dbAction match {
-      case fixedSql : FixedSqlAction[Seq[TRow], NoStream, Effect.All]
+      case fixedSql : FixedSqlAction[Seq[TRow], _, _]
       =>
         Some(db.run(fixedSql))
       case fixedSqlStreaming : FixedSqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
@@ -37,7 +37,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     entity : TRow,
     dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
     isPerformActionOnExist : Boolean,
-    actionType             : DatabaseActionType
+    actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val isPerform = this.isExists(entityKey) == isPerformActionOnExist
     if (isPerform) {
@@ -53,7 +53,26 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
-      return db.run(dbAction).map(r => createResponseForAffectedRow(r, None, entity))
+      return db.run(dbAction).map((affectedRowsCount : Int) =>
+                                    createResponseForAffectedRowCount(affectedRowsCount, entity, actionType))
+    }
+    catch {
+      case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")
+    }
+
+    getEmptyResponse
+  }
+
+  protected def saveAsync(
+    dbAction : FixedSqlAction[TRow, NoStream, Effect.Write],
+    actionType : DatabaseActionType
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+    try {
+      return db.run(dbAction).map((entity : TRow) =>
+                                    this.createResponseForAffectedRow(
+                                      affectedEntity = entity,
+                                      actionType = actionType,
+                                      isSuccess = entity != null))
     }
     catch {
       case e : Exception => AppLogger.error(e, s"Failed at performing $actionType")

@@ -38,4 +38,6 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
   def getById(entityId: TKey): TRow
 
   def getAllAsync: Future[Seq[TRow]]
+
+  def getIdOf(entity: TRow): TKey
 }
