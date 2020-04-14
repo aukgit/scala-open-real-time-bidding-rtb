@@ -3,7 +3,6 @@ package io
 import java.nio.file.{Files, Path, Paths}
 import java.util
 
-import com.ortb.constants.AppConstants
 import io.traits.file.ExecuteInputOutputAction
 
 import scala.io.{Source, BufferedSource}
@@ -36,6 +35,25 @@ object File extends ExecuteInputOutputAction {
     def action() = Files.readString(givenPath)
 
     executeInputOutputAction(givenPath, action, "")
+  }
+
+  override def executeInputOutputAction[ReturnType](
+    path : Path,
+    performingAction : () => ReturnType,
+    emptyResult : ReturnType
+  ) : ReturnType = {
+    try {
+      if (Files.exists(path)) {
+        return performingAction()
+      }
+    }
+    catch {
+      case e : Exception =>
+        AppLogger.error(e)
+    }
+
+    AppLogger.debug(s"${path} doesn't exist or cannot (something went wrong) read from file system.")
+    emptyResult
   }
 
   /**
@@ -92,24 +110,5 @@ object File extends ExecuteInputOutputAction {
     def action() = Source.fromFile(path)
 
     executeInputOutputAction(givenPath, action, null)
-  }
-
-  override def executeInputOutputAction[ReturnType](
-    path             : Path,
-    performingAction : () => ReturnType,
-    emptyResult      : ReturnType
-  ) : ReturnType = {
-    try {
-      if (Files.exists(path)) {
-        return performingAction()
-      }
-    }
-    catch {
-      case e : Exception =>
-        AppLogger.error(e)
-    }
-
-    AppLogger.debug(s"${path} doesn't exist or cannot (something went wrong) read from file system.")
-    emptyResult
   }
 }

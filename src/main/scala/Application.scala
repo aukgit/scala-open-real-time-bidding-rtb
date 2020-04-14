@@ -1,26 +1,12 @@
-import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
-import com.ortb.persistent.DatabaseEngineManager
 import com.ortb.persistent.repositories.CampaignRepository
-
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 //import com.ortb.persistent.repositories.CampaignRepository
-import com.ortb.persistent.schema.Tables.{CampaignRow, Campaign}
+import com.ortb.persistent.schema.Tables.CampaignRow
 import io.AppLogger
-import io.sentry.Sentry
-import io.circe.generic.auto._
-import io.circe.syntax._
-import slick.lifted.{TableQuery, Query}
-import slick.profile._
-import slick.jdbc.SQLiteProfile.api._
-
-import scala.concurrent.{Future, ExecutionContextExecutor}
-import scala.concurrent
 
 
 object Application {
-  def main (args : Array[String]) : Unit = {
+  def main(args : Array[String]) : Unit = {
     val appManager = new AppManager
 
     AppLogger.info("Help", isPrintStack = true)
@@ -71,7 +57,8 @@ object Application {
 //    } yield c;
 //
 //    val res = dbEngine.db.run(q.result)
-//    implicit val defaultExecutionContext: ExecutionContextExecutor = appManager.executionContextManager.createDefault()
+//    implicit val defaultExecutionContext: ExecutionContextExecutor = appManager.executionContextManager
+//    .createDefault()
 //    res.foreach(println)
 
 //    val campaigns = TableQuery[Campaign].filter(c => c.campaignid >= 0)

@@ -15,23 +15,6 @@ import com.ortb.persistent.repositoryPattern.Repository
 trait DatabaseActionExecutor[TTable, TRow, TKey] {
   this : Repository[TTable, TRow, TKey] =>
 
-  protected def getRunResult[T >: Null <: AnyRef](dbAction : T) : Option[Future[Seq[TRow]]] = {
-    dbAction match {
-      case fixedSql : FixedSqlAction[Seq[TRow], _, _]
-      =>
-        Some(db.run(fixedSql))
-      case fixedSqlStreaming : FixedSqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
-        Some(db.run(fixedSqlStreaming))
-      case sqlStreaming : SqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
-        Some(db.run(sqlStreaming))
-      case dbAction2 : DBIOAction[_, _, _] =>
-        val x = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow]]];
-        Some(x)
-      case _ =>
-        throw new InvalidDnDOperationException(s"Invalid operation for runAsync. Operation $dbAction")
-    }
-  }
-
   protected def saveAsync(
     entityKey : TKey,
     entity : TRow,
@@ -114,5 +97,22 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     }
 
     null
+  }
+
+  protected def getRunResult[T >: Null <: AnyRef](dbAction : T) : Option[Future[Seq[TRow]]] = {
+    dbAction match {
+      case fixedSql : FixedSqlAction[Seq[TRow], _, _]
+      =>
+        Some(db.run(fixedSql))
+      case fixedSqlStreaming : FixedSqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
+        Some(db.run(fixedSqlStreaming))
+      case sqlStreaming : SqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
+        Some(db.run(sqlStreaming))
+      case dbAction2 : DBIOAction[_, _, _] =>
+        val x = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow]]];
+        Some(x)
+      case _ =>
+        throw new InvalidDnDOperationException(s"Invalid operation for runAsync. Operation $dbAction")
+    }
   }
 }

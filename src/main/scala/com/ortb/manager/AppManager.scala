@@ -12,7 +12,7 @@ class AppManager extends AppManagerBaseType {
 
   def getDb : SQLiteProfile.backend.DatabaseDef = databaseEngine.db
 
-  if(config.isEnableSentry) {
+  if (config.isEnableSentry) {
     Sentry.init(AppConstants.SentryDSN)
   }
 }

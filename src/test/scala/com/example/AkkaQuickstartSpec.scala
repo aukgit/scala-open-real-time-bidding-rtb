@@ -2,19 +2,19 @@
 package com.example
 
 import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
-import com.example.Greeter.Greet
-import com.example.Greeter.Greeted
+import com.example.Greeter.{Greet, Greeted}
 import org.scalatest.WordSpecLike
 
 //#definition
-class AkkaQuickstartSpec extends ScalaTestWithActorTestKit with WordSpecLike {
+class AkkaQuickstartSpec extends ScalaTestWithActorTestKit
+  with WordSpecLike {
 //#definition
 
   "A Greeter" must {
     //#test
     "reply to greeted" in {
       val replyProbe = createTestProbe[Greeted]()
-      val underTest = spawn(Greeter())
+      val underTest  = spawn(Greeter())
       underTest ! Greet("Santa", replyProbe.ref)
       replyProbe.expectMessage(Greeted("Santa", underTest.ref))
     }

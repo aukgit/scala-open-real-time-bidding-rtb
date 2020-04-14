@@ -13,26 +13,10 @@ import scala.concurrent.Future
 
 trait RepositoryOperationsAsync[TTable, TRow, TKey]
   extends
-  RepositoryOperationsBase[TRow] {
+    RepositoryOperationsBase[TRow] {
   this : Repository[TTable, TRow, TKey] =>
 
   def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
-
-  def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
-    try {
-      val action = getAddAction(entity)
-      return this.saveAsync(
-        dbAction = action,
-        DatabaseActionType.Create)
-    }
-    catch {
-      case e : Exception => AppLogger.error(
-        e,
-        s"Add failed on [entity: $entity]")
-    }
-
-    getEmptyResponse
-  }
 
   def deleteAsync(entityId : TKey) :
   Future[RepositoryOperationResult[TRow, TKey]] = {
@@ -55,6 +39,33 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     getEmptyResponse
   }
 
+  def addOrUpdateAsync(entityId : TKey, entity : TRow) :
+  Future[RepositoryOperationResult[TRow, TKey]] = {
+    if (isExists(entityId)) {
+      // update
+      return updateAsync(entityId, entity)
+    }
+
+    // add
+    addAsync(entity)
+  }
+
+  def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
+    try {
+      val action = getAddAction(entity)
+      return this.saveAsync(
+        dbAction = action,
+        DatabaseActionType.Create)
+    }
+    catch {
+      case e : Exception => AppLogger.error(
+        e,
+        s"Add failed on [entity: $entity]")
+    }
+
+    getEmptyResponse
+  }
+
   def updateAsync(entityId : TKey, entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
       return this.saveAsync(
@@ -69,16 +80,5 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     }
 
     getEmptyResponse
-  }
-
-  def addOrUpdateAsync(entityId : TKey, entity : TRow) :
-  Future[RepositoryOperationResult[TRow, TKey]] = {
-    if (isExists(entityId)) {
-      // update
-      return updateAsync(entityId, entity)
-    }
-
-    // add
-    addAsync(entity)
   }
 }

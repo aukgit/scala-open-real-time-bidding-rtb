@@ -1,8 +1,7 @@
 package com.ortb.manager.traits
 
-import com.ortb.manager.{ConfigurationManager, ExecutionContextManager}
+import com.ortb.manager.ConfigurationManager
 import com.ortb.constants.AppConstants
-import io.sentry.Sentry
 import com.ortb.model.config.ConfigModel
 
 trait AppManagerBaseType {

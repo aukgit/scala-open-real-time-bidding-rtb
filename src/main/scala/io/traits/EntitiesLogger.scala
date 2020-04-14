@@ -11,7 +11,7 @@ import scala.concurrent.duration.Duration._
 trait EntitiesLogger {
   this : InfoLogger =>
 
-  def logEntities[T](isExecute : Boolean, f : Future[Iterable[T]], additionalMessage: String = "") : Unit = {
+  def logEntities[T](isExecute : Boolean, f : Future[Iterable[T]], additionalMessage : String = "") : Unit = {
     if (!isExecute) {
       return
     }
@@ -20,17 +20,17 @@ trait EntitiesLogger {
     logEntitiesNonFuture(isExecute, results, additionalMessage)
   }
 
-  def logEntitiesNonFuture[T](isExecute : Boolean, f : Iterable[T], additionalMessage: String = "") : Unit = {
+  def logEntitiesNonFuture[T](isExecute : Boolean, f : Iterable[T], additionalMessage : String = "") : Unit = {
     if (!isExecute) {
       return
     }
 
-    if(additionalMessage.nonEmpty){
+    if (additionalMessage.nonEmpty) {
       AppLogger.info(additionalMessage)
     }
 
 
-    if(f.isEmpty){
+    if (f.isEmpty) {
       AppLogger.info("No item present in the entities for logging.")
     }
 

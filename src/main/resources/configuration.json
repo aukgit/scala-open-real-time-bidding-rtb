@@ -6,7 +6,7 @@
     "isUseDefaultDomainForAll": true,
     "services": {
       "root": {
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "title": "",
@@ -14,7 +14,7 @@
         "routing": []
       },
       "requestSimulatorService": {
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "title": "Request Simulator Service",
@@ -29,7 +29,7 @@
         ]
       },
       "monitorService": {
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "title": "",
@@ -39,13 +39,13 @@
       "exchangeService": {
         "title": "Exchange Server",
         "description": "Decides to take pre-cached bid or take a bidding from DSPs and selects the final winner",
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "routing": []
       },
       "advertiserService": {
-        "prefix":"",
+        "prefix": "",
         "domain": "First root request receiver. Like give me an advertise.",
         "port": 0,
         "title": "",
@@ -53,7 +53,7 @@
         "routing": []
       },
       "bidderService": {
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "title": "",
@@ -61,7 +61,7 @@
         "routing": []
       },
       "supplySidePlatformService": {
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "title": "",
@@ -69,7 +69,7 @@
         "routing": []
       },
       "preCachedBidService": {
-        "prefix":"",
+        "prefix": "",
         "domain": "",
         "port": 0,
         "title": "",
@@ -80,7 +80,7 @@
         {
           "title": "DSP - Demand Side Platform - 1",
           "description": "Final stage where bidding happens, agent 1",
-          "prefix":"",
+          "prefix": "",
           "domain": "",
           "port": 0,
           "routing": []
@@ -88,7 +88,7 @@
         {
           "title": "DSP - Demand Side Platform - 2",
           "description": "Final stage where bidding happens, agent 2",
-          "prefix":"",
+          "prefix": "",
           "domain": "",
           "port": 0,
           "routing": []
@@ -96,13 +96,12 @@
         {
           "title": "DSP - Demand Side Platform - 3",
           "description": "Final stage where bidding happens, agent 3",
-          "prefix":"",
+          "prefix": "",
           "domain": "",
           "port": 0,
           "routing": []
         }
       ]
-
     },
     "requestDefaultHeaders": [
       {
@@ -114,7 +113,7 @@
         "value": "2.3"
       }
     ],
-    "redisServer":{
+    "redisServer": {
       "domain": "",
       "port": 0
     }

@@ -11,16 +11,18 @@ import io.circe.{Encoder, Decoder}
 import shapeless.Unwrapped
 
 trait AnyValCirceEncoding {
-  implicit def anyValEncoder[V, U](implicit ev: V <:< AnyVal,
-    V: Unwrapped.Aux[V, U],
-    encoder: Encoder[U]): Encoder[V] = {
+  implicit def anyValEncoder[V, U](
+    implicit ev : V <:< AnyVal,
+    V : Unwrapped.Aux[V, U],
+    encoder : Encoder[U]) : Encoder[V] = {
     val _ = ev
     encoder.contramap(V.unwrap)
   }
 
-  implicit def anyValDecoder[V, U](implicit ev: V <:< AnyVal,
-    V: Unwrapped.Aux[V, U],
-    decoder: Decoder[U]): Decoder[V] = {
+  implicit def anyValDecoder[V, U](
+    implicit ev : V <:< AnyVal,
+    V : Unwrapped.Aux[V, U],
+    decoder : Decoder[U]) : Decoder[V] = {
     val _ = ev
     decoder.map(V.wrap)
   }
@@ -32,20 +34,20 @@ object CirceSupport
   extends de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
     with AnyValCirceEncoding
 
-class SampleServer() extends AnyValCirceEncoding{
-  def startServerAt(port: Int): Future[Http.ServerBinding] = {
-    implicit val system: ActorSystem = ActorSystem("SampleServer")
-    implicit val materializer: ActorMaterializer = ActorMaterializer()
+class SampleServer() extends AnyValCirceEncoding {
+  def startServerAt(port : Int) : Future[Http.ServerBinding] = {
+    implicit val system       : ActorSystem       = ActorSystem("SampleServer")
+    implicit val materializer : ActorMaterializer = ActorMaterializer()
     import system.dispatcher
     /*
       setup
      */
-    val guitarDb = system.actorOf(Props[GuitarDB], "LowLevelGuitarDB")
+    val guitarDb   = system.actorOf(Props[GuitarDB], "LowLevelGuitarDB")
     val guitarList = List(
       Guitar("Fender", "Stratocaster"),
       Guitar("Gibson", "Les Paul"),
       Guitar("Martin", "LX1")
-    )
+      )
 
     guitarList.foreach { guitar =>
       guitarDb ! CreateGuitar(guitar)
@@ -53,8 +55,8 @@ class SampleServer() extends AnyValCirceEncoding{
 
     // implicit val defaultTimeout: Timeout = Timeout(2 seconds)
 
-    def requestHandler: HttpRequest => Future[HttpResponse] = {
-      case HttpRequest(HttpMethods.POST, uri@Uri.Path("/api/anything"), seqHeaders, entity, _) =>
+    def requestHandler : HttpRequest => Future[HttpResponse] = {
+      case HttpRequest(HttpMethods.POST, uri @ Uri.Path("/api/anything"), seqHeaders, entity, _) =>
         println("hello POST")
         println(seqHeaders)
         // println(entity.asJson.noSpaces)
@@ -67,10 +69,10 @@ class SampleServer() extends AnyValCirceEncoding{
             entity = HttpEntity(
               ContentTypes.`text/html(UTF-8)`,
               "You Get to Anything"
-            ))
+              ))
         }
 
-      case HttpRequest(HttpMethods.GET, uri@Uri.Path("/api/anything"), seqHeaders, entity, _) =>
+      case HttpRequest(HttpMethods.GET, uri @ Uri.Path("/api/anything"), seqHeaders, entity, _) =>
         println("hello GET")
         println(seqHeaders)
         println(entity)
@@ -83,10 +85,10 @@ class SampleServer() extends AnyValCirceEncoding{
             entity = HttpEntity(
               ContentTypes.`text/html(UTF-8)`,
               "You Get to Anything"
-            ))
+              ))
         }
 
-      case request: HttpRequest =>
+      case request : HttpRequest =>
         request.discardEntityBytes()
         Future {
           HttpResponse(status = StatusCodes.NotFound)

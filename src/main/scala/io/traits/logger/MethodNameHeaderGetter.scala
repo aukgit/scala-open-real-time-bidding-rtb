@@ -1,9 +1,7 @@
 package io.traits.logger
 
-import com.ortb.constants.AppConstants
-
 trait MethodNameHeaderGetter extends
-                             StackTraceInfoDisplayGetter {
+  StackTraceInfoDisplayGetter {
   def getMethodNameHeader(stackIndex : Int) : String = {
     val stacks    = Thread.currentThread().getStackTrace
     val len       = stacks.length

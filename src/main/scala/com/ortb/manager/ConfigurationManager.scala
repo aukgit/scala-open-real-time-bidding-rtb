@@ -4,11 +4,10 @@ import com.ortb.constants.AppConstants
 import com.ortb.model.config.ConfigModel
 import com.ortb.model.error.FileErrorModel
 import io.PathHelper._
-import io.{AppLogger, JsonParser, PathHelper}
+import io.{AppLogger, JsonParser}
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
-import io.circe.syntax._
 
 trait ConfigurationManagerType {
   def getConfig(path : String) : ConfigModel

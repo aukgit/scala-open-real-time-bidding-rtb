@@ -4,20 +4,15 @@ import scala.concurrent._
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositoryPattern.Repository
-import com.ortb.persistent.schema
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
-import slick.jdbc
-import slick.jdbc.SQLiteProfile
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
 
 class CampaignRepository(appManager : AppManager)
   extends
-  Repository[Campaign, CampaignRow, Int](appManager) {
-
-  override def table = this.campaigns
+    Repository[Campaign, CampaignRow, Int](appManager) {
 
   override def tableName : String = this.campaignTableName
 
@@ -26,7 +21,7 @@ class CampaignRepository(appManager : AppManager)
   }
 
   override def getAllAsync : Future[Seq[CampaignRow]] = {
-    val query = for { record <- table } yield record
+    val query = for {record <- table} yield record
     this.runAsync(query.result)
   }
 
@@ -39,6 +34,8 @@ class CampaignRepository(appManager : AppManager)
   // votes returning votes.map(_.id) into ((vote, id) => vote.copy(id = Some(id))) += vote
     table returning table.map(_.campaignid) into
       ((entityx, entityId) => entityx.copy(campaignid = entityId)) += entity
+
+  override def table = this.campaigns
 
   override def getIdOf(entity : CampaignRow) : Int = entity.campaignid
 }

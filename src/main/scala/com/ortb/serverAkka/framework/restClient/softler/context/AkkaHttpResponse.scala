@@ -8,13 +8,13 @@ import com.ortb.serverAkka.framework.restClient.softler.client.{RequestState, Cl
 
 trait AkkaHttpResponse {
 
-  implicit def system: ActorSystem
+  implicit def system : ActorSystem
 
-  implicit def materializer: Materializer
+  implicit def materializer : Materializer
 
-  implicit def executionContext: ExecutionContext
+  implicit def executionContext : ExecutionContext
 
-  def request: ClientRequest[RequestState.Idempotent]
+  lazy val response : Future[ClientResponse] = request.get()
 
-  lazy val response: Future[ClientResponse] = request.get()
+  def request : ClientRequest[RequestState.Idempotent]
 }

@@ -2,13 +2,13 @@ name := "scala-rtb-example"
 version := "1.0"
 scalaVersion := "2.13.1"
 
-lazy val log4Version = "2.11.0"
-lazy val akkaVersion = "2.6.4"
+lazy val log4Version     = "2.11.0"
+lazy val akkaVersion     = "2.6.4"
 lazy val akkaHttpVersion = "10.1.11"
-lazy val circeVersion = "0.12.3"
+lazy val circeVersion    = "0.12.3"
 
 // More details at https://github.com/tototoshi/slick-joda-mapper
-lazy val slickVersion = "3.3.2"
+lazy val slickVersion           = "3.3.2"
 lazy val slickJodaMapperVersion = "2.4"
 
 libraryDependencies ++= Seq(
@@ -73,4 +73,4 @@ libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   // "org.scala-lang" % "scala-reflect" % "2.10.0",
   "org.scala-lang" % "scala-compiler" % scalaVersion.value
-)
+  )

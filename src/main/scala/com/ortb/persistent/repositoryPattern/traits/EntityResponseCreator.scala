@@ -15,15 +15,6 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     entityId = None,
     entity = None)
 
-  protected def createResponseFor(
-    entityId : Option[TKey],
-    entity : TRow,
-    message : String = "",
-    isSuccess : Boolean = true
-  ) : RepositoryOperationResult[TRow, TKey] = {
-    RepositoryOperationResult(isSuccess, entityId, Some(entity), message)
-  }
-
   protected def createResponseForAffectedRowCount(
     affectedRow : Int,
     entity : TRow,
@@ -39,6 +30,15 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     }
 
     emptyResponse;
+  }
+
+  protected def createResponseFor(
+    entityId : Option[TKey],
+    entity : TRow,
+    message : String = "",
+    isSuccess : Boolean = true
+  ) : RepositoryOperationResult[TRow, TKey] = {
+    RepositoryOperationResult(isSuccess, entityId, Some(entity), message)
   }
 
   private def getMessageForEntity(

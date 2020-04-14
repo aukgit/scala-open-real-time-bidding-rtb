@@ -7,11 +7,11 @@ import com.ortb.serverAkka.framework.restClient.softler.client.ClientResponse
 
 trait AkkaHttpResponseHandler {
 
-  implicit def executionContext: ExecutionContext
+  implicit def executionContext : ExecutionContext
 
-  implicit def materializer: Materializer
+  implicit def materializer : Materializer
 
-  def response: Future[ClientResponse]
+  def response : Future[ClientResponse]
 
   response flatMap (_.as[String]) foreach println
 }
