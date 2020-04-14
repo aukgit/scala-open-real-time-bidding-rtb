@@ -21,9 +21,9 @@ object Application {
 
     AppLogger.info("Help", isPrintStack = true)
     println(appManager.config.asJson.spaces2);
-//
-//    val repository = new CampaignRepository(appManager)
-//    repository.getAll
+
+    val repository = new CampaignRepository(appManager)
+    repository.getAll
 
 //    import scala.reflect.runtime.universe._
 //    val m = typeOf[List[Int]]

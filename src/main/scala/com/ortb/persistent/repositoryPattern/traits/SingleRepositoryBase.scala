@@ -18,7 +18,7 @@ trait SingleRepositoryBase[TTable <: AbstractTable[_], TRow <: Null, TKey]
 
   def getAllAsync: Future[Seq[TRow]]
 
-  def isExists(entityId: TKey): Boolean
+  def isExists(entityId: TKey): Boolean = getById(entityId) != null
 
   protected def getFirstOrDefault(rows: Future[Seq[TRow]]): Option[TRow] = {
     this.getFirstOrDefault(Await.result(rows, defaultTimeout))
@@ -33,4 +33,6 @@ trait SingleRepositoryBase[TTable <: AbstractTable[_], TRow <: Null, TKey]
   }
 
   def getQueryById(id: TKey): Query[TTable, TRow, Seq]
+
+  def getQueryByIdSingle(id: TKey): Query[TTable, TRow, Seq] = getQueryById(id).take(1)
 }
