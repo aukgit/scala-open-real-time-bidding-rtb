@@ -13,6 +13,8 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
 
   def table: TableQuery[_]
 
+  def tableName:String
+
   def getAll: List[TRow] = toRegular(getAllAsync, defaultTimeout).toList
 
   def isExists(entityId: TKey): Boolean = getById(entityId) != null

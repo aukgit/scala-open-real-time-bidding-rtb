@@ -85,27 +85,69 @@ class DatabaseSchema(appManager: AppManager) {
    */
   lazy val transactions = TableQuery[Transaction]
 
-  lazy val tables = List(
-    advertises,
-    auctions,
-    bannerAdvertiseTypes,
-    bidRequests,
-    bidResponses,
-    campaigns,
-    campaignTargetCities,
-    campaignTargetSites,
-    contentCategories,
-    contentContexts,
-    demandSidePlatforms,
-    geoMappings,
-    impressions,
-    keywords,
-    keywordAdvertiseMappings,
-    lostBids,
-    noBidResponseTypes,
-    publishers,
-    transactions
+  lazy val tables = Map(
+    advertiseTableName -> advertises,
+    auctionTableName -> auctions,
+    bannerAdvertiseTypeTableName -> bannerAdvertiseTypes,
+    bidRequestTableName -> bidRequests,
+    bidResponseTableName -> bidResponses,
+    campaignTableName -> campaigns,
+    campaignTargetCityTableName -> campaignTargetCities,
+    campaignTargetSiteTableName -> campaignTargetSites,
+    contentCategoryTableName -> contentCategories,
+    contentContextTableName -> contentContexts,
+    demandSidePlatformTableName -> demandSidePlatforms,
+    geoMappingTableName -> geoMappings,
+    impressionTableName -> impressions,
+    keywordTableName -> keywords,
+    keywordAdvertiseMappingTableName -> keywordAdvertiseMappings,
+    lostBidTableName -> lostBids,
+    noBidResponseTypeTableName -> noBidResponseTypes,
+    publisherTableName -> publishers,
+    transactionTableName -> transactions
   )
 
   lazy val allSchema: profile.SchemaDescription = Tables.schema
+
+  lazy val advertiseTableName = "Advertise"
+  lazy val auctionTableName = "Auction"
+  lazy val bannerAdvertiseTypeTableName = "BannerAdvertiseType"
+  lazy val bidRequestTableName = "BidRequest"
+  lazy val bidResponseTableName = "BidResponse"
+  lazy val campaignTableName = "Campaign"
+  lazy val campaignTargetCityTableName = "CampaignTargetCity"
+  lazy val campaignTargetSiteTableName = "CampaignTargetSite"
+  lazy val contentCategoryTableName = "ContentCategory"
+  lazy val contentContextTableName = "ContentContext"
+  lazy val demandSidePlatformTableName = "DemandSidePlatform"
+  lazy val geoMappingTableName = "GeoMapping"
+  lazy val impressionTableName = "Impression"
+  lazy val keywordTableName = "Keyword"
+  lazy val keywordAdvertiseMappingTableName = "KeywordAdvertiseMapping"
+  lazy val lostBidTableName = "LostBid"
+  lazy val noBidResponseTypeTableName = "NoBidResponseType"
+  lazy val publisherTableName = "Publisher"
+  lazy val transactionTableName = "Transaction"
+
+  lazy val TableNames = List(
+    advertiseTableName,
+    auctionTableName,
+    bannerAdvertiseTypeTableName,
+    bidRequestTableName,
+    bidResponseTableName,
+    campaignTableName,
+    campaignTargetCityTableName,
+    campaignTargetSiteTableName,
+    contentCategoryTableName,
+    contentContextTableName,
+    demandSidePlatformTableName,
+    geoMappingTableName,
+    impressionTableName,
+    keywordTableName,
+    keywordAdvertiseMappingTableName,
+    lostBidTableName,
+    noBidResponseTypeTableName,
+    publisherTableName,
+    transactionTableName
+  )
 }

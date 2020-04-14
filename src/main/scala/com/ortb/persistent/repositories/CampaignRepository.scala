@@ -8,11 +8,12 @@ import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.lifted.Query
 
-
 class CampaignRepository(appManager: AppManager)
   extends
     Repository[Campaign, CampaignRow, Int](appManager) {
+
   override def table = this.campaigns
+  override def tableName: String = this.campaignTableName
 
   override def getById(entityId: Int): Tables.CampaignRow = {
     this.run(getQueryByIdSingle(entityId)).head

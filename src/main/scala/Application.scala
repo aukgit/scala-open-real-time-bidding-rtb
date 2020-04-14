@@ -24,7 +24,7 @@ object Application {
     println(appManager.config.asJson.spaces2);
 
     val repository = new CampaignRepository(appManager)
-    repository.getAll
+    repository.getAllAsync
 
 //    import scala.reflect.runtime.universe._
 //    val m = typeOf[List[Int]]
