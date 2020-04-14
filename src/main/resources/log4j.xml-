@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" name="RoutingTest" packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="filename">rollingtest-$${sd:type}.log</Property>
+    </Properties>
+    <ThresholdFilter level="ALL"/>
+
+    <Appenders>
+        <Console name="STDOUT">
+            <PatternLayout pattern="%m%n"/>
+            <ThresholdFilter level="ALL"/>
+        </Console>
+        <Routing name="Routing">
+            <Routes pattern="$${sd:type}">
+                <Route>
+                    <RollingFile name="Rolling-${sd:type}" fileName="${filename}"
+                                 filePattern="target/rolling1/test1-${sd:type}.%i.log.gz">
+                        <PatternLayout>
+                            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+                        </PatternLayout>
+                        <SizeBasedTriggeringPolicy size="500" />
+                    </RollingFile>
+                </Route>
+                <Route ref="STDOUT" key="Audit"/>
+            </Routes>
+        </Routing>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="EventLogger" level="info" additivity="false">
+            <AppenderRef ref="Routing"/>
+        </Logger>
+
+        <Root level="ALL">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

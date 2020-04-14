@@ -3,7 +3,7 @@ package io.traits.logger
 import com.ortb.constants.AppConstants
 
 trait MultipleStackTracesInfoDisplayGetter extends
-                                           StackTraceInfoDisplayGetter {
+  StackTraceInfoDisplayGetter {
   def getStackTraceInfoUpToIndex : String = {
     val stacks = Thread.currentThread().getStackTrace
 
