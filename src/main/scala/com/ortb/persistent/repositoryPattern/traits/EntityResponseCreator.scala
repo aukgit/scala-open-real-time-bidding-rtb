@@ -47,7 +47,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     message : String) = {
     var message2 = message;
     if (message2.isEmpty) {
-      message2 = s"Operation [$actionType] successful for Entity($entity)."
+      message2 = s"Operation [$actionType] successful."
     }
 
     message2

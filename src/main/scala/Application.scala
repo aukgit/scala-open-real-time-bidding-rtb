@@ -24,7 +24,7 @@ object Application {
     val appManager = new AppManager()
 
     AppLogger.info("Help", isPrintStack = true)
-    println(appManager.config.asJson.spaces2);
+    // println(appManager.config.asJson.spaces2);
 
     val repository = new CampaignRepository(appManager)
     // repository.getAllAsync

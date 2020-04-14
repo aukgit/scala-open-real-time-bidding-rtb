@@ -2,7 +2,6 @@ package io.traits
 
 import io.traits.logger.InfoLogger
 
-import scala.concurrent.duration.Duration
 import scala.concurrent.{Future, Await}
 import io.AppLogger
 

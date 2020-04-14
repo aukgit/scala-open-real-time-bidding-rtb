@@ -6,7 +6,7 @@
 
         <Sentry name="Sentry"/>
         <appender name="rollingFile" class="org.apache.log4j.RollingFileAppender">
-            <param name="file" value="d:/application.log"/>
+            <param name="file" value="d:\\application.log"/>
             <param name="MaxFileSize" value="10MB"/>
             <param name="MaxBackupIndex" value="5"/>
             <layout class="org.apache.log4j.PatternLayout">
@@ -15,11 +15,12 @@
         </appender>
     </appenders>
 
-
     <loggers>
-        <root level="INFO">
+        <root level="ALL">
             <!-- Note that the Sentry logging threshold is overridden to the WARN level -->
-            <appender-ref ref="Sentry" level="WARN"/>
+            <appender-ref ref="Sentry" level="ALL"/>
+            <appender-ref ref="rollingFile" level="ALL"/>
+            <appender-ref ref="Console" level="ALL"/>
         </root>
     </loggers>
 </configuration>
