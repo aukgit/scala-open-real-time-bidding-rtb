@@ -11,5 +11,6 @@ case class ConfigModel(
   databaseRelativePath      : String,
   databaseGenerate          : DatabaseGenerateConfigModel,
   defaultTimeout            : Int,
-  defaultParallelProcessing : Int
+  defaultParallelProcessing : Int,
+  isEnableSentry            : Boolean
 )
