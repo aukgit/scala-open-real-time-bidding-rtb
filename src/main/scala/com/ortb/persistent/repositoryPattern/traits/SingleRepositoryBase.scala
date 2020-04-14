@@ -7,10 +7,7 @@ import scala.concurrent.{Future, Await}
 
 trait SingleRepositoryBase[TTable <: AbstractTable[_], TRow <: Null, TKey]
   extends
-    RepositoryOperationsAsync[TTable, TRow, TKey] with
-    SingleRepositoryBase[TTable, TRow, TKey] with
-    EntityResponseCreator[TTable, TRow, TKey] with
-    DatabaseActionExecutor[TTable, TRow, TKey] {
+    RepositoryOperationsAsync[TTable, TRow, TKey] {
   this: Repository[TTable, TRow, TKey] =>
 
   def table: TableQuery[TTable]
