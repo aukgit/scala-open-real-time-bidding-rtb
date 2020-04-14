@@ -3,11 +3,11 @@ package com.ortb.persistent.repositoryPattern.traits
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
 import io.AppLogger
-import slick.lifted.AbstractTable
+import slick.lifted.{AbstractTable, TableQuery}
 
 import scala.concurrent.Future
 
-trait EntityResponseCreator[TTable <: AbstractTable[_], TRow <: Null, TKey] {
+trait EntityResponseCreator[TTable, TRow, TKey] {
   this: Repository[TTable, TRow, TKey] =>
 
   lazy protected val emptyResponse = new RepositoryOperationResult[TRow](false, entity = None)

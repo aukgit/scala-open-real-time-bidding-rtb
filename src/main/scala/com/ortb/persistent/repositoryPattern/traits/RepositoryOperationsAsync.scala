@@ -1,7 +1,7 @@
 package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType
-import slick.lifted.AbstractTable
+import slick.lifted.{AbstractTable, TableQuery}
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
 import com.ortb.model.results.RepositoryOperationResult
@@ -12,26 +12,34 @@ import slick.sql.FixedSqlAction
 
 import scala.concurrent.Future
 
-trait RepositoryOperationsAsync[TTable <: AbstractTable[_], TRow <: Null, TKey]
+trait RepositoryOperationsAsync[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
   this: Repository[TTable, TRow, TKey] =>
 
-  def addAsync(entity: TRow): Future[RepositoryOperationResult[TRow]]
+  def addAsync(entityId: TKey, entity: TRow): Future[RepositoryOperationResult[TRow]]= {
+//    this.saveAsync(
+//      entityKey = entityId,
+//      entity = entity,
+//      dbAction = table.forceInsert(entity.asInstanceOf),
+//      isPerformActionOnExist = false,
+//      DatabaseActionType.Create)
+    getEmptyResponse
+  }
 
-  def deleteAsync(entityKey: TKey, entity: TRow):
+  def deleteAsync(entityId: TKey, entity: TRow):
   Future[RepositoryOperationResult[TRow]] = {
     try {
       return this.saveAsync(
-        entityKey = entityKey,
+        entityKey = entityId,
         entity = entity,
-        dbAction = getQueryByIdSingle(entityKey)
+        dbAction = getQueryByIdSingle(entityId)
           .call("delete")
           .asInstanceOf[FixedSqlAction[Int, NoStream, Effect.Write]],
         isPerformActionOnExist = true,
         DatabaseActionType.Delete)
     } catch {
       case e: Exception => AppLogger.error(e,
-        s"Delete failed on [id:$entityKey, entity: $entity]")
+        s"Delete failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse
@@ -60,6 +68,6 @@ trait RepositoryOperationsAsync[TTable <: AbstractTable[_], TRow <: Null, TKey]
     }
 
     // add
-    addAsync(entity)
+    addAsync(entityId, entity)
   }
 }

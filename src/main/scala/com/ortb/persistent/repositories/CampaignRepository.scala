@@ -15,14 +15,15 @@ import slick.collection.heterogeneous.Zero.+
 import slick.dbio._
 import slick.lifted.Query
 
-class CampaignRepository(appManager: AppManager) extends Repository[Campaign, CampaignRow, Int](appManager) {
+class CampaignRepository(appManager: AppManager)
+  extends
+    Repository[Campaign, CampaignRow, Int](appManager) {
   override def table = this.campaigns
 
   override def getAll: List[Tables.CampaignRow] = Await.result(getAllAsync, defaultTimeout).toList
 
   override def getById(entityId: Int): Tables.CampaignRow = {
-    val records = getQueryById(entityId).take(1)
-    this.run(records.result).head
+    this.run(getQueryByIdSingle(entityId)).head
   }
 
   override def getAllAsync: Future[Seq[CampaignRow]] = {
@@ -31,15 +32,6 @@ class CampaignRepository(appManager: AppManager) extends Repository[Campaign, Ca
     } yield record
 
     this.runAsync(records.result)
-  }
-
-  override def addAsync(entity: Tables.CampaignRow): Future[RepositoryOperationResult[Tables.CampaignRow]] = {
-    this.saveAsync(
-      entityKey = entity.campaignid,
-      entity = entity,
-      dbAction = table += entity,
-      isPerformActionOnExist = false,
-      DatabaseActionType.Create)
   }
 
   def getQueryById(id: Int): Query[Campaign, CampaignRow, Seq] = {

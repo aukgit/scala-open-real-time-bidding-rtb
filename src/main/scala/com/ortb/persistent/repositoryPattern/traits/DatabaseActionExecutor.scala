@@ -3,7 +3,7 @@ package com.ortb.persistent.repositoryPattern.traits
 import java.awt.dnd.InvalidDnDOperationException
 
 import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import slick.lifted.AbstractTable
+import slick.lifted.{AbstractTable, TableQuery}
 
 import scala.concurrent.{Future, Await}
 import slick.dbio.{NoStream, DBIOAction, Effect}
@@ -12,7 +12,7 @@ import io.AppLogger
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
 
-trait DatabaseActionExecutor[TTable <: AbstractTable[_], TRow <: Null, TKey] {
+trait DatabaseActionExecutor[TTable, TRow, TKey] {
   this: Repository[TTable, TRow, TKey] =>
 
   protected def getRunResult[T](dbAction: T): Option[Future[Seq[TRow]]] = {

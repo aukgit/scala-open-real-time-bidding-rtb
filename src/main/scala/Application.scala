@@ -1,6 +1,7 @@
 import com.ortb.constants.AppConstants
 import com.ortb.manager.AppManager
 import com.ortb.persistent.DatabaseEngineManager
+import com.ortb.persistent.repositories.CampaignRepository
 //import com.ortb.persistent.repositories.CampaignRepository
 import com.ortb.persistent.schema.Tables.{CampaignRow, Campaign}
 import io.AppLogger

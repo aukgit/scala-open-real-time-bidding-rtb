@@ -2,15 +2,15 @@ package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.persistent.repositoryPattern.Repository
 import slick.lifted.{TableQuery, AbstractTable, Query}
-
+import slick.jdbc.SQLiteProfile.api._
 import scala.concurrent.{Future, Await}
 
-trait SingleRepositoryBase[TTable <: AbstractTable[_], TRow <: Null, TKey]
+trait SingleRepositoryBase[TTable, TRow, TKey]
   extends
     RepositoryOperationsAsync[TTable, TRow, TKey] {
   this: Repository[TTable, TRow, TKey] =>
 
-  def table: TableQuery[TTable]
+  def table: TableQuery[_]
 
   def getAll: List[TRow]
 
