@@ -26,7 +26,8 @@ class CampaignRepository(appManager : AppManager)
   }
 
   override def getAllAsync : Future[Seq[CampaignRow]] = {
-    this.runAsync(table.result)
+    val query = for { record <- table } yield record
+    this.runAsync(query.result)
   }
 
   def getQueryById(id : Int) : Query[Campaign, CampaignRow, Seq] = {
