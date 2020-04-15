@@ -12,7 +12,7 @@ class CampaignTargetSiteRepository(appManager : AppManager)
   extends
     Repository[Campaigntargetsite, CampaigntargetsiteRow, Int](appManager) {
 
-  override def tableName : String = this.campaignTargetOperatingSystemTableName
+  override def tableName : String = this.campaignTargetSiteTableName
 
   override def getEntityId(entity : Option[Tables.CampaigntargetsiteRow]) : Int =
     if (entity.isDefined) entity.get.campaigntargetsiteid
