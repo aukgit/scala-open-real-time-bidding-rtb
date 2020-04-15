@@ -15,7 +15,8 @@ class AuctionRepository(appManager : AppManager)
   override def tableName : String = this.auctionTableName
 
   override def getEntityId(
-    entity : Option[AuctionRow]) : Int = entity.getOrElse(-1).asInstanceOf[Int]
+    entity : Option[AuctionRow]) : Int =
+    if(entity.isDefined) entity.get.auctionid else -1
 
   override def setEntityId(
     entityId : Option[Int],

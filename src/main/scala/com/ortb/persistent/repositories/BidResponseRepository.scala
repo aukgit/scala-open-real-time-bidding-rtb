@@ -3,46 +3,44 @@ package com.ortb.persistent.repositories
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositoryPattern.Repository
-import com.ortb.persistent.schema
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
-import slick.lifted.Query
 import slick.sql.FixedSqlAction
 
-class BidRequestRepository(appManager : AppManager)
+class BidResponseRepository(appManager : AppManager)
   extends
-    Repository[Bidrequest, BidrequestRow, Int](appManager) {
+    Repository[Bidresponse, BidresponseRow, Int](appManager) {
 
-  override def tableName : String = this.bidRequestTableName
+  override def tableName : String = this.bidResponseTableName
 
-  override def getEntityId(entity : Option[Tables.BidrequestRow]) : Int =
-    if(entity.isDefined) entity.get.bidrequestid else -1
+  override def getEntityId(entity : Option[Tables.BidresponseRow]) : Int =
+    if(entity.isDefined) entity.get.bidresponseid else -1
 
   override def setEntityId(
     entityId : Option[Int],
-    entity   : Option[Tables.BidrequestRow]) : Option[Tables.BidrequestRow] = {
+    entity   : Option[Tables.BidresponseRow]) : Option[Tables.BidresponseRow] = {
 
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
     }
 
-    Some(entity.get.copy(bidrequestid = entityId.get))
+    Some(entity.get.copy(bidresponseid = entityId.get))
   }
 
   override def getAddAction(
-    entity : Tables.BidrequestRow) =
+    entity : Tables.BidresponseRow) =
     table returning table.map(_.bidrequestid) into
       ((entityProjection, entityId) => entityProjection.copy(bidrequestid = entityId)) += entity
 
-  override def table = this.bidRequests
+  override def table = this.bidResponses
 
   override def getDeleteAction(
     entityId : Int) : FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
 
   override def getQueryById(
-    id : Int) = table.filter(c => c.bidrequestid === id)
+    id : Int) = table.filter(c => c.bidresponseid === id)
 
   override def getAllQuery = for {record <- table} yield record
 }
