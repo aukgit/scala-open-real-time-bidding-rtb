@@ -8,6 +8,7 @@ import io.AppLogger
 import slick.dbio.{NoStream, Effect}
 import slick.sql.FixedSqlAction
 
+import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
 trait RepositoryOperationsAsync[TTable, TRow, TKey]
@@ -35,7 +36,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"Delete failed on [id:$entityId, entity: $entity]")
+        s"[$tableName]-> Delete failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -65,7 +66,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"Add failed on [entity: $entity]")
+        s"[$tableName]-> Add failed on [entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -103,9 +104,39 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"Update failed on [id:$entityId, entity: $entity]")
+        s"[$tableName]-> Update failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse(actionType)
+  }
+
+
+  def deleteEntitiesAsync(entities : Iterable[TKey]) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
+    if (entities == null || entities.isEmpty) {
+      AppLogger.info(s"[$tableName]-> No items passed for multiple deleting.")
+
+      return null
+    }
+
+    entities.map(entity => this.deleteAsync(entity))
+  }
+
+
+  def addEntitiesAsync(entity : TRow, addTimes : Int) :
+  Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
+    if (entity == null) {
+      AppLogger.info(s"[$tableName] -> No items passed for multiple adding.")
+
+      return null
+    }
+
+    val list = ListBuffer[Future[RepositoryOperationResult[TRow, TKey]]]()
+
+    for (i <- 0 until addTimes) {
+      val response = this.addAsync(entity)
+      list += response
+    }
+
+    list
   }
 }

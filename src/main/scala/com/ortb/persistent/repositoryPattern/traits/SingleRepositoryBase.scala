@@ -26,7 +26,7 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
   def getById(entityId : TKey) : Option[TRow] = {
     val results = this.run(getQueryByIdSingle(entityId).result)
 
-    if (results.isEmpty) {
+    if (results == null || results.isEmpty) {
       return None
     }
 
@@ -38,7 +38,7 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
   def getQueryById(id : TKey) : Query[TTable, TRow, Seq]
 
   def isEmptyGivenEntity(
-    entityId : Option[TKey],
+    entityId                      : Option[TKey],
     entity                        : Option[TRow]) : Boolean = entityId.isEmpty || entity.isEmpty
 
   def getAllQuery : Query[TTable, TRow, Seq]
@@ -53,10 +53,9 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
 
   protected def getFirstOrDefault(rows : Seq[TRow]) : Option[TRow] = {
     if (rows != null && rows.nonEmpty) {
-      Some(rows.head)
+      return Some(rows.head)
     }
-    else {
-      None
-    }
+
+    None
   }
 }

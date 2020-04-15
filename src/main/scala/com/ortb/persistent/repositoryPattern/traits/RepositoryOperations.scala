@@ -5,6 +5,7 @@ import com.ortb.persistent.repositoryPattern.Repository
 import io.AppLogger
 
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.Future
 
 trait RepositoryOperations[TTable, TRow, TKey] extends
   RepositoryOperationsBase[TRow] {
@@ -24,33 +25,35 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
 
 
   def addEntities(entities : Iterable[TRow]) : Iterable[RepositoryOperationResult[TRow, TKey]] = {
-    if (entities.isEmpty) {
-      AppLogger.info("no items passed for adding.")
+    if (entities == null || entities.isEmpty) {
+      AppLogger.info(s"[$tableName]-> No items passed for deleting.")
+
+      return null
     }
 
     entities.map(entity => toRegular(this.addAsync(entity), defaultTimeout))
   }
 
   def deleteEntities(entities : Iterable[TKey]) : Iterable[RepositoryOperationResult[TRow, TKey]] = {
-    if (entities.isEmpty) {
-      AppLogger.info("no items passed for deleting.")
+    val responses = deleteEntitiesAsync(entities)
+
+    if (responses == null || responses.isEmpty) {
+      return null
     }
 
-    entities.map(entity => toRegular(this.deleteAsync(entity), defaultTimeout))
+    responses.map(futureResponse => toRegular(futureResponse, defaultTimeout))
   }
+
 
   def addEntities(entity : TRow, addTimes : Int) :
   Iterable[RepositoryOperationResult[TRow, TKey]] = {
     if (entity == null) {
-      AppLogger.info("no items passed for adding.")
+      AppLogger.info(s"[$tableName] -> No items passed for multiple adding.")
+
+      return null
     }
 
-    val list = ListBuffer[RepositoryOperationResult[TRow, TKey]]()
-    for (i <- 0 until addTimes) {
-      val response = toRegular(this.addAsync(entity), defaultTimeout)
-      list += response
-    }
-
-    list
+    addEntitiesAsync(entity, addTimes)
+      .map(futureResponse => toRegular(futureResponse, defaultTimeout))
   }
 }
