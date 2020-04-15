@@ -18,8 +18,7 @@ abstract class Repository[TTable, TRow, TKey]
     DatabaseActionExecutor[TTable, TRow, TKey] with
     FutureToRegular {
 
-  lazy protected implicit val executionContext : ExecutionContext = appManager.executionContextManager.createDefault
-  ().prepare()
+  lazy protected implicit val executionContext : ExecutionContext = appManager.executionContextManager.createDefault().prepare()
   lazy protected          val config           : ConfigModel      = appManager.config
   /**
    * default timeout from config, if < 0 then infinite
