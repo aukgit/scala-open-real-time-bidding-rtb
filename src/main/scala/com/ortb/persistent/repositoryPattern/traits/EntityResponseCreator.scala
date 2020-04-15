@@ -12,10 +12,10 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
   protected def createResponseForAffectedRowCount(
     affectedRow : Int,
-    entity      : Option[TRow],
-    actionType  : DatabaseActionType,
-    message     : String = "",
-    isSuccess   : Boolean = true,
+    entity : Option[TRow],
+    actionType : DatabaseActionType,
+    message : String = "",
+    isSuccess : Boolean = true,
   ) : RepositoryOperationResult[TRow, TKey] = {
     val message2    = getMessageForEntity(Some(affectedRow), actionType, message)
     val hasAffected = affectedRow > 0
@@ -33,15 +33,15 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
         isSuccess = isSuccess)
     }
 
-    throw new Exception(s"No record affected for operation: $actionType, Entity: $entity")
+    throw new Exception(s"[$tableName]->No record affected for operation: $actionType, Entity: $entity")
   }
 
   protected def createResponseForAffectedRow(
-    affectedEntity    : Option[TRow],
+    affectedEntity : Option[TRow],
     affectedRowsCount : Option[Int],
-    actionType        : DatabaseActionType,
-    message           : String = "",
-    isSuccess         : Boolean = true
+    actionType : DatabaseActionType,
+    message : String = "",
+    isSuccess : Boolean = true
   ) : RepositoryOperationResult[TRow, TKey] = {
     val message2 : String = getMessageForEntity(affectedRowsCount, actionType, message)
 
@@ -84,14 +84,15 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
       if (affectedRowsCount.isDefined) {
         affectedCount = s" (affected rows = ${affectedRowsCount.get})"
       }
-      message2 = s"[$actionType] operation is successful$affectedCount."
+
+      message2 = s"[$tableName]->[$actionType] operation is successful$affectedCount."
     }
 
     message2
   }
 
   protected def getEmptyResponse(actionType : DatabaseActionType) : Future[RepositoryOperationResult[TRow, TKey]] = {
-    AppLogger.conditionalInfo(isLogQueries, s"$actionType is skipped.")
+    AppLogger.conditionalInfo(isLogQueries, s"[$tableName]->$actionType is skipped.")
 
     Future {
       getEmptyResponseFor(actionType)
