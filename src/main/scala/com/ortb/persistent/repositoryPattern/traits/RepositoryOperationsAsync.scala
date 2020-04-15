@@ -37,7 +37,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"[$tableName] -> Delete failed on [id:$entityId, entity: $entity]")
+        s"${headerMessage} Delete failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -67,7 +67,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"[$tableName] -> Add failed on [entity: $entity]")
+        s"${headerMessage} Add failed on [entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -103,7 +103,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"[$tableName]-> Update failed on [id:$entityId, entity: $entity]")
+        s"${headerMessage} Update failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -111,7 +111,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def deleteEntitiesAsync(entities : Iterable[TKey]) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
     if (entities == null || entities.isEmpty) {
-      AppLogger.info(s"[$tableName]-> No items passed for multiple deleting.")
+      AppLogger.info(s"${headerMessage} No items passed for multiple deleting.")
 
       return null
     }
@@ -123,7 +123,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   def addEntitiesAsync(entity : TRow, addTimes : Int) :
   Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
     if (entity == null) {
-      AppLogger.info(s"[$tableName] -> No items passed for multiple adding.")
+      AppLogger.info(s"${headerMessage} No items passed for multiple adding.")
 
       return null
     }
@@ -141,7 +141,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   def addOrUpdateEntitiesAsync(entityWrappers : Iterable[EntityWrapper[TRow, TKey]])
   : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
-      AppLogger.info(s"[$tableName] -> No items passed for multiple ${DatabaseActionType.AddOrUpdate}.")
+      AppLogger.info(s"${headerMessage} No items passed for multiple ${DatabaseActionType.AddOrUpdate}.")
 
       return null
     }

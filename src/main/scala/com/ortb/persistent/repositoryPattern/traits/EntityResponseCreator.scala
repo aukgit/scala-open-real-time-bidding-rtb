@@ -33,7 +33,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
         isSuccess = isSuccess)
     }
 
-    throw new Exception(s"[$tableName]->No record affected for operation: $actionType, Entity: $entity")
+    throw new Exception(s"${headerMessage} No record affected for operation: $actionType, Entity: $entity")
   }
 
   protected def createResponseForAffectedRow(
@@ -85,14 +85,14 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
         affectedCount = s" (affected rows = ${affectedRowsCount.get})"
       }
 
-      message2 = s"[$tableName]->[$actionType] operation is successful$affectedCount."
+      message2 = s"${headerMessage} [$actionType] operation is successful$affectedCount."
     }
 
     message2
   }
 
   protected def getEmptyResponse(actionType : DatabaseActionType) : Future[RepositoryOperationResult[TRow, TKey]] = {
-    AppLogger.conditionalInfo(isLogQueries, s"[$tableName] -> $actionType is skipped.")
+    AppLogger.conditionalInfo(isLogQueries, s"${headerMessage} $actionType is skipped.")
 
     Future {
       getEmptyResponseFor(actionType)

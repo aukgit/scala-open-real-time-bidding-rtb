@@ -29,7 +29,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
       return toRegular(result, defaultTimeout)
     }
     catch {
-      case e : Exception => AppLogger.error(e, s"[$tableName]->Failed at performing $actionType")
+      case e : Exception => AppLogger.error(e, s"${headerMessage} Failed at performing $actionType")
     }
 
     getEmptyResponseFor(actionType)
@@ -63,7 +63,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
                                       actionType))
     }
     catch {
-      case e : Exception => AppLogger.error(e, s"[$tableName]->Failed at performing $actionType")
+      case e : Exception => AppLogger.error(e, s"$headerMessage Failed at performing $actionType")
     }
 
     getEmptyResponse(actionType)
@@ -82,7 +82,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
                                       affectedRowsCount = Some(1)))
     }
     catch {
-      case e : Exception => AppLogger.error(e, s"[$tableName]->Failed at performing $actionType")
+      case e : Exception => AppLogger.error(e, s"${headerMessage} Failed at performing $actionType")
     }
 
     getEmptyResponse(actionType)
@@ -134,7 +134,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
         val x = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow]]];
         Some(x)
       case _ =>
-        throw new InvalidDnDOperationException(s"[$tableName]->Invalid operation for runAsync. Operation $dbAction")
+        throw new InvalidDnDOperationException(s"${headerMessage} Invalid operation for runAsync. Operation $dbAction")
     }
   }
 }

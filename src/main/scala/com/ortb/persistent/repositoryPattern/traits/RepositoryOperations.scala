@@ -24,7 +24,7 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
 
   def addEntities(entities : Iterable[TRow]) : Iterable[RepositoryOperationResult[TRow, TKey]] = {
     if (entities == null || entities.isEmpty) {
-      AppLogger.info(s"[$tableName]-> No items passed for deleting.")
+      AppLogger.info(s"${headerMessage} No items passed for deleting.")
 
       return null
     }
@@ -45,7 +45,7 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
   def addEntities(entity                  : TRow, addTimes : Int) :
   Iterable[RepositoryOperationResult[TRow, TKey]] = {
     if (entity == null) {
-      AppLogger.info(s"[$tableName] -> No items passed for multiple adding.")
+      AppLogger.info(s"${headerMessage} No items passed for multiple adding.")
 
       return null
     }
@@ -57,7 +57,7 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
   def addOrUpdateEntities(entityWrappers : Iterable[EntityWrapper[TRow, TKey]])
   : Iterable[RepositoryOperationResult[TRow, TKey]] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
-      AppLogger.info(s"[$tableName] -> No items passed for multiple ${DatabaseActionType.AddOrUpdate}.")
+      AppLogger.info(s"${headerMessage} No items passed for multiple ${DatabaseActionType.AddOrUpdate}.")
 
       return null
     }
