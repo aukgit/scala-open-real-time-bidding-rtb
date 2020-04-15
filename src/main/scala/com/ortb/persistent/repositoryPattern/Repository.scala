@@ -19,11 +19,12 @@ abstract class Repository[TTable, TRow, TKey]
     FutureToRegular {
 
   lazy protected implicit val executionContext : ExecutionContext = appManager.executionContextManager.createDefault().prepare()
-  lazy protected          val config           : ConfigModel      = appManager.config
+  lazy protected          val config         : ConfigModel = appManager.config
   /**
    * default timeout from config, if < 0 then infinite
    */
-  lazy protected implicit val defaultTimeout   : Duration         = if (config.defaultTimeout < 0) Duration.Inf
-                                                                    else config.defaultTimeout.seconds
-  lazy protected          val isLogQueries     : Boolean          = config.isLogDatabaseQueryLogs
+  lazy protected implicit val defaultTimeout : Duration    = if (config.defaultTimeout < 0) Duration.Inf
+                                                             else config.defaultTimeout.seconds
+  lazy protected          val isLogQueries   : Boolean     = config.isLogDatabaseQueryLogs
+  lazy protected          val headerMessage                = s"[$tableName] -> "
 }

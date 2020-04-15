@@ -1,6 +1,7 @@
 package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType
+import com.ortb.model.persistent.EntityWrapper
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
@@ -36,7 +37,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"[$tableName]-> Delete failed on [id:$entityId, entity: $entity]")
+        s"[$tableName] -> Delete failed on [id:$entityId, entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -66,7 +67,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     catch {
       case e : Exception => AppLogger.error(
         e,
-        s"[$tableName]-> Add failed on [entity: $entity]")
+        s"[$tableName] -> Add failed on [entity: $entity]")
     }
 
     getEmptyResponse(actionType)
@@ -75,8 +76,6 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   /**
    * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
    * the action.
-   *
-   *
    *
    * @param entityId
    * @param entity
@@ -110,7 +109,6 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     getEmptyResponse(actionType)
   }
 
-
   def deleteEntitiesAsync(entities : Iterable[TKey]) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
     if (entities == null || entities.isEmpty) {
       AppLogger.info(s"[$tableName]-> No items passed for multiple deleting.")
@@ -138,5 +136,16 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     }
 
     list
+  }
+
+  def addOrUpdateEntitiesAsync(entityWrappers : Iterable[EntityWrapper[TRow, TKey]])
+  : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
+    if (entityWrappers == null || entityWrappers.isEmpty) {
+      AppLogger.info(s"[$tableName] -> No items passed for multiple ${DatabaseActionType.AddOrUpdate}.")
+
+      return null
+    }
+
+    entityWrappers.map(entityWrapper => addOrUpdateAsync(entityWrapper.entityId, entityWrapper.entity))
   }
 }

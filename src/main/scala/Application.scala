@@ -11,6 +11,6 @@ object Application {
   def main(args : Array[String]) : Unit = {
     val appManager = new AppManager
 
-    AppLogger.info("Help", 3, false)
+    // AppLogger.info("Help", 3, false)
   }
 }

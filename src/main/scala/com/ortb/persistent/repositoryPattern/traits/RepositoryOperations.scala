@@ -1,11 +1,10 @@
 package com.ortb.persistent.repositoryPattern.traits
 
+import com.ortb.enumeration.DatabaseActionType
+import com.ortb.model.persistent.EntityWrapper
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositoryPattern.Repository
 import io.AppLogger
-
-import scala.collection.mutable.ListBuffer
-import scala.concurrent.Future
 
 trait RepositoryOperations[TTable, TRow, TKey] extends
   RepositoryOperationsBase[TRow] {
@@ -22,7 +21,6 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
 
   def addOrUpdate(entityId : TKey, entity : TRow) : RepositoryOperationResult[TRow, TKey] =
     toRegular(addOrUpdateAsync(entityId, entity), defaultTimeout)
-
 
   def addEntities(entities : Iterable[TRow]) : Iterable[RepositoryOperationResult[TRow, TKey]] = {
     if (entities == null || entities.isEmpty) {
@@ -44,8 +42,7 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
     responses.map(futureResponse => toRegular(futureResponse, defaultTimeout))
   }
 
-
-  def addEntities(entity : TRow, addTimes : Int) :
+  def addEntities(entity                  : TRow, addTimes : Int) :
   Iterable[RepositoryOperationResult[TRow, TKey]] = {
     if (entity == null) {
       AppLogger.info(s"[$tableName] -> No items passed for multiple adding.")
@@ -55,5 +52,17 @@ trait RepositoryOperations[TTable, TRow, TKey] extends
 
     addEntitiesAsync(entity, addTimes)
       .map(futureResponse => toRegular(futureResponse, defaultTimeout))
+  }
+
+  def addOrUpdateEntities(entityWrappers : Iterable[EntityWrapper[TRow, TKey]])
+  : Iterable[RepositoryOperationResult[TRow, TKey]] = {
+    if (entityWrappers == null || entityWrappers.isEmpty) {
+      AppLogger.info(s"[$tableName] -> No items passed for multiple ${DatabaseActionType.AddOrUpdate}.")
+
+      return null
+    }
+
+    addOrUpdateEntitiesAsync(entityWrappers)
+      .map(responseInFuture => toRegular(responseInFuture, defaultTimeout))
   }
 }

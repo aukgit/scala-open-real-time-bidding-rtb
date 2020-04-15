@@ -92,7 +92,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   protected def getEmptyResponse(actionType : DatabaseActionType) : Future[RepositoryOperationResult[TRow, TKey]] = {
-    AppLogger.conditionalInfo(isLogQueries, s"[$tableName]->$actionType is skipped.")
+    AppLogger.conditionalInfo(isLogQueries, s"[$tableName] -> $actionType is skipped.")
 
     Future {
       getEmptyResponseFor(actionType)
