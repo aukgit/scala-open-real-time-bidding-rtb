@@ -1,6 +1,5 @@
 package com.ortb.persistent.repositories
 
-import scala.concurrent._
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositoryPattern.Repository
@@ -16,33 +15,13 @@ class AdvertiseRepository(appManager : AppManager)
 
   override def tableName : String = this.advertiseTableName
 
-  override def table = this.advertises
-
-  override def getQueryById(
-    id : Int) : Query[Tables.Advertise, Tables.AdvertiseRow, Seq] = table.filter(c => c.advertiseid === id)
-
-  override def getById(
-    entityId : Int) : Option[Tables.AdvertiseRow] = {
-    val result = this.run(getQueryByIdSingle(entityId).result)
-    if (result.isEmpty) {
-      return None
-    }
-
-    Some(result.head)
-  }
-
-  override def getAllAsync : Future[Seq[Tables.AdvertiseRow]] = {
-    val query = for {record <- table} yield record
-    this.runAsync(query.result)
-  }
-
-  override def getIdOf(entity : Option[Tables.AdvertiseRow]) : Int = if (entity.isDefined) entity.get.advertiseid
-                                                                     else -1
+  override def getEntityId(entity : Option[Tables.AdvertiseRow]) : Int = entity.getOrElse(-1).asInstanceOf[Int]
 
   override def setEntityId(
     entityId : Option[Int],
     entity   : Option[Tables.AdvertiseRow]) : Option[Tables.AdvertiseRow] = {
-    if (entityId.isEmpty || entity.isEmpty) {
+
+    if (isEmptyGivenEntity(entityId, entity)) {
       return None
     }
 
@@ -55,7 +34,14 @@ class AdvertiseRepository(appManager : AppManager)
     table returning table.map(_.advertiseid) into
       ((entityProjection, entityId) => entityProjection.copy(campaignid = entityId)) += entity
 
+  override def table = this.advertises
+
   override def getDeleteAction(
     entityId : Int) : FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
+
+  override def getQueryById(
+    id : Int) : Query[Tables.Advertise, Tables.AdvertiseRow, Seq] = table.filter(c => c.advertiseid === id)
+
+  override def getAllQuery = for {record <- table} yield record
 }

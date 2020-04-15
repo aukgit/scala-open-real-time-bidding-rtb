@@ -10,15 +10,9 @@ import scala.concurrent.Future
 trait EntityResponseCreator[TTable, TRow, TKey] {
   this : Repository[TTable, TRow, TKey] =>
 
-  def getEmptyResponseFor(actionType : DatabaseActionType) = new RepositoryOperationResult[TRow, TKey](
-    isSuccess = false,
-    entityId = None,
-    entity = None,
-    actionType = actionType)
-
   protected def createResponseForAffectedRowCount(
     affectedRow : Int,
-    entity : Option[TRow],
+    entity      : Option[TRow],
     actionType  : DatabaseActionType,
     message     : String = "",
     isSuccess   : Boolean = true,
@@ -32,7 +26,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
     if (hasAffected) {
       return createResponseFor(
-        entityId = Some(getIdOf(entity)),
+        entityId = Some(getEntityId(entity)),
         entity = entity,
         actionType = actionType,
         message = message2,
@@ -42,8 +36,36 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     throw new Exception(s"No record affected for operation: $actionType, Entity: $entity")
   }
 
+  protected def createResponseForAffectedRow(
+    affectedEntity    : Option[TRow],
+    affectedRowsCount : Option[Int],
+    actionType        : DatabaseActionType,
+    message           : String = "",
+    isSuccess         : Boolean = true
+  ) : RepositoryOperationResult[TRow, TKey] = {
+    val message2 : String = getMessageForEntity(affectedRowsCount, actionType, message)
+
+    if (affectedEntity != null) {
+      AppLogger.logEntitiesNonFuture(isLogQueries, Seq(affectedEntity), message2)
+      return createResponseFor(
+        entityId = Some(getEntityId(affectedEntity)),
+        entity = affectedEntity,
+        actionType = actionType,
+        message = message2,
+        isSuccess = isSuccess)
+    }
+
+    getEmptyResponseFor(actionType)
+  }
+
+  def getEmptyResponseFor(actionType : DatabaseActionType) = new RepositoryOperationResult[TRow, TKey](
+    isSuccess = false,
+    entityId = None,
+    entity = None,
+    actionType = actionType)
+
   protected def createResponseFor(
-    entityId : Option[TKey],
+    entityId   : Option[TKey],
     entity     : Option[TRow],
     actionType : DatabaseActionType,
     message    : String = "",
@@ -66,28 +88,6 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     }
 
     message2
-  }
-
-  protected def createResponseForAffectedRow(
-    affectedEntity : Option[TRow],
-    affectedRowsCount : Option[Int],
-    actionType     : DatabaseActionType,
-    message        : String = "",
-    isSuccess      : Boolean = true
-  ) : RepositoryOperationResult[TRow, TKey] = {
-    val message2 : String = getMessageForEntity(affectedRowsCount, actionType, message)
-
-    if (affectedEntity != null) {
-      AppLogger.logEntitiesNonFuture(isLogQueries, Seq(affectedEntity), message2)
-      return createResponseFor(
-        entityId = Some(getIdOf(affectedEntity)),
-        entity = affectedEntity,
-        actionType = actionType,
-        message = message2,
-        isSuccess = isSuccess)
-    }
-
-    getEmptyResponseFor(actionType)
   }
 
   protected def getEmptyResponse(actionType : DatabaseActionType) : Future[RepositoryOperationResult[TRow, TKey]] = {

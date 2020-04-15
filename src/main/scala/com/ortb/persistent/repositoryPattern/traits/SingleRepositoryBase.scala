@@ -2,6 +2,7 @@ package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.persistent.repositoryPattern.Repository
 import slick.lifted.{TableQuery, Query}
+import slick.jdbc.SQLiteProfile.api._
 
 import scala.concurrent.{Future, Await}
 
@@ -18,17 +19,31 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
 
   def getAll : List[TRow] = toRegular(getAllAsync, defaultTimeout).toList
 
+  def getAllAsync : Future[Seq[TRow]] = this.runAsync(getAllQuery.result)
+
   def isExists(entityId : TKey) : Boolean = getById(entityId).isDefined
+
+  def getById(entityId : TKey) : Option[TRow] = {
+    val results = this.run(getQueryByIdSingle(entityId).result)
+
+    if (results.isEmpty) {
+      return None
+    }
+
+    Some(results.head)
+  }
 
   def getQueryByIdSingle(id : TKey) : Query[TTable, TRow, Seq] = getQueryById(id).take(1)
 
   def getQueryById(id : TKey) : Query[TTable, TRow, Seq]
 
-  def getById(entityId : TKey) : Option[TRow]
+  def isEmptyGivenEntity(
+    entityId : Option[TKey],
+    entity                        : Option[TRow]) : Boolean = entityId.isEmpty || entity.isEmpty
 
-  def getAllAsync : Future[Seq[TRow]]
+  def getAllQuery : Query[TTable, TRow, Seq]
 
-  def getIdOf(entity : Option[TRow]) : TKey
+  def getEntityId(entity : Option[TRow]) : TKey
 
   def setEntityId(entityId : Option[TKey], entity : Option[TRow]) : Option[TRow]
 

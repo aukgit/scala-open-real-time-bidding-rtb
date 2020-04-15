@@ -8,7 +8,6 @@ import io.AppLogger
 import slick.dbio.{NoStream, Effect}
 import slick.sql.FixedSqlAction
 
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
 trait RepositoryOperationsAsync[TTable, TRow, TKey]
@@ -22,7 +21,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def deleteAsync(entityId : TKey) :
   Future[RepositoryOperationResult[TRow, TKey]] = {
-    val entity = getById(entityId)
+    val entity     = getById(entityId)
     val actionType = DatabaseActionType.Delete
 
     try {
@@ -73,16 +72,21 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   }
 
   /**
-   * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform the action.
+   * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
+   * the action.
+   *
+   *
+   *
    * @param entityId
    * @param entity
+   *
    * @return
    */
   def updateAsync(entityId : TKey, entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val actionType = DatabaseActionType.Update
 
     try {
-      if(entityId != getIdOf(Some(entity))){
+      if (entityId != getEntityId(Some(entity))) {
         val entity2 = setEntityId(Some(entityId), Some(entity))
 
         return this.saveAsync(
