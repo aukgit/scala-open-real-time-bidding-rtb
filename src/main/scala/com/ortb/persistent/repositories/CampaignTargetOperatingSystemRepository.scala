@@ -21,7 +21,6 @@ class CampaignTargetOperatingSystemRepository(appManager : AppManager)
   override def setEntityId(
     entityId : Option[Int],
     entity   : Option[Tables.CampaigntargetoperatingsystemRow]) : Option[Tables.CampaigntargetoperatingsystemRow] = {
-
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
     }

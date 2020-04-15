@@ -21,7 +21,7 @@ abstract class Repository[TTable, TRow, TKey]
   lazy protected implicit val executionContext : ExecutionContext = appManager
     .executionContextManager
     .createDefault().prepare()
-  
+
   /**
    * default timeout from config, if < 0 then infinite
    */
@@ -30,5 +30,5 @@ abstract class Repository[TTable, TRow, TKey]
 
   lazy protected val config        : ConfigModel = appManager.config
   lazy protected val isLogQueries  : Boolean     = config.isLogDatabaseQueryLogs
-  lazy protected val headerMessage : String      = s"[$tableName] -> "
+  lazy protected val headerMessage : String      = s"[$tableName] ->"
 }
