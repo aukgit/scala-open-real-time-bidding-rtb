@@ -67,10 +67,16 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.1.0" % Test,
 
   ///////////////////////////////////////////////////
-  // Others
+  // Scala Core Packages
   ///////////////////////////////////////////////////
 
   "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   // "org.scala-lang" % "scala-reflect" % "2.10.0",
-  "org.scala-lang" % "scala-compiler" % scalaVersion.value
+  "org.scala-lang" % "scala-compiler" % scalaVersion.value,
+  "org.scala-lang" % "scala-library" % scalaVersion.value
+
+  ///////////////////////////////////////////////////
+  // Others
+  ///////////////////////////////////////////////////
+
   )
