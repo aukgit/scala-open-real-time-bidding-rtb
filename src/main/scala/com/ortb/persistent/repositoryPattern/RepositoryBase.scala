@@ -9,7 +9,7 @@ import com.ortb.manager.AppManager
 import com.ortb.persistent.schema.DatabaseSchema
 import io.traits.FutureToRegular
 
-abstract class Repository[TTable, TRow, TKey]
+abstract class RepositoryBase[TTable, TRow, TKey]
 (appManager : AppManager)
   extends
     DatabaseSchema(appManager) with

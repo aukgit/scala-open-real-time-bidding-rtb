@@ -10,13 +10,14 @@ import slick.dbio.{NoStream, DBIOAction, Effect}
 import slick.sql._
 import io.AppLogger
 import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
+
 
 trait DatabaseActionExecutor[TTable, TRow, TKey] {
-  this : Repository[TTable, TRow, TKey] =>
+  this : RepositoryBase[TTable, TRow, TKey] =>
 
   def quickSave(
-    dbAction   : FixedSqlAction[Int, NoStream, Effect.Write],
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
     actionType : DatabaseActionType
   ) : RepositoryOperationResult[TRow, TKey] = {
     try {
@@ -36,11 +37,11 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   }
 
   def saveAsync(
-    entityKey              : TKey,
-    entity                 : TRow,
-    dbAction               : FixedSqlAction[Int, NoStream, Effect.Write],
+    entityKey : TKey,
+    entity : TRow,
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
     isPerformActionOnExist : Boolean,
-    actionType             : DatabaseActionType
+    actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val isPerform = this.isExists(entityKey) == isPerformActionOnExist
     if (isPerform) {
@@ -51,8 +52,8 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   }
 
   def saveAsync(
-    entity     : Option[TRow],
-    dbAction   : FixedSqlAction[Int, NoStream, Effect.Write],
+    entity : Option[TRow],
+    dbAction : FixedSqlAction[Int, NoStream, Effect.Write],
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {
@@ -70,7 +71,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   }
 
   def saveAsync(
-    dbAction   : FixedSqlAction[TRow, NoStream, Effect.Write],
+    dbAction : FixedSqlAction[TRow, NoStream, Effect.Write],
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     try {

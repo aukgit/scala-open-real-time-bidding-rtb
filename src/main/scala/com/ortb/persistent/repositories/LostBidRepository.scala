@@ -2,7 +2,7 @@ package com.ortb.persistent.repositories
 
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
@@ -10,7 +10,7 @@ import slick.sql.FixedSqlAction
 
 class LostBidRepository(appManager : AppManager)
   extends
-    Repository[Lostbid, LostbidRow, Int](appManager) {
+    RepositoryBase[Lostbid, LostbidRow, Int](appManager) {
 
   override def tableName : String = this.lostBidTableName
 

@@ -1,6 +1,6 @@
 package com.ortb.persistent.repositoryPattern.traits
 
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import slick.lifted.{TableQuery, Query}
 import slick.jdbc.SQLiteProfile.api._
 
@@ -11,7 +11,7 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
     RepositoryOperationsAsync[TTable, TRow, TKey]
     with
     RepositoryOperations[TTable, TRow, TKey] {
-  this : Repository[TTable, TRow, TKey] =>
+  this : RepositoryBase[TTable, TRow, TKey] =>
 
   def table : TableQuery[_]
 

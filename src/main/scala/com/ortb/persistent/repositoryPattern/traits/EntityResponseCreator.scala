@@ -2,13 +2,13 @@ package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import io.AppLogger
 
 import scala.concurrent.Future
 
 trait EntityResponseCreator[TTable, TRow, TKey] {
-  this : Repository[TTable, TRow, TKey] =>
+  this : RepositoryBase[TTable, TRow, TKey] =>
 
   protected def createResponseForAffectedRowCount(
     affectedRow : Int,

@@ -2,7 +2,7 @@ package com.ortb.persistent.repositories
 
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
@@ -10,7 +10,7 @@ import slick.sql.FixedSqlAction
 
 class DemandSidePlatformRepository(appManager : AppManager)
   extends
-    Repository[Demandsideplatform, DemandsideplatformRow, Int](appManager) {
+    RepositoryBase[Demandsideplatform, DemandsideplatformRow, Int](appManager) {
 
   override def tableName : String = this.demandSidePlatformTableName
 

@@ -3,12 +3,12 @@ package com.ortb.persistent.repositoryPattern.traits
 import com.ortb.enumeration.DatabaseActionType
 import com.ortb.model.persistent.EntityWrapper
 import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import io.AppLogger
 
 trait RepositoryOperations[TTable, TRow, TKey] extends
   RepositoryOperationsBase[TRow] {
-  this : Repository[TTable, TRow, TKey] =>
+  this : RepositoryBase[TTable, TRow, TKey] =>
 
   def add(entity : TRow) : RepositoryOperationResult[TRow, TKey] =
     toRegular(addAsync(entity), defaultTimeout)

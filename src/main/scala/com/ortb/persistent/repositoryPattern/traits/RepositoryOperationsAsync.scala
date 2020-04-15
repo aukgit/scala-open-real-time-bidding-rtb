@@ -4,7 +4,7 @@ import com.ortb.enumeration.DatabaseActionType
 import com.ortb.model.persistent.EntityWrapper
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import io.AppLogger
 import slick.dbio.{NoStream, Effect}
 import slick.sql.FixedSqlAction
@@ -15,7 +15,7 @@ import scala.concurrent.Future
 trait RepositoryOperationsAsync[TTable, TRow, TKey]
   extends
     RepositoryOperationsBase[TRow] {
-  this : Repository[TTable, TRow, TKey] =>
+  this : RepositoryBase[TTable, TRow, TKey] =>
 
   def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
 

@@ -2,7 +2,7 @@ package com.ortb.persistent.repositories
 
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
@@ -10,7 +10,7 @@ import slick.sql.FixedSqlAction
 
 class BidResponseRepository(appManager : AppManager)
   extends
-    Repository[Bidresponse, BidresponseRow, Int](appManager) {
+    RepositoryBase[Bidresponse, BidresponseRow, Int](appManager) {
 
   override def tableName : String = this.bidResponseTableName
 

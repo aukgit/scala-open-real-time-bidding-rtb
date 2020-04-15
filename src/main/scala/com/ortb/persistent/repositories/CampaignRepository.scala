@@ -2,7 +2,7 @@ package com.ortb.persistent.repositories
 
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
-import com.ortb.persistent.repositoryPattern.Repository
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
 import slick.lifted.Query
@@ -10,7 +10,7 @@ import slick.sql.FixedSqlAction
 
 class CampaignRepository(appManager : AppManager)
   extends
-    Repository[Campaign, CampaignRow, Int](appManager) {
+    RepositoryBase[Campaign, CampaignRow, Int](appManager) {
 
   override def tableName : String = this.campaignTableName
 
