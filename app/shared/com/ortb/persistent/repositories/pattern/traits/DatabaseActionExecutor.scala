@@ -1,11 +1,11 @@
-package com.ortb.persistent.repositories.pattern.traits
+package shared.com.ortb.persistent.repositories.pattern.traits
 
 import java.awt.dnd.InvalidDnDOperationException
 
-import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
-import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositories.pattern.RepositoryBase
+import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
+import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import io.AppLogger
 import slick.dbio._
 import slick.sql._

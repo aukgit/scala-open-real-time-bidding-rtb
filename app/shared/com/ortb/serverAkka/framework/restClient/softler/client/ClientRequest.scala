@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.restClient.softler.client
+package shared.com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.{Unmarshal, Unmarshaller}
@@ -18,7 +18,7 @@ case class ClientRequest[R <: RequestState](request : HttpRequest)
     with AcceptHeaders[R]
     with EntitySupport[R] {
 
-  import com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
+  import shared.com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
 
   def body[A](implicit um : Unmarshaller[RequestEntity, A], materializer : Materializer) : Future[A] =
     Unmarshal(request.entity).to[A]
@@ -37,7 +37,7 @@ case class ClientRequest[R <: RequestState](request : HttpRequest)
  */
 object ClientRequest {
 
-  import com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
+  import shared.com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
 
   def apply() : ClientRequest[NotReady] = ClientRequest(HttpRequest())
 

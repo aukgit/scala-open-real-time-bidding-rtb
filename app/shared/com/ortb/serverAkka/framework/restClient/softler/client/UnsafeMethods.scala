@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.restClient.softler.client
+package shared.com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.Http
 import akka.stream.Materializer
@@ -7,12 +7,12 @@ import akka.http.scaladsl.unmarshalling.Unmarshaller
 import scala.concurrent.{Future, ExecutionContext}
 import akka.http.scaladsl.model.{HttpRequest, ResponseEntity, HttpMethods}
 import akka.actor.ActorSystem
-import com.ortb.serverAkka.framework.restClient.softler.processor.ResponseProcessor
+import shared.com.ortb.serverAkka.framework.restClient.softler.processor.ResponseProcessor
 
 trait UnsafeMethods[R <: RequestState] extends
   AkkaHttpRequest {
 
-  import com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
+  import shared.com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
 
   def post()(
     implicit evidence : RequestWithEntity[R],

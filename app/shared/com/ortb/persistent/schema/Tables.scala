@@ -1,4 +1,4 @@
-package com.ortb.persistent.schema
+package shared.com.ortb.persistent.schema
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {

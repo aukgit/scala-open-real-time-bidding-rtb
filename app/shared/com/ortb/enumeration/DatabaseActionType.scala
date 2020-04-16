@@ -1,4 +1,4 @@
-package com.ortb.enumeration
+package shared.com.ortb.enumeration
 
 object DatabaseActionType extends Enumeration {
   type DatabaseActionType = Value

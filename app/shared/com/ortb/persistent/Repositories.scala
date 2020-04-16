@@ -1,8 +1,8 @@
-package com.ortb.persistent
+package shared.com.ortb.persistent
 
-import com.ortb.manager.AppManager
-import com.ortb.persistent.repositories._
-import com.ortb.persistent.schema.DatabaseSchema
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.persistent.repositories._
+import shared.com.ortb.persistent.schema.DatabaseSchema
 
 class Repositories(appManager: AppManager)
     extends DatabaseSchema(appManager: AppManager) {

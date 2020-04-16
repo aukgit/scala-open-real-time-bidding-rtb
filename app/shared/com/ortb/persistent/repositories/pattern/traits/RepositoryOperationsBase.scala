@@ -1,3 +1,3 @@
-package com.ortb.persistent.repositories.pattern.traits
+package shared.com.ortb.persistent.repositories.pattern.traits
 
 trait RepositoryOperationsBase[TRow] {}

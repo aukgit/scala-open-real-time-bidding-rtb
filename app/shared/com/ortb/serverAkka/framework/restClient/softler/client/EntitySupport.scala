@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.restClient.softler.client
+package shared.com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.model.headers.Accept
 import akka.http.scaladsl.model.{MediaRange, ContentTypes, MediaTypes, RequestEntity}
@@ -9,7 +9,7 @@ import akka.http.scaladsl.model.{MediaRange, ContentTypes, MediaTypes, RequestEn
 trait EntitySupport[R <: RequestState] extends
   AkkaHttpRequest {
 
-  import com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
+  import shared.com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
 
   def entity(entity : RequestEntity) : ClientRequest[RequestState.EntityAcceptance] =
     ClientRequest(request.copy(entity = entity))

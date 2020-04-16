@@ -1,8 +1,8 @@
-package com.ortb.manager
+package shared.com.ortb.manager
 
-import com.ortb.constants.AppConstants
-import com.ortb.manager.traits.AppManagerBaseType
-import com.ortb.persistent.DatabaseEngineManager
+import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.manager.traits.AppManagerBaseType
+import shared.com.ortb.persistent.DatabaseEngineManager
 import io.sentry.Sentry
 import slick.jdbc.SQLiteProfile
 

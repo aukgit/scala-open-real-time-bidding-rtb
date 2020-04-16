@@ -1,6 +1,6 @@
-package com.ortb.serverAkka.framework.sampleCodes
+package shared.com.ortb.serverAkka.framework.sampleCodes
 
-import com.ortb.serverAkka.framework.sampleCodes.GuitarDB.CreateGuitar
+import shared.com.ortb.serverAkka.framework.sampleCodes.GuitarDB.CreateGuitar
 
 import scala.concurrent.Future
 import akka.actor.{ActorSystem, Props}

@@ -1,6 +1,6 @@
-package com.ortb.persistent.repositories.pattern.traits
+package shared.com.ortb.persistent.repositories.pattern.traits
 
-import com.ortb.persistent.repositories.pattern.RepositoryBase
+import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import slick.lifted.{Query, TableQuery}
 import slick.jdbc.SQLiteProfile.api._
 

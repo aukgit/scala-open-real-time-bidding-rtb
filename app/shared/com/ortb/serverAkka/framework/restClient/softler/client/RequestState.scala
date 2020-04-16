@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.restClient.softler.client
+package shared.com.ortb.serverAkka.framework.restClient.softler.client
 
 import scala.annotation.implicitNotFound
 

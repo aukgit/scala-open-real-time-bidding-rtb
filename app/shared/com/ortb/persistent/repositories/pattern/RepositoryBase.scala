@@ -1,9 +1,9 @@
-package com.ortb.persistent.repositories.pattern
+package shared.com.ortb.persistent.repositories.pattern
 
-import com.ortb.manager.AppManager
-import com.ortb.model.config.ConfigModel
-import com.ortb.persistent.repositories.pattern.traits._
-import com.ortb.persistent.schema.DatabaseSchema
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.model.config.ConfigModel
+import shared.com.ortb.persistent.repositories.pattern.traits._
+import shared.com.ortb.persistent.schema.DatabaseSchema
 import io.traits.FutureToRegular
 
 import scala.concurrent.ExecutionContext

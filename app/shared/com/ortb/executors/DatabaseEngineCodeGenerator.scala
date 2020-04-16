@@ -1,6 +1,6 @@
-package com.ortb.executors
+package shared.com.ortb.executors
 
-import com.ortb.manager.AppManager
+import shared.com.ortb.manager.AppManager
 
 object DatabaseEngineCodeGenerator extends App {
   lazy val appManager             = new AppManager

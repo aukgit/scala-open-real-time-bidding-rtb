@@ -1,6 +1,6 @@
-package com.ortb.persistent.repositories.pattern.traits
+package shared.com.ortb.persistent.repositories.pattern.traits
 
-import com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.results.RepositoryOperationResult
 
 trait RepositoryJsonOperations[TRow, TKey]
     extends RepositoryOperationsBase[TRow] {

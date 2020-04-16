@@ -1,8 +1,8 @@
-package com.ortb.persistent
+package shared.com.ortb.persistent
 
-import com.ortb.manager.AppManager
-import com.ortb.model.config.DatabaseGenerateConfigModel
-import com.ortb.persistent.schema.DatabaseSchema
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.model.config.DatabaseGenerateConfigModel
+import shared.com.ortb.persistent.schema.DatabaseSchema
 import io.PathHelper
 import slick.jdbc.SQLiteProfile.api._
 

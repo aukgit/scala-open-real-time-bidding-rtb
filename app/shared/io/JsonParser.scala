@@ -1,6 +1,6 @@
 package io
 
-import com.ortb.model.error.FileErrorModel
+import shared.com.ortb.model.error.FileErrorModel
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._

@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.restClient.softler.exception
+package shared.com.ortb.serverAkka.framework.restClient.softler.exception
 
 /**
  * The root rest exception

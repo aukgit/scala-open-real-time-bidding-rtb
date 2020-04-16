@@ -1,4 +1,4 @@
-package com.ortb.implicits
+package shared.com.ortb.implicits
 
 /**
  * Reference: https://bit.ly/2RCprcz

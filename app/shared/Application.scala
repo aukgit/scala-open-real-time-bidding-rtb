@@ -1,7 +1,7 @@
-import com.ortb.enumeration.DatabaseActionType
-import com.ortb.manager.AppManager
-import com.ortb.persistent.repositories.CampaignRepository
-import com.ortb.persistent.schema.Tables.CampaignRow
+import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.persistent.repositories.CampaignRepository
+import shared.com.ortb.persistent.schema.Tables.CampaignRow
 import io.AppLogger
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._

@@ -1,7 +1,7 @@
-package com.ortb.serverAkka.framework.restClient.softler.client
+package shared.com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.actor.ActorSystem
-import com.ortb.serverAkka.framework.restClient.softler.processor.ResponseProcessor
+import shared.com.ortb.serverAkka.framework.restClient.softler.processor.ResponseProcessor
 import akka.stream.Materializer
 import akka.http.scaladsl.unmarshalling.Unmarshaller
 
@@ -12,7 +12,7 @@ import akka.http.scaladsl.Http
 trait IdempotentMethods[R <: RequestState] extends
   AkkaHttpRequest {
 
-  import com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
+  import shared.com.ortb.serverAkka.framework.restClient.softler.client.RequestState._
 
   def get()(
     implicit evidence : RequestIsIdempotent[R],

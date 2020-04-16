@@ -1,12 +1,12 @@
-package com.ortb.serverAkka.framework.sampleCodes
+package shared.com.ortb.serverAkka.framework.sampleCodes
 
-import com.ortb.constants.AppConstants
+import shared.com.ortb.constants.AppConstants
 import akka.http.scaladsl.model._
-import com.ortb.serverAkka.framework.restClient.softler.context.{AkkaHttpResponse, AkkaHttpResponseHandler, AkkaHttpContext, AkkaHttpRequest}
+import shared.com.ortb.serverAkka.framework.restClient.softler.context.{AkkaHttpResponse, AkkaHttpResponseHandler, AkkaHttpContext, AkkaHttpRequest}
 
 import scala.concurrent.Future
 import akka.http.scaladsl.Http
-import com.ortb.serverAkka.framework.ServerRun
+import shared.com.ortb.serverAkka.framework.ServerRun
 
 class AkkaServerDefinition(endPointPrefixes : String)
   extends AkkaHttpRequest

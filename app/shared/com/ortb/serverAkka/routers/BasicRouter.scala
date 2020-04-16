@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.routers
+package shared.com.ortb.serverAkka.routers
 
 abstract class BasicRouter[T](
   prefix : String,

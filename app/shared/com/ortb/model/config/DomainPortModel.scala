@@ -1,4 +1,4 @@
-package com.ortb.model.config
+package shared.com.ortb.model.config
 
 case class DomainPortModel(
   domain : String,

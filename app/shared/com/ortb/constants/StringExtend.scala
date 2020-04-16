@@ -1,4 +1,4 @@
-package com.ortb.constants
+package shared.com.ortb.constants
 
 object StringExtend {
   def isEmpty(str : Option[String]) : Boolean =

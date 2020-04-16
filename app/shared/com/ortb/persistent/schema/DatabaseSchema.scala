@@ -1,7 +1,7 @@
-package com.ortb.persistent.schema
+package shared.com.ortb.persistent.schema
 
-import com.ortb.manager.AppManager
-import com.ortb.persistent.schema.Tables.{profile, _}
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.persistent.schema.Tables.{profile, _}
 import slick.lifted.TableQuery
 
 class DatabaseSchema(appManager : AppManager) {

@@ -1,6 +1,6 @@
-package com.ortb.model.results
+package shared.com.ortb.model.results
 
-import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import slick.dbio.DatabaseAction
 
 case class RepositoryOperationResult[T, TKey](

@@ -1,10 +1,10 @@
-package com.ortb.persistent.repositories.pattern.traits
+package shared.com.ortb.persistent.repositories.pattern.traits
 
-import com.ortb.enumeration.DatabaseActionType
-import com.ortb.model.persistent.EntityWrapper
+import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.model.persistent.EntityWrapper
 import slick.jdbc.SQLiteProfile.api._
-import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositories.pattern.RepositoryBase
+import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import io.AppLogger
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction

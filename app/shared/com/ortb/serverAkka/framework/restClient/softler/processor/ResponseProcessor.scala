@@ -1,8 +1,8 @@
-package com.ortb.serverAkka.framework.restClient.softler.processor
+package shared.com.ortb.serverAkka.framework.restClient.softler.processor
 
 import akka.http.scaladsl.model.{ResponseEntity, HttpResponse, StatusCodes}
 import akka.stream.Materializer
-import com.ortb.serverAkka.framework.restClient.softler.exception._
+import shared.com.ortb.serverAkka.framework.restClient.softler.exception._
 
 /**
  * The response processor is handling all common [[StatusCodes]]

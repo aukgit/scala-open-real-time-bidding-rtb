@@ -1,8 +1,8 @@
-package com.ortb.manager
+package shared.com.ortb.manager
 
-import com.ortb.constants.AppConstants
-import com.ortb.model.config.ConfigModel
-import com.ortb.model.error.FileErrorModel
+import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.model.config.ConfigModel
+import shared.com.ortb.model.error.FileErrorModel
 import io.PathHelper._
 import io.{AppLogger, JsonParser}
 import io.circe._

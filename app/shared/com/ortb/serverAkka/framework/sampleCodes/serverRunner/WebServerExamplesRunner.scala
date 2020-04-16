@@ -1,6 +1,6 @@
-package com.ortb.serverAkka.framework.sampleCodes.serverRunner
+package shared.com.ortb.serverAkka.framework.sampleCodes.serverRunner
 
-import com.ortb.serverAkka.framework.sampleCodes.SampleServer
+import shared.com.ortb.serverAkka.framework.sampleCodes.SampleServer
 
 object WebServerExamplesRunner extends App {
   val sampleServer = new SampleServer

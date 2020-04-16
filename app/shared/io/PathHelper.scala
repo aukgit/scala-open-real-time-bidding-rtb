@@ -1,6 +1,6 @@
 package io
 
-import com.ortb.constants.AppConstants
+import shared.com.ortb.constants.AppConstants
 
 object PathHelper {
 

@@ -1,4 +1,4 @@
-package com.ortb.manager
+package shared.com.ortb.manager
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 

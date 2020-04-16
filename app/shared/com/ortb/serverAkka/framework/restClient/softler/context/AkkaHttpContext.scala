@@ -1,4 +1,4 @@
-package com.ortb.serverAkka.framework.restClient.softler.context
+package shared.com.ortb.serverAkka.framework.restClient.softler.context
 
 import akka.actor.ActorSystem
 

@@ -1,11 +1,11 @@
-package com.ortb.serverAkka.framework.sampleCodes
+package shared.com.ortb.serverAkka.framework.sampleCodes
 
 import akka.actor.{Actor, ActorLogging}
 
 class GuitarDB extends Actor
   with ActorLogging {
 
-  import com.ortb.serverAkka.framework.sampleCodes.GuitarDB._
+  import shared.com.ortb.serverAkka.framework.sampleCodes.GuitarDB._
 
   var guitars         : Map[Int, Guitar] = Map()
   var currentGuitarId : Int              = 0
