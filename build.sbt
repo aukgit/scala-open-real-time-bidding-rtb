@@ -1,16 +1,16 @@
 import sbt.Keys._
 
-name         := "scala-open-rtb-example"
-version      := "1.0"
+name := "scala-open-rtb-example"
+version := "1.0"
 scalaVersion := "2.13.1"
 
-lazy val log4Version     = "2.11.0"
-lazy val akkaVersion     = "2.6.4"
+lazy val log4Version = "2.11.0"
+lazy val akkaVersion = "2.6.4"
 lazy val akkaHttpVersion = "10.1.11"
-lazy val circeVersion    = "0.12.3"
+lazy val circeVersion = "0.12.3"
 
 // More details at https://github.com/tototoshi/slick-joda-mapper
-lazy val slickVersion           = "3.3.2"
+lazy val slickVersion = "3.3.2"
 lazy val slickJodaMapperVersion = "2.4"
 
 libraryDependencies ++= Seq(
@@ -68,6 +68,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
   "org.scalatest" %% "scalatest" % "3.1.0" % Test,
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
+  "com.typesafe.play" %% "play-specs2" % "2.8.1" % Test,
 
   ///////////////////////////////////////////////////
   // Scala Core Packages
@@ -81,26 +82,26 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
   // Others
   ///////////////////////////////////////////////////
-  "com.typesafe.play" %% "play-json" % "2.6.13",
-  "com.pauldijou" %% "jwt-core" % "2.1.0",
-  "com.pauldijou" %% "jwt-play-json" % "2.1.0",
-  "com.typesafe.play" %% "play-json" % "2.6.13",
-  "org.mindrot" % "jbcrypt" % "0.3m",
+
+  "com.typesafe.play" %% "twirl-api" % "1.5.0",
+  "com.typesafe.play" %% "play-json" % "2.8.1",
+  "com.typesafe.play" %% "play-server" % "2.8.1",
+  "com.typesafe.play" %% "play-logback" % "2.8.1",
+  "com.typesafe.play" %% "filters-helpers" % "2.8.1",
+
   "org.slf4j" % "slf4j-nop" % "1.7.26"
 )
-  
-  
-  lazy val root = (project in file("."))
+
+lazy val root = (project in file("."))
   .enablePlugins(
-    PlayService, 
-    PlayLayoutPlugin, 
-    Common, 
+    PlayService,
+    PlayLayoutPlugin,
+    Common,
     PlayScala)
   .settings(
     name := """play-scala-forms-example""",
-    version := "2.8.x",
+    version := "2.8",
     scalaVersion := "2.13.1",
-
     libraryDependencies ++= Seq(
       guice,
       "org.joda" % "joda-convert" % "2.2.1",
@@ -109,11 +110,11 @@ libraryDependencies ++= Seq(
       "net.codingwell" %% "scala-guice" % "4.2.6",
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
       "com.typesafe.play" %% "play-slick" % "5.0.0",
-      "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
+      "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0"
     ),
 
     scalacOptions ++= Seq(
-      "-encoding", 
+      "-encoding",
       "utf8",
       "-deprecation",
       "-feature",
@@ -122,11 +123,13 @@ libraryDependencies ++= Seq(
     )
   )
 
+
+
 lazy val gatlingVersion = "3.3.1"
 lazy val gatling = (project in file("gatling"))
   .enablePlugins(GatlingPlugin)
   .settings(
-    scalaVersion := "2.12.10",
+    scalaVersion := scalaVersion.value,
     libraryDependencies ++= Seq(
       "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % Test,
       "io.gatling" % "gatling-test-framework" % gatlingVersion % Test
@@ -136,8 +139,8 @@ lazy val gatling = (project in file("gatling"))
 // Documentation for this project:
 //    sbt "project docs" "~ paradox"
 //    open docs/target/paradox/site/index.html
-lazy val docs = (project in file("docs")).enablePlugins(ParadoxPlugin).
+lazy val docs = (project in file("docs"))
+  .enablePlugins(ParadoxPlugin).
   settings(
-    scalaVersion := "2.13.1",
-    paradoxProperties += ("download_url" -> "https://example.lightbend.com/v1/download/play-samples-play-scala-rest-api-example")
+    scalaVersion := scalaVersion.value
   )
