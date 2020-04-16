@@ -1,21 +1,16 @@
 package controllers
 
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{
-  AbstractController,
-  Action,
-  AnyContent,
-  ControllerComponents
-}
+import javax.inject.Inject
 import play.api.libs.json.Json
+import play.api.mvc._
 
-class ApiController @Inject()(components: ControllerComponents)
-    extends AbstractController(components) {
-  def index: Action[AnyContent] = Action { implicit request =>
+class ApiController @Inject()(components : ControllerComponents)
+  extends AbstractController(components) {
+  def index : Action[AnyContent] = Action { implicit request =>
     Ok(Json.obj("hello" -> "world"))
   }
 
-  def ping: Action[AnyContent] = Action { implicit request =>
+  def ping : Action[AnyContent] = Action { implicit request =>
     Ok(Json.obj("ping" -> true))
   }
 }
