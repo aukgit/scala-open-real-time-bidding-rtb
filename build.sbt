@@ -52,6 +52,8 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-api" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
   "io.sentry" % "sentry-log4j2" % "1.7.30",
+  "org.slf4j" % "slf4j-nop" % "1.7.26",
+  "com.typesafe.play" %% "play-logback" % "2.8.1",
 
   ///////////////////////////////////////////////////
   // Persistent or ORM frameworks
@@ -80,16 +82,21 @@ libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-library" % scalaVersion.value,
 
   ///////////////////////////////////////////////////
-  // Others
+  // Play framework
   ///////////////////////////////////////////////////
 
   "com.typesafe.play" %% "twirl-api" % "1.5.0",
   "com.typesafe.play" %% "play-json" % "2.8.1",
   "com.typesafe.play" %% "play-server" % "2.8.1",
-  "com.typesafe.play" %% "play-logback" % "2.8.1",
   "com.typesafe.play" %% "filters-helpers" % "2.8.1",
+  "com.typesafe.play" %% "play-slick" % "5.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0" % Test,
 
-  "org.slf4j" % "slf4j-nop" % "1.7.26"
+  ///////////////////////////////////////////////////
+  // Others
+  ///////////////////////////////////////////////////
+
+  "org.webjars" %% "webjars-play" % "2.8.0"
 )
 
 lazy val root = (project in file("."))
