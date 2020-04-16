@@ -1,4 +1,6 @@
-package com.ortb.persistent.schema
+package shared.com.ortb.persistent.schema
+import slick.jdbc.SQLiteProfile
+
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -42,7 +44,7 @@ trait Tables {
   /** GetResult implicit for fetching AdvertiseRow objects using plain SQL queries */
   implicit def GetResultAdvertiseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Double], e4: GR[Option[Int]]): GR[AdvertiseRow] = GR{
     prs => import prs._
-    AdvertiseRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<[Int], <<[String], <<?[String], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<?[Int], <<?[Int]))
+      AdvertiseRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<[Int], <<[String], <<?[String], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<?[Int], <<?[Int]))
   }
   /** Table description of table Advertise. Objects of this class serve as prototypes for rows in queries. */
   class Advertise(_tableTag: Tag) extends profile.api.Table[AdvertiseRow](_tableTag, "Advertise") {
@@ -111,7 +113,7 @@ trait Tables {
   /** GetResult implicit for fetching AuctionRow objects using plain SQL queries */
   implicit def GetResultAuctionRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[Option[Int]], e3: GR[String]): GR[AuctionRow] = GR{
     prs => import prs._
-    AuctionRow.tupled((<<[Int], <<[Int], <<[Double], <<?[Int], <<[Int], <<[Double], <<[String]))
+      AuctionRow.tupled((<<[Int], <<[Int], <<[Double], <<?[Int], <<[Int], <<[Double], <<[String]))
   }
   /** Table description of table Auction. Objects of this class serve as prototypes for rows in queries. */
   class Auction(_tableTag: Tag) extends profile.api.Table[AuctionRow](_tableTag, "Auction") {
@@ -149,7 +151,7 @@ trait Tables {
   /** GetResult implicit for fetching BanneradvertisetypeRow objects using plain SQL queries */
   implicit def GetResultBanneradvertisetypeRow(implicit e0: GR[Int], e1: GR[String]): GR[BanneradvertisetypeRow] = GR{
     prs => import prs._
-    BanneradvertisetypeRow.tupled((<<[Int], <<[String]))
+      BanneradvertisetypeRow.tupled((<<[Int], <<[String]))
   }
   /** Table description of table BannerAdvertiseType. Objects of this class serve as prototypes for rows in queries. */
   class Banneradvertisetype(_tableTag: Tag) extends profile.api.Table[BanneradvertisetypeRow](_tableTag, "BannerAdvertiseType") {
@@ -188,7 +190,7 @@ trait Tables {
   /** GetResult implicit for fetching BidrequestRow objects using plain SQL queries */
   implicit def GetResultBidrequestRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[Double]]): GR[BidrequestRow] = GR{
     prs => import prs._
-    BidrequestRow.tupled((<<[Int], <<[Int], <<?[Int], <<[Int], <<[Int], <<?[Int], <<?[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Double], <<?[Double], <<?[Double], <<?[String], <<?[Int], <<[Int]))
+      BidrequestRow.tupled((<<[Int], <<[Int], <<?[Int], <<[Int], <<[Int], <<?[Int], <<?[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Double], <<?[Double], <<?[Double], <<?[String], <<?[Int], <<[Int]))
   }
   /** Table description of table BidRequest. Objects of this class serve as prototypes for rows in queries. */
   class Bidrequest(_tableTag: Tag) extends profile.api.Table[BidrequestRow](_tableTag, "BidRequest") {
@@ -261,7 +263,7 @@ trait Tables {
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
   implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[String], e3: GR[Option[String]], e4: GR[Option[Int]]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<[Double], <<[String], <<?[String], <<[String], <<?[String], <<[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int]))
+      BidresponseRow.tupled((<<[Int], <<[Double], <<[String], <<?[String], <<[String], <<?[String], <<[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
@@ -326,7 +328,7 @@ trait Tables {
   /** GetResult implicit for fetching CampaignRow objects using plain SQL queries */
   implicit def GetResultCampaignRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Double], e3: GR[Option[Double]], e4: GR[Option[String]], e5: GR[Option[Int]]): GR[CampaignRow] = GR{
     prs => import prs._
-    CampaignRow.tupled((<<[Int], <<[String], <<[String], <<[Double], <<[Double], <<[Double], <<?[Double], <<?[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[String], <<?[Int]))
+      CampaignRow.tupled((<<[Int], <<[String], <<[String], <<[Double], <<[Double], <<[Double], <<?[Double], <<?[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[String], <<?[Int]))
   }
   /** Table description of table Campaign. Objects of this class serve as prototypes for rows in queries. */
   class Campaign(_tableTag: Tag) extends profile.api.Table[CampaignRow](_tableTag, "Campaign") {
@@ -383,7 +385,7 @@ trait Tables {
   /** GetResult implicit for fetching CampaigntargetcityRow objects using plain SQL queries */
   implicit def GetResultCampaigntargetcityRow(implicit e0: GR[Int], e1: GR[String]): GR[CampaigntargetcityRow] = GR{
     prs => import prs._
-    CampaigntargetcityRow.tupled((<<[Int], <<[String], <<[Int]))
+      CampaigntargetcityRow.tupled((<<[Int], <<[String], <<[Int]))
   }
   /** Table description of table CampaignTargetCity. Objects of this class serve as prototypes for rows in queries. */
   class Campaigntargetcity(_tableTag: Tag) extends profile.api.Table[CampaigntargetcityRow](_tableTag, "CampaignTargetCity") {
@@ -412,7 +414,7 @@ trait Tables {
   /** GetResult implicit for fetching CampaigntargetoperatingsystemRow objects using plain SQL queries */
   implicit def GetResultCampaigntargetoperatingsystemRow(implicit e0: GR[Int], e1: GR[String]): GR[CampaigntargetoperatingsystemRow] = GR{
     prs => import prs._
-    CampaigntargetoperatingsystemRow.tupled((<<[Int], <<[String], <<[Int]))
+      CampaigntargetoperatingsystemRow.tupled((<<[Int], <<[String], <<[Int]))
   }
   /** Table description of table CampaignTargetOperatingSystem. Objects of this class serve as prototypes for rows in queries. */
   class Campaigntargetoperatingsystem(_tableTag: Tag) extends profile.api.Table[CampaigntargetoperatingsystemRow](_tableTag, "CampaignTargetOperatingSystem") {
@@ -441,7 +443,7 @@ trait Tables {
   /** GetResult implicit for fetching CampaigntargetsiteRow objects using plain SQL queries */
   implicit def GetResultCampaigntargetsiteRow(implicit e0: GR[Int], e1: GR[String]): GR[CampaigntargetsiteRow] = GR{
     prs => import prs._
-    CampaigntargetsiteRow.tupled((<<[Int], <<[String], <<[Int]))
+      CampaigntargetsiteRow.tupled((<<[Int], <<[String], <<[Int]))
   }
   /** Table description of table CampaignTargetSite. Objects of this class serve as prototypes for rows in queries. */
   class Campaigntargetsite(_tableTag: Tag) extends profile.api.Table[CampaigntargetsiteRow](_tableTag, "CampaignTargetSite") {
@@ -469,7 +471,7 @@ trait Tables {
   /** GetResult implicit for fetching ContentcategoryRow objects using plain SQL queries */
   implicit def GetResultContentcategoryRow(implicit e0: GR[String]): GR[ContentcategoryRow] = GR{
     prs => import prs._
-    ContentcategoryRow.tupled((<<[String], <<[String]))
+      ContentcategoryRow.tupled((<<[String], <<[String]))
   }
   /** Table description of table ContentCategory. Objects of this class serve as prototypes for rows in queries. */
   class Contentcategory(_tableTag: Tag) extends profile.api.Table[ContentcategoryRow](_tableTag, "ContentCategory") {
@@ -492,7 +494,7 @@ trait Tables {
   /** GetResult implicit for fetching ContentcontextRow objects using plain SQL queries */
   implicit def GetResultContentcontextRow(implicit e0: GR[Int], e1: GR[String]): GR[ContentcontextRow] = GR{
     prs => import prs._
-    ContentcontextRow.tupled((<<[Int], <<[String]))
+      ContentcontextRow.tupled((<<[Int], <<[String]))
   }
   /** Table description of table ContentContext. Objects of this class serve as prototypes for rows in queries. */
   class Contentcontext(_tableTag: Tag) extends profile.api.Table[ContentcontextRow](_tableTag, "ContentContext") {
@@ -515,7 +517,7 @@ trait Tables {
   /** GetResult implicit for fetching DemandsideplatformRow objects using plain SQL queries */
   implicit def GetResultDemandsideplatformRow(implicit e0: GR[Int], e1: GR[String]): GR[DemandsideplatformRow] = GR{
     prs => import prs._
-    DemandsideplatformRow.tupled((<<[Int], <<[String]))
+      DemandsideplatformRow.tupled((<<[Int], <<[String]))
   }
   /** Table description of table DemandSidePlatform. Objects of this class serve as prototypes for rows in queries. */
   class Demandsideplatform(_tableTag: Tag) extends profile.api.Table[DemandsideplatformRow](_tableTag, "DemandSidePlatform") {
@@ -541,7 +543,7 @@ trait Tables {
   /** GetResult implicit for fetching GeomappingRow objects using plain SQL queries */
   implicit def GetResultGeomappingRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]]): GR[GeomappingRow] = GR{
     prs => import prs._
-    GeomappingRow.tupled((<<[Int], <<[Int], <<[String], <<[Int], <<?[String]))
+      GeomappingRow.tupled((<<[Int], <<[Int], <<[String], <<[Int], <<?[String]))
   }
   /** Table description of table GeoMapping. Objects of this class serve as prototypes for rows in queries. */
   class Geomapping(_tableTag: Tag) extends profile.api.Table[GeomappingRow](_tableTag, "GeoMapping") {
@@ -577,7 +579,7 @@ trait Tables {
   /** GetResult implicit for fetching ImpressionRow objects using plain SQL queries */
   implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[String]): GR[ImpressionRow] = GR{
     prs => import prs._
-    ImpressionRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[String]))
+      ImpressionRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[String]))
   }
   /** Table description of table Impression. Objects of this class serve as prototypes for rows in queries. */
   class Impression(_tableTag: Tag) extends profile.api.Table[ImpressionRow](_tableTag, "Impression") {
@@ -611,7 +613,7 @@ trait Tables {
   /** GetResult implicit for fetching KeywordRow objects using plain SQL queries */
   implicit def GetResultKeywordRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[KeywordRow] = GR{
     prs => import prs._
-    KeywordRow.tupled((<<[Int], <<?[String]))
+      KeywordRow.tupled((<<[Int], <<?[String]))
   }
   /** Table description of table Keyword. Objects of this class serve as prototypes for rows in queries. */
   class Keyword(_tableTag: Tag) extends profile.api.Table[KeywordRow](_tableTag, "Keyword") {
@@ -635,7 +637,7 @@ trait Tables {
   /** GetResult implicit for fetching KeywordadvertisemappingRow objects using plain SQL queries */
   implicit def GetResultKeywordadvertisemappingRow(implicit e0: GR[Int]): GR[KeywordadvertisemappingRow] = GR{
     prs => import prs._
-    KeywordadvertisemappingRow.tupled((<<[Int], <<[Int], <<[Int]))
+      KeywordadvertisemappingRow.tupled((<<[Int], <<[Int], <<[Int]))
   }
   /** Table description of table KeywordAdvertiseMapping. Objects of this class serve as prototypes for rows in queries. */
   class Keywordadvertisemapping(_tableTag: Tag) extends profile.api.Table[KeywordadvertisemappingRow](_tableTag, "KeywordAdvertiseMapping") {
@@ -666,7 +668,7 @@ trait Tables {
   /** GetResult implicit for fetching LostbidRow objects using plain SQL queries */
   implicit def GetResultLostbidRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[LostbidRow] = GR{
     prs => import prs._
-    LostbidRow.tupled((<<[Int], <<[Int], <<?[String]))
+      LostbidRow.tupled((<<[Int], <<[Int], <<?[String]))
   }
   /** Table description of table LostBid. Objects of this class serve as prototypes for rows in queries. */
   class Lostbid(_tableTag: Tag) extends profile.api.Table[LostbidRow](_tableTag, "LostBid") {
@@ -694,7 +696,7 @@ trait Tables {
   /** GetResult implicit for fetching NobidresponsetypeRow objects using plain SQL queries */
   implicit def GetResultNobidresponsetypeRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[NobidresponsetypeRow] = GR{
     prs => import prs._
-    NobidresponsetypeRow.tupled((<<[Int], <<?[String]))
+      NobidresponsetypeRow.tupled((<<[Int], <<?[String]))
   }
   /** Table description of table NoBidResponseType. Objects of this class serve as prototypes for rows in queries. */
   class Nobidresponsetype(_tableTag: Tag) extends profile.api.Table[NobidresponsetypeRow](_tableTag, "NoBidResponseType") {
@@ -720,7 +722,7 @@ trait Tables {
   /** GetResult implicit for fetching PublisherRow objects using plain SQL queries */
   implicit def GetResultPublisherRow(implicit e0: GR[Int], e1: GR[String]): GR[PublisherRow] = GR{
     prs => import prs._
-    PublisherRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[Int]))
+      PublisherRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[Int]))
   }
   /** Table description of table Publisher. Objects of this class serve as prototypes for rows in queries. */
   class Publisher(_tableTag: Tag) extends profile.api.Table[PublisherRow](_tableTag, "Publisher") {
@@ -755,7 +757,7 @@ trait Tables {
   /** GetResult implicit for fetching TransactionRow objects using plain SQL queries */
   implicit def GetResultTransactionRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[String]): GR[TransactionRow] = GR{
     prs => import prs._
-    TransactionRow.tupled((<<[Int], <<[Int], <<[Double], <<[Int], <<[String]))
+      TransactionRow.tupled((<<[Int], <<[Int], <<[Double], <<[Int], <<[String]))
   }
   /** Table description of table Transaction. Objects of this class serve as prototypes for rows in queries. */
   class Transaction(_tableTag: Tag) extends profile.api.Table[TransactionRow](_tableTag, "Transaction") {

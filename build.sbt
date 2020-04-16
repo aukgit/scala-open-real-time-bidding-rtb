@@ -115,7 +115,7 @@ lazy val root = (project in file("."))
   .settings(
     name := nameF,
     version := "2.8.x",
-    scalaVersion := "2.13.1",
+    scalaVersion := scalaVersionF,
     libraryDependencies ++= allDependencies,
     libraryDependencies ++= Seq(
       guice,
