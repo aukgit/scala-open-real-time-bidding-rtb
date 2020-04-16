@@ -1,7 +1,7 @@
 package shared.io.traits.logger
 
 import io.sentry.Sentry
-import io.AppLogger.{getMethodNameHeader, printStacks, log}
+import shared.io.AppLogger._
 
 trait DebugLogger {
   def debug(msg : String, stackIndex : Int = 3, isPrintStack : Boolean = false) : Unit = {

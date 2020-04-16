@@ -3,9 +3,9 @@ package shared.io
 import java.nio.file.{Files, Path, Paths}
 import java.util
 
-import io.traits.file.ExecuteInputOutputAction
+import shared.io.traits.file.ExecuteInputOutputAction
 
-import scala.io.{Source, BufferedSource}
+import scala.io.{BufferedSource, Source}
 
 
 object File extends ExecuteInputOutputAction {

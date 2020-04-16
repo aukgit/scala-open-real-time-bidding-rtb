@@ -3,7 +3,7 @@ package shared.com.ortb.persistent
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.DatabaseGenerateConfigModel
 import shared.com.ortb.persistent.schema.DatabaseSchema
-import io.PathHelper
+import shared.io.PathHelper
 import slick.jdbc.SQLiteProfile.api._
 
 class DatabaseEngineManager(appManager: AppManager) {

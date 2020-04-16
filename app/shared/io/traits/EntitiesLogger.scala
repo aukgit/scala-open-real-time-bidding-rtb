@@ -1,10 +1,9 @@
 package shared.io.traits
 
-import io.traits.logger.InfoLogger
 
-import scala.concurrent.{Future, Await}
-import io.AppLogger
+import shared.io.traits.logger.InfoLogger
 
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration._
 
 

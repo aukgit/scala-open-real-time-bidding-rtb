@@ -1,8 +1,7 @@
 package shared.io.traits.logger
 
 import shared.com.ortb.model.error.FileErrorModel
-import io.AppLogger
-import io.AppLogger.{printStacks, getMethodNameHeader, newLine, error, log}
+import shared.io.AppLogger._
 import io.sentry.Sentry
 
 trait ErrorLogger {
