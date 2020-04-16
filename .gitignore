@@ -9,11 +9,19 @@
 *.log
 
 # sbt specific
+*.iml
+
+.metals
+.bloop
 .cache/
 .history/
 .lib/
 dist/*
 target/
+.settings
+.settings/
+.project
+.classpath
 lib_managed/
 src_managed/
 project/boot/
@@ -24,7 +32,7 @@ project/plugins/project/
 .worksheet
 .idea
 *.launch
-.settings/
+
 *.sublime-workspace
 .vscode/*
 !.vscode/settings.json
@@ -41,8 +49,8 @@ Thumbs.db
 
 # Logs
 logs
-*.log
 
 # Others
 .temp
 report.*.json
+sbt-dist/**/*

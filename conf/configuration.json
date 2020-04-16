@@ -1,0 +1,138 @@
+{
+  "applicationName": "RealTime Bidding Using OpenRTB and Akka",
+  "displayVersion": "1.0",
+  "server": {
+    "commonDomain": "",
+    "isUseDefaultDomainForAll": true,
+    "services": {
+      "root": {
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "requestSimulatorService": {
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "title": "Request Simulator Service",
+        "description": "Gives a JSON BID REQUEST Sample based on request.",
+        "routing": [
+          "bannerRequest",
+          "geoRequest",
+          "wmax",
+          "hmax",
+          "hmaxMin",
+          "contextExample"
+        ]
+      },
+      "monitorService": {
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "exchangeService": {
+        "title": "Exchange Server",
+        "description": "Decides to take pre-cached bid or take a bidding from DSPs and selects the final winner",
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "routing": []
+      },
+      "advertiserService": {
+        "prefix": "",
+        "domain": "First root request receiver. Like give me an advertise.",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "bidderService": {
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "supplySidePlatformService": {
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "preCachedBidService": {
+        "prefix": "",
+        "domain": "",
+        "port": 0,
+        "title": "",
+        "description": "",
+        "routing": []
+      },
+      "demandSidePlatForms": [
+        {
+          "title": "DSP - Demand Side Platform - 1",
+          "description": "Final stage where bidding happens, agent 1",
+          "prefix": "",
+          "domain": "",
+          "port": 0,
+          "routing": []
+        },
+        {
+          "title": "DSP - Demand Side Platform - 2",
+          "description": "Final stage where bidding happens, agent 2",
+          "prefix": "",
+          "domain": "",
+          "port": 0,
+          "routing": []
+        },
+        {
+          "title": "DSP - Demand Side Platform - 3",
+          "description": "Final stage where bidding happens, agent 3",
+          "prefix": "",
+          "domain": "",
+          "port": 0,
+          "routing": []
+        }
+      ]
+    },
+    "requestDefaultHeaders": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "x-openrtb-version",
+        "value": "2.3"
+      }
+    ],
+    "redisServer": {
+      "domain": "",
+      "port": 0
+    }
+  },
+  "databaseRelativePath": "openRTBSample.db",
+  "isDebug": true,
+  "isLogError": true,
+  "isLogDatabaseQueryLogs": true,
+  "isEnableSentry": true,
+  "author": "Md. Alim Ul Karim",
+  "databaseGenerate": {
+    "profile": "slick.jdbc.SQLiteProfile",
+    "jdbcDriver": "org.sqlite.JDBC",
+    "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:conf*:openRTBSample.db",
+    "compiledDatabaseUrl": "",
+    "outputDir": "${WorkingDirectory}*:app",
+    "compiledOutputDir": "",
+    "pkg": "shared.com.ortb.persistent.schema"
+  },
+  "defaultTimeout": 5,
+  "defaultParallelProcessing": 5
+}
