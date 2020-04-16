@@ -14,6 +14,8 @@ class DatabaseEngineManager(appManager: AppManager) {
   lazy val databaseEngineCodeGenerator: DatabaseGenerateConfigModel =
     appManager.config.databaseGenerate
   lazy val databaseUrl: String = databaseEngineCodeGenerator.compiledDatabaseUrl
+  println( databaseUrl)
+  println( appManager.config)
   lazy val db = Database.forURL(url = databaseUrl)
   lazy val databaseSchema = new DatabaseSchema(appManager)
 }
