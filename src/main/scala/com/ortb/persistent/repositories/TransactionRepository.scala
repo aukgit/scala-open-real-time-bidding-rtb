@@ -2,25 +2,25 @@ package com.ortb.persistent.repositories
 
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
-import com.ortb.persistent.repositoryPattern.RepositoryBase
+import com.ortb.persistent.repositories.pattern.RepositoryBase
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
-class TransactionRepository(appManager : AppManager)
-  extends
-    RepositoryBase[Transaction, TransactionRow, Int](appManager) {
+class TransactionRepository(appManager: AppManager)
+    extends RepositoryBase[Transaction, TransactionRow, Int](appManager) {
 
-  override def tableName : String = this.transactionTableName
+  override def tableName: String = this.transactionTableName
 
-  override def getEntityId(entity : Option[Tables.TransactionRow]) : Int =
+  override def getEntityId(entity: Option[Tables.TransactionRow]): Int =
     if (entity.isDefined) entity.get.transactionid
     else -1
 
   override def setEntityId(
-    entityId : Option[Int],
-    entity   : Option[Tables.TransactionRow]) : Option[Tables.TransactionRow] = {
+    entityId: Option[Int],
+    entity: Option[Tables.TransactionRow]
+  ): Option[Tables.TransactionRow] = {
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
     }
@@ -28,19 +28,19 @@ class TransactionRepository(appManager : AppManager)
     Some(entity.get.copy(transactionid = entityId.get))
   }
 
-  override def getAddAction(
-    entity : Tables.TransactionRow) =
+  override def getAddAction(entity: Tables.TransactionRow) =
     table returning table.map(_.transactionid) into
-      ((entityProjection, entityId) => entityProjection.copy(transactionid = entityId)) += entity
+      ((entityProjection,
+        entityId) => entityProjection.copy(transactionid = entityId)) += entity
 
   override def table = this.transactions
 
   override def getDeleteAction(
-    entityId : Int) : FixedSqlAction[Int, NoStream, Effect.Write] =
+    entityId: Int
+  ): FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
 
-  override def getQueryById(
-    id : Int) = table.filter(c => c.transactionid === id)
+  override def getQueryById(id: Int) = table.filter(c => c.transactionid === id)
 
-  override def getAllQuery = for {record <- table} yield record
+  override def getAllQuery = for { record <- table } yield record
 }
