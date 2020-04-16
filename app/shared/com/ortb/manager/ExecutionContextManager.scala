@@ -2,7 +2,6 @@ package shared.com.ortb.manager
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
-//noinspection ScalaDeprecation
 class ExecutionContextManager(appManager : AppManager) {
   lazy val globalExecutionContext    : ExecutionContextExecutor = ExecutionContext.global
   lazy val defaultParallelProcessing : Int                      = appManager.config.defaultParallelProcessing
