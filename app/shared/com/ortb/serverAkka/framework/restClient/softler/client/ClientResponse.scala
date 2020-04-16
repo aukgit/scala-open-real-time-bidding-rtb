@@ -87,11 +87,11 @@ object ClientResponse {
     }
 
   def decodeResponse(response : HttpResponse) : HttpResponse = response.encoding match {
-    case HttpEncodings.gzip ⇒
+    case HttpEncodings.gzip =>
       Gzip.decodeMessage(response)
-    case HttpEncodings.deflate ⇒
+    case HttpEncodings.deflate =>
       Deflate.decodeMessage(response)
-    case _ ⇒
+    case _ =>
       NoCoding.decodeMessage(response)
   }
 }

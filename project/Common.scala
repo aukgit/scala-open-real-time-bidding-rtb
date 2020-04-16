@@ -17,12 +17,7 @@ object Common extends AutoPlugin {
     scalacOptions ++= Seq(
       "-encoding",
       "UTF-8", // yes, this is 2 args
-      "-target:jvm-1.8",
-      "-deprecation",
-      "-feature",
-      "-unchecked",
-      "-Ywarn-numeric-widen",
-      "-Xfatal-warnings"
+      "-Ywarn-numeric-widen"
     ),
     scalacOptions in Test ++= Seq("-Yrangepos"),
     autoAPIMappings := true

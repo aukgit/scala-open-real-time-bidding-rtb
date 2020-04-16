@@ -3,8 +3,8 @@ package shared.com.ortb.manager
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.model.error.FileErrorModel
-import io.PathHelper._
-import io.{AppLogger, JsonParser}
+import shared.io.{AppLogger, JsonParser}
+import shared.io.PathHelper._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._

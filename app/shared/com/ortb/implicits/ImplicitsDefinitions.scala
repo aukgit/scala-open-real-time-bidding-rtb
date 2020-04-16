@@ -1,5 +1,7 @@
 package shared.com.ortb.implicits
 
+import scala.language.implicitConversions
+
 object ImplicitsDefinitions {
   /**
    * Any ref method caller

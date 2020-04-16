@@ -1,6 +1,6 @@
 package shared.io.traits.logger
 
-import io.AppLogger
+import shared.io.AppLogger
 
 trait PrintStacks {
   this : AppLogger.type =>

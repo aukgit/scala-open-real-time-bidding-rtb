@@ -4,7 +4,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.repositories.pattern.traits._
 import shared.com.ortb.persistent.schema.DatabaseSchema
-import io.traits.FutureToRegular
+import shared.io.traits.FutureToRegular
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._

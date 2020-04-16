@@ -1,9 +1,11 @@
 package shared.com.ortb.persistent.schema
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
-object Tables extends {
+trait Profile {
   val profile = slick.jdbc.SQLiteProfile
-} with Tables
+}
+
+object Tables extends Profile with Tables
 
 /** Slick data model trait for extension, choice of backend or usage in the cake pattern. (Make sure to initialize this late.) */
 trait Tables {

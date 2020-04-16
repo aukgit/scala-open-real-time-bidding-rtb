@@ -3,7 +3,7 @@ package shared.com.ortb.persistent.repositories.pattern.traits
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import io.AppLogger
+import shared.io.AppLogger
 
 import scala.concurrent.Future
 
