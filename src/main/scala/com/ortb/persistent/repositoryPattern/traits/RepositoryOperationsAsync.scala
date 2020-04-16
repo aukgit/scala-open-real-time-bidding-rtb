@@ -40,7 +40,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
         s"${headerMessage} Delete failed on [id:$entityId, entity: $entity]")
     }
 
-    getEmptyResponse(actionType)
+    getEmptyResponseForInFture(actionType)
   }
 
   def addOrUpdateAsync(entityId : TKey, entity : TRow) :
@@ -70,7 +70,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
         s"${headerMessage} Add failed on [entity: $entity]")
     }
 
-    getEmptyResponse(actionType)
+    getEmptyResponseForInFture(actionType)
   }
 
   /**
@@ -106,7 +106,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
         s"${headerMessage} Update failed on [id:$entityId, entity: $entity]")
     }
 
-    getEmptyResponse(actionType)
+    getEmptyResponseForInFture(actionType)
   }
 
   def deleteEntitiesAsync(entities : Iterable[TKey]) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
