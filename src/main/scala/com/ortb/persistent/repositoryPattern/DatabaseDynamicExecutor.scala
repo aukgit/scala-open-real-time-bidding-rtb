@@ -145,4 +145,32 @@ class DatabaseDynamicExecutor[TTable, TRow, TKey](appManager: AppManager)
         )
     }
   }
+
+  protected def createResponseForAffectedRow(
+    affectedEntity: Option[TRow],
+    affectedRowsCount: Option[Int],
+    actionType: DatabaseActionType,
+    message: String = "",
+    isSuccess: Boolean = true
+  ): RepositoryOperationResult[TRow, TKey] = {
+    val message2: String =
+      getMessageForEntity(affectedRowsCount, actionType, message)
+
+    if (affectedEntity != null) {
+      AppLogger.logEntitiesNonFuture(
+        isLogQueries,
+        Seq(affectedEntity),
+        message2
+      )
+      return createResponseFor(
+        entityId = Some(getEntityId(affectedEntity)),
+        entity = affectedEntity,
+        actionType = actionType,
+        message = message2,
+        isSuccess = isSuccess
+      )
+    }
+
+    getEmptyResponseFor(actionType)
+  }
 }

@@ -61,7 +61,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
         AppLogger.error(e, s"$headerMessage Failed at performing $actionType")
     }
 
-    getEmptyResponseForInFture(actionType)
+    getEmptyResponseForInFuture(actionType)
   }
 
   def saveAsync(
@@ -85,7 +85,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
         AppLogger.error(e, s"${headerMessage} Failed at performing $actionType")
     }
 
-    getEmptyResponseForInFture(actionType)
+    getEmptyResponseForInFuture(actionType)
   }
 
   /**
