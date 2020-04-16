@@ -9,7 +9,7 @@ lazy val commonSettings = Seq(
 )
 
 lazy val organizationName : String = "com.openrtb"
-lazy val nameF: String = "scala-open-rtb-example"
+lazy val nameF : String = "scala-open-rtb-example"
 lazy val scalaVersionF = "2.13.1"
 lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
@@ -20,7 +20,12 @@ lazy val circeVersion = "0.12.3"
 lazy val slickVersion = "3.3.2"
 lazy val slickJodaMapperVersion = "2.4"
 
-val allDependencies = Seq(
+libraryDependencies ++= allDependencies
+name := nameF
+version := "1.0"
+scalaVersion := scalaVersionF
+
+lazy val allDependencies = Seq(
   ///////////////////////////////////////////////////
   // Akka core
   ///////////////////////////////////////////////////
@@ -126,14 +131,5 @@ lazy val root = (project in file("."))
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
       "com.typesafe.play" %% "play-slick" % "5.0.0",
       "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0"
-    ),
-
-    scalacOptions ++= Seq(
-      "-encoding",
-      "utf8",
-      "-deprecation",
-      "-feature",
-      "-unchecked",
-      "-Xfatal-warnings"
     )
   )

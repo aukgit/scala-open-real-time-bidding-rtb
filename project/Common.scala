@@ -12,15 +12,14 @@ object Common extends AutoPlugin {
   override def projectSettings = Seq(
     organization := "com.openrtb",
     version := "1.0",
-    // resolvers += Resolver.typesafeRepo("releases"),
+    resolvers += Resolver.typesafeRepo("releases"),
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
-//    scalacOptions ++= Seq(
-//      // "-encoding",
-//      "UTF-8", // yes, this is 2 args
-//      "-language:implicitConversions",
-//  "-deprecation"
-//      // "-Ywarn-numeric-widen"
-//    ),
+    scalacOptions ++= Seq(
+      // "-encoding",
+      "UTF-8", // yes, this is 2 args
+      "-language:implicitConversions",
+       "-Ywarn-numeric-widen"
+    ),
     scalacOptions in Test ++= Seq("-Yrangepos"),
     autoAPIMappings := true
   )
