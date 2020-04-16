@@ -1,4 +1,4 @@
-package io.traits
+package shared.io.traits
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration.Inf

@@ -1,4 +1,4 @@
-package io
+package shared.io
 
 import io.traits.logger._
 import io.traits._

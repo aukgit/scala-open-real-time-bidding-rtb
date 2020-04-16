@@ -1,4 +1,4 @@
-package io
+package shared.io
 
 import shared.com.ortb.constants.AppConstants
 

@@ -1,4 +1,4 @@
-package io.traits.logger
+package shared.io.traits.logger
 
 trait StackTraceInfoDisplayGetter {
   def getStackTraceInfo(stack : StackTraceElement) : String = {

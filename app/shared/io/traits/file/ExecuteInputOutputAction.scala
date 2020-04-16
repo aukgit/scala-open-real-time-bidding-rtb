@@ -1,4 +1,4 @@
-package io.traits.file
+package shared.io.traits.file
 
 import java.nio.file.Path
 

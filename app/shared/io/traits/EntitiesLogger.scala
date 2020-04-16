@@ -1,4 +1,4 @@
-package io.traits
+package shared.io.traits
 
 import io.traits.logger.InfoLogger
 

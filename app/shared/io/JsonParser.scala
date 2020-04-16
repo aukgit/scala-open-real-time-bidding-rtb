@@ -1,4 +1,4 @@
-package io
+package shared.io
 
 import shared.com.ortb.model.error.FileErrorModel
 import io.circe._

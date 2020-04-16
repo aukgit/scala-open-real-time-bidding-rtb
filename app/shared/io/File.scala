@@ -1,4 +1,4 @@
-package io
+package shared.io
 
 import java.nio.file.{Files, Path, Paths}
 import java.util
