@@ -1,5 +1,8 @@
-name := "scala-rtb-example"
-version := "1.0"
+import sbt.Keys._
+import play.sbt.PlaySettings
+
+name         := "scala-open-rtb-example"
+version      := "1.0"
 scalaVersion := "2.13.1"
 
 lazy val log4Version     = "2.11.0"
@@ -65,6 +68,7 @@ libraryDependencies ++= Seq(
 
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
   "org.scalatest" %% "scalatest" % "3.1.0" % Test,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
 
   ///////////////////////////////////////////////////
   // Scala Core Packages
@@ -79,4 +83,55 @@ libraryDependencies ++= Seq(
   // Others
   ///////////////////////////////////////////////////
 
+  )
+  
+  
+  lazy val root = (project in file("."))
+  .enablePlugins(
+    PlayService, 
+    PlayLayoutPlugin, 
+    Common, 
+    PlayScala)
+  .settings(
+    name := """play-scala-forms-example""",
+    version := "2.8.x",
+    scalaVersion := "2.13.1",
+    libraryDependencies ++= Seq(
+      guice,
+      "org.joda" % "joda-convert" % "2.2.1",
+      "net.logstash.logback" % "logstash-logback-encoder" % "6.2",
+      "io.lemonlabs" %% "scala-uri" % "1.5.1",
+      "net.codingwell" %% "scala-guice" % "4.2.6",
+      "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
+      "com.typesafe.play" %% "play-slick" % "5.0.0",
+      "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
+    ),
+    scalacOptions ++= Seq(
+      "-encoding", 
+      "utf8",
+      "-deprecation",
+      "-feature",
+      "-unchecked",
+      "-Xfatal-warnings"
+    )
+  )
+
+lazy val gatlingVersion = "3.3.1"
+lazy val gatling = (project in file("gatling"))
+  .enablePlugins(GatlingPlugin)
+  .settings(
+    scalaVersion := "2.12.10",
+    libraryDependencies ++= Seq(
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % Test,
+      "io.gatling" % "gatling-test-framework" % gatlingVersion % Test
+    )
+  )
+
+// Documentation for this project:
+//    sbt "project docs" "~ paradox"
+//    open docs/target/paradox/site/index.html
+lazy val docs = (project in file("docs")).enablePlugins(ParadoxPlugin).
+  settings(
+    scalaVersion := "2.13.1",
+    paradoxProperties += ("download_url" -> "https://example.lightbend.com/v1/download/play-samples-play-scala-rest-api-example")
   )
