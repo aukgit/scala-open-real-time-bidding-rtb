@@ -10,7 +10,7 @@ object Common extends AutoPlugin {
   override def requires: sbt.Plugins = JvmPlugin
 
   override def projectSettings = Seq(
-    organization := "com.alimkarim.openrtb",
+    organization := "com.openrtb",
     version := "1.0",
     resolvers += Resolver.typesafeRepo("releases"),
     javacOptions ++= Seq("-source", "11", "-target", "11"),
