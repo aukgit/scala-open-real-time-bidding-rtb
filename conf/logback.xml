@@ -32,8 +32,6 @@
   <root level="ALL">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE"/>
-    <appender-ref ref="ASYNCFILE" />
-    <appender-ref ref="ASYNCSTDOUT" />
   </root>
 
 </configuration>
