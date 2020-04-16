@@ -1,5 +1,4 @@
 import sbt.Keys._
-import play.sbt.PlaySettings
 
 name         := "scala-open-rtb-example"
 version      := "1.0"
@@ -77,18 +76,18 @@ libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   // "org.scala-lang" % "scala-reflect" % "2.10.0",
   "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-  "org.scala-lang" % "scala-library" % scalaVersion.value
+  "org.scala-lang" % "scala-library" % scalaVersion.value,
 
   ///////////////////////////////////////////////////
   // Others
   ///////////////////////////////////////////////////
-"com.typesafe.play" %% "play-json" % "2.6.13",
-"com.pauldijou" %% "jwt-core" % "2.1.0"
-"com.pauldijou" %% "jwt-play-json" % "2.1.0"
-"com.typesafe.play" %% "play-json" % "2.6.13"
-"org.mindrot" % "jbcrypt" % "0.3m"
-"org.slf4j" % "slf4j-nop" % "1.7.26"
-  )
+  "com.typesafe.play" %% "play-json" % "2.6.13",
+  "com.pauldijou" %% "jwt-core" % "2.1.0",
+  "com.pauldijou" %% "jwt-play-json" % "2.1.0",
+  "com.typesafe.play" %% "play-json" % "2.6.13",
+  "org.mindrot" % "jbcrypt" % "0.3m",
+  "org.slf4j" % "slf4j-nop" % "1.7.26"
+)
   
   
   lazy val root = (project in file("."))
@@ -101,6 +100,7 @@ libraryDependencies ++= Seq(
     name := """play-scala-forms-example""",
     version := "2.8.x",
     scalaVersion := "2.13.1",
+
     libraryDependencies ++= Seq(
       guice,
       "org.joda" % "joda-convert" % "2.2.1",
@@ -111,6 +111,7 @@ libraryDependencies ++= Seq(
       "com.typesafe.play" %% "play-slick" % "5.0.0",
       "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
     ),
+
     scalacOptions ++= Seq(
       "-encoding", 
       "utf8",
