@@ -1,10 +1,9 @@
 //#full-example
-package com.example
+package shared.com.ortb
 
-
-import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed._
-import com.example.GreeterMain.SayHello
+import akka.actor.typed.scaladsl.Behaviors
+import shared.com.ortb.GreeterMain.SayHello
 
 //#greeter-actor
 object Greeter {
