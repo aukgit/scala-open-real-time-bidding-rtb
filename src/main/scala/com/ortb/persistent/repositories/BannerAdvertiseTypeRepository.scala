@@ -2,25 +2,27 @@ package com.ortb.persistent.repositories
 
 import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
-import com.ortb.persistent.repositoryPattern.RepositoryBase
+import com.ortb.persistent.repositories.pattern.RepositoryBase
 import com.ortb.persistent.schema.Tables
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
 
-class BannerAdvertiseTypeRepository(appManager : AppManager)
-  extends
-    RepositoryBase[Banneradvertisetype, BanneradvertisetypeRow, Int](appManager) {
+class BannerAdvertiseTypeRepository(appManager: AppManager)
+    extends RepositoryBase[Banneradvertisetype, BanneradvertisetypeRow, Int](
+      appManager
+    ) {
 
-  override def tableName : String = this.bannerAdvertiseTypeTableName
+  override def tableName: String = this.bannerAdvertiseTypeTableName
 
-  override def getEntityId(entity : Option[Tables.BanneradvertisetypeRow]) : Int =
-    if(entity.isDefined) entity.get.banneradvertisetypeid else -1
+  override def getEntityId(entity: Option[Tables.BanneradvertisetypeRow]): Int =
+    if (entity.isDefined) entity.get.banneradvertisetypeid else -1
 
   override def setEntityId(
-    entityId : Option[Int],
-    entity   : Option[Tables.BanneradvertisetypeRow]) : Option[Tables.BanneradvertisetypeRow] = {
+    entityId: Option[Int],
+    entity: Option[Tables.BanneradvertisetypeRow]
+  ): Option[Tables.BanneradvertisetypeRow] = {
 
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
@@ -30,19 +32,24 @@ class BannerAdvertiseTypeRepository(appManager : AppManager)
   }
 
   override def getAddAction(
-    entity : Tables.BanneradvertisetypeRow) :
-  FixedSqlAction[Tables.BanneradvertisetypeRow, NoStream, Effect.Write] =
+    entity: Tables.BanneradvertisetypeRow
+  ): FixedSqlAction[Tables.BanneradvertisetypeRow, NoStream, Effect.Write] =
     table returning table.map(_.banneradvertisetypeid) into
-      ((entityProjection, entityId) => entityProjection.copy(banneradvertisetypeid = entityId)) += entity
+      ((entityProjection,
+        entityId) =>
+         entityProjection.copy(banneradvertisetypeid = entityId)) += entity
 
   override def table = this.bannerAdvertiseTypes
 
   override def getDeleteAction(
-    entityId : Int) : FixedSqlAction[Int, NoStream, Effect.Write] =
+    entityId: Int
+  ): FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
 
   override def getQueryById(
-    id : Int) : Query[Tables.Banneradvertisetype, Tables.BanneradvertisetypeRow, Seq] = table.filter(c => c.banneradvertisetypeid === id)
+    id: Int
+  ): Query[Tables.Banneradvertisetype, Tables.BanneradvertisetypeRow, Seq] =
+    table.filter(c => c.banneradvertisetypeid === id)
 
-  override def getAllQuery = for {record <- table} yield record
+  override def getAllQuery = for { record <- table } yield record
 }

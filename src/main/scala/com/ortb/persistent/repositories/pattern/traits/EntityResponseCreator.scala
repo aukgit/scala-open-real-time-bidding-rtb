@@ -1,8 +1,8 @@
-package com.ortb.persistent.repositoryPattern.traits
+package com.ortb.persistent.repositories.pattern.traits
 
 import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import com.ortb.model.results.RepositoryOperationResult
-import com.ortb.persistent.repositoryPattern.RepositoryBase
+import com.ortb.persistent.repositories.pattern.RepositoryBase
 import io.AppLogger
 
 import scala.concurrent.Future
