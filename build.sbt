@@ -1,19 +1,5 @@
-import sbt.Keys.{name, _}
+import sbt.Keys._
 
-// References
-// SBT Guide for multiple projects: https://bit.ly/3bkRgy8
-// Project Example: https://bit.ly/3bfICkk
-// Share code between projects https://bit.ly/2z70jEx
-// Multiple Project Sample in Play https://bit.ly/3crrTea
-// Sub Projects Example by Play : https://www.playframework.com/documentation/2.8.x/sbtSubProjects
-// Sample Shared Project Example: https://bit.ly/2xzhCxz
-// Play pot change : https://bit.ly/3clAq23 , sbt "run port"
-// Organizing Build https://www.scala-sbt.org/0.13/docs/Organizing-Build.html
-
-name := "scala-open-rtb-example"
-version := "1.0"
-scalaVersion := scalaVersionF
-lazy val organizationName = "com.openrtb"
 
 lazy val commonSettings = Seq(
   name := "commonSettings",
@@ -22,6 +8,8 @@ lazy val commonSettings = Seq(
   scalaVersion := scalaVersionF
 )
 
+lazy val organizationName : String = "com.openrtb"
+lazy val nameF: String = "scala-open-rtb-example"
 lazy val scalaVersionF = "2.13.1"
 lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
@@ -119,14 +107,14 @@ val allDependencies = Seq(
 )
 
 lazy val root = (project in file("."))
-  .dependsOn(src)
+  .dependsOn(shared)
   .enablePlugins(
     PlayService,
     PlayLayoutPlugin,
     Common,
     PlayScala)
   .settings(
-    name := "scala-open-rtb-example",
+    name := nameF,
     version := "2.8.x",
     scalaVersion := "2.13.1",
     libraryDependencies ++= Seq(
@@ -150,25 +138,11 @@ lazy val root = (project in file("."))
     )
   )
 
-
-
-lazy val gatlingVersion = "3.3.1"
-lazy val gatling = (project in file("gatling"))
-  .enablePlugins(GatlingPlugin)
+lazy val shared = (project in file("src/main/scala"))
   .settings(
     scalaVersion := scalaVersion.value,
-    libraryDependencies ++= Seq(
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % Test,
-      "io.gatling" % "gatling-test-framework" % gatlingVersion % Test
-    )
-  )
-
-// Documentation for this project:
-//    sbt "project docs" "~ paradox"
-//    open docs/target/paradox/site/index.html
-lazy val src = (project in file("src"))
-  .settings(
-    scalaVersion := scalaVersion.value,
-    name := "scala-open-rtb-example",
+    name := nameF,
     libraryDependencies ++= allDependencies
   )
+
+// lazy val console = Project("main", file("src"))

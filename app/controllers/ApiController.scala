@@ -15,8 +15,8 @@ class ApiController @Inject()(
     Ok(Json.obj("ping" -> true))
   }
 
-  def campaigns : Action[AnyContent] = Action { implicit request =>
-    Repositories
-    Ok()
-  }
+//  def campaigns : Action[AnyContent] = Action { implicit request =>
+//    Repositories
+//    Ok()
+//  }
 }
