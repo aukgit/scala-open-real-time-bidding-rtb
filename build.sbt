@@ -82,7 +82,12 @@ libraryDependencies ++= Seq(
   ///////////////////////////////////////////////////
   // Others
   ///////////////////////////////////////////////////
-
+"com.typesafe.play" %% "play-json" % "2.6.13",
+"com.pauldijou" %% "jwt-core" % "2.1.0"
+"com.pauldijou" %% "jwt-play-json" % "2.1.0"
+"com.typesafe.play" %% "play-json" % "2.6.13"
+"org.mindrot" % "jbcrypt" % "0.3m"
+"org.slf4j" % "slf4j-nop" % "1.7.26"
   )
   
   
