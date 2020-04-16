@@ -102,7 +102,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     message2
   }
 
-  protected def getEmptyResponse(
+  protected def getEmptyResponseForInFuture(
     actionType: DatabaseActionType
   ): Future[RepositoryOperationResult[TRow, TKey]] = {
     AppLogger.conditionalInfo(
