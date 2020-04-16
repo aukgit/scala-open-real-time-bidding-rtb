@@ -124,12 +124,12 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     dbAction: T
   ): Option[Future[Seq[TRow]]] = {
     dbAction match {
-      case fixedSql: FixedSqlAction[Seq[TRow], _, _] =>
-        Some(db.run(fixedSql))
-      case fixedSqlStreaming: FixedSqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
-        Some(db.run(fixedSqlStreaming))
-      case sqlStreaming: SqlStreamingAction[Seq[TRow], NoStream, Effect.All] =>
-        Some(db.run(sqlStreaming))
+      case fixedSql: FixedSqlAction[_, _, _] =>
+        Some(db.run(fixedSql).asInstanceOf[Future[Seq[TRow]]])
+      case fixedSqlStreaming: FixedSqlStreamingAction[_, _, _] =>
+        Some(db.run(fixedSqlStreaming).asInstanceOf[Future[Seq[TRow]]])
+      case sqlStreaming: SqlStreamingAction[_, _, _] =>
+        Some(db.run(sqlStreaming).asInstanceOf[Future[Seq[TRow]]])
       case dbAction2: DBIOAction[_, _, _] =>
         val x = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow]]];
         Some(x)
