@@ -127,9 +127,9 @@
   "databaseGenerate": {
     "profile": "slick.jdbc.SQLiteProfile",
     "jdbcDriver": "org.sqlite.JDBC",
-    "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:src*:main*:resources*:openRTBSample.db",
+    "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:conf*:openRTBSample.db",
     "compiledDatabaseUrl": "",
-    "outputDir": "${WorkingDirectory}*:src*:main*:scala",
+    "outputDir": "${WorkingDirectory}*:app*:shared",
     "compiledOutputDir": "",
     "pkg": "com.ortb.persistent.schema"
   },
