@@ -53,7 +53,7 @@ class DatabaseDynamicExecutor[TTable, TRow, TKey](appManager: AppManager)
       return saveAsync(Some(entity), dbAction = dbAction, actionType)
     }
 
-    getEmptyResponseForInFture(actionType)
+    getEmptyResponseForInFuture(actionType)
   }
 
   def saveAsync(
@@ -77,7 +77,7 @@ class DatabaseDynamicExecutor[TTable, TRow, TKey](appManager: AppManager)
         AppLogger.error(e, s"$headerMessage Failed at performing $actionType")
     }
 
-    getEmptyResponseForInFture(actionType)
+    getEmptyResponseForInFuture(actionType)
   }
 
   def saveAsync(
@@ -101,7 +101,7 @@ class DatabaseDynamicExecutor[TTable, TRow, TKey](appManager: AppManager)
         AppLogger.error(e, s"${headerMessage} Failed at performing $actionType")
     }
 
-    getEmptyResponseForInFture(actionType)
+    getEmptyResponseForInFuture(actionType)
   }
 
   /**

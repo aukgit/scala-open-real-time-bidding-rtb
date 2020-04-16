@@ -2,25 +2,20 @@ package com.ortb.persistent.repositoryPattern.traits
 
 import com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import com.ortb.model.results.RepositoryOperationResult
+import com.ortb.persistent.repositoryPattern.RepositoryBase
 import io.AppLogger
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 trait EntityResponseCreator[TTable, TRow, TKey] {
-  implicit protected lazy val executionContext : Future[RepositoryOperationResult[TRow, TKey]] =  {
-    ExecutionContext.fromExecutor(
-      new java.util.concurrent.ForkJoinPool(3)
-    ).prepare()
+  this: RepositoryBase[TTable, TRow, TKey] =>
 
-   def createResponseForAffectedRowCount(
-    isLogQueries: Boolean,
-    entityId: Option[TKey],
+  protected def createResponseForAffectedRowCount(
     affectedRow: Int,
     entity: Option[TRow],
     actionType: DatabaseActionType,
     message: String = "",
     isSuccess: Boolean = true,
-    headerMessage: String
   ): RepositoryOperationResult[TRow, TKey] = {
     val message2 = getMessageForEntity(Some(affectedRow), actionType, message)
     val hasAffected = affectedRow > 0
@@ -31,7 +26,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
     if (hasAffected) {
       return createResponseFor(
-        entityId = entityId,
+        entityId = Some(getEntityId(entity)),
         entity = entity,
         actionType = actionType,
         message = message2,
@@ -45,8 +40,6 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   protected def createResponseForAffectedRow(
-    isLogQueries: Boolean,
-    entityId: Option[TKey],
     affectedEntity: Option[TRow],
     affectedRowsCount: Option[Int],
     actionType: DatabaseActionType,
@@ -63,7 +56,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
         message2
       )
       return createResponseFor(
-        entityId = entityId,
+        entityId = Some(getEntityId(affectedEntity)),
         entity = affectedEntity,
         actionType = actionType,
         message = message2,
@@ -94,8 +87,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
   private def getMessageForEntity(affectedRowsCount: Option[Int],
                                   actionType: DatabaseActionType,
-                                  message: String,
-                                  headerMessage: String) = {
+                                  message: String) = {
     var message2 = message;
     if (message2.isEmpty) {
       var affectedCount = ""
@@ -110,10 +102,8 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     message2
   }
 
-  protected def getEmptyResponseForInFuture(
-    isLogQueries: Boolean,
-    actionType: DatabaseActionType,
-    headerMessage: String
+  protected def getEmptyResponse(
+    actionType: DatabaseActionType
   ): Future[RepositoryOperationResult[TRow, TKey]] = {
     AppLogger.conditionalInfo(
       isLogQueries,
