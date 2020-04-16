@@ -6,10 +6,9 @@ import akka.http.scaladsl.model.headers.HttpEncodings
 import akka.http.scaladsl.unmarshalling.{Unmarshal, Unmarshaller}
 import akka.stream.Materializer
 import com.ortb.serverAkka.framework.restClient.softler.processor._
-import shared.com.ortb.akkaTesting.framework.restClient.processor.ResponseProcessor
 
 import scala.collection.immutable
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{Future, ExecutionContext}
 import scala.language.implicitConversions
 
 /**
