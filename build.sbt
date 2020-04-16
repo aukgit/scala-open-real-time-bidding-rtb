@@ -20,10 +20,7 @@ lazy val circeVersion = "0.12.3"
 lazy val slickVersion = "3.3.2"
 lazy val slickJodaMapperVersion = "2.4"
 
-libraryDependencies ++= allDependencies
-name := nameF
-version := "1.0"
-scalaVersion := scalaVersionF
+
 
 lazy val allDependencies = Seq(
   ///////////////////////////////////////////////////

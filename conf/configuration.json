@@ -129,9 +129,9 @@
     "jdbcDriver": "org.sqlite.JDBC",
     "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:conf*:openRTBSample.db",
     "compiledDatabaseUrl": "",
-    "outputDir": "${WorkingDirectory}*:app*:shared",
+    "outputDir": "${WorkingDirectory}*:app",
     "compiledOutputDir": "",
-    "pkg": "com.ortb.persistent.schema"
+    "pkg": "shared.com.ortb.persistent.schema"
   },
   "defaultTimeout": 5,
   "defaultParallelProcessing": 5
