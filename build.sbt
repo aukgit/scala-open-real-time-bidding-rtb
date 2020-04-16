@@ -107,7 +107,6 @@ val allDependencies = Seq(
 )
 
 lazy val root = (project in file("."))
-  .dependsOn(shared)
   .enablePlugins(
     PlayService,
     PlayLayoutPlugin,
@@ -117,6 +116,7 @@ lazy val root = (project in file("."))
     name := nameF,
     version := "2.8.x",
     scalaVersion := "2.13.1",
+    libraryDependencies ++= allDependencies,
     libraryDependencies ++= Seq(
       guice,
       "org.joda" % "joda-convert" % "2.2.1",
@@ -137,12 +137,3 @@ lazy val root = (project in file("."))
       "-Xfatal-warnings"
     )
   )
-
-lazy val shared = (project in file("src/main/scala"))
-  .settings(
-    scalaVersion := scalaVersion.value,
-    name := nameF,
-    libraryDependencies ++= allDependencies
-  )
-
-// lazy val console = Project("main", file("src"))
