@@ -4,7 +4,6 @@ import javax.inject.Inject
 import play.api.libs.json.Json
 import play.api.mvc._
 
-
 class ApiController @Inject()(
   components : ControllerComponents)
   extends AbstractController(components) {
@@ -16,7 +15,8 @@ class ApiController @Inject()(
     Ok(Json.obj("ping" -> true))
   }
 
-//  def campaigns : Action[AnyContent] = Action { implicit request =>
-//    Ok()
-//  }
+  def campaigns : Action[AnyContent] = Action { implicit request =>
+    Repositories
+    Ok()
+  }
 }

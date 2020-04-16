@@ -1,4 +1,4 @@
-import sbt.Keys._
+import sbt.Keys.{name, _}
 
 // References
 // SBT Guide for multiple projects: https://bit.ly/3bkRgy8
@@ -8,20 +8,21 @@ import sbt.Keys._
 // Sub Projects Example by Play : https://www.playframework.com/documentation/2.8.x/sbtSubProjects
 // Sample Shared Project Example: https://bit.ly/2xzhCxz
 // Play pot change : https://bit.ly/3clAq23 , sbt "run port"
+// Organizing Build https://www.scala-sbt.org/0.13/docs/Organizing-Build.html
 
 name := "scala-open-rtb-example"
 version := "1.0"
-scalaVersion := "2.13.1"
-lazy val organizationName = "com.realtimebidding"
+scalaVersion := scalaVersionF
+lazy val organizationName = "com.openrtb"
 
 lazy val commonSettings = Seq(
   name := "commonSettings",
   organization := organizationName,
   version := version.value,
-  scalaVersion := scalaVersion.value
+  scalaVersion := scalaVersionF
 )
 
-
+lazy val scalaVersionF = "2.13.1"
 lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
 lazy val akkaHttpVersion = "10.1.11"
@@ -31,7 +32,7 @@ lazy val circeVersion = "0.12.3"
 lazy val slickVersion = "3.3.2"
 lazy val slickJodaMapperVersion = "2.4"
 
-libraryDependencies ++= Seq(
+val allDependencies = Seq(
   ///////////////////////////////////////////////////
   // Akka core
   ///////////////////////////////////////////////////
@@ -94,10 +95,10 @@ libraryDependencies ++= Seq(
   // Scala Core Packages
   ///////////////////////////////////////////////////
 
-  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+  "org.scala-lang" % "scala-reflect" % scalaVersionF,
   // "org.scala-lang" % "scala-reflect" % "2.10.0",
-  "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-  "org.scala-lang" % "scala-library" % scalaVersion.value,
+  "org.scala-lang" % "scala-compiler" % scalaVersionF,
+  "org.scala-lang" % "scala-library" % scalaVersionF,
 
   ///////////////////////////////////////////////////
   // Play framework
@@ -118,6 +119,7 @@ libraryDependencies ++= Seq(
 )
 
 lazy val root = (project in file("."))
+  .dependsOn(src)
   .enablePlugins(
     PlayService,
     PlayLayoutPlugin,
@@ -164,8 +166,9 @@ lazy val gatling = (project in file("gatling"))
 // Documentation for this project:
 //    sbt "project docs" "~ paradox"
 //    open docs/target/paradox/site/index.html
-lazy val docs = (project in file("docs"))
-  .enablePlugins(ParadoxPlugin).
-  settings(
-    scalaVersion := scalaVersion.value
+lazy val src = (project in file("src"))
+  .settings(
+    scalaVersion := scalaVersion.value,
+    name := "scala-open-rtb-example",
+    libraryDependencies ++= allDependencies
   )
