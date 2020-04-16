@@ -2,10 +2,8 @@ package io.traits
 
 import io.traits.logger.InfoLogger
 
-import scala.concurrent.{Future, Await}
-import io.AppLogger
-
 import scala.concurrent.duration.Duration._
+import scala.concurrent.{Await, Future}
 
 
 trait EntitiesLogger {

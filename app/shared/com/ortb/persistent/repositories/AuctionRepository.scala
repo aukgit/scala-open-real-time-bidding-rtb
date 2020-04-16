@@ -1,10 +1,10 @@
 package com.ortb.persistent.repositories
 
-import slick.jdbc.SQLiteProfile.api._
 import com.ortb.manager.AppManager
 import com.ortb.persistent.repositories.pattern.RepositoryBase
 import com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
+import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
 

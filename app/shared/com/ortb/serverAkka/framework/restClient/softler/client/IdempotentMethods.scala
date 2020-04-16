@@ -1,13 +1,12 @@
 package com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.actor.ActorSystem
-import com.ortb.serverAkka.framework.restClient.softler.processor.ResponseProcessor
-import akka.stream.Materializer
-import akka.http.scaladsl.unmarshalling.Unmarshaller
-
-import scala.concurrent.{Future, ExecutionContext}
-import akka.http.scaladsl.model.{HttpRequest, ResponseEntity, HttpMethods}
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model._
+import akka.stream.Materializer
+import com.ortb.serverAkka.framework.restClient.softler.processor.ResponseProcessor
+
+import scala.concurrent.{ExecutionContext, Future}
 
 trait IdempotentMethods[R <: RequestState] extends
   AkkaHttpRequest {

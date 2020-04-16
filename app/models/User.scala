@@ -1,8 +1,8 @@
 package models
 
-import javax.inject.Inject
-import play.api.libs.json._
 import java.sql.Date
+
+import play.api.libs.json._
 
 case class User(
   id: Option[Int],

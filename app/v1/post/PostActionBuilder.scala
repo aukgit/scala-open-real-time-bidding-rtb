@@ -1,12 +1,11 @@
 package v1.post
 
 import javax.inject.Inject
-
 import net.logstash.logback.marker.LogstashMarker
-import play.api.{Logger, MarkerContext}
 import play.api.http.{FileMimeTypes, HttpVerbs}
 import play.api.i18n.{Langs, MessagesApi}
 import play.api.mvc._
+import play.api.{Logger, MarkerContext}
 
 import scala.concurrent.{ExecutionContext, Future}
 

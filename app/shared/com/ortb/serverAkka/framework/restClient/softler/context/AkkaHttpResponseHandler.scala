@@ -1,9 +1,9 @@
 package com.ortb.serverAkka.framework.restClient.softler.context
 
 import akka.stream.Materializer
-
-import scala.concurrent.{Future, ExecutionContext}
 import com.ortb.serverAkka.framework.restClient.softler.client.ClientResponse
+
+import scala.concurrent.{ExecutionContext, Future}
 
 trait AkkaHttpResponseHandler {
 

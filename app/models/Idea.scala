@@ -1,8 +1,8 @@
 package models
 
-import javax.inject.Inject
 import java.sql.Date
-import play.api.libs.json.{Json, Format}
+
+import play.api.libs.json.{Format, Json}
 
 case class Idea(
     id: Option[Int],

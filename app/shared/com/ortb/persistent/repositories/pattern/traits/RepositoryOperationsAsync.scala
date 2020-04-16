@@ -2,11 +2,11 @@ package com.ortb.persistent.repositories.pattern.traits
 
 import com.ortb.enumeration.DatabaseActionType
 import com.ortb.model.persistent.EntityWrapper
-import slick.jdbc.SQLiteProfile.api._
 import com.ortb.model.results.RepositoryOperationResult
 import com.ortb.persistent.repositories.pattern.RepositoryBase
 import io.AppLogger
 import slick.dbio.{Effect, NoStream}
+import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlAction
 
 import scala.collection.mutable.ListBuffer

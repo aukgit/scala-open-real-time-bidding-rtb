@@ -1,7 +1,7 @@
 package com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.model.headers.Accept
-import akka.http.scaladsl.model.{MediaRange, ContentTypes, MediaTypes, RequestEntity}
+import akka.http.scaladsl.model._
 
 /**
  * The entity support trait specifies requests with data changes

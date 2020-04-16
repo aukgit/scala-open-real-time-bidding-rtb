@@ -1,6 +1,6 @@
 package com.ortb.serverAkka.framework.restClient.softler.processor
 
-import akka.http.scaladsl.model.{ResponseEntity, HttpResponse, StatusCodes}
+import akka.http.scaladsl.model._
 import akka.stream.Materializer
 import com.ortb.serverAkka.framework.restClient.softler.exception._
 

@@ -1,7 +1,6 @@
 package v1.post
 
 import javax.inject.Inject
-
 import play.api.Logger
 import play.api.data.Form
 import play.api.libs.json.Json

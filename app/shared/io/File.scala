@@ -1,11 +1,11 @@
 package io
 
-import java.nio.file.{Files, Path, Paths}
+import java.nio.file._
 import java.util
 
 import io.traits.file.ExecuteInputOutputAction
 
-import scala.io.{Source, BufferedSource}
+import scala.io.{BufferedSource, Source}
 
 
 object File extends ExecuteInputOutputAction {

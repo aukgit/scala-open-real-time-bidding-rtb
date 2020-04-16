@@ -1,12 +1,10 @@
 package com.ortb.serverAkka.framework.restClient.jsonParser.circe
 
 import akka.actor.ActorSystem
-import akka.stream.{Materializer, ActorMaterializer}
+import akka.stream.{ActorMaterializer, Materializer}
 import com.ortb.serverAkka.framework.restClient.softler.client.ClientRequest
-import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
-import io.circe.generic.auto._
 
-import scala.concurrent.{Future, ExecutionContext}
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * Sample shows how to fetch json information in an very simple fashion

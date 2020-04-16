@@ -1,6 +1,5 @@
 package io.traits.logger
 
-import io.sentry.Sentry
 import io.AppLogger.log
 
 trait InfoLogger {

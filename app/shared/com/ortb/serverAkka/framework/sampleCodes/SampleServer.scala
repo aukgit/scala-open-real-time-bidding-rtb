@@ -1,14 +1,13 @@
 package com.ortb.serverAkka.framework.sampleCodes
 
-import com.ortb.serverAkka.framework.sampleCodes.GuitarDB.CreateGuitar
-
-import scala.concurrent.Future
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
-import io.circe.{Encoder, Decoder}
+import com.ortb.serverAkka.framework.sampleCodes.GuitarDB.CreateGuitar
 import shapeless.Unwrapped
+
+import scala.concurrent.Future
 
 trait AnyValCirceEncoding {
   implicit def anyValEncoder[V, U](

@@ -1,7 +1,6 @@
 package io.traits.logger
 
 import io.AppLogger.log
-import io.sentry.Sentry
 
 trait WarnLogger {
   this : PrintStacks with MethodNameHeaderGetter =>

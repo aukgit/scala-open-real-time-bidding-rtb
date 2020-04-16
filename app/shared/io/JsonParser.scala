@@ -1,10 +1,6 @@
 package io
 
 import com.ortb.model.error.FileErrorModel
-import io.circe._
-import io.circe.generic.auto._
-import io.circe.parser._
-import io.circe.syntax._
 
 object JsonParser {
   def toObjectFromJSONPath[Type](

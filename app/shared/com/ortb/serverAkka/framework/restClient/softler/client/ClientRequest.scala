@@ -1,7 +1,6 @@
 package com.ortb.serverAkka.framework.restClient.softler.client
 
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.unmarshalling.{Unmarshal, Unmarshaller}
 import akka.stream.Materializer
 
 import scala.collection._

@@ -1,5 +1,4 @@
 import javax.inject.{Inject, Provider}
-
 import play.api._
 import play.api.http.DefaultHttpErrorHandler
 import play.api.http.Status._

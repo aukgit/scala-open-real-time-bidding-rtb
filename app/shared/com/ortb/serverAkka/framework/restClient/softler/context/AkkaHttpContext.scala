@@ -1,9 +1,9 @@
 package com.ortb.serverAkka.framework.restClient.softler.context
 
 import akka.actor.ActorSystem
+import akka.stream.{ActorMaterializer, Materializer}
 
 import scala.concurrent.ExecutionContext
-import akka.stream.{Materializer, ActorMaterializer}
 
 /**
  * @author Freshwood

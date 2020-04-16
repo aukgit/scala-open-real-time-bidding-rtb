@@ -2,12 +2,12 @@ package models
 
 import com.google.inject.Inject
 import play.api.data.Form
-import play.api.data.Forms.mapping
-import play.api.data.Forms._
+import play.api.data.Forms.{mapping, _}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
-import scala.concurrent.{ExecutionContext, Future}
 import slick.jdbc.MySQLProfile.api._
+
+import scala.concurrent.{ExecutionContext, Future}
 
 case class Todo(id: Long, name: String, isComplete: Boolean)
 

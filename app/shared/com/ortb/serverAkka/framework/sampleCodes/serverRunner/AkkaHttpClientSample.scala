@@ -1,6 +1,6 @@
 package com.ortb.serverAkka.framework.sampleCodes.serverRunner
 
-import com.ortb.serverAkka.framework.restClient.softler.context.{AkkaHttpResponse, AkkaHttpResponseHandler, AkkaHttpContext, AkkaHttpRequest}
+import com.ortb.serverAkka.framework.restClient.softler.context._
 
 /**
  * This sample shows how to fire a single request

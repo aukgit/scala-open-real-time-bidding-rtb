@@ -1,8 +1,8 @@
 package controllers
 
 object WidgetForm {
-  import play.api.data.Forms._
   import play.api.data.Form
+  import play.api.data.Forms._
 
   /**
    * A form processing DTO that maps to the form below.

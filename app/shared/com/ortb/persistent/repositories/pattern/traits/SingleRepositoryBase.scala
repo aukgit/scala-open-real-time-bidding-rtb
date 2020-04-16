@@ -1,8 +1,8 @@
 package com.ortb.persistent.repositories.pattern.traits
 
 import com.ortb.persistent.repositories.pattern.RepositoryBase
-import slick.lifted.{Query, TableQuery}
 import slick.jdbc.SQLiteProfile.api._
+import slick.lifted.{Query, TableQuery}
 
 import scala.concurrent.{Await, Future}
 

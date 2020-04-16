@@ -1,11 +1,10 @@
 package v1.post
 
 import javax.inject.{Inject, Provider}
-
 import play.api.MarkerContext
+import play.api.libs.json._
 
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.libs.json._
 
 /**
   * DTO for displaying post information.

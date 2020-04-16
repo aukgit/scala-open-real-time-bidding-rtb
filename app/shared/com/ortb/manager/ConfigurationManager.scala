@@ -5,9 +5,6 @@ import com.ortb.model.config.ConfigModel
 import com.ortb.model.error.FileErrorModel
 import io.PathHelper._
 import io.{AppLogger, JsonParser}
-import io.circe._
-import io.circe.generic.auto._
-import io.circe.parser._
 
 trait ConfigurationManagerType {
   def getConfig(path : String) : ConfigModel

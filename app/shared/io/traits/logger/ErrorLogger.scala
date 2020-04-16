@@ -1,9 +1,7 @@
 package io.traits.logger
 
 import com.ortb.model.error.FileErrorModel
-import io.AppLogger
-import io.AppLogger.{printStacks, getMethodNameHeader, newLine, error, log}
-import io.sentry.Sentry
+import io.AppLogger._
 
 trait ErrorLogger {
   def error(msg : String) : Unit = {

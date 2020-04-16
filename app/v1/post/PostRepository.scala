@@ -1,8 +1,7 @@
 package v1.post
 
-import javax.inject.{Inject, Singleton}
-
 import akka.actor.ActorSystem
+import javax.inject.{Inject, Singleton}
 import play.api.libs.concurrent.CustomExecutionContext
 import play.api.{Logger, MarkerContext}
 

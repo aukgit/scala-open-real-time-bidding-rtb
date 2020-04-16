@@ -1,7 +1,7 @@
 package io
 
-import io.traits.logger._
 import io.traits._
+import io.traits.logger._
 import slick.util.Logging
 
 object AppLogger extends
