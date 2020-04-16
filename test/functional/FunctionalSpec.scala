@@ -1,6 +1,6 @@
 package functional
 
-import controllers.{WidgetController, routes}
+import controllers.routes
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
