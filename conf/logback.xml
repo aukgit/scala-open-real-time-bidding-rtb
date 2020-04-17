@@ -2,19 +2,78 @@
 <configuration>
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
   <appender name="RollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${application.home:-.}/logs/application.log</file>
+    <file>${application.home:-.}/logs/application.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
-      <fileNamePattern>${application.home:-.}/logs/application-log-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-            <!-- keep 7 days worth of history -->
+      <fileNamePattern>${application.home:-.}/logs/allArchive/application-log-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <!-- keep 7 days worth of history -->
       <maxHistory>7</maxHistory>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - .%M\(%line\) - %message%n%xException</pattern>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
     </encoder>
   </appender>
 
-  <appender name="SECURITY_FILE" class="ch.qos.logback.core.FileAppender">
+  <appender name="InfoRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.info.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/info/application-log-%d{yyyy-MM-dd}.info.log.gz</fileNamePattern>
+      <!-- keep 7 days worth of history -->
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
+  </appender>
+  <appender name="DebugRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.debug.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/debug/application-log-%d{yyyy-MM-dd}.debug.log.gz</fileNamePattern>
+      <!-- keep 7 days worth of history -->
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
+  </appender>
+  <appender name="WarnRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.warn.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/warn/application-log-%d{yyyy-MM-dd}.warn.log.gz</fileNamePattern>
+      <!-- keep 7 days worth of history -->
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
+  </appender>
+  <appender name="ErrorRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.error.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/error/application-log-%d{yyyy-MM-dd}.error.log.gz</fileNamePattern>
+      <!-- keep 7 days worth of history -->
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="SecurityFileAppender" class="ch.qos.logback.core.FileAppender">
     <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
       <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
         <marker>SECURITY</marker>
@@ -22,25 +81,38 @@
       <OnMismatch>DENY</OnMismatch>
       <OnMatch>ACCEPT</OnMatch>
     </filter>
-        <file>${application.home:-.}/logs/security.log</file>
+    <file>${application.home:-.}/logs/security.log</file>
     <encoder>
-      <pattern>%date [%level] [%marker] from %logger in %thread - .%M\(%line\) - %message%n%xException</pattern>
+      <pattern>%date [%level] [%marker] from %logger in %thread - @%method:%line) - %message%n%xException</pattern>
     </encoder>
   </appender>
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="ConsoleDefaultPrintAppender" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n - %coloredLevel %logger{15} -
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}@%method:%line - %msg%n - %coloredLevel %logger{15} -
         [%X{akkaSource}] %message%n%xException{10}
       </pattern>
     </encoder>
   </appender>
 
-  <appender name="AsyncFileWriterAppender" class="ch.qos.logback.classic.AsyncAppender">
+  <appender name="AllLogger" class="ch.qos.logback.classic.AsyncAppender">
     <appender-ref ref="RollingWeeklyFileAppender"/>
+    <appender-ref ref="ConsoleDefaultPrintAppender"/>
+    <appender-ref ref="SecurityFileAppender"/>
   </appender>
-  <appender name="ConsolePrinterAppender" class="ch.qos.logback.classic.AsyncAppender">
-    <appender-ref ref="STDOUT"/>
+
+  <appender name="InfoLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="InfoRollingWeeklyFileAppender"/>
+  </appender>
+
+  <appender name="DebugLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="DebugRollingWeeklyFileAppender"/>
+  </appender>
+  <appender name="WarnLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="WarnRollingWeeklyFileAppender"/>
+  </appender>
+  <appender name="ErrorLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="ErrorRollingWeeklyFileAppender"/>
   </appender>
 
   <logger name="play" level="ALL"/>
@@ -50,13 +122,21 @@
   <logger name="controllers" level="ALL"/>
 
   <root level="ALL">
-    <appender-ref ref="STDOUT"/>
-    <appender-ref ref="RollingWeeklyFileAppender"/>
+    <appender-ref ref="AllLogger"/>
+  </root>
+
+  <root level="INFO">
+    <appender-ref ref="InfoLogger"/>
+  </root>
+
+  <root level="DEBUG">
+    <appender-ref ref="DebugLogger"/>
   </root>
 
   <root level="${log.root:-info}">
-    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="ConsoleDefaultPrintAppender"/>
   </root>
+
   <logger name="slick.basic.BasicBackend.action" level="${log.action:-info}"/>
   <logger name="slick.basic.BasicBackend.stream" level="${log.stream:-info}"/>
   <logger name="slick.compiler" level="${log.qcomp:-info}"/>
