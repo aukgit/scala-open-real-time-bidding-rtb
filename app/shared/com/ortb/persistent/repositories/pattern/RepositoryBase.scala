@@ -25,8 +25,8 @@ abstract class RepositoryBase[TTable, TRow, TKey](appManager: AppManager)
     * default timeout from config, if < 0 then infinite
     */
   lazy protected implicit val defaultTimeout: Duration =
- Duration.Inf
-
+    if (config != null && config.defaultTimeout < 0) Duration.Inf
+    else config.defaultTimeout.seconds
 
   lazy protected val config: ConfigModel = appManager.config
   lazy protected val headerMessage: String = s"[$tableName] ->"

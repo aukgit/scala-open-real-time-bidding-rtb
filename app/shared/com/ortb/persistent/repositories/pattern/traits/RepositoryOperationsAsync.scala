@@ -75,6 +75,24 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     getEmptyResponseForInFuture(actionType)
   }
 
+  def updateEntitiesAsync(
+    entityWrappers: Iterable[EntityWrapper[TRow, TKey]]
+  ): Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
+    if (entityWrappers == null || entityWrappers.isEmpty) {
+      AppLogger.info(s"${headerMessage} No items passed for multiple updates.")
+
+      return null
+    }
+
+    entityWrappers.map(
+      entityWrapper =>
+        this.updateAsync(
+          entityId = entityWrapper.entityId,
+          entity = entityWrapper.entity
+      )
+    )
+  }
+
   /**
     * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
     * the action.

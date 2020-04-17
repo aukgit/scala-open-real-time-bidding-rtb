@@ -33,7 +33,31 @@ trait RepositoryOperations[TTable, TRow, TKey]
       return null
     }
 
-    entities.map(entity => toRegular(this.addAsync(entity), defaultTimeout))
+    entities
+      .map(entity => this.addAsync(entity))
+      .map(
+        entityResponseInFuture =>
+          toRegular(entityResponseInFuture, defaultTimeout)
+      )
+  }
+
+  def updateEntities(
+    entityWrappers: Iterable[EntityWrapper[TRow, TKey]]
+  ): Iterable[RepositoryOperationResult[TRow, TKey]] = {
+    if (entityWrappers == null || entityWrappers.isEmpty) {
+      AppLogger.info(
+        s"${headerMessage} No items passed for multiple update operation."
+      )
+
+      return null
+    }
+
+    entityWrappers
+      .map(
+        entityWrapper =>
+          updateAsync(entityWrapper.entityId, entityWrapper.entity)
+      )
+      .map(responseInFuture => toRegular(responseInFuture, defaultTimeout))
   }
 
   def deleteEntities(
