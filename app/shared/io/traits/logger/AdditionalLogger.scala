@@ -15,7 +15,7 @@ trait AdditionalLogger {
     isPrintStack : Boolean = false) {
     logBasedOnLevel(message, logLevelType)
     logToSentry(message, logLevelType)
-    printStacks(isPrintStack)
+    printStacks(isPrintStack, logLevelType)
   }
 
   private def logBasedOnLevel(
@@ -25,20 +25,21 @@ trait AdditionalLogger {
       println(message)
     }
 
+    log.info(message)
+
     logLevelType match {
       case LogLevelType.ALL | LogLevelType.INFO =>
         logger.info(message)
-        log.info(message)
+        innerLogger.info(message)
       case LogLevelType.DEBUG =>
         logger.debug(message)
-        log.debug(message)
+        innerLogger.debug(message)
       case LogLevelType.WARN =>
         logger.warn(message)
-        log.warn(message)
-
+        innerLogger.warn(message)
       case LogLevelType.ERROR | LogLevelType.FATAL =>
         logger.error(message)
-        log.error(message)
+        innerLogger.error(message)
       case _ =>
         throw new InvalidDatatypeValueException("LogType is out of range", Array(logLevelType))
     }

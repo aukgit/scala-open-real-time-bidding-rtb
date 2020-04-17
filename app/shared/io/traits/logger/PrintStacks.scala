@@ -1,16 +1,20 @@
 package shared.io.traits.logger
 
+import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.io.logger.AppLogger
 
 trait PrintStacks {
   this : AppLogger.type =>
 
-  def printStacks(isPrintStack : Boolean = false) : Unit = {
+  def printStacks(
+    isPrintStack : Boolean = false,
+    logLevelType: LogLevelType = LogLevelType.INFO) : Unit = {
     if (!isPrintStack) {
       return
     }
 
     val message = getStackTraceInfoUpToIndex
-    this.info(message)
+    additionalLogging(message, logLevelType)
   }
 }

@@ -1,6 +1,5 @@
 package shared.io.traits.logger
 
-import org.apache.logging.log4j.Logger
 import org.slf4j
 import org.slf4j.impl.StaticLoggerBinder
 import shared.com.ortb.constants.AppConstants
@@ -14,5 +13,5 @@ trait LoggerProperties {
   val innerLogger : slf4j.Logger = StaticLoggerBinder
     .getSingleton
     .getLoggerFactory
-    .getLogger("ALL")
+    .getLogger("ROOT")
 }

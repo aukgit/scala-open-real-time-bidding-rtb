@@ -13,6 +13,7 @@ import io.circe.parser._
 import io.circe.syntax._
 import play.api.{Environment, Play}
 import shared.io.helpers.PathHelper
+import shared.io.logger.AppLogger
 
 class ApiController @Inject()(
 
@@ -43,6 +44,7 @@ class ApiController @Inject()(
       ("Environment.simple().resource(\"\")", rootPath.toString),
     )
     println(js)
+    AppLogger.debug("Hello Debug")
     Ok(js)
   }
 }
