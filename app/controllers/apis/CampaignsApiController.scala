@@ -7,7 +7,6 @@ import javax.inject.Inject
 import play.api.mvc.{Action, _}
 import services.CampaignService
 import shared.com.ortb.model.results.RepositoryOperationResult
-import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.logger.AppLogger
 
@@ -16,7 +15,7 @@ trait WebApi[TTable, TRow, TKey] {
 
   def byId(id : TKey) : Action[AnyContent]
 
-  def add(entity : TRow) : Action[AnyContent]
+  def add() : Action[AnyContent]
 
   def update(id : TKey) : Action[AnyContent]
 
@@ -47,40 +46,68 @@ class CampaignsApiController @Inject()(
     Ok(json)
   }
 
-  override def add(
-    entity : Tables.CampaignRow) : Action[AnyContent] = Action { implicit request =>
-    val response : RepositoryOperationResult[CampaignRow, Int] = campaignService.add(entity)
-    val json = response.entity.get.asJson.spaces2
-    Ok(json)
-  }
-
-  override def update(id : Int) : Action[AnyContent] = Action { implicit request =>
+  override def add() : Action[AnyContent] = Action { implicit request =>
     try {
-      val entity = decode[CampaignRow](request.body.asText.get).getOrElse(null)
-      AppLogger.debug("put - update")
-      AppLogger.logEntityNonFuture(
-        isExecute = true,
-        entity = Some(entity),
-        additionalMessage = request.body.asText.get)
+      val body = request.body.asText.getOrElse("")
+      val entity = decode[CampaignRow](body).getOrElse(null)
+      val response : RepositoryOperationResult[CampaignRow, Int] = campaignService.add(entity)
 
-      if (entity == null) {
-        BadRequest("")
+      if (response.isSuccess) {
+        val json = response.entity.get.asJson.spaces2
+        Ok(json)
       }
-
-      val response = campaignService.update(id, entity)
-      val json = response.entity.get.asJson.spaces2
-      Ok(json)
+      else {
+        BadRequest(s"Failed to create. (raw body: $body)")
+      }
     } catch {
       case e : Exception => AppLogger.error(e)
+        BadRequest(e.toString)
     }
-
-    BadRequest("")
   }
 
-  override def delete(id : Int) : Action[AnyContent] = Action { implicit request =>
-    val response = campaignService.delete(id)
-    val json = response.entity.get.asJson.spaces2
-    Ok(json)
+  override def update(id : Int) : Action[AnyContent] = Action {
+    implicit request =>
+      try {
+        val body = request.body.asText.getOrElse("")
+        val entity = decode[CampaignRow](body).getOrElse(null)
+        AppLogger.debug("put - update")
+        AppLogger.logEntityNonFuture(
+          isExecute = true,
+          entity = Some(entity),
+          additionalMessage = body)
+
+        if (entity == null) {
+          BadRequest(s"Entity conversion failed for given (source received:$body).")
+        }
+
+        val response = campaignService.update(id, entity)
+
+        if (!response.isSuccess) {
+          BadRequest(s"Update request failed (source received:$body).")
+        }
+        else {
+          val e2 = response.entity.get
+          val json = e2.asJson.spaces2
+
+          AppLogger.logEntityNonFuture(
+            isExecute = true,
+            entity = Some(e2),
+            additionalMessage = json)
+
+          Ok(json)
+        }
+
+      } catch {
+        case e : Exception => AppLogger.error(e)
+          BadRequest(e.toString)
+      }
+  }
+
+  override def delete(id : Int) : Action[AnyContent] = Action {
+    implicit request =>
+      val response = campaignService.delete(id)
+      val json = response.entity.get.asJson.spaces2
+      Ok(json)
   }
 
   //
