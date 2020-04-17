@@ -1,6 +1,6 @@
 package services.traits
 
-import shared.com.ortb.model.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 

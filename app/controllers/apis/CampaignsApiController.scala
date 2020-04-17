@@ -4,37 +4,26 @@ import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
 import javax.inject.Inject
-import play.api.mvc.{Action, _}
+import play.api.mvc.{Action, Request, _}
 import services.CampaignService
+import services.traits.ServiceBasicPersistentOperations
+import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.HttpMethodType.HttpMethodType
 import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.wrappers.persistent.{WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper}
 import shared.com.ortb.persistent.schema.Tables._
+import shared.com.ortb.webapi.traits.{RestWebApi, RestWebApiBodyProcessor, RestWebApiJson, RestWebApiMessages}
 import shared.io.logger.AppLogger
 
-trait WebApi[TTable, TRow, TKey] {
-  def getAll : Action[AnyContent]
 
-  def byId(id : TKey) : Action[AnyContent]
-
-  def add() : Action[AnyContent]
-
-  def update(id : TKey) : Action[AnyContent]
-
-  def delete(id    : TKey) : Action[AnyContent]
-
-  //
-  //  def addEntities() : Action[AnyContent]
-  //
-  //  def addEntitiesBySinge() : Action[AnyContent]
-
-}
 
 class CampaignsApiController @Inject()(
   campaignService : CampaignService,
   components      : ControllerComponents)
   extends AbstractController(components) with
-    WebApi[Campaign, CampaignRow, Int] {
+    RestWebApi[Campaign, CampaignRow, Int] {
 
-  override def getAll : Action[AnyContent] = Action { implicit request =>
+  override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
     val campaigns = campaignService.getAll
     val json = campaigns.asJson.spaces2
     Ok(json)

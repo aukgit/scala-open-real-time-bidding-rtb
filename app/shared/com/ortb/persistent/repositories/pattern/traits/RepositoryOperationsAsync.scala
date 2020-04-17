@@ -1,7 +1,7 @@
 package shared.com.ortb.persistent.repositories.pattern.traits
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
