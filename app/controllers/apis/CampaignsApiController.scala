@@ -5,6 +5,7 @@ import io.circe.syntax._
 import javax.inject.Inject
 import play.api.mvc.{Action, _}
 import services.CampaignService
+import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 
@@ -17,7 +18,7 @@ trait WebApi[TTable, TRow, TKey] {
 
   def update(entity : TRow) : Action[AnyContent]
 
-  def delete(id : TKey) : Action[AnyContent]
+  def delete(id    : TKey) : Action[AnyContent]
 
   def addEntities(entities : Iterable[TRow]) : Action[AnyContent]
 
@@ -38,41 +39,44 @@ class CampaignsApiController @Inject()(
 
   override def byId(id : Int) : Action[AnyContent] = Action { implicit request =>
     val campaign = campaignService.getById(id)
-    val json = campaign.asJson.spaces2
+    val json = campaign.get.asJson.spaces2
     Ok(json)
   }
 
   override def add(
     entity : Tables.CampaignRow) : Action[AnyContent] = Action { implicit request =>
-    val response = campaignService.add(entity)
-    val json = response.asJson.spaces2
+    val response : RepositoryOperationResult[CampaignRow, Int] = campaignService.add(entity)
+    val json = response.entity.get.asJson.spaces2
     Ok(json)
   }
 
   override def update(
     entity : Tables.CampaignRow) : Action[AnyContent] = Action { implicit request =>
     val response = campaignService.update(entity.campaignid, entity)
-    val json = response.asJson.spaces2
+    val json = response.entity.get.asJson.spaces2
     Ok(json)
   }
 
   override def delete(id : Int) : Action[AnyContent] = Action { implicit request =>
     val response = campaignService.delete(id)
-    val json = response.asJson.spaces2
+    val json = response.entity.get.asJson.spaces2
     Ok(json)
   }
 
   override def addEntities(
     entities : Iterable[Tables.CampaignRow]) : Action[AnyContent] = Action { implicit request =>
     val response = campaignService.addEntities(entities)
+                                  .map(w => w.entity).toArray
     val json = response.asJson.spaces2
     Ok(json)
   }
 
   override def addEntitiesBySinge(
-    entity : Tables.CampaignRow,
+    entity   : Tables.CampaignRow,
     addTimes : Int) : Action[AnyContent] = Action { implicit request =>
     val response = campaignService.addEntities(entity, addTimes)
+                                  .map(w => w.entity).toArray
+
     val json = response.asJson.spaces2
     Ok(json)
   }
