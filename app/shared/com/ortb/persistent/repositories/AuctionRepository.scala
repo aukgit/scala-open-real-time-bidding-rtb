@@ -1,5 +1,6 @@
 package shared.com.ortb.persistent.repositories
 
+import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
@@ -8,7 +9,7 @@ import slick.dbio.Effect
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
 
-class AuctionRepository(appManager: AppManager)
+class AuctionRepository @Inject()(appManager: AppManager)
     extends RepositoryBase[Auction, AuctionRow, Int](appManager) {
 
   override def tableName: String = this.auctionTableName

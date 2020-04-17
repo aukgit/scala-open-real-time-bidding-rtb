@@ -1,5 +1,6 @@
 package shared.com.ortb.persistent.repositories
 
+import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
@@ -10,7 +11,7 @@ import slick.dbio.Effect
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
 
-class BidRequestRepository(appManager: AppManager)
+class BidRequestRepository @Inject()(appManager: AppManager)
     extends RepositoryBase[Bidrequest, BidrequestRow, Int](appManager) {
 
   override def tableName: String = this.bidRequestTableName

@@ -17,6 +17,7 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
     with DatabaseActionExecutor[TTable, TRow, TKey]
     with FutureToRegular {
 
+  //noinspection ScalaDeprecation
   lazy protected implicit val executionContext: ExecutionContext =
     appManager.executionContextManager
       .createDefault()

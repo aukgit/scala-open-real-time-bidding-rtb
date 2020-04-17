@@ -1,5 +1,6 @@
 package shared.com.ortb.persistent.repositories
 
+import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
@@ -8,7 +9,7 @@ import shared.com.ortb.persistent.schema.Tables._
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
-class CampaignTargetCityRepository(appManager: AppManager)
+class CampaignTargetCityRepository @Inject()(appManager: AppManager)
     extends RepositoryBase[Campaigntargetcity, CampaigntargetcityRow, Int](
       appManager
     ) {

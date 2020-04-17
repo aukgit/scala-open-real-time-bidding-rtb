@@ -1,5 +1,6 @@
 package shared.com.ortb.persistent.repositories
 
+import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
@@ -12,7 +13,7 @@ import slick.sql.FixedSqlAction
   * Also known as for seats
   * @param appManager
   */
-class PublisherRepository(appManager: AppManager)
+class PublisherRepository @Inject()(appManager: AppManager)
     extends RepositoryBase[Publisher, PublisherRow, Int](appManager) {
 
   override def tableName: String = this.publisherTableName
