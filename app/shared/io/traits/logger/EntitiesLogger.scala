@@ -1,11 +1,7 @@
-package shared.io.traits
+package shared.io.traits.logger
 
-
-import shared.io.traits.logger.InfoLogger
-
+import scala.concurrent.duration.Duration.Inf
 import scala.concurrent.{Await, Future}
-import scala.concurrent.duration.Duration._
-
 
 trait EntitiesLogger {
   this : InfoLogger =>

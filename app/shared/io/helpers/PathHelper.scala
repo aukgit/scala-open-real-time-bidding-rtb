@@ -1,11 +1,34 @@
-package shared.io
+package shared.io.helpers
+
+import java.io.File
+import java.net.URL
 
 import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.model.error.FileErrorModel
+import shared.io.logger.AppLogger
 
 object PathHelper {
 
   val pathSeparator    : String = AppConstants.PathConstants.DirectorySeparator
   val genericSeparator : String = AppConstants.PathConstants.GenericPathSeparator
+
+  def getResourcePath() : String = {
+    try {
+      val resourceUrl : URL = ClassLoader.getSystemResource(AppConstants.Dot)
+
+      AppLogger.debug("resourceUrl", resourceUrl.toString)
+
+      if (resourceUrl != null) {
+        val resourcePath = resourceUrl.getPath
+        return new File(resourcePath).getAbsolutePath.toString
+      }
+    } catch {
+      case e : Exception => AppLogger.fileError(
+        FileErrorModel("ResourcePath", "", e.toString, ""))
+    }
+
+    ""
+  }
 
   /**
    * Get the absolute path from the given relative path to resource folder.

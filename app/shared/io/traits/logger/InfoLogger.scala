@@ -1,7 +1,7 @@
 package shared.io.traits.logger
 
 import io.sentry.Sentry
-import shared.io.AppLogger._
+import shared.io.logger.AppLogger._
 
 trait InfoLogger {
   this : PrintStacks with MethodNameHeaderGetter =>

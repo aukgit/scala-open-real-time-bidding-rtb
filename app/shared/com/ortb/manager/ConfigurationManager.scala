@@ -3,11 +3,12 @@ package shared.com.ortb.manager
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.model.error.FileErrorModel
-import shared.io.{AppLogger, JsonParser}
-import shared.io.PathHelper._
+import shared.io.helpers.PathHelper._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
+import shared.io.helpers.JsonParser
+import shared.io.logger.AppLogger
 
 trait ConfigurationManagerType {
   def getConfig(path : String) : ConfigModel

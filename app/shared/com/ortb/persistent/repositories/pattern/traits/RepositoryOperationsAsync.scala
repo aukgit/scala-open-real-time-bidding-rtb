@@ -5,7 +5,7 @@ import shared.com.ortb.model.persistent.EntityWrapper
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.io.AppLogger
+import shared.io.logger.AppLogger
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
 

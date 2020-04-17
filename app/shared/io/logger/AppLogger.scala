@@ -1,7 +1,6 @@
-package shared.io
+package shared.io.logger
 
-import shared.io.traits.EntitiesLogger
-import shared.io.traits.logger._
+import shared.io.traits.logger.{EntitiesLogger, _}
 import slick.util.Logging
 
 object AppLogger extends

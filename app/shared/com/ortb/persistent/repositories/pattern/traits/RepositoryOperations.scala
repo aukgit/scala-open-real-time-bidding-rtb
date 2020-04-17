@@ -4,7 +4,7 @@ import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.persistent.EntityWrapper
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.io.AppLogger
+import shared.io.logger.AppLogger
 
 trait RepositoryOperations[TTable, TRow, TKey]
     extends RepositoryOperationsBase[TRow] {

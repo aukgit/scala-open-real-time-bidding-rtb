@@ -1,6 +1,6 @@
 package shared.io.traits.logger
 
-import shared.io.AppLogger._
+import shared.io.logger.AppLogger._
 import io.sentry.Sentry
 
 trait WarnLogger {

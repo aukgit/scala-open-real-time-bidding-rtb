@@ -1,4 +1,4 @@
-package shared.io
+package shared.io.helpers
 
 import scala.reflect.runtime.{universe => ru}
 

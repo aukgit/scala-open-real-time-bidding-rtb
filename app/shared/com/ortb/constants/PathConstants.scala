@@ -3,7 +3,7 @@ package shared.com.ortb.constants
 import java.io.File
 
 import shared.com.ortb.model.error.FileErrorModel
-import shared.io.AppLogger
+import shared.io.logger.AppLogger
 
 sealed class PathConstants {
   lazy val WorkingDirectory : String = new java.io.File(AppConstants.Dot).getCanonicalPath

@@ -1,14 +1,14 @@
-package shared.io
+package shared.io.helpers
 
-import java.nio.file.{Files, Path, Paths}
+import java.nio.file._
 import java.util
 
+import shared.io.logger.AppLogger
 import shared.io.traits.file.ExecuteInputOutputAction
 
 import scala.io.{BufferedSource, Source}
 
-
-object File extends ExecuteInputOutputAction {
+object FileHelper extends ExecuteInputOutputAction {
   /**
    * Input relative path from resource and get the contents of the file.
    *

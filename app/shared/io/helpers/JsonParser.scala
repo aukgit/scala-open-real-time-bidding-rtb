@@ -1,10 +1,8 @@
-package shared.io
+package shared.io.helpers
 
+import io.circe.Error
 import shared.com.ortb.model.error.FileErrorModel
-import io.circe._
-import io.circe.generic.auto._
-import io.circe.parser._
-import io.circe.syntax._
+import shared.io.logger.AppLogger
 
 object JsonParser {
   def toObjectFromJSONPath[Type](
@@ -12,7 +10,7 @@ object JsonParser {
     converter : (String) => Either[Error, Type]
   ) : Option[Type] = {
     try {
-      val jsonContents = File.getContents(path)
+      val jsonContents = FileHelper.getContents(path)
       if (jsonContents.isEmpty) {
         return null
       }
