@@ -1,6 +1,7 @@
 package shared.io.traits.logger
 
 import io.sentry.Sentry
+import shared.com.ortb.enumeration.LogLevelType
 import shared.io.logger.AppLogger._
 
 trait InfoLogger {
@@ -12,12 +13,16 @@ trait InfoLogger {
     }
   }
 
-  def info(msg : String, stackIndex : Int = 3, isPrintStack : Boolean = false) : Unit = {
-    val message = s"INFO : (${getMethodNameHeader(stackIndex)}) - ${msg}"
-    log.info(message)
-    println(message)
-    Sentry.getContext.addTag("level", "info")
-    Sentry.capture(message)
-    printStacks(isPrintStack)
+  def info(
+    msg                             : String, stackIndex : Int = defaultStackIndex,
+    isPrintStack                    : Boolean = false) : Unit = {
+    val message = s"${LogLevelType.INFO} : (${getMethodNameHeader(stackIndex)}) - ${msg}"
+
+    additionalLogging(
+      message = message,
+      logLevelType = LogLevelType.INFO,
+      stackIndex = stackIndex,
+      isPrintStack = isPrintStack
+    )
   }
 }

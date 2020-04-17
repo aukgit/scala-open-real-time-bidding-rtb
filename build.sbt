@@ -62,6 +62,9 @@ lazy val allDependencies = Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
   "io.sentry" % "sentry-log4j2" % "1.7.30",
   "org.slf4j" % "slf4j-nop" % "1.7.26",
+  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.4.1",
+  "org.apache.logging.log4j" % "log4j-api" % "2.4.1",
+  "org.apache.logging.log4j" % "log4j-core" % "2.4.1",
   "com.typesafe.play" %% "play-logback" % "2.8.1",
 
   ///////////////////////////////////////////////////

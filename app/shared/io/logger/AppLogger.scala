@@ -1,7 +1,7 @@
 package shared.io.logger
 
+import play.api.Logger
 import shared.io.traits.logger.{EntitiesLogger, _}
-import slick.util.Logging
 
 object AppLogger extends
   LoggerProperties with
@@ -13,6 +13,8 @@ object AppLogger extends
   DebugLogger with
   WarnLogger with
   EntitiesLogger with
-  Logging {
-  def title() : Unit = log.warn(header)
+  SentryLogger with
+  AdditionalLogger {
+  val playLogger = new Logger(new ch.qos.logback.classic.Logger)
 }
+
