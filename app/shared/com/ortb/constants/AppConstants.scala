@@ -5,31 +5,31 @@ object AppConstants {
   /**
     * Dot(.) string.
     */
-  val Dot = "."
+  lazy val Dot = "."
 
   /**
     * "configuration.json"
     */
-  val DefaultConfigFileNameWithExtension = "configuration.json"
+  lazy val DefaultConfigFileNameWithExtension = "configuration.json"
 
-  val PathConstants = new PathConstants
+  lazy val PathConstants = new PathConstants
 
-  val SentryDSN = "https://3540a18396eb4373b3c843b149c55f5d@sentry.io/5183951"
+  lazy val SentryDSN = "https://3540a18396eb4373b3c843b149c55f5d@sentry.io/5183951"
 
   /**
     * ",\n <br >"
     */
-  val NewLineForSentry = ",\n <br >"
+  lazy val NewLineForSentry = ",\n <br >"
 
   /**
     * "-> "
     */
-  val HyphenRightAngel = "-> "
+  lazy val HyphenRightAngel = "-> "
 
   /**
     * "localhost"
     */
-  val LocalHost = "localhost"
+  lazy val LocalHost = "localhost"
 
-  val DefaultParallelExecution = 3
+  lazy val DefaultParallelExecution = 3
 }

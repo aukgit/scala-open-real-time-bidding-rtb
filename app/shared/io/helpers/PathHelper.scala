@@ -2,6 +2,7 @@ package shared.io.helpers
 
 import java.io.File
 import java.net.URL
+import java.nio.file.FileSystemException
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.error.FileErrorModel
@@ -9,19 +10,30 @@ import shared.io.logger.AppLogger
 
 object PathHelper {
 
-  val pathSeparator    : String = AppConstants.PathConstants.DirectorySeparator
+  val pathSeparator : String = AppConstants.PathConstants.DirectorySeparator
   val genericSeparator : String = AppConstants.PathConstants.GenericPathSeparator
 
-  def getResourcePath() : String = {
+  def getResourcePath : String = {
     try {
-      val resourceUrl : URL = ClassLoader.getSystemResource(AppConstants.Dot)
+      val resourceUrl : URL = ClassLoader.getSystemResource("")
 
       AppLogger.debug("resourceUrl", resourceUrl.toString)
 
-      if (resourceUrl != null) {
-        val resourcePath = resourceUrl.getPath
-        return new File(resourcePath).getAbsolutePath.toString
+      var finalUrl : URL = resourceUrl
+
+      if (resourceUrl == null) {
+        finalUrl = getClass.getResource("")
+        AppLogger.debug("getClass.getResource", Some(finalUrl).getOrElse("").toString)
       }
+
+      if (finalUrl != null) {
+        AppLogger.debug("finalUrl", finalUrl.toString)
+        val toPath = finalUrl.getPath
+
+        return new File(toPath).getAbsolutePath
+      }
+
+      throw new FileSystemException(s"Couldn't retrieve system resource path.")
     } catch {
       case e : Exception => AppLogger.fileError(
         FileErrorModel("ResourcePath", "", e.toString, ""))
@@ -41,7 +53,7 @@ object PathHelper {
   def getResourceFileAbsolutePath(relativePathInResources : String*) : String = {
     try {
       val relativeCombined = relativePathInResources.mkString(pathSeparator)
-      var separator        = ""
+      var separator = ""
 
       if (relativeCombined(0) != pathSeparator.charAt(0)) {
         separator = pathSeparator
