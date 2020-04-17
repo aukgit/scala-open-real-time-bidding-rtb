@@ -1,15 +1,16 @@
 <!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
 <configuration>
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${application.home:-.}/logs/application.log</file>
+  <appender name="RollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${application.home:-.}/logs/application.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
       <fileNamePattern>${application.home:-.}/logs/application-log-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 7 days worth of history -->
       <maxHistory>7</maxHistory>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - %message%n%xException</pattern>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - .%M\(%line\) - %message%n%xException</pattern>
     </encoder>
   </appender>
 
@@ -21,9 +22,9 @@
       <OnMismatch>DENY</OnMismatch>
       <OnMatch>ACCEPT</OnMatch>
     </filter>
-    <file>${application.home:-.}/logs/security.log</file>
+        <file>${application.home:-.}/logs/security.log</file>
     <encoder>
-      <pattern>%date [%level] [%marker] from %logger in %thread - %message%n%xException</pattern>
+      <pattern>%date [%level] [%marker] from %logger in %thread - .%M\(%line\) - %message%n%xException</pattern>
     </encoder>
   </appender>
 
@@ -36,7 +37,7 @@
   </appender>
 
   <appender name="AsyncFileWriterAppender" class="ch.qos.logback.classic.AsyncAppender">
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="RollingWeeklyFileAppender"/>
   </appender>
   <appender name="ConsolePrinterAppender" class="ch.qos.logback.classic.AsyncAppender">
     <appender-ref ref="STDOUT"/>
@@ -50,7 +51,7 @@
 
   <root level="ALL">
     <appender-ref ref="STDOUT"/>
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="RollingWeeklyFileAppender"/>
   </root>
 
   <root level="${log.root:-info}">
