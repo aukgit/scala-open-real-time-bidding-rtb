@@ -1,21 +1,13 @@
 package shared.io.helpers
 
-import java.io.File
-import java.net.URL
-import java.nio.file.FileSystemException
-
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.error.FileErrorModel
 import shared.io.logger.AppLogger
 import shared.io.traits.file.ResourcePathGetter
-
-
 
 object PathHelper extends ResourcePathGetter {
 
   val pathSeparator : String = AppConstants.PathConstants.DirectorySeparator
   val genericSeparator : String = AppConstants.PathConstants.GenericPathSeparator
-
 
   /**
    * Get the absolute path from the given relative path to resource folder.

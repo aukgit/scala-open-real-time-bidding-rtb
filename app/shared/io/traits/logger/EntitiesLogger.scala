@@ -35,7 +35,7 @@ trait EntitiesLogger {
 
     val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${additionalMessage}"
 
-    if (entity.isEmpty) {
+    if (entity == null || entity.isEmpty) {
       warn(s"Empty -> No entity found. ${additional}")
       return
     }

@@ -10,6 +10,8 @@ GET  /api/ping  controllers.ApiController.ping
 GET  /api/respath  controllers.ApiController.resourcePath
 GET  /api/campaigns  controllers.apis.CampaignsApiController.getAll
 GET  /api/campaigns/:id  controllers.apis.CampaignsApiController.byId(id: Int)
+DELETE  /api/campaigns/:id  controllers.apis.CampaignsApiController.delete(id: Int)
+PUT  /api/campaigns/:id  controllers.apis.CampaignsApiController.update(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
