@@ -15,5 +15,13 @@ object AppLogger extends
   WarnLogger with
   EntitiesLogger with
   SentryLogger with
-  AdditionalLogger {}
+  AdditionalLogger with
+  NullableLogger with
+  LoggerSelfPrinter {
+
+  def loggerStatus() : Unit = {
+    printLoggerStatus(logger, "logger")
+  }
+
+}
 

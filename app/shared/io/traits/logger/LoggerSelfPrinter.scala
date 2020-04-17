@@ -1,4 +1,4 @@
-package shared.io.logger
+package shared.io.traits.logger
 
 import org.slf4j.Logger
 

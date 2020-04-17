@@ -44,7 +44,7 @@ class ApiController @Inject()(
       ("Environment.simple().resource(\"\")", rootPath.toString),
     )
     println(js)
-    AppLogger.debug("Hello Debug")
+    AppLogger.debug("Hello Debu WWW g")
     Ok(js)
   }
 }

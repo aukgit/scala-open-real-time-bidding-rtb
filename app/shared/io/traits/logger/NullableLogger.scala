@@ -33,7 +33,7 @@ trait NullableLogger {
     stackIndex : Int = 4,
     isPrintStack : Boolean = false) : Unit = {
     val methodNameDisplay = getMethodNameHeader(stackIndex)
-    val finalMessage = s"[${logLevelType}] : ${methodNameDisplay} - $message"
+    val finalMessage = s"Nullable Logger - [${logLevelType}] : ${methodNameDisplay} - $message"
     if (nullableObject.isEmpty) {
       additionalLogging(
         message = s"""$finalMessage : null.""",
