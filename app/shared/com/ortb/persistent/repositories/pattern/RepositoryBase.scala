@@ -1,5 +1,6 @@
 package shared.com.ortb.persistent.repositories.pattern
 
+import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.repositories.pattern.traits._
@@ -9,7 +10,7 @@ import shared.io.traits.FutureToRegular
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
-abstract class RepositoryBase[TTable, TRow, TKey](appManager: AppManager)
+abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManager)
     extends DatabaseSchema(appManager)
     with SingleRepositoryBase[TTable, TRow, TKey]
     with EntityResponseCreator[TTable, TRow, TKey]

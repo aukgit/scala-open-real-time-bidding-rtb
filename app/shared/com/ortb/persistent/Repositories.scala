@@ -1,10 +1,11 @@
 package shared.com.ortb.persistent
 
+import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories._
 import shared.com.ortb.persistent.schema.DatabaseSchema
 
-class Repositories(appManager: AppManager)
+class Repositories @Inject()(appManager: AppManager)
     extends DatabaseSchema(appManager: AppManager) {
   lazy val advertiseRepository = new AdvertiseRepository(appManager)
   lazy val auctionRepository = new AuctionRepository(appManager)
