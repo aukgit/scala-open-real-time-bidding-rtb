@@ -27,13 +27,18 @@ trait AdditionalLogger {
 
     logLevelType match {
       case LogLevelType.ALL | LogLevelType.INFO =>
-        playLogger.info(message)
+        logger.info(message)
+        log.info(message)
       case LogLevelType.DEBUG =>
-        playLogger.debug(message)
+        logger.debug(message)
+        log.debug(message)
       case LogLevelType.WARN =>
-        playLogger.warn(message)
+        logger.warn(message)
+        log.warn(message)
+
       case LogLevelType.ERROR | LogLevelType.FATAL =>
-        playLogger.error(message)
+        logger.error(message)
+        log.error(message)
       case _ =>
         throw new InvalidDatatypeValueException("LogType is out of range", Array(logLevelType))
     }
@@ -46,6 +51,7 @@ trait AdditionalLogger {
     logLevelType : LogLevelType = LogLevelType.ERROR,
     stackIndex : Int = 3,
     isPrintStack : Boolean = false) {
+    logger.error(message, exception.get)
     logBasedOnLevel(message, logLevelType)
     exceptionLogToSentry(message, exception, logLevelType)
     errorLogToSentry(newError)

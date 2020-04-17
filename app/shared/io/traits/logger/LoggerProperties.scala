@@ -14,7 +14,5 @@ trait LoggerProperties {
   val innerLogger : slf4j.Logger = StaticLoggerBinder
     .getSingleton
     .getLoggerFactory
-    .getLogger(header)
-
-
+    .getLogger("ALL")
 }

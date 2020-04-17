@@ -1,5 +1,7 @@
 package controllers
 
+import java.io.File
+
 import javax.inject.Inject
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -9,6 +11,8 @@ import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
+import play.api.{Environment, Play}
+import shared.io.helpers.PathHelper
 
 class ApiController @Inject()(
 
@@ -29,5 +33,16 @@ class ApiController @Inject()(
     val json = campaigns.asJson.spaces2
     println(json)
     Ok(json)
+  }
+
+  def resourcePath : Action[AnyContent] = Action { implicit request =>
+    val path = PathHelper.getResourcePath
+    val rootPath = Environment.simple().resource("")
+    val js = Json.obj(
+      ("path", path),
+      ("Environment.simple().resource(\"\")", rootPath.toString),
+    )
+    println(js)
+    Ok(js)
   }
 }

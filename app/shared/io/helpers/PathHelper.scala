@@ -4,6 +4,7 @@ import java.io.File
 import java.net.URL
 import java.nio.file.FileSystemException
 
+import play.api.Environment
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.error.FileErrorModel
 import shared.io.logger.AppLogger
@@ -15,20 +16,19 @@ object PathHelper {
 
   def getResourcePath : String = {
     try {
-      val resourceUrl : URL = ClassLoader.getSystemResource("")
-
-      AppLogger.debug("resourceUrl", resourceUrl.toString)
-
-      var finalUrl : URL = resourceUrl
+      var resourceUrl : URL = ClassLoader.getSystemResource("")
 
       if (resourceUrl == null) {
-        finalUrl = getClass.getResource("")
-        AppLogger.debug("getClass.getResource", Some(finalUrl).getOrElse("").toString)
+        resourceUrl = getClass.getResource("")
       }
 
-      if (finalUrl != null) {
-        AppLogger.debug("finalUrl", finalUrl.toString)
-        val toPath = finalUrl.getPath
+      if (resourceUrl == null) {
+        resourceUrl = play.api.Environment.simple().rootPath.toURL
+      }
+
+      if (resourceUrl != null) {
+        AppLogger.debug("resourceUrl", resourceUrl.toString)
+        val toPath = resourceUrl.getPath
 
         return new File(toPath).getAbsolutePath
       }
