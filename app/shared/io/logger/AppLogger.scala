@@ -15,6 +15,6 @@ object AppLogger extends
   EntitiesLogger with
   SentryLogger with
   AdditionalLogger {
-  val playLogger = new Logger(new ch.qos.logback.classic.Logger)
+  val playLogger = new Logger(innerLogger)
 }
 

@@ -1,70 +1,109 @@
 package shared.io.traits.logger
 
+import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.LogLevelType.LogLevelType
+import shared.io.helpers.ReflectionHelper.getTypeName
+import shared.io.logger.AppLogger
+
 import scala.concurrent.duration.Duration.Inf
 import scala.concurrent.{Await, Future}
 
 trait EntitiesLogger {
-  this : InfoLogger =>
+  this : AppLogger.type =>
 
   def logEntity[T](
     isExecute : Boolean,
-    f : Future[T],
+    entityInFuture : Future[T],
     additionalMessage : String = "") : Unit = {
     if (!isExecute) {
       return
     }
 
-    val results = Await.result(f, Inf)
-    logEntitiesNonFuture(isExecute, results, additionalMessage)
+    val result = Await.result(entityInFuture, Inf)
+    logEntityNonFuture(isExecute, Some(result), additionalMessage)
   }
 
   def logEntityNonFuture[T](
     isExecute         : Boolean,
-    entity            : Option[T],
-    additionalMessage : String = "") : Unit = {
+    entity : Option[T],
+    additionalMessage : String = "",
+    logLevelType : LogLevelType = LogLevelType.DEBUG,
+    isPrintStack      : Boolean = false) : Unit = {
     if (!isExecute) {
       return
     }
 
-    if(entity.isEmpty){
-      l
+    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${additionalMessage}"
+
+    if (entity.isEmpty) {
+      warn(s"Empty -> No entity found. ${additional}")
       return
     }
 
-    val results = Await.result(entity, Inf)
-    logEntitiesNonFuture(isExecute, results, additionalMessage)
+    val typeName = getTypeName(entity)
+
+    additionalLogging(
+      message = s"Entity($typeName): ${entity.get.toString}, $additional",
+      logLevelType = logLevelType,
+      stackIndex = defaultStackIndex,
+      isPrintStack = isPrintStack
+    )
   }
 
-  def logEntities[T](isExecute : Boolean, f : Future[Iterable[T]], additionalMessage : String = "") : Unit = {
+  def logEntities[T](
+    isExecute : Boolean,
+    entitiesInFuture  : Future[Iterable[T]],
+    additionalMessage : String = "",
+    logLevelType      : LogLevelType = LogLevelType.DEBUG,
+    isPrintStack : Boolean = false) : Unit = {
     if (!isExecute) {
       return
     }
 
-    val results = Await.result(f, Inf)
-    logEntitiesNonFuture(isExecute, results, additionalMessage)
+    val results = Await.result(entitiesInFuture, Inf)
+
+    logEntitiesNonFuture(
+      isExecute = isExecute,
+      entities = results,
+      additionalMessage = additionalMessage,
+      logLevelType = logLevelType,
+      isPrintStack = isPrintStack)
   }
 
-  def logEntitiesNonFuture[T](isExecute : Boolean, f : Iterable[T], additionalMessage : String = "") : Unit = {
+  def logEntitiesNonFuture[T](
+    isExecute         : Boolean,
+    entities          : Iterable[T],
+    additionalMessage : String = "",
+    logLevelType      : LogLevelType = LogLevelType.DEBUG,
+    isPrintStack      : Boolean = false) : Unit = {
     if (!isExecute) {
       return
     }
 
-    if (additionalMessage.nonEmpty) {
-      println(additionalMessage)
-    }
+    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${additionalMessage}"
 
-    if (f.isEmpty) {
-      println("No item present in the entities for logging.")
+    if (entities.isEmpty) {
+      println(s"Empty -> No item present in the entities for logging. $additional")
 
       return;
     }
 
-    val entityName = f.head.getClass.getTypeName.replace("$", ".")
+    val typeName = getTypeName(Some(entities.head))
 
-    println(s"Printing Entities ($entityName):")
+    additionalLogging(
+      message = s"Printing Entities ($typeName):",
+      logLevelType = logLevelType,
+      stackIndex = defaultStackIndex,
+      isPrintStack = isPrintStack
+    )
 
-    f.foreach(i => {
-      println(i.toString)
+    entities.foreach(i => {
+      additionalLogging(
+        message = i.toString,
+        logLevelType = logLevelType,
+        stackIndex = defaultStackIndex,
+        isPrintStack = isPrintStack
+      )
     })
   }
 }
