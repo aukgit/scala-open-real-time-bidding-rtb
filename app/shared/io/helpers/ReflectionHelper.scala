@@ -1,5 +1,7 @@
 package shared.io.helpers
 
+import shared.io.logger.AppLogger
+
 import scala.reflect.runtime.{universe => ru}
 
 object ReflectionHelper {
@@ -8,13 +10,21 @@ object ReflectionHelper {
 
   /**
    * reference : https://bit.ly/3evRZy7
+   *
    * @param givenClass
    * @tparam T
+   *
    * @return
    */
   def getType[T](givenClass : Class[T]) : ru.Type = {
-    val runtimeMirror = ru.runtimeMirror(givenClass.getClassLoader)
-    runtimeMirror.classSymbol(givenClass).toType
+    try {
+      val runtimeMirror = ru.runtimeMirror(givenClass.getClassLoader)
+      return runtimeMirror.classSymbol(givenClass).toType
+    } catch {
+      case e : Exception => AppLogger.error(e)
+    }
+
+    null
   }
 
   def getTypeName[T](item : Option[T]) : String = {
@@ -22,7 +32,13 @@ object ReflectionHelper {
       return ""
     }
 
-    item.get.getClass.getTypeName
+    try {
+      return item.get.getClass.getTypeName
+    } catch {
+      case e : Exception => AppLogger.error(e)
+    }
+
+    ""
   }
 }
 

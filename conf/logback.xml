@@ -3,11 +3,12 @@
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
   <appender name="RollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${application.home:-.}/logs/application.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
-      <fileNamePattern>${application.home:-.}/logs/allArchive/application-log-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-      <!-- keep 7 days worth of history -->
-      <maxHistory>7</maxHistory>
+      <fileNamePattern>${application.home:-.}/logs/allArchive/application-log-%i.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
@@ -18,11 +19,12 @@
 
   <appender name="InfoRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${application.home:-.}/logs/application.info.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
-      <fileNamePattern>${application.home:-.}/logs/info/application-log-%d{yyyy-MM-dd}.info.log.gz</fileNamePattern>
-      <!-- keep 7 days worth of history -->
-      <maxHistory>7</maxHistory>
+      <fileNamePattern>${application.home:-.}/logs/info/application-log-%i.info.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
@@ -32,11 +34,12 @@
   </appender>
   <appender name="DebugRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${application.home:-.}/logs/application.debug.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
-      <fileNamePattern>${application.home:-.}/logs/debug/application-log-%d{yyyy-MM-dd}.debug.log.gz</fileNamePattern>
-      <!-- keep 7 days worth of history -->
-      <maxHistory>7</maxHistory>
+      <fileNamePattern>${application.home:-.}/logs/debug/application-log-%i.debug.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
@@ -46,11 +49,12 @@
   </appender>
   <appender name="WarnRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${application.home:-.}/logs/application.warn.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
-      <fileNamePattern>${application.home:-.}/logs/warn/application-log-%d{yyyy-MM-dd}.warn.log.gz</fileNamePattern>
-      <!-- keep 7 days worth of history -->
-      <maxHistory>7</maxHistory>
+      <fileNamePattern>${application.home:-.}/logs/warn/application-log-%i.warn.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
@@ -60,11 +64,12 @@
   </appender>
   <appender name="ErrorRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${application.home:-.}/logs/application.error.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <!-- Daily rollover with compression -->
-      <fileNamePattern>${application.home:-.}/logs/error/application-log-%d{yyyy-MM-dd}.error.log.gz</fileNamePattern>
-      <!-- keep 7 days worth of history -->
-      <maxHistory>7</maxHistory>
+      <fileNamePattern>${application.home:-.}/logs/error/application-log-%i.error.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
@@ -117,29 +122,33 @@
 
   <logger name="play" level="ALL"/>
   <logger name="akka" level="ALL"/>
-  <logger name="akka.stream.Log" level="ALL"/>
+  <logger name="akka.stream.Log" level="NONE"/>
   <logger name="actors" level="ALL"/>
   <logger name="controllers" level="ALL"/>
+  <logger name="slick.jdbc" level="ERROR" />
 
   <root level="ALL">
     <appender-ref ref="AllLogger"/>
-  </root>
-
-  <root level="INFO">
-    <appender-ref ref="InfoLogger"/>
-  </root>
-
-  <root level="DEBUG">
-    <appender-ref ref="DebugLogger"/>
-  </root>
-
-  <root level="${log.root:-info}">
+    <appender-ref ref="RollingWeeklyFileAppender"/>
     <appender-ref ref="ConsoleDefaultPrintAppender"/>
+    <appender-ref ref="SecurityFileAppender"/>
   </root>
 
-  <logger name="slick.basic.BasicBackend.action" level="${log.action:-info}"/>
-  <logger name="slick.basic.BasicBackend.stream" level="${log.stream:-info}"/>
-  <logger name="slick.compiler" level="${log.qcomp:-info}"/>
+<!--  <root level="INFO">-->
+<!--    <appender-ref ref="InfoLogger"/>-->
+<!--  </root>-->
+
+<!--  <root level="DEBUG">-->
+<!--    <appender-ref ref="DebugLogger"/>-->
+<!--  </root>-->
+
+<!--  <root level="${log.root:-ALL}">-->
+<!--    <appender-ref ref="ConsoleDefaultPrintAppender"/>-->
+<!--  </root>-->
+
+  <logger name="slick.basic.BasicBackend.action" level="${log.action:-error}"/>
+  <logger name="slick.basic.BasicBackend.stream" level="${log.stream:-error}"/>
+  <logger name="slick.compiler" level="${log.qcomp:-error}"/>
   <logger name="slick.compiler.QueryCompiler" level="${log.qcomp.phases:-inherited}"/>
   <logger name="slick.compiler.QueryCompilerBenchmark" level="${log.qcomp.bench:-inherited}"/>
   <logger name="slick.compiler.Inline" level="${log.qcomp.inline:-inherited}"/>

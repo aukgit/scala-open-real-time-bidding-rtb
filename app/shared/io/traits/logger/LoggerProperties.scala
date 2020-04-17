@@ -3,6 +3,7 @@ package shared.io.traits.logger
 import org.slf4j
 import org.slf4j.impl.StaticLoggerBinder
 import shared.com.ortb.constants.AppConstants
+import shared.io.logger.AppLogger.{log, printLoggerStatus}
 
 trait LoggerProperties {
   val header = "[Open RTB]"
@@ -13,5 +14,7 @@ trait LoggerProperties {
   val innerLogger : slf4j.Logger = StaticLoggerBinder
     .getSingleton
     .getLoggerFactory
-    .getLogger("ROOT")
+    .getLogger("ALL")
+
+  printLoggerStatus(innerLogger, "innerLogger")
 }
