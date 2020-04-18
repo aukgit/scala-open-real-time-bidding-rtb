@@ -6,7 +6,7 @@ import shared.io.logger.AppLogger
 
 object JsonParser {
   def toObjectFromJSONPath[Type](
-    path      : String,
+    path : String,
     converter : (String) => Either[Error, Type]
   ) : Option[Type] = {
     try {
@@ -16,24 +16,22 @@ object JsonParser {
       }
 
       val convertedEitherItem = converter(jsonContents)
-      val result              = convertedEitherItem.getOrElse(null)
+      val result = convertedEitherItem.getOrElse(null)
 
       if (result != null) {
         return Some(result.asInstanceOf[Type])
-      }
-      else {
-        val errorContext   = convertedEitherItem.left.getOrElse(null).toString
-        val fileErrorModel = new FileErrorModel(
+      } else {
+        val errorContext = convertedEitherItem.left.getOrElse(null).toString
+        val fileErrorModel = FileErrorModel(
           title = s"Json Parsing Failed for : ${path}",
           cause = errorContext,
           filePath = path,
-          content = jsonContents);
+          content = jsonContents)
 
         val errorMessage = AppLogger.getFileErrorMessage(fileErrorModel)
         throw new Exception(errorMessage)
       }
-    }
-    catch {
+    } catch {
       case e : Exception =>
         AppLogger.error(e)
     }

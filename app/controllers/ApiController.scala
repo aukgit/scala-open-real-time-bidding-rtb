@@ -12,6 +12,7 @@ import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
 import play.api.{Environment, Play}
+import shared.com.ortb.model.wrappers.http.HttpSuccessActionWrapper
 import shared.io.helpers.PathHelper
 import shared.io.logger.AppLogger
 
@@ -44,6 +45,7 @@ class ApiController @Inject()(
       ("path", path),
       ("Environment.simple().resource(\"\")", rootPath.toString),
     )
+
     println(js)
     AppLogger.debug("Hello Debu WWW g")
     Ok(js)

@@ -1,14 +1,15 @@
 package shared.com.ortb.persistent.repositories.pattern.traits
 
 import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 
 trait RepositoryJsonOperations[TRow, TKey]
     extends RepositoryOperationsBase[TRow] {
-  def add(json: String): RepositoryOperationResult[TRow, TKey]
+  def addUsingJson(json: String): RepositoryOperationResult[TRow, TKey]
 
-  def update(json: String): RepositoryOperationResult[TRow, TKey]
+  def addEntitiesUsingJson(json: String): RepositoryOperationResult[TRow, TKey]
 
-  def toJson(entity: TRow): String
+  def updateUsingJson(json: String): RepositoryOperationResult[TRow, TKey]
 
-  def toJson(entity: Iterable[TRow]): String
+  def updateEntitiesUsingJson(json: String): RepositoryOperationResult[TRow, TKey]
 }

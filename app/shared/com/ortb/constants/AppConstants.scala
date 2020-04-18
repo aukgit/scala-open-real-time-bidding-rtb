@@ -32,4 +32,6 @@ object AppConstants {
   lazy val LocalHost = "localhost"
 
   lazy val DefaultParallelExecution = 3
+
+  lazy val NoContent = "No content, no operation performed."
 }

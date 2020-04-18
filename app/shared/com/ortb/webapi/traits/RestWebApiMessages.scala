@@ -1,34 +1,36 @@
 package shared.com.ortb.webapi.traits
 
-import play.api.mvc.Headers
+import play.api.mvc.{Action, AnyContent}
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import shared.com.ortb.enumeration.HttpMethodType.HttpMethodType
+import shared.com.ortb.model.wrappers.http._
 
 trait RestWebApiMessages[TTable, TRow, TKey] {
-  def failedMessage(item : Option[TRow] = None, additionalMessage : String = "") : String
+  val entityCreateFailedMessage = "Entity failed to create"
+  val entityCreateSuccessMessage = "Entity create successful"
 
-  def successMessage(item : Option[TRow] = None, additionalMessage : String = "") : String
+  def failedMessage(
+    databaseActionType   : Option[DatabaseActionType] = None,
+    entity               : Option[TRow] = None,
+    additionalMessage : String = "") : String
+
+  def successMessage(
+    databaseActionType    : Option[DatabaseActionType] = None,
+    entity                : Option[TRow] = None,
+    additionalMessage     : String = "") : String
 
   def performBadRequest(
-    entity            : Option[TRow],
-    message           : String,
-    rawBody           : String,
-    databaseActionType : DatabaseActionType,
-    httpMethodType : HttpMethodType,
-    headers : Option[Headers] = None
-  )
+    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]] = None)
+  : Action[AnyContent]
+
+  def performBadRequestOnException(
+    httpFailedActionWrapper : HttpFailedExceptionActionWrapper[TRow, TKey])
+  : Action[AnyContent]
 
   def performOkayOnEntity(
-    entity : Option[TRow],
-    message : String,
-    httpMethodType : HttpMethodType,
-    databaseActionType : DatabaseActionType,
-    headers : Option[Headers] = None
-  )
+    httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[TRow, TKey]] = None)
+  : Action[AnyContent]
 
   def performOkay(
-    message : String,
-    httpMethodType : HttpMethodType,
-    headers : Option[Headers] = None
-  )
+    httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[TRow, TKey]] = None)
+  : Action[AnyContent]
 }

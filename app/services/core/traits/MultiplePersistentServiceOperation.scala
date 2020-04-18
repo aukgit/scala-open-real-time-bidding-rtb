@@ -1,4 +1,4 @@
-package services.traits
+package services.core.traits
 
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.ortb.model.results.RepositoryOperationResult
