@@ -7,10 +7,9 @@ import shared.io.helpers.EmptyValidateHelper
 trait BasicAdapterImplementation extends BasicAdapter {
   def convertItemTo[A, B](
     item : Option[A],
-    adapterLogic : PartialFunction[Option[A], Option[B]]) : Option[B] = {
-    val isEmpty = EmptyValidateHelper.isEmpty(
-      item,
-      Some(AppConstants.NoContent))
+    adapterLogic : Option[A] => Option[B]) : Option[B] = {
+    val isEmpty =
+      EmptyValidateHelper.isEmpty(item, Some(AppConstants.NoContent))
 
     if (isEmpty) {
       return None
@@ -21,12 +20,10 @@ trait BasicAdapterImplementation extends BasicAdapter {
 
   def convertItemsTo[A, B](
     items : Option[Iterable[A]],
-    adapterLogic :
-    PartialFunction[Option[Iterable[A]], Option[Iterable[B]]]) :
-  Option[Iterable[B]] = {
-    val isEmpty = EmptyValidateHelper.isEmpty(
-      items,
-      Some(AppConstants.NoContent))
+    adapterLogic : Option[Iterable[A]] => Option[Iterable[B]])
+  : Option[Iterable[B]] = {
+    val isEmpty =
+      EmptyValidateHelper.isEmpty(items, Some(AppConstants.NoContent))
 
     if (isEmpty) {
       return None
@@ -35,5 +32,3 @@ trait BasicAdapterImplementation extends BasicAdapter {
     adapterLogic(items)
   }
 }
-
-

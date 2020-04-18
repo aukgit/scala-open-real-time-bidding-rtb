@@ -180,10 +180,6 @@ class CampaignsApiController @Inject()(
     Some(webApiEntitiesResponseWrapper)
   }
 
-  override def toJson[T](item : Option[T]) : String = ???
-
-  override def toJson[T](items : Option[Iterable[T]]) : String = ???
-
   override def fromRequestToEntity(
     request : Option[Request[AnyContent]]) :
   Option[EntityWrapperWithOptions[CampaignRow, Int]] = {

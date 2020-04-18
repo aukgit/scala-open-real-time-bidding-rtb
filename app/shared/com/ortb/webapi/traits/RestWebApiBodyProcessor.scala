@@ -11,10 +11,6 @@ trait RestWebApiBodyProcessor[TTable, TRow, TKey] {
   Option[WebApiEntityResponseWrapper[TRow, TKey]]
 
   def bodyRequestToEntities(request : Request[AnyContent]) : Option[WebApiEntitiesResponseWrapper[TRow, TKey]]
-
-  def toJson[T](item : Option[T]) : String
-
-  def toJson[T](items : Option[Iterable[T]]) : String
 }
 
 

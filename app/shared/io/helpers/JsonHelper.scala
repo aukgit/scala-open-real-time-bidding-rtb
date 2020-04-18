@@ -2,11 +2,9 @@ package shared.io.helpers
 
 import io.circe.parser._
 import io.circe.syntax._
-import io.circe.{Encoder, Error, Json}
+import io.circe.{Decoder, Encoder, Error, Json}
 import shared.com.ortb.model.error.FileErrorModel
-import shared.io.implementations.jsonParse.{JsonDecodersImplementation, JsonEncodersImplementation, JsonParserImplementation}
 import shared.io.loggers.AppLogger
-import shared.io.traits.jsonParse.JsonDecoders
 
 object JsonHelper {
   def toJson[T](item : T)(implicit encoder: Encoder[T]) : Option[Json] = {
@@ -20,12 +18,11 @@ object JsonHelper {
     None
   }
 
-  def toObjectUsingParser[Type](
+  def toObjectUsingParser[T](
     jsonContents : String
-  ) : Option[Type] = {
+  ) (implicit decoder:  Decoder[T]): Option[T] = {
     try {
-      val decoders = new JsonDecodersImplementation[Type]
-      val convertedEitherItem = decode[Type](jsonContents)(decoders.defaultDecoder)
+      val convertedEitherItem = decode[T](jsonContents)(decoder)
 
       return getObjectFromJson(jsonContents, convertedEitherItem)
     } catch {
@@ -36,13 +33,13 @@ object JsonHelper {
     None
   }
 
-  private def getObjectFromJson[Type](
+  private def getObjectFromJson[T](
     jsonContents                               : String,
-    convertedEitherItem                        : Either[Error, Type]) : Option[Nothing] = {
+    convertedEitherItem                        : Either[Error, T]) : Option[T] = {
     val result = convertedEitherItem.getOrElse(null)
 
     if (result != null) {
-      return Some(Some(result.asInstanceOf[Type]))
+      return Some(result.asInstanceOf[T])
     }
 
     val errorContext = convertedEitherItem.left.getOrElse(null).toString

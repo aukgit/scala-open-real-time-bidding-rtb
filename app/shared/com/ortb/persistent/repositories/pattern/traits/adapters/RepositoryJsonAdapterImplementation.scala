@@ -1,35 +1,27 @@
 package shared.com.ortb.persistent.repositories.pattern.traits.adapters
 
-import java.time.Instant
-
 import io.circe._
-import io.circe.generic.auto._
 import io.circe.parser._
-import io.circe.generic.auto._
 import io.circe.syntax._
-import io.circe.Decoder.AccumulatingResult
-import io.circe.generic.JsonCodec
-
 import shared.com.ortb.adapters.BasicAdapterImplementation
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 
-
-
 trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
   extends
     BasicAdapterImplementation with
-    RepositoryJsonAdapter[TTable, TRow, TKey] with
-    ImplicitJsonParser[TRow] {
+    RepositoryJsonAdapter[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
 
   //noinspection DuplicatedCode
-  def fromEntityToJson(entity : Option[TRow]) : Option[String] = convertItemTo[TRow, String](
+  def fromEntityToJson(entity : Option[TRow])
+    (implicit encoder : Encoder[TRow]) :
+  Option[String] = convertItemTo[TRow, String](
     entity, _ => {
       try {
-        return Some(entity.asJson.spaces2)
+        return Some(entity.get.asJson(encoder).spaces2)
       } catch {
         case e : Exception => AppLogger.error(e)
       }
@@ -38,11 +30,13 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     })
 
   //noinspection DuplicatedCode
-  def fromEntitiesToJson(entities : Option[Iterable[TRow]]) : Option[String] = {
+  def fromEntitiesToJson(entities : Option[Iterable[TRow]])
+    (implicit encoder : Encoder[Iterable[TRow]])
+  : Option[String] = {
     convertItemTo[Iterable[TRow], String](
       entities, _ => {
         try {
-          return Some(entities.asJson.spaces2)
+          return Some(entities.get.asJson(encoder).spaces2)
         } catch {
           case e : Exception => AppLogger.error(e)
         }
@@ -51,12 +45,14 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
       })
   }
 
-  def fromJsonToEntityWrapper(jsonContent : Option[String]) :
+
+  def fromJsonToEntityWrapper(jsonContent : Option[String])
+    (implicit decoder : Decoder[TRow]) :
   Option[EntityWrapperWithOptions[TRow, TKey]] = {
-    convertItemTo[String, EntityWrapperWithOptions[TRow, TKey]]
-    (jsonContent, (_) => {
+    def converter(jsonAsString : Option[String]) :
+    Option[EntityWrapperWithOptions[TRow, TKey]] = {
       try {
-        val possibleEntity = decode[TRow](jsonContent.get)(defaultDecoder)
+        val possibleEntity = decode[TRow](jsonAsString.get)(decoder)
           .getOrElse(null)
 
         if (possibleEntity != null) {
@@ -69,11 +65,13 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
       }
 
       None
-    })
+    }
+
+    convertItemTo(jsonContent, converter)
   }
 
-  override def fromJsonToEntitiesWrapper(
-    jsonContent : Option[String]) :
+  override def fromJsonToEntitiesWrapper(jsonContent : Option[String])
+    (implicit decoder : Decoder[Iterable[TRow]]) :
   Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] = {
     val isEmpty = EmptyValidateHelper.isEmpty(jsonContent)
     if (isEmpty) {
@@ -81,7 +79,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     }
 
     try {
-      val possibleEntities =decode[Iterable[TRow]](jsonContent.get)(defaultIterableDecoder)
+      val possibleEntities = decode[Iterable[TRow]](jsonContent.get)(decoder)
         .getOrElse(null)
 
       if (possibleEntities != null) {
