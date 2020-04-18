@@ -1,6 +1,6 @@
 package shared.com.ortb.webapi.traits
 
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Request, Result}
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.wrappers.http._
 
@@ -20,17 +20,17 @@ trait RestWebApiMessages[TTable, TRow, TKey] {
 
   def performBadRequest(
     httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]] = None)
-  : Action[AnyContent]
+  : Result
 
   def performBadRequestOnException(
     httpFailedActionWrapper : HttpFailedExceptionActionWrapper[TRow, TKey])
-  : Action[AnyContent]
+  : Result
 
   def performOkayOnEntity(
     httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[TRow, TKey]] = None)
-  : Action[AnyContent]
+  : Result
 
   def performOkay(
     httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[TRow, TKey]] = None)
-  : Action[AnyContent]
+  : Result
 }

@@ -1,20 +1,19 @@
 package controllers.apis
 
 import controllers.webapi.core.AbstractRestWebApi
+import io.circe.{Decoder, Encoder}
 import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
 import javax.inject.Inject
 import play.api.mvc.{Action, Request, _}
+import play.mvc.Http
 import services.CampaignService
 import services.core.AbstractBasicPersistentService
 import services.core.traits.BasicPersistentServiceContracts
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.wrappers.http._
-import shared.com.ortb.model.wrappers.persistent.{
-  WebApiEntitiesResponseWrapper,
-  _
-}
+import shared.com.ortb.model.wrappers.persistent.{WebApiEntitiesResponseWrapper, _}
 import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
@@ -140,24 +139,31 @@ class CampaignsApiController @Inject()(campaignService: CampaignService,
                               entity: Option[Tables.CampaignRow],
                               additionalMessage: String): String = "Success"
 
+  override def toJsonFrom(entities : Iterable[CampaignRow])(
+    implicit
+    decoder : Decoder[Iterable[CampaignRow]]) : String =
+    service.fromEntitiesToJson(Some(entities))
+
+  override def toEntityJson(entity : CampaignRow)(
+    implicit
+    decoder : Decoder[CampaignRow]) : String = ???
+
+  override def toJson[T](item : T)(implicit encoder : Encoder[T]) : String = ???
+
+  override def toJson[T](items : Iterable[T])
+    (implicit encoder : Encoder[Iterable[T]]) : String = ???
+
   override def performBadRequest(
-      httpFailedActionWrapper: Option[
-        HttpFailedActionWrapper[Tables.CampaignRow, Int]]):
-  Action[AnyContent] =
-    BadRequest("")
+    httpFailedActionWrapper : Option[HttpFailedActionWrapper[CampaignRow, Int]]) : Result = ???
 
   override def performBadRequestOnException(
-      httpFailedActionWrapper: HttpFailedExceptionActionWrapper[
-        Tables.CampaignRow,
-        Int]): Action[AnyContent] = ???
+    httpFailedActionWrapper : HttpFailedExceptionActionWrapper[CampaignRow, Int]) : Result = ???
 
-  override def performOkayOnEntity(httpSuccessActionWrapper: Option[
-    HttpSuccessActionWrapper[Tables.CampaignRow, Int]]): Action[AnyContent] =
-    ???
+  override def performOkayOnEntity(
+    httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[CampaignRow, Int]]) : Result = ???
 
-  override def performOkay(httpSuccessActionWrapper: Option[
-    HttpSuccessActionWrapper[Tables.CampaignRow, Int]]): Action[AnyContent] =
-    ???
+  override def performOkay(
+    httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[CampaignRow, Int]]) : Result = ???
 
   override def toString(request: Request[AnyContent]): String =
     request.body.asText.getOrElse("")
