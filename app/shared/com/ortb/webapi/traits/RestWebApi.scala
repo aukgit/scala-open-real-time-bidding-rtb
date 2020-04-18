@@ -17,5 +17,5 @@ trait RestWebApi[TTable, TRow, TKey] {
 
   def addEntities() : Action[AnyContent]
 
-  def addEntitiesBySinge() : Action[AnyContent]
+  def addEntitiesBySinge(addTimes: Int) : Action[AnyContent]
 }

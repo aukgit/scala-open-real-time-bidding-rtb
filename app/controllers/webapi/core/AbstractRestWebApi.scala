@@ -62,7 +62,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
             rawBodyRequest = request.body.asText,
             databaseActionType = Some(DatabaseActionType.Create))
 
-          return performOkayOnEntity(Some(httpSuccessWrapper))
+          performOkayOnEntity(Some(httpSuccessWrapper))
         }
       }
 
@@ -74,7 +74,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
         rawBodyRequest = request.body.asText,
         databaseActionType = Some(DatabaseActionType.Create))
 
-      return performBadRequest(Some(httpFailedActionWrapper))
+      performBadRequest(Some(httpFailedActionWrapper))
     } catch {
       case e : Exception => AppLogger.error(e)
         val httpFailedExceptionActionWrapper = HttpFailedExceptionActionWrapper[TRow, TKey](
@@ -83,15 +83,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
           rawBodyRequest = request.body.asText,
           databaseActionType = Some(DatabaseActionType.Create))
 
-        return performBadRequestOnException(httpFailedExceptionActionWrapper)
+        performBadRequestOnException(httpFailedExceptionActionWrapper)
     }
   }
-
-  def update(id : TKey) : Action[AnyContent]
-
-  def delete(id    : TKey) : Action[AnyContent]
-
-  def addEntities() : Action[AnyContent]
-
-  def addEntitiesBySinge() : Action[AnyContent]
 }
