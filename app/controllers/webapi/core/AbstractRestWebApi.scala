@@ -1,7 +1,6 @@
 package controllers.webapi.core
 
 import io.circe._
-import io.circe.generic.auto._
 import play.api.mvc.{Action, _}
 import services.core.AbstractBasicPersistentService
 import shared.com.ortb.enumeration._
@@ -18,15 +17,15 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   val service : AbstractBasicPersistentService[TTable, TRow, TKey]
   val noContentMessage = "No content in request."
 
-  lazy implicit val listEncoder : Encoder[List[TRow]] = Encoder[List[TRow]]
-  lazy implicit val encoder : Encoder[TRow] = Encoder[TRow]
-  lazy implicit val decoder : Decoder[TRow] = Decoder[TRow]
-  lazy implicit val listDecoder : Decoder[List[TRow]] = Decoder[List[TRow]]
+  implicit val listEncoder : Encoder[List[TRow]]
+  implicit val encoder : Encoder[TRow]
+  implicit val decoder : Decoder[TRow]
+  implicit val listDecoder : Decoder[List[TRow]]
 
   def getAll : Action[AnyContent] = Action { implicit request =>
     val campaigns = service.getAll
     val json = fromEntitiesToJson(Some(campaigns))(listEncoder)
-    Ok(json.get)
+    Ok(json.getOrElse("None"))
   }
 
   def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>

@@ -277,4 +277,9 @@ class CampaignsApiController @Inject()(
   override def fromJsonToEntities(jsonString : Option[String])
   : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] =
     service.fromJsonToEntitiesWrapper(jsonString)
+
+  override implicit val listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
+  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
+  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
+  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
 }

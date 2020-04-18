@@ -1,14 +1,13 @@
 package shared.io.traits.logger
 
-import shared.io.loggers.AppLogger._
-import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType
+import shared.io.loggers.AppLogger._
 
 trait WarnLogger {
   this : PrintStacks with MethodNameHeaderGetter =>
 
   def warn(msg : String, stackIndex : Int = defaultStackIndex, isPrintStack : Boolean = false) : Unit = {
-    val message = s"WARN : (${getMethodNameHeader(stackIndex)}) - ${msg}"
+    val message = s"WARN : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}) - ${msg}"
 
     additionalLogging(
       message = message,

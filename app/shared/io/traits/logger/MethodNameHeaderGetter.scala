@@ -1,5 +1,7 @@
 package shared.io.traits.logger
 
+import shared.com.ortb.constants.AppConstants
+
 trait MethodNameHeaderGetter extends
   StackTraceInfoDisplayGetter {
   def getMethodNameHeader(stackIndex : Int) : String = {
@@ -16,5 +18,12 @@ trait MethodNameHeaderGetter extends
     }
 
     ""
+  }
+
+  def getMethodNameHeaderForIndexes(
+    indexes : Int*
+  ) : String = {
+    indexes.map(index => getMethodNameHeader(index))
+           .mkString(AppConstants.HyphenRightAngel)
   }
 }

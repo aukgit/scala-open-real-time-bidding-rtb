@@ -15,7 +15,7 @@ trait NullableLogger {
     message : String,
     nullableObject : Future[Option[T]],
     logLevelType : LogLevelType = LogLevelType.DEBUG,
-    stackIndex : Int = 5,
+    stackIndex : Int = defaultStackIndex + 2,
     isPrintStack : Boolean = false) : Unit = {
     val regularNullable = Try(FutureToRegular.toRegular(nullableObject)).get
     logNonFutureNullable(
@@ -30,7 +30,7 @@ trait NullableLogger {
     message : String,
     nullableObject : Option[T],
     logLevelType : LogLevelType = LogLevelType.DEBUG,
-    stackIndex : Int = 4,
+    stackIndex : Int = defaultSecondStackIndex + 1,
     isPrintStack : Boolean = false) : Unit = {
     val methodNameDisplay = getMethodNameHeader(stackIndex)
     val finalMessage = s"Nullable Logger - [${logLevelType}] : ${methodNameDisplay} - $message"

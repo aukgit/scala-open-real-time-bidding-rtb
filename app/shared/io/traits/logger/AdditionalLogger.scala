@@ -11,7 +11,7 @@ trait AdditionalLogger {
   def additionalLogging(
     message : String,
     logLevelType : LogLevelType,
-    stackIndex   : Int = 6,
+    stackIndex   : Int = defaultSecondStackIndex,
     isPrintStack : Boolean = false) : Unit = {
     try {
       logBasedOnLevel(message, logLevelType)
@@ -48,7 +48,7 @@ trait AdditionalLogger {
     exception : Option[Exception],
     newError : Option[Error],
     logLevelType : LogLevelType = LogLevelType.ERROR,
-    stackIndex : Int = 3,
+    stackIndex : Int = defaultSecondStackIndex + 1,
     isPrintStack : Boolean = false) : Unit = {
     try {
       logger.error(message, exception.get)

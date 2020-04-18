@@ -2,7 +2,7 @@ package shared.io.traits.logger
 
 import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType
-import shared.io.loggers.AppLogger._
+import shared.io.loggers.AppLogger.{getMethodNameHeaderForIndexes, _}
 
 trait InfoLogger {
   this : PrintStacks with MethodNameHeaderGetter =>
@@ -16,7 +16,7 @@ trait InfoLogger {
   def info(
     msg                             : String, stackIndex : Int = defaultStackIndex,
     isPrintStack                    : Boolean = false) : Unit = {
-    val message = s"${LogLevelType.INFO} : (${getMethodNameHeader(stackIndex)}) - ${msg}"
+    val message = s"${LogLevelType.INFO} : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}) - ${msg}"
 
     additionalLogging(
       message = message,
