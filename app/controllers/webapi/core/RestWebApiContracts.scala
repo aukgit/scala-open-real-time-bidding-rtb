@@ -8,4 +8,4 @@ trait RestWebApiContracts[TTable, TRow, TKey]
     RestWebApiBodyProcessor[TTable, TRow, TKey] with
     RestWebApiMessages[TTable, TRow, TKey] with
     RestWebApiJson[TTable, TRow, TKey] with
-    RestWebApiConverter[TTable, TRow, TKey]
+    RestWebApiEntityJsonAdapter[TTable, TRow, TKey]

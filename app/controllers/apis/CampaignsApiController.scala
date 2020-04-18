@@ -7,6 +7,7 @@ import io.circe.syntax._
 import javax.inject.Inject
 import play.api.mvc.{Action, Request, _}
 import services.CampaignService
+import services.core.AbstractBasicPersistentService
 import services.core.traits.BasicPersistentServiceContracts
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.wrappers.http._
@@ -116,7 +117,7 @@ class CampaignsApiController @Inject()(
   //    val json = response.asJson.spaces2
   //    Ok(json)
   //  }
-  override val service : BasicPersistentServiceContracts[Campaign, CampaignRow, Int] = campaignService
+  override val service : AbstractBasicPersistentService[Campaign, CampaignRow, Int] = campaignService
 
   override def addEntities() : Action[AnyContent] = ???
 
@@ -213,9 +214,11 @@ class CampaignsApiController @Inject()(
 
   override def fromJsonToEntity(
     jsonString : Option[String]) : Option[EntityWrapperWithOptions[CampaignRow, Int]] = {
-    service.fr
+    service.fromJsonToEntityWrapper(jsonString)
   }
 
   override def fromJsonToEntities(
-    jsonString : Option[String]) : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] = ???
+    jsonString : Option[String]) :
+  Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] =
+    service.fromJsonToEntitiesWrapper(jsonString)
 }

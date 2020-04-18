@@ -26,7 +26,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
 
     val id = getEntityId(item)
 
-    Some(EntityWrapper(id, entity = item))
+    Some(EntityWrapper(id, entity = item.get))
   }
 
   //noinspection DuplicatedCode

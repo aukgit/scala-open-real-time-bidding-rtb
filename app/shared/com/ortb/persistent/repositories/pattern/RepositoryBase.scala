@@ -5,6 +5,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.repositories.pattern.adapters.RepositoryWrapperAdapterImplementation
 import shared.com.ortb.persistent.repositories.pattern.traits._
+import shared.com.ortb.persistent.repositories.pattern.traits.adapters.RepositoryJsonAdapterImplementation
 import shared.com.ortb.persistent.schema.DatabaseSchema
 import shared.io.traits.FutureToRegular
 
@@ -17,6 +18,7 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
     with EntityResponseCreator[TTable, TRow, TKey]
     with DatabaseActionExecutor[TTable, TRow, TKey]
     with RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
+    with RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     with FutureToRegular {
 
   //noinspection ScalaDeprecation

@@ -1,8 +1,8 @@
-package shared.com.ortb.implicits
+package shared.com.ortb.implicits.implementations
 
-import scala.language.implicitConversions
+import shared.com.ortb.implicits.DynamicInvoker
 
-object ImplicitsDefinitions {
+object ImplicitsImplementation {
   /**
    * Any ref method caller
    * Reference: https://bit.ly/2RCprcz

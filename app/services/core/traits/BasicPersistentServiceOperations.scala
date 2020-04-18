@@ -1,35 +1,21 @@
 package services.core.traits
 
 import shared.com.ortb.model.results.RepositoryOperationResult
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.io.helpers.EmptyValidateHelper
 
-trait BasicPersistentServiceOperations[TTable, TRow, TKey] {
-  val repository : RepositoryBase[TTable, TRow, TKey]
+trait BasicPersistentServiceOperations[TTable, TRow, TKey]
+    extends BasicPersistentServiceCore[TTable, TRow, TKey] {
+  def addUsingOption(
+      entity: Option[TRow]): Option[RepositoryOperationResult[TRow, TKey]]
 
-  def addUsingOption(entity : Option[TRow]) : Option[RepositoryOperationResult[TRow, TKey]] ={
-    if(EmptyValidateHelper.isEmpty(entity)){
-      return None
-    }
+  def add(entity: TRow): RepositoryOperationResult[TRow, TKey]
 
-    Some(add(entity.get))
-  }
+  def getAll: List[TRow] = repository.getAll
 
-  def add(entity : TRow) : RepositoryOperationResult[TRow, TKey] =
-    repository.add(entity)
+  def update(id: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey]
 
-  def getAll : List[TRow] = repository.getAll
+  def addOrUpdate(id: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey]
 
-  def update(id : TKey, entity : TRow) : RepositoryOperationResult[TRow, TKey] =
-    repository.update(id, entity)
+  def delete(id: TKey): RepositoryOperationResult[TRow, TKey]
 
-  def addOrUpdate(
-    id              : TKey,
-    entity          : TRow) : RepositoryOperationResult[TRow, TKey] =
-    repository.addOrUpdate(id, entity)
-
-  def delete(id : TKey) : RepositoryOperationResult[TRow, TKey] =
-    repository.delete(id)
-
-  def getById(id : TKey) : Option[TRow] = repository.getById(id)
+  def getById(id: TKey): Option[TRow]
 }

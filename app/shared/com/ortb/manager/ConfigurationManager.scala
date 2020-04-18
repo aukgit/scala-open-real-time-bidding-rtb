@@ -7,7 +7,7 @@ import shared.io.helpers.PathHelper._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
-import shared.io.helpers.JsonParser
+import shared.io.helpers.JsonHelper
 import shared.io.logger.AppLogger
 
 trait ConfigurationManagerType {
@@ -22,7 +22,7 @@ class ConfigurationManager extends ConfigurationManagerType {
         decode[ConfigModel](jsonContents)
       }
 
-      val result = JsonParser.toObjectFromJSONPath[ConfigModel](
+      val result = JsonHelper.toObjectFromJSONPath[ConfigModel](
         AppConstants.PathConstants.ConfigDefaultPath,
         decoder)
 

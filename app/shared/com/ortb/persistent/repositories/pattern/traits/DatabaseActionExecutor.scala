@@ -3,7 +3,7 @@ package shared.com.ortb.persistent.repositories.pattern.traits
 import java.awt.dnd.InvalidDnDOperationException
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import shared.com.ortb.implicits.ImplicitsDefinitions.anyRefCaller
+import shared.com.ortb.implicits.implementations.ImplicitsImplementation.anyRefCaller
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.io.logger.AppLogger

@@ -1,7 +1,7 @@
 package services.core
 
-import services.core.traits.BasicPersistentServiceOperations
+import services.core.traits.BasicPersistentServiceContracts
 
 abstract class AbstractBasicPersistentService[TTable, TRow, TKey]
   extends
-    BasicPersistentServiceOperations[TTable, TRow, TKey]
+    BasicPersistentServiceContracts[TTable, TRow, TKey]

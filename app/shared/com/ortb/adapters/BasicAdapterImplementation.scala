@@ -4,7 +4,7 @@ import shared.com.ortb.adapters.traits.BasicAdapter
 import shared.com.ortb.constants.AppConstants
 import shared.io.helpers.EmptyValidateHelper
 
-class BasicAdapterImplementation extends BasicAdapter {
+trait BasicAdapterImplementation extends BasicAdapter {
   def convertItemTo[A, B](
     item : Option[A],
     adapterLogic : PartialFunction[Option[A], Option[B]]) : Option[B] = {
@@ -35,3 +35,5 @@ class BasicAdapterImplementation extends BasicAdapter {
     adapterLogic(items)
   }
 }
+
+

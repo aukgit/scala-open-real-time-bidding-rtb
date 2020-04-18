@@ -2,6 +2,11 @@ package controllers.webapi.core
 
 import io.circe.generic.auto._
 import io.circe.syntax._
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.parser._
+import io.circe.generic.auto._
+import io.circe.syntax._
 import play.api.mvc.{Action, _}
 import services.core.AbstractBasicPersistentService
 import services.core.traits.BasicPersistentServiceContracts
@@ -21,13 +26,13 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
 
   def getAll : Action[AnyContent] = Action { implicit request =>
     val campaigns = service.getAll
-    val json = campaigns.asJson.spaces2
+    val json = "" // campaigns.asJson.spaces2
     Ok(json)
   }
 
   def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
     val entity = service.getById(id)
-    val json = entity.get.asJson.spaces2
+    val json = "" // entity.get.asJson.spaces2
     Ok(json)
   }
 
@@ -42,7 +47,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
         val entityWrapper = entityResponseWrapper.get.entityWrapper.get
         val entity = entityWrapper
         val response = service.addUsingOption(entity.entity).get
-        val successMessage = successMessage(None)
+        val successMessageToString = successMessage(None)
         val responseEntity = response.entity
 
         if (response.isSuccess && responseEntity.isDefined) {
@@ -51,7 +56,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
             responseEntity))
 
           val httpSuccessWrapper = HttpSuccessActionWrapper[TRow, TKey](
-            additionalMessage = Some(successMessage),
+            additionalMessage = Some(successMessageToString),
             resultType = Some(HttpActionWrapperType.PutOk),
             entityWrapper = entityWrapper,
             rawBodyRequest = request.body.asText,
