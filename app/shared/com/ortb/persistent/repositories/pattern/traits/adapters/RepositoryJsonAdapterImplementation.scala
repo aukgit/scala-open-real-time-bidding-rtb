@@ -30,10 +30,10 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     })
 
   //noinspection DuplicatedCode
-  def fromEntitiesToJson(entities : Option[Iterable[TRow]])
-    (implicit encoder : Encoder[Iterable[TRow]])
+  def fromEntitiesToJson(entities : Option[List[TRow]])
+    (implicit encoder : Encoder[List[TRow]])
   : Option[String] = {
-    convertItemTo[Iterable[TRow], String](
+    convertItemTo[List[TRow], String](
       entities, _ => {
         try {
           return Some(entities.get.asJson(encoder).spaces2)
@@ -71,19 +71,19 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
   }
 
   override def fromJsonToEntitiesWrapper(jsonContent : Option[String])
-    (implicit decoder : Decoder[Iterable[TRow]]) :
-  Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] = {
+    (implicit decoder : Decoder[List[TRow]]) :
+  Option[List[EntityWrapperWithOptions[TRow, TKey]]] = {
     val isEmpty = EmptyValidateHelper.isEmpty(jsonContent)
     if (isEmpty) {
       return None
     }
 
     try {
-      val possibleEntities = decode[Iterable[TRow]](jsonContent.get)(decoder)
+      val possibleEntities = decode[List[TRow]](jsonContent.get)(decoder)
         .getOrElse(null)
 
       if (possibleEntities != null) {
-        val entities = possibleEntities.asInstanceOf[Iterable[TRow]]
+        val entities = possibleEntities.asInstanceOf[List[TRow]]
 
         return toEntitiesWrapperWithOptions(Some(entities))
       }

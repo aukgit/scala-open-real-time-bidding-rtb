@@ -181,9 +181,9 @@ class CampaignsApiController @Inject()(
     service.fromEntityToJson(entity)(encoder)
 
   override def fromEntitiesToJson(
-    entities : Option[Iterable[CampaignRow]])(
+    entities : Option[List[CampaignRow]])(
     implicit
-    encoder : Encoder[Iterable[CampaignRow]]) : Option[String] =
+    encoder : Encoder[List[CampaignRow]]) : Option[String] =
     service.fromEntitiesToJson(entities)(encoder)
 
   override def fromJsonToEntityWrapper(jsonContent : Option[String])(
@@ -193,8 +193,8 @@ class CampaignsApiController @Inject()(
 
   override def fromJsonToEntitiesWrapper(jsonContent : Option[String])(
     implicit
-    decoder : Decoder[Iterable[CampaignRow]]) :
-  Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]]
+    decoder : Decoder[List[CampaignRow]]) :
+  Option[List[EntityWrapperWithOptions[CampaignRow, Int]]]
   = service.fromJsonToEntitiesWrapper(jsonContent)(decoder)
 
   override def failedMessage(

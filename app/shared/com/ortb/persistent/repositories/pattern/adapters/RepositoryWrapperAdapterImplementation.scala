@@ -96,8 +96,8 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     None
   }
 
-  override def toEntitiesWrapperWithOptions(items: Option[Iterable[TRow]])
-    : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] = {
+  override def toEntitiesWrapperWithOptions(items: Option[List[TRow]])
+    : Option[List[EntityWrapperWithOptions[TRow, TKey]]] = {
     val isEmpty =
       EmptyValidateHelper.isItemsEmpty(items, Some(AppConstants.NoContent))
 
@@ -110,8 +110,8 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     Some(results)
   }
 
-  override def toEntitiesWrapper(items: Option[Iterable[TRow]])
-    : Option[Iterable[EntityWrapper[TRow, TKey]]] = {
+  override def toEntitiesWrapper(items: Option[List[TRow]])
+    : Option[List[EntityWrapper[TRow, TKey]]] = {
     val isEmpty =
       EmptyValidateHelper.isItemsEmpty(items, Some(AppConstants.NoContent))
 

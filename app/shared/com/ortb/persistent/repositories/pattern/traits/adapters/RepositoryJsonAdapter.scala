@@ -11,8 +11,8 @@ trait RepositoryJsonAdapter[TTable, TRow, TKey]
     (implicit encoder : Encoder[TRow])
   : Option[String]
 
-  def fromEntitiesToJson(entities : Option[Iterable[TRow]])
-    (implicit encoder : Encoder[Iterable[TRow]])
+  def fromEntitiesToJson(entities : Option[List[TRow]])
+    (implicit encoder : Encoder[List[TRow]])
   : Option[String]
 
   def fromJsonToEntityWrapper(jsonContent : Option[String])(
@@ -20,6 +20,6 @@ trait RepositoryJsonAdapter[TTable, TRow, TKey]
   : Option[EntityWrapperWithOptions[TRow, TKey]]
 
   def fromJsonToEntitiesWrapper(jsonContent : Option[String])(
-    implicit decoder : Decoder[Iterable[TRow]])
-  : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]]
+    implicit decoder : Decoder[List[TRow]])
+  : Option[List[EntityWrapperWithOptions[TRow, TKey]]]
 }

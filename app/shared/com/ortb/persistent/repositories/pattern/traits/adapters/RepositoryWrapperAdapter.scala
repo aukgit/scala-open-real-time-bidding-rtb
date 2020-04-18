@@ -21,9 +21,9 @@ trait RepositoryWrapperAdapter[TTable, TRow, TKey]
   def toEntityWrapperWithOptions(
       item: Option[TRow]): Option[EntityWrapperWithOptions[TRow, TKey]]
 
-  def toEntitiesWrapper(items: Option[Iterable[TRow]])
-    : Option[Iterable[EntityWrapper[TRow, TKey]]]
+  def toEntitiesWrapper(items: Option[List[TRow]])
+    : Option[List[EntityWrapper[TRow, TKey]]]
 
-  def toEntitiesWrapperWithOptions(items: Option[Iterable[TRow]])
-    : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]]
+  def toEntitiesWrapperWithOptions(items: Option[List[TRow]])
+    : Option[List[EntityWrapperWithOptions[TRow, TKey]]]
 }

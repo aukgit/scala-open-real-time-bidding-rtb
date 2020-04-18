@@ -1,15 +1,9 @@
 package controllers.webapi.core
 
-import io.circe.generic.auto._
-import io.circe.syntax._
 import io.circe._
 import io.circe.generic.auto._
-import io.circe.parser._
-import io.circe.generic.auto._
-import io.circe.syntax._
 import play.api.mvc.{Action, _}
 import services.core.AbstractBasicPersistentService
-import services.core.traits.BasicPersistentServiceContracts
 import shared.com.ortb.enumeration._
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
@@ -24,16 +18,21 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   val service : AbstractBasicPersistentService[TTable, TRow, TKey]
   val noContentMessage = "No content in request."
 
+  lazy implicit val listEncoder : Encoder[List[TRow]] = Encoder[List[TRow]]
+  lazy implicit val encoder : Encoder[TRow] = Encoder[TRow]
+  lazy implicit val decoder : Decoder[TRow] = Decoder[TRow]
+  lazy implicit val listDecoder : Decoder[List[TRow]] = Decoder[List[TRow]]
+
   def getAll : Action[AnyContent] = Action { implicit request =>
     val campaigns = service.getAll
-    val json = "" // campaigns.asJson.spaces2
-    Ok(json)
+    val json = fromEntitiesToJson(Some(campaigns))(listEncoder)
+    Ok(json.get)
   }
 
   def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
     val entity = service.getById(id)
-    val json = "" // entity.get.asJson.spaces2
-    Ok(json)
+    val json = fromEntityToJson(entity)(encoder) // entity.get.asJson.spaces2
+    Ok(json.get)
   }
 
   def add() : Action[AnyContent] = Action { implicit request =>
