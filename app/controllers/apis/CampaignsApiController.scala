@@ -127,32 +127,6 @@ class CampaignsApiController @Inject()(campaignService: CampaignService,
 
   override def addOrUpdate(id: Int): Action[AnyContent] = ???
 
-  override def toJsonFrom(entity: Iterable[Tables.CampaignRow]): String = ???
-
-  override def toEntityJson(entity: Tables.CampaignRow): String = ???
-
-  override def failedMessage(databaseActionType: Option[DatabaseActionType],
-                             entity: Option[Tables.CampaignRow],
-                             additionalMessage: String): String = "failed"
-
-  override def successMessage(databaseActionType: Option[DatabaseActionType],
-                              entity: Option[Tables.CampaignRow],
-                              additionalMessage: String): String = "Success"
-
-  override def toJsonFrom(entities : Iterable[CampaignRow])(
-    implicit
-    decoder : Decoder[Iterable[CampaignRow]]) : String =
-    service.fromEntitiesToJson(Some(entities))
-
-  override def toEntityJson(entity : CampaignRow)(
-    implicit
-    decoder : Decoder[CampaignRow]) : String = ???
-
-  override def toJson[T](item : T)(implicit encoder : Encoder[T]) : String = ???
-
-  override def toJson[T](items : Iterable[T])
-    (implicit encoder : Encoder[Iterable[T]]) : String = ???
-
   override def performBadRequest(
     httpFailedActionWrapper : Option[HttpFailedActionWrapper[CampaignRow, Int]]) : Result = ???
 
