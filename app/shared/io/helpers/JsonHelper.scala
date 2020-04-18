@@ -1,24 +1,17 @@
 package shared.io.helpers
-import io.circe.generic.semiauto._
-import io.circe._
-import io.circe.generic.auto._
+
 import io.circe.parser._
-import io.circe.generic.auto._
 import io.circe.syntax._
-import io.circe.Decoder.AccumulatingResult
-import io.circe.generic.JsonCodec
-import io.circe.{Error, Json}
-import io.circe.parser._
+import io.circe.{Encoder, Error, Json}
 import shared.com.ortb.model.error.FileErrorModel
-import shared.io.implementations.JsonParserImplementation
+import shared.io.implementations.jsonParse.{JsonDecodersImplementation, JsonEncodersImplementation, JsonParserImplementation}
 import shared.io.loggers.AppLogger
+import shared.io.traits.jsonParse.JsonDecoders
 
 object JsonHelper {
-  def toJson[Type](item: Type) : Option[Json] = {
+  def toJson[T](item : T)(implicit encoder: Encoder[T]) : Option[Json] = {
     try {
-      val parser = new JsonParserImplementation[Type]
-      val convertedEitherItem =item.asJson(parser.defaultEncoder)
-      return getObjectFromJson(jsonContents, convertedEitherItem)
+      return Some(item.asJson(encoder))
     } catch {
       case e : Exception =>
         AppLogger.error(e)
@@ -26,12 +19,13 @@ object JsonHelper {
 
     None
   }
+
   def toObjectUsingParser[Type](
     jsonContents : String
   ) : Option[Type] = {
     try {
-      val parser = new JsonParserImplementation[Type]
-      val convertedEitherItem = decode[Type](jsonContents)(parser.defaultDecoder)
+      val decoders = new JsonDecodersImplementation[Type]
+      val convertedEitherItem = decode[Type](jsonContents)(decoders.defaultDecoder)
 
       return getObjectFromJson(jsonContents, convertedEitherItem)
     } catch {
@@ -43,7 +37,8 @@ object JsonHelper {
   }
 
   private def getObjectFromJson[Type](
-    jsonContents : String, convertedEitherItem : Either[Error, Type]) : Option[Nothing] = {
+    jsonContents                               : String,
+    convertedEitherItem                        : Either[Error, Type]) : Option[Nothing] = {
     val result = convertedEitherItem.getOrElse(null)
 
     if (result != null) {

@@ -11,7 +11,6 @@ import io.circe.Decoder.AccumulatingResult
 import io.circe.generic.JsonCodec
 
 import shared.com.ortb.adapters.BasicAdapterImplementation
-import shared.com.ortb.implicits.ImplicitJsonParser
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.io.helpers.EmptyValidateHelper
