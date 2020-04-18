@@ -6,7 +6,7 @@ import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.implicits.implementations.ImplicitsImplementation.anyRefCaller
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 import slick.dbio._
 import slick.sql._
 

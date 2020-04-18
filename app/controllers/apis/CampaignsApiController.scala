@@ -16,7 +16,7 @@ import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.EmptyValidateHelper
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 class CampaignsApiController @Inject()(
   campaignService : CampaignService,

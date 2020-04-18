@@ -15,7 +15,7 @@ import shared.com.ortb.implicits.ImplicitJsonParser
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.io.helpers.EmptyValidateHelper
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 
 

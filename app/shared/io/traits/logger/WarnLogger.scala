@@ -1,6 +1,6 @@
 package shared.io.traits.logger
 
-import shared.io.logger.AppLogger._
+import shared.io.loggers.AppLogger._
 import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType
 

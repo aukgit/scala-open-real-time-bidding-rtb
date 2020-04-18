@@ -4,7 +4,7 @@ import java.io.File
 
 import shared.com.ortb.model.error.FileErrorModel
 import shared.io.helpers.PathHelper
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 sealed class PathConstants {
   lazy val WorkingDirectory : String = new java.io.File(AppConstants.Dot).getCanonicalPath

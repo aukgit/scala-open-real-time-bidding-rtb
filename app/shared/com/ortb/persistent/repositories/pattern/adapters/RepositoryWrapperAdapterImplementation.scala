@@ -8,7 +8,7 @@ import shared.com.ortb.model.wrappers.persistent.{
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.com.ortb.persistent.repositories.pattern.traits.adapters.RepositoryWrapperAdapter
 import shared.io.helpers.EmptyValidateHelper
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     extends RepositoryWrapperAdapter[TTable, TRow, TKey] {

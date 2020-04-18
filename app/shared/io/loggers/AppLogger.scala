@@ -1,4 +1,4 @@
-package shared.io.logger
+package shared.io.loggers
 
 import play.api.Logging
 import shared.io.traits.logger.{EntitiesLogger, _}

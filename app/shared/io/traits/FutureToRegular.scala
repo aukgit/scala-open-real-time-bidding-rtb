@@ -1,6 +1,6 @@
 package shared.io.traits
 
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.Duration.Inf

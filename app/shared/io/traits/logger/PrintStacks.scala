@@ -2,7 +2,7 @@ package shared.io.traits.logger
 
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 trait PrintStacks {
   this : AppLogger.type =>

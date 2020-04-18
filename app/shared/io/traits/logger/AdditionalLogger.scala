@@ -3,7 +3,7 @@ package shared.io.traits.logger
 import com.sun.org.apache.xerces.internal.impl.dv.InvalidDatatypeValueException
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 trait AdditionalLogger {
   this : AppLogger.type =>

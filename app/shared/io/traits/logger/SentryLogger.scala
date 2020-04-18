@@ -2,7 +2,7 @@ package shared.io.traits.logger
 
 import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 trait SentryLogger {
   this : AppLogger.type =>

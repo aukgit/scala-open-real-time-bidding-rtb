@@ -1,7 +1,7 @@
 package shared.io.traits.logger
 
 import shared.com.ortb.enumeration.LogLevelType
-import shared.io.logger.AppLogger._
+import shared.io.loggers.AppLogger._
 
 trait DebugLogger {
   def debug(

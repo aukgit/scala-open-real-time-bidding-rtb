@@ -8,7 +8,7 @@ import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
 import shared.io.helpers.JsonHelper
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 trait ConfigurationManagerType {
   def getConfig(path : String) : ConfigModel

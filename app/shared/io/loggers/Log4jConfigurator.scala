@@ -1,4 +1,4 @@
-package shared.io.logger
+package shared.io.loggers
 
 import java.io.File
 import java.net.URI

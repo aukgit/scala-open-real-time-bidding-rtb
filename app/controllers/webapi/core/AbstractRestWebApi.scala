@@ -13,7 +13,7 @@ import services.core.traits.BasicPersistentServiceContracts
 import shared.com.ortb.enumeration._
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 abstract class AbstractRestWebApi[TTable, TRow, TKey]
 (components : ControllerComponents)

@@ -1,6 +1,6 @@
 package shared.io.helpers
 
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 import scala.reflect.runtime.{universe => ru}
 

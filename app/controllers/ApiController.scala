@@ -14,7 +14,7 @@ import io.circe.syntax._
 import play.api.{Environment, Play}
 import shared.com.ortb.model.wrappers.http.HttpSuccessActionWrapper
 import shared.io.helpers.PathHelper
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 class ApiController @Inject()(
 

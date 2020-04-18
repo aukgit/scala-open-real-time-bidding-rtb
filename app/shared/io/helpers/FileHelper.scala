@@ -3,7 +3,7 @@ package shared.io.helpers
 import java.nio.file._
 import java.util
 
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 import shared.io.traits.file.ExecuteInputOutputAction
 
 import scala.io.{BufferedSource, Source}

@@ -6,7 +6,7 @@ import java.nio.file.FileSystemException
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.error.FileErrorModel
-import shared.io.logger.AppLogger
+import shared.io.loggers.AppLogger
 
 trait ResourcePathGetter {
   private def getResourcePathUsingPlayFramework : URL = {

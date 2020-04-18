@@ -2,7 +2,7 @@ package shared.io.traits.logger
 
 import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType
-import shared.io.logger.AppLogger._
+import shared.io.loggers.AppLogger._
 
 trait InfoLogger {
   this : PrintStacks with MethodNameHeaderGetter =>
