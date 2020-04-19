@@ -6,12 +6,16 @@ import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOperations
 import shared.io.loggers.AppLogger
+import slick.dbio.{Effect, NoStream}
+import slick.sql.FixedSqlAction
 
 import scala.concurrent.Future
 
 trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryAddOperations[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
+  def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
+
   def add(entity : TRow) : RepositoryOperationResult[TRow, TKey] =
     toRegular(addAsync(entity), defaultTimeout)
 

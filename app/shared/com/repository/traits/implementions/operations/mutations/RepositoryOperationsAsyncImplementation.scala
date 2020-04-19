@@ -17,7 +17,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
   extends RepositoryOperationsAsync[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
 
-  def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
+
 
   def getDeleteAction(
     entityId : TKey

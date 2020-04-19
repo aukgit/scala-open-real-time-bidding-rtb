@@ -12,9 +12,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
 
-  def getDeleteAction(
-    entityId : TKey
-  ) : FixedSqlAction[Int, NoStream, Effect.Write]
+
 
   def deleteAsync(
     entityId : TKey
