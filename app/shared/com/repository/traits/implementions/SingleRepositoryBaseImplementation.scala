@@ -10,11 +10,6 @@ import scala.concurrent.{Await, Future}
 trait SingleRepositoryBaseImplementation[TTable, TRow, TKey]
     extends SingleRepositoryBase[TTable, TRow, TKey] {
   this: RepositoryBase[TTable, TRow, TKey] =>
-
-  def table: TableQuery[_]
-
-  def tableName: String
-
   def getAllAsList: List[TRow] =
     toRegular(
       this.runAsync(getAllQuery.result)

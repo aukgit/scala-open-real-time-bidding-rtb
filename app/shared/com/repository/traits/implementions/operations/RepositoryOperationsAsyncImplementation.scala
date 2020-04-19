@@ -78,7 +78,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
 
   def updateEntitiesAsync(
     entityWrappers: Iterable[EntityWrapper[TRow, TKey]]
-  ): Iterable[Future[RepositoryOperationResults[TRow, TKey]]] = {
+  ): Future[RepositoryOperationResults[TRow, TKey]] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
       AppLogger.info(s"${headerMessage} No items passed for multiple updates.")
 
