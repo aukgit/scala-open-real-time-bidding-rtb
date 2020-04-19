@@ -1,19 +1,20 @@
-package shared.com.ortb.persistent.repositories.pattern.traits
+package shared.com.ortb.persistent.repositories.pattern.traits.implementions.operations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
-import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
+import shared.com.ortb.persistent.repositories.pattern.traits.operations.mutations.RepositoryOperationsAsync
 import shared.io.loggers.AppLogger
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
+import slick.jdbc.SQLiteProfile.api._
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
-trait RepositoryOperationsAsync[TTable, TRow, TKey]
-    extends RepositoryOperationsBase[TRow] {
+trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
+    extends RepositoryOperationsAsync[TTable, TRow, TKey] {
   this: RepositoryBase[TTable, TRow, TKey] =>
 
   def getAddAction(entity: TRow): FixedSqlAction[TRow, NoStream, Effect.Write]

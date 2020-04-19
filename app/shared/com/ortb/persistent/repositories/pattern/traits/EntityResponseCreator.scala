@@ -9,7 +9,6 @@ import scala.concurrent.Future
 
 trait EntityResponseCreator[TTable, TRow, TKey] {
   this: RepositoryBase[TTable, TRow, TKey] =>
-
   protected def createResponseForAffectedRowCount(
     affectedRow: Int,
     entity: Option[TRow],

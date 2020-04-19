@@ -21,7 +21,7 @@
 - Sample Shared Project Example: https://bit.ly/2xzhCxz
 - Play pot change : https://bit.ly/3clAq23 , sbt "run port"
 - Organizing Build https://www.scala-sbt.org/0.13/docs/Organizing-Build.html
-
+- Learning Generics: https://gist.github.com/jkpl/5279ee05cca8cc1ec452fc26ace5b68b
 
 ## Logger References
 - Example of logging : https://bit.ly/2RNFowy

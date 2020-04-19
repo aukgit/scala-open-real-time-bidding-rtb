@@ -5,7 +5,9 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.repositories.pattern.adapters.RepositoryWrapperAdapterImplementation
 import shared.com.ortb.persistent.repositories.pattern.traits._
-import shared.com.ortb.persistent.repositories.pattern.traits.adapters.RepositoryJsonAdapterImplementation
+import shared.com.ortb.persistent.repositories.pattern.traits.implementions.SingleRepositoryBaseImplementation
+import shared.com.ortb.persistent.repositories.pattern.traits.implementions.adapters.RepositoryJsonAdapterImplementation
+import shared.com.ortb.persistent.repositories.pattern.traits.implementions.operations.{RepositoryOperationsAsyncImplementation, RepositoryOperationsImplementation}
 import shared.com.ortb.persistent.schema.DatabaseSchema
 import shared.io.traits.FutureToRegular
 
@@ -14,11 +16,13 @@ import scala.concurrent.duration._
 
 abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManager)
     extends DatabaseSchema(appManager)
-    with SingleRepositoryBase[TTable, TRow, TKey]
+    with SingleRepositoryBaseImplementation[TTable, TRow, TKey]
     with EntityResponseCreator[TTable, TRow, TKey]
     with DatabaseActionExecutor[TTable, TRow, TKey]
     with RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     with RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
+    with RepositoryOperationsImplementation[TTable, TRow, TKey]
+    with RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     with FutureToRegular {
 
   //noinspection ScalaDeprecation

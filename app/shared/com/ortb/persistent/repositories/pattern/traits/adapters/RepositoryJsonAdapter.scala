@@ -2,7 +2,7 @@ package shared.com.ortb.persistent.repositories.pattern.traits.adapters
 
 import io.circe.{Decoder, Encoder}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
-import shared.com.ortb.persistent.repositories.pattern.traits.RepositoryOperationsBase
+import shared.com.ortb.persistent.repositories.pattern.traits.operations.mutations.RepositoryOperationsBase
 
 trait RepositoryJsonAdapter[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {

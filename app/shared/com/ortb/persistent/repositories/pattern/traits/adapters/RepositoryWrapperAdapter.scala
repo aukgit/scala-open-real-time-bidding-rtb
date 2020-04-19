@@ -1,10 +1,7 @@
 package shared.com.ortb.persistent.repositories.pattern.traits.adapters
 
-import shared.com.ortb.model.wrappers.persistent.{
-  EntityWrapper,
-  EntityWrapperWithOptions
-}
-import shared.com.ortb.persistent.repositories.pattern.traits.RepositoryOperationsBase
+import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions}
+import shared.com.ortb.persistent.repositories.pattern.traits.operations.mutations.RepositoryOperationsBase
 
 trait RepositoryWrapperAdapter[TTable, TRow, TKey]
     extends RepositoryOperationsBase[TRow] {
