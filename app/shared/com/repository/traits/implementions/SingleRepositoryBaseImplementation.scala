@@ -1,9 +1,10 @@
-package shared.com.ortb.persistent.repositories.pattern.traits.implementions
+package shared.com.repository.traits.implementions
 
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.com.ortb.persistent.repositories.pattern.traits.SingleRepositoryBase
+import shared.com.repository.RepositoryBase
+import shared.com.repository.traits.SingleRepositoryBase
 import slick.lifted.{Query, TableQuery}
 import slick.jdbc.SQLiteProfile.api._
+
 import scala.concurrent.{Await, Future}
 
 trait SingleRepositoryBaseImplementation[TTable, TRow, TKey]

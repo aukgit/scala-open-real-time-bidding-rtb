@@ -1,8 +1,8 @@
 package services.core.traits
 
 import services.core.traits.implementations._
-import shared.com.ortb.persistent.repositories.pattern.adapters.RepositoryWrapperAdapterImplementation
-import shared.com.ortb.persistent.repositories.pattern.traits.adapters.{RepositoryJsonAdapter, RepositoryWrapperAdapter}
+import shared.com.repository.adapters.RepositoryWrapperAdapterImplementation
+import shared.com.repository.traits.adapters.{RepositoryJsonAdapter, RepositoryWrapperAdapter}
 
 trait BasicPersistentServiceContracts[TTable, TRow, TKey]
   extends BasicPersistentServiceOperationsImplementation[TTable, TRow, TKey]

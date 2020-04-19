@@ -1,12 +1,9 @@
-package shared.com.ortb.persistent.repositories.pattern.adapters
+package shared.com.repository.adapters
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.wrappers.persistent.{
-  EntityWrapper,
-  EntityWrapperWithOptions
-}
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.com.ortb.persistent.repositories.pattern.traits.adapters.RepositoryWrapperAdapter
+import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions}
+import shared.com.repository.RepositoryBase
+import shared.com.repository.traits.adapters.RepositoryWrapperAdapter
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 

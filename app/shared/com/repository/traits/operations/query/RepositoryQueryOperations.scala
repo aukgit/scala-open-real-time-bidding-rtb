@@ -1,6 +1,6 @@
-package shared.com.ortb.persistent.repositories.pattern.traits.operations.query
+package shared.com.repository.traits.operations.query
 
-import shared.com.ortb.persistent.repositories.pattern.traits.operations.mutations.RepositoryOperationsBase
+import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
 import slick.lifted.{Query, TableQuery}
 
 import scala.concurrent.Future

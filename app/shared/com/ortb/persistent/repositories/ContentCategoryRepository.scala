@@ -1,9 +1,9 @@
 package shared.com.ortb.persistent.repositories
 
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
+import shared.com.repository.RepositoryBase
 import slick.jdbc.SQLiteProfile.api._
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction

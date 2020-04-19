@@ -3,8 +3,8 @@ package shared.com.ortb.persistent.repositories
 import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.com.ortb.persistent.schema.Tables._
+import shared.com.repository.RepositoryBase
 import slick.dbio.Effect
 import slick.lifted.Query
 import slick.sql.FixedSqlAction

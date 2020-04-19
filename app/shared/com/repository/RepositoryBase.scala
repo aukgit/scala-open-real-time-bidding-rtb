@@ -1,14 +1,14 @@
-package shared.com.ortb.persistent.repositories.pattern
+package shared.com.repository
 
 import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
-import shared.com.ortb.persistent.repositories.pattern.adapters.RepositoryWrapperAdapterImplementation
-import shared.com.ortb.persistent.repositories.pattern.traits._
-import shared.com.ortb.persistent.repositories.pattern.traits.implementions.SingleRepositoryBaseImplementation
-import shared.com.ortb.persistent.repositories.pattern.traits.implementions.adapters.RepositoryJsonAdapterImplementation
-import shared.com.ortb.persistent.repositories.pattern.traits.implementions.operations.{RepositoryOperationsAsyncImplementation, RepositoryOperationsImplementation}
 import shared.com.ortb.persistent.schema.DatabaseSchema
+import shared.com.repository.adapters.RepositoryWrapperAdapterImplementation
+import shared.com.repository.traits._
+import shared.com.repository.traits.implementions.SingleRepositoryBaseImplementation
+import shared.com.repository.traits.implementions.adapters.RepositoryJsonAdapterImplementation
+import shared.com.repository.traits.implementions.operations.{RepositoryOperationsAsyncImplementation, RepositoryOperationsImplementation}
 import shared.io.traits.FutureToRegular
 
 import scala.concurrent.ExecutionContext

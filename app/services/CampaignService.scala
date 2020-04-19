@@ -3,8 +3,8 @@ package services
 import com.google.inject.Inject
 import services.core.AbstractBasicPersistentService
 import shared.com.ortb.persistent.repositories.CampaignRepository
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
 import shared.com.ortb.persistent.schema.Tables._
+import shared.com.repository.RepositoryBase
 
 class CampaignService @Inject()(
   campaignRepository : CampaignRepository)

@@ -1,12 +1,12 @@
-package shared.com.ortb.persistent.repositories.pattern.traits.implementions.adapters
+package shared.com.repository.traits.implementions.adapters
 
 import io.circe.parser.decode
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder}
 import shared.com.ortb.adapters.BasicAdapterImplementation
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.com.ortb.persistent.repositories.pattern.traits.adapters.RepositoryJsonAdapter
+import shared.com.repository.RepositoryBase
+import shared.com.repository.traits.adapters.RepositoryJsonAdapter
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 

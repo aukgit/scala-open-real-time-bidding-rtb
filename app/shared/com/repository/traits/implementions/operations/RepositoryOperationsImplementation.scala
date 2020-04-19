@@ -1,10 +1,10 @@
-package shared.com.ortb.persistent.repositories.pattern.traits.implementions.operations
+package shared.com.repository.traits.implementions.operations
 
 import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
-import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
-import shared.com.ortb.persistent.repositories.pattern.traits.operations.mutations.RepositoryOperations
+import shared.com.repository.RepositoryBase
+import shared.com.repository.traits.operations.mutations.RepositoryOperations
 import shared.io.loggers.AppLogger
 
 trait RepositoryOperationsImplementation[TTable, TRow, TKey]

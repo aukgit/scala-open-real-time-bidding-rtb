@@ -1,4 +1,4 @@
-package shared.com.ortb.persistent.repositories.pattern.traits.operations.mutations
+package shared.com.repository.traits.operations.mutations
 
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
