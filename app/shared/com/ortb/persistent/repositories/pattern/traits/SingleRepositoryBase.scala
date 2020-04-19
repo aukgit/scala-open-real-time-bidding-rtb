@@ -15,7 +15,21 @@ trait SingleRepositoryBase[TTable, TRow, TKey]
 
   def tableName: String
 
-  def getAll: List[TRow] = toRegular(getAllAsync, defaultTimeout).toList
+  def getAllAsList: List[TRow] =
+    toRegular(
+      this.runAsync(
+        getAllQuery.result)
+          .map(allSeqItems=> allSeqItems.toList),
+      defaultTimeout)
+
+  def getAll: Seq[TRow] = toRegular(this.runAsync(getAllQuery.result), defaultTimeout)
+
+  def getAllAsArray: Array[TRow] =
+    toRegular(
+      this.runAsync(
+        getAllQuery.result)
+          .map(allSeqItems=> allSeqItems.toArray),
+      defaultTimeout)
 
   def getAllAsync: Future[Seq[TRow]] = this.runAsync(getAllQuery.result)
 

@@ -31,7 +31,7 @@ class ApiController @Inject()(
   def campaigns : Action[AnyContent] = Action { implicit request =>
     val appManager = new AppManager
     val repositories = new Repositories(appManager)
-    val campaigns = repositories.campaignRepository.getAll.toArray
+    val campaigns = repositories.campaignRepository.getAllAsList.toArray
     AppLogger.logEntitiesNonFuture(isExecute = true, campaigns)
     val json = campaigns.asJson.spaces2
     println(json)

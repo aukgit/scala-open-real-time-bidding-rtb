@@ -17,7 +17,7 @@ trait BasicPersistentServiceOperationsImplementation[TTable, TRow, TKey]
   def add(entity : TRow) : RepositoryOperationResult[TRow, TKey] =
     repository.add(entity)
 
-  override def getAll : List[TRow] = repository.getAll
+  override def getAll : List[TRow] = repository.getAllAsList
 
   def update(id : TKey, entity : TRow) : RepositoryOperationResult[TRow, TKey] =
     repository.update(id, entity)
