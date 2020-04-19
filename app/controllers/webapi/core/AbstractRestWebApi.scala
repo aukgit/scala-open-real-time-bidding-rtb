@@ -7,12 +7,21 @@ import shared.com.ortb.enumeration._
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.io.loggers.AppLogger
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.parser._
+import io.circe.generic.auto._
+import io.circe.syntax._
+import io.circe.Decoder.AccumulatingResult
+import io.circe.generic.JsonCodec
+import shared.com.ortb.implicits.implementations.AnyValCirceEncoding
 
 abstract class AbstractRestWebApi[TTable, TRow, TKey]
 (components : ControllerComponents)
   extends
     AbstractController(components) with
-    RestWebApiContracts[TTable, TRow, TKey] {
+    RestWebApiContracts[TTable, TRow, TKey] with AnyValCirceEncoding{
 
   val service : AbstractBasicPersistentService[TTable, TRow, TKey]
   val noContentMessage = "No content in request."
@@ -23,9 +32,10 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   implicit val listDecoder : Decoder[List[TRow]]
 
   def getAll : Action[AnyContent] = Action { implicit request =>
+    AppLogger.debug((listEncoder != null).toString)
     val campaigns = service.getAll
-    val json = fromEntitiesToJson(Some(campaigns))(listEncoder)
-    Ok(json.getOrElse("None"))
+    val json = campaigns.asJson.spaces2
+    Ok(json)
   }
 
   def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>

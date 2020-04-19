@@ -1,8 +1,14 @@
 package shared.com.ortb.persistent.repositories.pattern.traits.adapters
 
+import io.circe.generic.semiauto._
 import io.circe._
+import io.circe.generic.auto._
 import io.circe.parser._
+import io.circe.generic.auto._
 import io.circe.syntax._
+import io.circe.Decoder.AccumulatingResult
+import io.circe.generic.JsonCodec
+
 import shared.com.ortb.adapters.BasicAdapterImplementation
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.ortb.persistent.repositories.pattern.RepositoryBase
