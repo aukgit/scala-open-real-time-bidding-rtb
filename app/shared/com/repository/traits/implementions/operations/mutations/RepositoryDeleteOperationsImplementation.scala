@@ -1,4 +1,4 @@
-package shared.com.repository.traits.implementions.operations
+package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.model.results.RepositoryOperationResult
 import shared.com.repository.RepositoryBase

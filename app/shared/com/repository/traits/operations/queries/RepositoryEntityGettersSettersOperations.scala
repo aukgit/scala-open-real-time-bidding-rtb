@@ -1,4 +1,4 @@
-package shared.com.repository.traits.operations.query
+package shared.com.repository.traits.operations.queries
 
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
 

@@ -1,7 +1,7 @@
-package shared.com.repository.traits.implementions.operations
+package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.repository.RepositoryBase
-import shared.com.repository.traits.operations.mutations._
+import shared.com.repository.traits.operations.mutations.RepositoryOperations
 
 trait RepositoryOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryOperations[TTable, TRow, TKey]

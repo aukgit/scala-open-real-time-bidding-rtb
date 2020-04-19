@@ -1,4 +1,4 @@
-package shared.com.repository.traits.operations.query
+package shared.com.repository.traits.operations.queries
 
 trait RepositoryQueryOperations[TTable, TRow, TKey]
   extends RepositoryGetAllQueryOperations[TTable, TRow, TKey]

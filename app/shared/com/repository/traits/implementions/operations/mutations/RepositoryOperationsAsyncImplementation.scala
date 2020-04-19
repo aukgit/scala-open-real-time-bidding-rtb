@@ -1,4 +1,4 @@
-package shared.com.repository.traits.implementions.operations
+package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
@@ -8,7 +8,6 @@ import shared.com.repository.traits.operations.mutations.RepositoryOperationsAsy
 import shared.io.loggers.AppLogger
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
-import slick.jdbc.SQLiteProfile.api._
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future

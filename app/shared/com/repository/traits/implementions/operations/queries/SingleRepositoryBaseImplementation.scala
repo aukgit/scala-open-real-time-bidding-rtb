@@ -1,8 +1,8 @@
-package shared.com.repository.traits.implementions
+package shared.com.repository.traits.implementions.operations.queries
 
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.SingleRepositoryBase
-import slick.lifted.{Query, TableQuery}
+import slick.lifted.Query
 import slick.jdbc.SQLiteProfile.api._
 
 import scala.concurrent.{Await, Future}
