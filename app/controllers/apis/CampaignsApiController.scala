@@ -283,11 +283,11 @@ class CampaignsApiController @Inject()(
   //  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
   //  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
   //  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
-  override implicit def listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
+  override def listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
 
-  override implicit def encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
+  override def encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
 
-  override implicit def decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
+  override def decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
 
-  override implicit def listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
+  override def listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
 }

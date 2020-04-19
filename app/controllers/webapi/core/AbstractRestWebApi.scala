@@ -1,26 +1,11 @@
 package controllers.webapi.core
 
-import io.circe.generic.semiauto._
-import io.circe._
-import io.circe.generic.auto._
-import io.circe.parser._
-import io.circe.generic.auto._
-import io.circe.generic.encoding.DerivedAsObjectEncoder
-import io.circe.generic.encoding._
 import io.circe.{Decoder, Encoder}
-import io.circe.generic.semiauto._
-import io.circe.{Decoder, Encoder}
-import io.circe.generic.semiauto._
-import io.circe.syntax._
-import io.circe.Decoder.AccumulatingResult
-import io.circe.generic.JsonCodec
 import play.api.mvc.{Action, _}
 import services.core.AbstractBasicPersistentService
 import shared.com.ortb.enumeration._
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
-import shared.com.ortb.persistent.schema.Tables
-import shared.com.ortb.persistent.schema.Tables.CampaignRow
 import shared.io.helpers.JsonHelper
 import shared.io.loggers.AppLogger
 
@@ -33,18 +18,21 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   val service : AbstractBasicPersistentService[TTable, TRow, TKey]
   val noContentMessage = "No content in request."
 
-  implicit def listEncoder : Encoder[List[TRow]]
-  implicit def encoder : Encoder[TRow]
-  implicit def decoder : Decoder[TRow]
-  implicit def listDecoder : Decoder[List[TRow]]
+  def listEncoder : Encoder[List[TRow]]
+
+  def encoder : Encoder[TRow]
+
+  def decoder : Decoder[TRow]
+
+  def listDecoder : Decoder[List[TRow]]
 
   def getAll : Action[AnyContent] = Action { implicit request =>
-//      implicit val listEncoder: Encoder[List[CampaignRow]] = deriveEncoder[List[CampaignRow]]
-      // implicit val listEncoder: Codec[List[TRow]] =  Codec.derived[List[TRow]]
-      val campaigns = service.getAll
-      val json = JsonHelper.toJson(campaigns)(listEncoder)
-      Ok(json.get.spaces2)
-    }
+    //      implicit val listEncoder: Encoder[List[CampaignRow]] = deriveEncoder[List[CampaignRow]]
+    // implicit val listEncoder: Codec[List[TRow]] =  Codec.derived[List[TRow]]
+    val campaigns = service.getAll
+    val json = JsonHelper.toJson(campaigns)(listEncoder)
+    Ok(json.get.spaces2)
+  }
 
   //  def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
   //    val entity = service.getById(id)
