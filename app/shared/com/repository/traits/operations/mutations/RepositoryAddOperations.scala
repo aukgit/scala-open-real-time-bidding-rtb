@@ -1,6 +1,6 @@
 package shared.com.repository.traits.operations.mutations
 
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
 
 trait RepositoryAddOperations[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
@@ -8,11 +8,11 @@ trait RepositoryAddOperations[TTable, TRow, TKey]
 
   def addEntities(
     entities : Iterable[TRow]
-  ) : Iterable[RepositoryOperationResult[TRow, TKey]]
+  ) : RepositoryOperationResults[TRow, TKey]
 
 
   def addEntities(
     entity : TRow,
     addTimes : Int
-  ) : Iterable[RepositoryOperationResult[TRow, TKey]]
+  ) : RepositoryOperationResults[TRow, TKey]
 }

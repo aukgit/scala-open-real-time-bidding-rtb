@@ -1,6 +1,6 @@
 package shared.com.repository.traits.operations.mutations
 
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
@@ -29,7 +29,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def updateEntitiesAsync(
     entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
-  ) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]]
+  ) : Future[RepositoryOperationResults[TRow, TKey]]
 
   /**
    * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
@@ -47,15 +47,14 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def deleteEntitiesAsync(
     entities : Iterable[TKey]
-  ) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]]
-
+  ) : Future[RepositoryOperationResults[TRow, TKey]]
 
   def addEntitiesAsync(
     entity : TRow,
     addTimes : Int
-  ) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]]
+  ) : Future[RepositoryOperationResults[TRow, TKey]]
 
   def addOrUpdateEntitiesAsync(
     entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
-  ) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]]
+  ) : Future[RepositoryOperationResults[TRow, TKey]]
 }

@@ -1,7 +1,7 @@
 package shared.com.repository.traits.implementions.operations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsAsync
@@ -78,7 +78,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
 
   def updateEntitiesAsync(
     entityWrappers: Iterable[EntityWrapper[TRow, TKey]]
-  ): Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
+  ): Iterable[Future[RepositoryOperationResults[TRow, TKey]]] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
       AppLogger.info(s"${headerMessage} No items passed for multiple updates.")
 
