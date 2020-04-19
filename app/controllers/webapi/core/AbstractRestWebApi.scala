@@ -26,13 +26,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   val service : AbstractBasicPersistentService[TTable, TRow, TKey]
   val noContentMessage = "No content in request."
 
-  implicit val listEncoder : Encoder[List[TRow]]
-  implicit val encoder : Encoder[TRow]
-  implicit val decoder : Decoder[TRow]
-  implicit val listDecoder : Decoder[List[TRow]]
-
   def getAll : Action[AnyContent] = Action { implicit request =>
-    AppLogger.debug((listEncoder != null).toString)
     val campaigns = service.getAll
     val json = campaigns.asJson.spaces2
     Ok(json)
