@@ -22,17 +22,17 @@ class CampaignsApiController @Inject()(
   components      : ControllerComponents)
   extends AbstractRestWebApi[Campaign, CampaignRow, Int](components) {
 
-  //  override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
-  //    val campaigns = campaignService.getAll
-  //    val json = campaigns.asJson.spaces2
-  //    Ok(json)
-  //  }
-  //
-  //  override def byId(id : Int) : Action[AnyContent] = Action { implicit request =>
-  //    val campaign = campaignService.getById(id)
-  //    val json = campaign.get.asJson.spaces2
-  //    Ok(json)
-  //  }
+    override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
+      val campaigns = campaignService.getAll
+      val json = campaigns.asJson.spaces2
+      Ok(json)
+    }
+
+    override def byId(id : Int) : Action[AnyContent] = Action { implicit request =>
+      val campaign = campaignService.getById(id)
+      val json = campaign.get.asJson.spaces2
+      Ok(json)
+    }
   //
   //  override def add() : Action[AnyContent] = Action { implicit request =>
   //    try {
@@ -277,9 +277,9 @@ class CampaignsApiController @Inject()(
   override def fromJsonToEntities(jsonString : Option[String])
   : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] =
     service.fromJsonToEntitiesWrapper(jsonString)
-
-  override implicit val listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
-  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
-  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
-  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
+//
+//  override implicit val listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
+//  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
+//  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
+//  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
 }
