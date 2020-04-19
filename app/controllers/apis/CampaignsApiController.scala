@@ -12,7 +12,6 @@ import services.core.AbstractBasicPersistentService
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.{WebApiEntitiesResponseWrapper, _}
-import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger
@@ -22,17 +21,18 @@ class CampaignsApiController @Inject()(
   components      : ControllerComponents)
   extends AbstractRestWebApi[Campaign, CampaignRow, Int](components) {
 
-//    override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
-//      val campaigns = campaignService.getAll
-//      val json = campaigns.asJson.spaces2
-//      Ok(json)
-//    }
+  override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
+    val campaigns = campaignService.getAll
+    val json = campaigns.asJson.spaces2
+    Ok(json)
+  }
 
-    override def byId(id : Int) : Action[AnyContent] = Action { implicit request =>
-      val campaign = campaignService.getById(id)
-      val json = campaign.get.asJson.spaces2
-      Ok(json)
-    }
+  override def byId(id : Int) : Action[AnyContent] = Action { implicit request =>
+    val campaign = campaignService.getById(id)
+    val json = campaign.get.asJson.spaces2
+    Ok(json)
+  }
+
   //
   //  override def add() : Action[AnyContent] = Action { implicit request =>
   //    try {
@@ -121,11 +121,11 @@ class CampaignsApiController @Inject()(
   : AbstractBasicPersistentService[Campaign, CampaignRow, Int] =
   campaignService
 
-  override def addEntities() : Action[AnyContent] = Action { implicit  request =>
+  override def addEntities() : Action[AnyContent] = Action { implicit request =>
     val entityResponseWrapper = bodyRequestToEntities(request)
 
-    try{
-      if(entityResponseWrapper.isDefined){
+    try {
+      if (entityResponseWrapper.isDefined) {
         val entities = entityResponseWrapper.get.entityWrapper.get
         val r = service.addEntities(entities.map(w => w.entity.get))
         Ok("Ok")
@@ -133,16 +133,16 @@ class CampaignsApiController @Inject()(
         performBadRequest()
       }
     } catch {
-      case e: Exception => AppLogger.error(e)
+      case e : Exception => AppLogger.error(e)
         performBadRequest()
     }
   }
 
-  def addEntitiesBySinge(addTimes: Int) : Action[AnyContent] = Action { implicit  request =>
+  def addEntitiesBySinge(addTimes : Int) : Action[AnyContent] = Action { implicit request =>
     val entityResponseWrapper = bodyRequestToEntity(request)
 
-    try{
-      if(entityResponseWrapper.isDefined){
+    try {
+      if (entityResponseWrapper.isDefined) {
         val entity = entityResponseWrapper.get.entityWrapper.get.entity.get
         val r = service.addEntities(entity, addTimes)
         Ok("Ok")
@@ -150,25 +150,25 @@ class CampaignsApiController @Inject()(
         performBadRequest()
       }
     } catch {
-      case e: Exception => AppLogger.error(e)
+      case e : Exception => AppLogger.error(e)
         performBadRequest()
     }
   }
 
 
-  override def addOrUpdate(id : Int) : Action[AnyContent] = Action { implicit  request =>
+  override def addOrUpdate(id : Int) : Action[AnyContent] = Action { implicit request =>
     val entityResponseWrapper = bodyRequestToEntity(request)
 
-    try{
-      if(entityResponseWrapper.isDefined){
+    try {
+      if (entityResponseWrapper.isDefined) {
         val entity = entityResponseWrapper.get.entityWrapper.get.entity.get
-        service.addOrUpdate(id, entity= entity)
+        service.addOrUpdate(id, entity = entity)
         Ok(entity.toString)
       } else {
         performBadRequest()
       }
     } catch {
-      case e: Exception => AppLogger.error(e)
+      case e : Exception => AppLogger.error(e)
         performBadRequest()
     }
   }
@@ -199,13 +199,13 @@ class CampaignsApiController @Inject()(
 
   override def failedMessage(
     databaseActionType : Option[DatabaseActionType],
-    entity : Option[CampaignRow],
-    additionalMessage : String) : String = "Failed"
+    entity             : Option[CampaignRow],
+    additionalMessage  : String) : String = "Failed"
 
   override def successMessage(
     databaseActionType : Option[DatabaseActionType],
-    entity : Option[CampaignRow],
-    additionalMessage : String) : String = "Success"
+    entity             : Option[CampaignRow],
+    additionalMessage  : String) : String = "Success"
 
   override def performBadRequest(
     httpFailedActionWrapper : Option[HttpFailedActionWrapper[CampaignRow, Int]]) : Result =
@@ -277,9 +277,17 @@ class CampaignsApiController @Inject()(
   override def fromJsonToEntities(jsonString : Option[String])
   : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] =
     service.fromJsonToEntitiesWrapper(jsonString)
-//
-//  override implicit val listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
-//  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
-//  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
-//  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
+
+  //
+  //  override implicit val listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
+  //  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
+  //  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
+  //  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
+  override implicit def listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
+
+  override implicit def encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
+
+  override implicit def decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
+
+  override implicit def listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
 }

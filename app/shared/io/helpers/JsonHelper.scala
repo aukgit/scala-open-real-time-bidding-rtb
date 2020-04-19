@@ -3,11 +3,11 @@ package shared.io.helpers
 import io.circe.parser._
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder, Error, Json}
-import shared.com.ortb.implicits.implementations.CirceSupport
+import shared.com.ortb.implicits.implementations.{CirceSupport, CircleJsonSupport}
 import shared.com.ortb.model.error.FileErrorModel
 import shared.io.loggers.AppLogger
 
-object JsonHelper extends CirceSupport {
+object JsonHelper extends CircleJsonSupport {
   def toJson[T](item : T)(implicit encoder: Encoder[T]) : Option[Json] = {
     try {
       return Some(item.asJson(encoder))

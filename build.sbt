@@ -33,7 +33,7 @@ lazy val allDependencies = Seq(
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
-  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
+
   "com.typesafe.akka" %% "akka-http-caching" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.26",
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
@@ -45,6 +45,7 @@ lazy val allDependencies = Seq(
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
+  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
 
   ///////////////////////////////////////////////////
   // Serialization frameworks : AKKA Enhanced Serializing
