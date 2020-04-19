@@ -27,10 +27,6 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]]
 
-  def updateEntitiesAsync(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
-  ) : Future[RepositoryOperationResults[TRow, TKey]]
-
   /**
    * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
    * the action.
@@ -44,17 +40,8 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
     entityId : TKey,
     entity : TRow
   ) : Future[RepositoryOperationResult[TRow, TKey]]
-
-  def deleteEntitiesAsync(
-    entities : Iterable[TKey]
-  ) : Future[RepositoryOperationResults[TRow, TKey]]
-
-  def addEntitiesAsync(
-    entity : TRow,
-    addTimes : Int
-  ) : Future[RepositoryOperationResults[TRow, TKey]]
-
-  def addOrUpdateEntitiesAsync(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
-  ) : Future[RepositoryOperationResults[TRow, TKey]]
+//
+//  def deleteEntitiesAsync(
+//    entities : Iterable[TKey]
+//  ) : Future[RepositoryOperationResults[TRow, TKey]]
 }

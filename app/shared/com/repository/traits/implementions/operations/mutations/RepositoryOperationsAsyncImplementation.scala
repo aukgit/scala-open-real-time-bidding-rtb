@@ -6,6 +6,7 @@ import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsAsync
 import shared.io.loggers.AppLogger
+import slick.jdbc.SQLiteProfile.api._
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
 
@@ -13,18 +14,18 @@ import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
 trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
-    extends RepositoryOperationsAsync[TTable, TRow, TKey] {
-  this: RepositoryBase[TTable, TRow, TKey] =>
+  extends RepositoryOperationsAsync[TTable, TRow, TKey] {
+  this : RepositoryBase[TTable, TRow, TKey] =>
 
-  def getAddAction(entity: TRow): FixedSqlAction[TRow, NoStream, Effect.Write]
+  def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
 
   def getDeleteAction(
-    entityId: TKey
-  ): FixedSqlAction[Int, NoStream, Effect.Write]
+    entityId : TKey
+  ) : FixedSqlAction[Int, NoStream, Effect.Write]
 
   def deleteAsync(
-    entityId: TKey
-  ): Future[RepositoryOperationResult[TRow, TKey]] = {
+    entityId : TKey
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val entity = getById(entityId)
     val actionType = DatabaseActionType.Delete
 
@@ -37,7 +38,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
         actionType
       )
     } catch {
-      case e: Exception =>
+      case e : Exception =>
         AppLogger.error(
           e,
           s"${headerMessage} Delete failed on [id:$entityId, entity: $entity]"
@@ -48,9 +49,9 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
   }
 
   def addOrUpdateAsync(
-    entityId: TKey,
-    entity: TRow
-  ): Future[RepositoryOperationResult[TRow, TKey]] = {
+    entityId : TKey,
+    entity   : TRow
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     if (isExists(entityId)) {
       // update
       return updateAsync(entityId, entity)
@@ -60,7 +61,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     addAsync(entity)
   }
 
-  def addAsync(entity: TRow): Future[RepositoryOperationResult[TRow, TKey]] = {
+  def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val actionType = DatabaseActionType.Create
 
     try {
@@ -68,44 +69,26 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
 
       return this.saveAsync(dbAction = action, DatabaseActionType.Create)
     } catch {
-      case e: Exception =>
+      case e : Exception =>
         AppLogger.error(e, s"${headerMessage} Add failed on [entity: $entity]")
     }
 
     getEmptyResponseForInFuture(actionType)
   }
 
-  def updateEntitiesAsync(
-    entityWrappers: Iterable[EntityWrapper[TRow, TKey]]
-  ): Future[RepositoryOperationResults[TRow, TKey]] = {
-    if (entityWrappers == null || entityWrappers.isEmpty) {
-      AppLogger.info(s"${headerMessage} No items passed for multiple updates.")
-
-      return null
-    }
-
-    entityWrappers.map(
-      entityWrapper =>
-        this.updateAsync(
-          entityId = entityWrapper.entityId,
-          entity = entityWrapper.entity
-      )
-    )
-  }
-
   /**
-    * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
-    * the action.
-    *
-    * @param entityId
-    * @param entity
-    *
-    * @return
-    */
+   * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
+   * the action.
+   *
+   * @param entityId
+   * @param entity
+   *
+   * @return
+   */
   def updateAsync(
-    entityId: TKey,
-    entity: TRow
-  ): Future[RepositoryOperationResult[TRow, TKey]] = {
+    entityId : TKey,
+    entity   : TRow
+  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
     val actionType = DatabaseActionType.Update
 
     try {
@@ -125,7 +108,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
         DatabaseActionType.Update
       )
     } catch {
-      case e: Exception =>
+      case e : Exception =>
         AppLogger.error(
           e,
           s"${headerMessage} Update failed on [id:$entityId, entity: $entity]"
@@ -136,8 +119,8 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
   }
 
   def deleteEntitiesAsync(
-    entities: Iterable[TKey]
-  ): Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
+    entities : Iterable[TKey]
+  ) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
     if (entities == null || entities.isEmpty) {
       AppLogger.info(s"${headerMessage} No items passed for multiple deleting.")
 
@@ -145,42 +128,5 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     }
 
     entities.map(entity => this.deleteAsync(entity))
-  }
-
-  def addEntitiesAsync(
-    entity: TRow,
-    addTimes: Int
-  ): Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
-    if (entity == null) {
-      AppLogger.info(s"${headerMessage} No items passed for multiple adding.")
-
-      return null
-    }
-
-    val list = ListBuffer[Future[RepositoryOperationResult[TRow, TKey]]]()
-
-    for (i <- 0 until addTimes) {
-      val response = this.addAsync(entity)
-      list += response
-    }
-
-    list
-  }
-
-  def addOrUpdateEntitiesAsync(
-    entityWrappers: Iterable[EntityWrapper[TRow, TKey]]
-  ): Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
-    if (entityWrappers == null || entityWrappers.isEmpty) {
-      AppLogger.info(
-        s"${headerMessage} No items passed for multiple ${DatabaseActionType.AddOrUpdate}."
-      )
-
-      return null
-    }
-
-    entityWrappers.map(
-      entityWrapper =>
-        addOrUpdateAsync(entityWrapper.entityId, entityWrapper.entity)
-    )
   }
 }

@@ -10,6 +10,16 @@ trait ErrorLogger {
     error(msg, 4, isPrintStack = false)
   }
 
+  @throws
+  def errorCaptureAndThrow(
+    exception : Exception,
+    additionalMessage : String = null,
+    stackIndex        : Int = defaultStackIndex,
+    isPrintStack      : Boolean = false) : Unit = {
+    error(exception, additionalMessage, stackIndex, isPrintStack)
+    throw exception
+  }
+
   def error(msg : String, isPrintStack : Boolean) : Unit = {
     error(msg, 4, isPrintStack)
   }

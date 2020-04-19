@@ -1,6 +1,7 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryUpdateOperations
@@ -16,20 +17,33 @@ trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
 
   def updateEntities(
     entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
-  ) : Iterable[RepositoryOperationResult[TRow, TKey]] = {
+  ) : RepositoryOperationResults[TRow, TKey] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
-      AppLogger.info(
-        s"${headerMessage} No items passed for multiple update operation."
-      )
+      AppLogger.info(s"${headerMessage} No items passed for multiple updates.")
 
       return null
     }
 
-    entityWrappers
-      .map(
-        entityWrapper =>
-          updateAsync(entityWrapper.entityId, entityWrapper.entity)
-      )
-      .map(responseInFuture => toRegular(responseInFuture, defaultTimeout))
+    val length = entityWrappers.size
+
+    val responseEntityWrappers = entityWrappers.map(
+      entityWrapper => {
+        this.updateAsync(
+          entityId = entityWrapper.entityId,
+          entity = entityWrapper.entity
+        )
+      }).map(repositoryResultInFuture => {
+      val responseInNonFuture : RepositoryOperationResult[TRow, TKey] = toRegular(repositoryResultInFuture,
+        defaultTimeout)
+
+      EntityWrapper(responseInNonFuture.entityId.get, responseInNonFuture.entity.get)
+    })
+
+    val isSuccess = length == responseEntityWrappers.size
+
+    RepositoryOperationResults[TRow, TKey](
+      isSuccess,
+      responseEntityWrappers,
+      actionType = DatabaseActionType.Update)
   }
 }

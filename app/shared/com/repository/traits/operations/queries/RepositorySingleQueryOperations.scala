@@ -6,7 +6,6 @@ import scala.concurrent.Future
 
 trait RepositorySingleQueryOperations[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
-
   def isEmptyGivenEntity(
     entityId : Option[TKey],
     entity               : Option[TRow]) : Boolean

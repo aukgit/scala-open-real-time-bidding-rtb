@@ -1,8 +1,8 @@
-package shared.com.repository.traits.operations.queries
+package shared.com.repository.traits
 
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
 
-trait RepositoryEntityGettersSettersOperations[TTable, TRow, TKey]
+trait RepositoryEntityGettersSetters[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
 
   def getEntityId(entity : Option[TRow]) : TKey

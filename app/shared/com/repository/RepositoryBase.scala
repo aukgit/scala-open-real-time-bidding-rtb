@@ -6,7 +6,6 @@ import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.schema.DatabaseSchema
 import shared.com.repository.traits._
 import shared.com.repository.traits.implementions.adapters.{RepositoryJsonAdapterImplementation, RepositoryWrapperAdapterImplementation}
-import shared.com.repository.traits.implementions.operations.RepositoryOperationsImplementation
 import shared.com.repository.traits.implementions.operations.mutations.{RepositoryOperationsAsyncImplementation, RepositoryOperationsImplementation}
 import shared.com.repository.traits.implementions.operations.queries.SingleRepositoryBaseImplementation
 import shared.io.traits.FutureToRegular

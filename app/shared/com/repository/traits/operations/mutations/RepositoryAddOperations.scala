@@ -7,12 +7,11 @@ trait RepositoryAddOperations[TTable, TRow, TKey]
   def add(entity : TRow) : RepositoryOperationResult[TRow, TKey]
 
   def addEntities(
-    entities : Iterable[TRow]
-  ) : RepositoryOperationResults[TRow, TKey]
-
-
-  def addEntities(
     entity : TRow,
     addTimes : Int
+  ) : RepositoryOperationResults[TRow, TKey]
+
+  def addEntities(
+    entities : Iterable[TRow]
   ) : RepositoryOperationResults[TRow, TKey]
 }
