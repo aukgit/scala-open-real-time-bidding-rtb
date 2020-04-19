@@ -1,21 +1,21 @@
 package services.core.traits
 
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
 
 trait BasicPersistentServiceOperations[TTable, TRow, TKey]
     extends BasicPersistentServiceCore[TTable, TRow, TKey] {
   def addUsingOption(
-      entity: Option[TRow]): Option[RepositoryOperationResult[TRow, TKey]]
+      entity: Option[TRow]): Option[RepositoryOperationResultModel[TRow, TKey]]
 
-  def add(entity: TRow): RepositoryOperationResult[TRow, TKey]
+  def add(entity: TRow): RepositoryOperationResultModel[TRow, TKey]
 
   def getAll: List[TRow] = repository.getAllAsList
 
-  def update(id: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey]
+  def update(id: TKey, entity: TRow): RepositoryOperationResultModel[TRow, TKey]
 
-  def addOrUpdate(id: TKey, entity: TRow): RepositoryOperationResult[TRow, TKey]
+  def addOrUpdate(id: TKey, entity: TRow): RepositoryOperationResultModel[TRow, TKey]
 
-  def delete(id: TKey): RepositoryOperationResult[TRow, TKey]
+  def delete(id: TKey): RepositoryOperationResultModel[TRow, TKey]
 
   def getById(id: TKey): Option[TRow]
 }

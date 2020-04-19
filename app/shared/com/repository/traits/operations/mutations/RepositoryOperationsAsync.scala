@@ -1,6 +1,6 @@
 package shared.com.repository.traits.operations.mutations
 
-import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
+import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
@@ -16,14 +16,14 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
 
   def deleteAsync(
     entityId : TKey
-  ) : Future[RepositoryOperationResult[TRow, TKey]]
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]]
 
   def addOrUpdateAsync(
     entityId : TKey,
     entity : TRow
-  ) : Future[RepositoryOperationResult[TRow, TKey]]
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]]
 
-  def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]]
+  def addAsync(entity : TRow) : Future[RepositoryOperationResultModel[TRow, TKey]]
 
   /**
    * if entityId is not matching with given entity id then recreates new entity and set the id given and then perform
@@ -37,7 +37,7 @@ trait RepositoryOperationsAsync[TTable, TRow, TKey]
   def updateAsync(
     entityId : TKey,
     entity : TRow
-  ) : Future[RepositoryOperationResult[TRow, TKey]]
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]]
 //
 //  def deleteEntitiesAsync(
 //    entities : Iterable[TKey]

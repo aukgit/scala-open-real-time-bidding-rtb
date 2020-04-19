@@ -1,7 +1,7 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
+import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsAsync
@@ -16,16 +16,13 @@ import scala.concurrent.Future
 trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
   extends RepositoryOperationsAsync[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
-
-
-
   def getDeleteAction(
     entityId : TKey
   ) : FixedSqlAction[Int, NoStream, Effect.Write]
 
   def deleteAsync(
     entityId : TKey
-  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     val entity = getById(entityId)
     val actionType = DatabaseActionType.Delete
 
@@ -51,7 +48,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
   def addOrUpdateAsync(
     entityId : TKey,
     entity   : TRow
-  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     if (isExists(entityId)) {
       // update
       return updateAsync(entityId, entity)
@@ -61,7 +58,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     addAsync(entity)
   }
 
-  def addAsync(entity : TRow) : Future[RepositoryOperationResult[TRow, TKey]] = {
+  def addAsync(entity : TRow) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     val actionType = DatabaseActionType.Create
 
     try {
@@ -88,7 +85,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
   def updateAsync(
     entityId : TKey,
     entity   : TRow
-  ) : Future[RepositoryOperationResult[TRow, TKey]] = {
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     val actionType = DatabaseActionType.Update
 
     try {
@@ -116,17 +113,5 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     }
 
     getEmptyResponseForInFuture(actionType)
-  }
-
-  def deleteEntitiesAsync(
-    entities : Iterable[TKey]
-  ) : Iterable[Future[RepositoryOperationResult[TRow, TKey]]] = {
-    if (entities == null || entities.isEmpty) {
-      AppLogger.info(s"${headerMessage} No items passed for multiple deleting.")
-
-      return null
-    }
-
-    entities.map(entity => this.deleteAsync(entity))
   }
 }

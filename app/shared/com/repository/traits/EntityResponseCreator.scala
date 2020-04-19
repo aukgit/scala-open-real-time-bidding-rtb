@@ -1,7 +1,7 @@
 package shared.com.repository.traits
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase
 import shared.io.loggers.AppLogger
 
@@ -15,7 +15,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     actionType: DatabaseActionType,
     message: String = "",
     isSuccess: Boolean = true,
-  ): RepositoryOperationResult[TRow, TKey] = {
+  ): RepositoryOperationResultModel[TRow, TKey] = {
     val message2 = getMessageForEntity(Some(affectedRow), actionType, message)
     val hasAffected = affectedRow > 0
 
@@ -44,7 +44,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     actionType: DatabaseActionType,
     message: String = "",
     isSuccess: Boolean = true
-  ): RepositoryOperationResult[TRow, TKey] = {
+  ): RepositoryOperationResultModel[TRow, TKey] = {
     val message2: String =
       getMessageForEntity(affectedRowsCount, actionType, message)
 
@@ -67,7 +67,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   def getEmptyResponseFor(actionType: DatabaseActionType) =
-    new RepositoryOperationResult[TRow, TKey](
+    new RepositoryOperationResultModel[TRow, TKey](
       isSuccess = false,
       entityId = None,
       entity = None,
@@ -80,7 +80,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     actionType: DatabaseActionType,
     message: String = "",
     isSuccess: Boolean = true
-  ): RepositoryOperationResult[TRow, TKey] = {
+  ): RepositoryOperationResultModel[TRow, TKey] = {
     RepositoryOperationResult(isSuccess, entityId, entity, actionType, message)
   }
 
@@ -103,7 +103,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
 
   protected def getEmptyResponseForInFuture(
     actionType: DatabaseActionType
-  ): Future[RepositoryOperationResult[TRow, TKey]] = {
+  ): Future[RepositoryOperationResultModel[TRow, TKey]] = {
     AppLogger.conditionalInfo(
       isLogQueries,
       s"${headerMessage} $actionType is skipped."

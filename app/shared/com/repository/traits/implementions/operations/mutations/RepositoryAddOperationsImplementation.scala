@@ -1,7 +1,7 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
+import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOperations
@@ -16,20 +16,20 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
   this : RepositoryBase[TTable, TRow, TKey] =>
   def getAddAction(entity : TRow) : FixedSqlAction[TRow, NoStream, Effect.Write]
 
-  def add(entity : TRow) : RepositoryOperationResult[TRow, TKey] =
+  def add(entity : TRow) : RepositoryOperationResultModel[TRow, TKey] =
     toRegular(addAsync(entity), defaultTimeout)
 
   def addEntities(
     entity : TRow,
     addTimes : Int
-  ) : RepositoryOperationResults[TRow, TKey] = {
+  ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entity == null) {
       AppLogger.info(s"${headerMessage} No items passed for multiple adding.")
 
       return null
     }
 
-    val list = new Array[Future[RepositoryOperationResult[TRow, TKey]]](addTimes)
+    val list = new Array[Future[RepositoryOperationResultModel[TRow, TKey]]](addTimes)
 
     for (i <- 0 until addTimes) {
       list(i) = this.addAsync(entity)
@@ -48,7 +48,7 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
 
   def addEntities(
     entities : Iterable[TRow]
-  ) : RepositoryOperationResults[TRow, TKey] = {
+  ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entities == null || entities.isEmpty) {
       AppLogger.info(s"${headerMessage} No items passed for deleting.")
 

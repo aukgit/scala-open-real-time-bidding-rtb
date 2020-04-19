@@ -1,17 +1,17 @@
 package shared.com.repository.traits.operations.mutations
 
-import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
+import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 
 trait RepositoryAddOperations[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
-  def add(entity : TRow) : RepositoryOperationResult[TRow, TKey]
+  def add(entity : TRow) : RepositoryOperationResultModel[TRow, TKey]
 
   def addEntities(
     entity : TRow,
     addTimes : Int
-  ) : RepositoryOperationResults[TRow, TKey]
+  ) : RepositoryOperationResultsModel[TRow, TKey]
 
   def addEntities(
     entities : Iterable[TRow]
-  ) : RepositoryOperationResults[TRow, TKey]
+  ) : RepositoryOperationResultsModel[TRow, TKey]
 }

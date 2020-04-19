@@ -4,7 +4,7 @@ import java.awt.dnd.InvalidDnDOperationException
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.implicits.implementations.ImplicitsImplementation.anyRefCaller
-import shared.com.ortb.model.results.RepositoryOperationResult
+import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase
 import shared.io.loggers.AppLogger
 import slick.dbio._
@@ -18,7 +18,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   def quickSave(
     dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
     actionType: DatabaseActionType
-  ): RepositoryOperationResult[TRow, TKey] = {
+  ): RepositoryOperationResultModel[TRow, TKey] = {
     try {
       val result = db
         .run(dbAction)
@@ -44,7 +44,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
     entity: Option[TRow],
     dbAction: FixedSqlAction[Int, NoStream, Effect.Write],
     actionType: DatabaseActionType
-  ): Future[RepositoryOperationResult[TRow, TKey]] = {
+  ): Future[RepositoryOperationResultModel[TRow, TKey]] = {
     try {
       return db
         .run(dbAction)
@@ -67,7 +67,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   def saveAsync(
     dbAction: FixedSqlAction[TRow, NoStream, Effect.Write],
     actionType: DatabaseActionType
-  ): Future[RepositoryOperationResult[TRow, TKey]] = {
+  ): Future[RepositoryOperationResultModel[TRow, TKey]] = {
     try {
       return db
         .run(dbAction)

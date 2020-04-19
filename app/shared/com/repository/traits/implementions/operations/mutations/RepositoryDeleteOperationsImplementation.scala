@@ -1,10 +1,12 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
-import shared.com.ortb.model.results.{RepositoryOperationResult, RepositoryOperationResults}
+import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryDeleteOperations
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
+
+import scala.concurrent.Future
 
 trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryDeleteOperations[TTable, TRow, TKey] {
@@ -14,18 +16,19 @@ trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]
     entityId : TKey
   ) : FixedSqlAction[Int, NoStream, Effect.Write]
 
-  def delete(entityId     : TKey) : RepositoryOperationResult[TRow, TKey] =
+  def delete(entityId     : TKey) : RepositoryOperationResultModel[TRow, TKey] =
     toRegular(deleteAsync(entityId), defaultTimeout)
 
   def deleteEntities(
     entities      : Iterable[TKey]
-  ) : RepositoryOperationResults[TRow, TKey] = {
-    val responses = deleteEntitiesAsync(entities)
+  ) : RepositoryOperationResultsModel[TRow, TKey] = {
+    val responses : Iterable[Future[RepositoryOperationResultModel[TRow, TKey]]] = deleteEntitiesAsync(entities)
 
     if (responses == null || responses.isEmpty) {
       return null
     }
 
-    responses.map(futureResponse => toRegular(futureResponse, defaultTimeout))
+    responses.map(futureResponse =>
+      toRegular(futureResponse, defaultTimeout))
   }
 }
