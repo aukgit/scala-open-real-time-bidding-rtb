@@ -1,4 +1,4 @@
-package shared.com.repository.adapters
+package shared.com.repository.traits.implementions.adapters
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions}
