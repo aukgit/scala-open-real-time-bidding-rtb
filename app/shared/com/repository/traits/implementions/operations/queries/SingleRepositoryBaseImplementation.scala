@@ -1,7 +1,6 @@
 package shared.com.repository.traits.implementions.operations.queries
 
 import shared.com.repository.RepositoryBase
-import shared.com.repository.traits.operations.queries.RepositoryQueryOperationsImplementation
 import shared.com.repository.traits.{RepositoryEntityGettersSetters, RepositoryTableInfo}
 
 trait SingleRepositoryBaseImplementation[TTable, TRow, TKey]

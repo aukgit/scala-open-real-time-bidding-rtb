@@ -6,7 +6,7 @@ import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 trait RepositoryUpdateOperations[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
   def update(
-    entityId     : TKey,
+    entityId : TKey,
     entity       : TRow) : RepositoryOperationResultModel[TRow, TKey]
 
   def updateEntities(

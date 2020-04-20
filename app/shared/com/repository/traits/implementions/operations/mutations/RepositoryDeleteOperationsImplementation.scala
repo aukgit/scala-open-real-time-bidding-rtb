@@ -11,11 +11,6 @@ import slick.sql.FixedSqlAction
 trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryDeleteOperations[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
-
-  def getDeleteAction(
-    entityId : TKey
-  ) : FixedSqlAction[Int, NoStream, Effect.Write]
-
   def delete(entityId     : TKey) : RepositoryOperationResultModel[TRow, TKey] =
     toRegular(deleteAsync(entityId), defaultTimeout)
 

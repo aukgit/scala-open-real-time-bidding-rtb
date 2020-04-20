@@ -1,16 +1,13 @@
-package shared.com.repository.traits.implementions.operations.mutations
+package shared.com.repository.traits.implementions.operations.mutations.async
 
 import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
-import shared.com.repository.traits.operations.mutations.RepositoryOperationsAsync
+import shared.com.repository.traits.operations.mutations.async.RepositoryOperationsAsync
 import shared.io.loggers.AppLogger
-import slick.jdbc.SQLiteProfile.api._
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
 
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
 trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
@@ -47,7 +44,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
 
   def addOrUpdateAsync(
     entityId : TKey,
-    entity   : TRow
+    entity : TRow
   ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     if (isExists(entityId)) {
       // update
@@ -84,7 +81,7 @@ trait RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
    */
   def updateAsync(
     entityId : TKey,
-    entity   : TRow
+    entity : TRow
   ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     val actionType = DatabaseActionType.Update
 

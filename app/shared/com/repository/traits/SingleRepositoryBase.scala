@@ -1,6 +1,7 @@
 package shared.com.repository.traits
 
 import shared.com.repository.traits.operations.mutations._
+import shared.com.repository.traits.operations.mutations.async.RepositoryOperationsAsync
 import shared.com.repository.traits.operations.queries.RepositoryQueryOperations
 
 trait SingleRepositoryBase[TTable, TRow, TKey]
