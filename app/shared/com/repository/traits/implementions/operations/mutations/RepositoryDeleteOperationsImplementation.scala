@@ -1,12 +1,12 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryDeleteOperations
+import shared.io.helpers.BasicAdapterHelper
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
-
-import scala.concurrent.Future
 
 trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryDeleteOperations[TTable, TRow, TKey] {
@@ -22,13 +22,15 @@ trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]
   def deleteEntities(
     entities      : Iterable[TKey]
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
-    val responses : Iterable[Future[RepositoryOperationResultModel[TRow, TKey]]] = deleteEntitiesAsync(entities)
-
-    if (responses == null || responses.isEmpty) {
+    if (entities == null || entities.isEmpty) {
       return null
     }
 
-    responses.map(futureResponse =>
-      toRegular(futureResponse, defaultTimeout))
+    val responses = entities.map(id => deleteAsync(id))
+
+    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+      responses,
+      databaseActionType = DatabaseActionType.Delete
+    )
   }
 }

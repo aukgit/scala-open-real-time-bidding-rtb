@@ -5,6 +5,7 @@ import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryUpdateOperations
+import shared.io.helpers.BasicAdapterHelper
 import shared.io.loggers.AppLogger
 
 trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
@@ -24,26 +25,17 @@ trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
       return null
     }
 
-    val length = entityWrappers.size
-
     val responseEntityWrappers = entityWrappers.map(
       entityWrapper => {
         this.updateAsync(
           entityId = entityWrapper.entityId,
           entity = entityWrapper.entity
         )
-      }).map(repositoryResultInFuture => {
-      val responseInNonFuture : RepositoryOperationResultModel[TRow, TKey] = toRegular(repositoryResultInFuture,
-        defaultTimeout)
+      });
 
-      EntityWrapper(responseInNonFuture.entityId.get, responseInNonFuture.entity.get)
-    })
-
-    val isSuccess = length == responseEntityWrappers.size
-
-    RepositoryOperationResults[TRow, TKey](
-      isSuccess,
+    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responseEntityWrappers,
-      actionType = DatabaseActionType.Update)
+      databaseActionType = DatabaseActionType.Update
+    )
   }
 }

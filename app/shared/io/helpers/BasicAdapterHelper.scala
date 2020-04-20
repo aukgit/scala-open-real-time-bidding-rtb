@@ -1,5 +1,8 @@
 package shared.io.helpers
 
-import shared.com.ortb.adapters.BasicAdapterImplementation
+import shared.com.ortb.adapters._
 
-object BasicAdapterHelper extends BasicAdapterImplementation
+object BasicAdapterHelper
+  extends BasicAdapterImplementation
+    with EntityWrapperAdapterImplementation
+    with RepositoryOperationResultModelAdapterImplementation

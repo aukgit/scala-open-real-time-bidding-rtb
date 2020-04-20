@@ -1,30 +1,33 @@
 package services.core.traits.implementations
 
 import services.core.traits.MultiplePersistentServiceOperation
-import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.repository.RepositoryBase
 
 trait MultiplePersistentServiceOperationImplementation[TTable, TRow, TKey]
   extends MultiplePersistentServiceOperation[TTable, TRow, TKey] {
 
-  def addEntities(
-    entities : Iterable[TRow]
-  ) : Iterable[RepositoryOperationResultModel[TRow, TKey]] =
+  override def addEntities(
+    entity   : TRow,
+    addTimes : Int) : RepositoryOperationResultsModel[TRow, TKey] =
+  repository.addEntities(entity, addTimes)
+
+  override def addEntities(
+    entities : Iterable[TRow]) : RepositoryOperationResultsModel[TRow, TKey] =
     repository.addEntities(entities)
 
-  def addEntities(
-    entity   : TRow,
-    addTimes : Int
-  ) : Iterable[RepositoryOperationResultModel[TRow, TKey]] =
-    repository.addEntities(entity, addTimes)
+  override def addOrUpdateEntities(
+    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]) :
+  RepositoryOperationResultsModel[TRow, TKey] =
+    repository.addOrUpdateEntities(entityWrappers)
 
-  def deleteEntities(
-    entities : Iterable[TKey]
-  ) : Iterable[RepositoryOperationResultModel[TRow, TKey]] =
-    repository.deleteEntities(entities)
-
-  def updateEntities(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
-  ) : Iterable[RepositoryOperationResultModel[TRow, TKey]] =
+  override def updateEntities(
+    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]) :
+  RepositoryOperationResultsModel[TRow, TKey] =
     repository.updateEntities(entityWrappers)
+
+  override def deleteEntities(
+    entities : Iterable[TKey]) : RepositoryOperationResultsModel[TRow, TKey] =
+    repository.deleteEntities(entities)
 }

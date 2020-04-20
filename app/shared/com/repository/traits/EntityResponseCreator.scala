@@ -1,21 +1,24 @@
 package shared.com.repository.traits
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.model.repository.GenericResponseAttributesModel
 import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
+import shared.io.helpers.BasicAdapterHelper
 import shared.io.loggers.AppLogger
 
 import scala.concurrent.Future
 
 trait EntityResponseCreator[TTable, TRow, TKey] {
-  this: RepositoryBase[TTable, TRow, TKey] =>
+  this : RepositoryBase[TTable, TRow, TKey] =>
   protected def createResponseForAffectedRowCount(
-    affectedRow: Int,
-    entity: Option[TRow],
-    actionType: DatabaseActionType,
-    message: String = "",
-    isSuccess: Boolean = true,
-  ): RepositoryOperationResultModel[TRow, TKey] = {
+    affectedRow : Int,
+    entity     : Option[TRow],
+    actionType : DatabaseActionType,
+    message    : String = "",
+    isSuccess  : Boolean = true
+  ) : RepositoryOperationResultModel[TRow, TKey] = {
     val message2 = getMessageForEntity(Some(affectedRow), actionType, message)
     val hasAffected = affectedRow > 0
 
@@ -39,13 +42,13 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   protected def createResponseForAffectedRow(
-    affectedEntity: Option[TRow],
-    affectedRowsCount: Option[Int],
-    actionType: DatabaseActionType,
-    message: String = "",
-    isSuccess: Boolean = true
-  ): RepositoryOperationResultModel[TRow, TKey] = {
-    val message2: String =
+    affectedEntity : Option[TRow],
+    affectedRowsCount : Option[Int],
+    actionType : DatabaseActionType,
+    message : String = "",
+    isSuccess : Boolean = true
+  ) : RepositoryOperationResultModel[TRow, TKey] = {
+    val message2 : String =
       getMessageForEntity(affectedRowsCount, actionType, message)
 
     if (affectedEntity != null) {
@@ -66,27 +69,31 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
     getEmptyResponseFor(actionType)
   }
 
-  def getEmptyResponseFor(actionType: DatabaseActionType) =
-    new RepositoryOperationResultModel[TRow, TKey](
-      isSuccess = false,
-      entityId = None,
-      entity = None,
-      actionType = actionType
-    )
+  def getEmptyResponseFor(actionType : DatabaseActionType) : RepositoryOperationResultModel[TRow, TKey] =
+    BasicAdapterHelper.getEmptyResponse[TRow, TKey](actionType)
 
   protected def createResponseFor(
-    entityId: Option[TKey],
-    entity: Option[TRow],
-    actionType: DatabaseActionType,
-    message: String = "",
-    isSuccess: Boolean = true
-  ): RepositoryOperationResultModel[TRow, TKey] = {
-    RepositoryOperationResult(isSuccess, entityId, entity, actionType, message)
+    entityId : Option[TKey],
+    entity : Option[TRow],
+    actionType : DatabaseActionType,
+    message : String = "",
+    isSuccess : Boolean = true
+  ) : RepositoryOperationResultModel[TRow, TKey] = {
+    val attributesModel = GenericResponseAttributesModel(
+      isSuccess,
+      actionType,
+      message)
+
+    RepositoryOperationResultModel(
+      attributesModel,
+      Some(EntityWrapper(entityId.get, entity.get))
+    )
   }
 
-  private def getMessageForEntity(affectedRowsCount: Option[Int],
-                                  actionType: DatabaseActionType,
-                                  message: String) = {
+  private def getMessageForEntity(
+    affectedRowsCount : Option[Int],
+    actionType        : DatabaseActionType,
+    message           : String) = {
     var message2 = message;
     if (message2.isEmpty) {
       var affectedCount = ""
@@ -102,8 +109,8 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   protected def getEmptyResponseForInFuture(
-    actionType: DatabaseActionType
-  ): Future[RepositoryOperationResultModel[TRow, TKey]] = {
+    actionType : DatabaseActionType
+  ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     AppLogger.conditionalInfo(
       isLogQueries,
       s"${headerMessage} $actionType is skipped."

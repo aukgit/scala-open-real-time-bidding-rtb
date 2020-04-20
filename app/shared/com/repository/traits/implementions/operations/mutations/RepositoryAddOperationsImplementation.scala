@@ -1,10 +1,12 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.model.repository.GenericResponseAttributesModel
 import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOperations
+import shared.io.helpers.BasicAdapterHelper
 import shared.io.loggers.AppLogger
 import slick.dbio.{Effect, NoStream}
 import slick.sql.FixedSqlAction
@@ -35,15 +37,10 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
       list(i) = this.addAsync(entity)
     }
 
-    val responsesEntityWrappers = list.map(responseInFuture => {
-      val response = toRegular(responseInFuture, defaultTimeout)
-      EntityWrapper(response.entityId, response.entity)
-    })
-
-    RepositoryOperationResults(
-      responsesEntityWrappers.nonEmpty,
-      responsesEntityWrappers,
-      DatabaseActionType.Create)
+    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+      list,
+      databaseActionType = DatabaseActionType.Create
+    )
   }
 
   def addEntities(
@@ -55,15 +52,12 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
       return null
     }
 
-    val wrappers = entities
+    val responsesEntityWrappers = entities
       .map(entity => this.addAsync(entity))
-      .map(
-        entityResponseInFuture => {
-          val response = toRegular(entityResponseInFuture, defaultTimeout)
 
-          EntityWrapper(response.entityId, response.entity)
-        })
-
-    RepositoryOperationResults(wrappers.nonEmpty, wrappers, actionType = DatabaseActionType.Create)
+    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+      responsesEntityWrappers,
+      databaseActionType = DatabaseActionType.Create
+    )
   }
 }

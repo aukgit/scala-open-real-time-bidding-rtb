@@ -71,10 +71,10 @@ class CampaignsApiController @Inject()(
 
         val response = campaignService.update(id, entity)
 
-        if (!response.isSuccess) {
+        if (!response.attributes.isSuccess) {
           BadRequest(s"Update request failed (source received:$body).")
         } else {
-          val e2 = response.entity.get
+          val e2 = response.data
           val json = e2.asJson.spaces2
 
           AppLogger.logEntityNonFuture(
@@ -95,7 +95,7 @@ class CampaignsApiController @Inject()(
   override def delete(id : Int) : Action[AnyContent] = Action {
     implicit request =>
       val response = campaignService.delete(id)
-      val json = response.entity.get.asJson.spaces2
+      val json = response.data.asJson.spaces2
       Ok(json)
   }
 

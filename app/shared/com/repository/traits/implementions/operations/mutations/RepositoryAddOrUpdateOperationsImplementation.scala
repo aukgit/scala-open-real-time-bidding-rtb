@@ -1,10 +1,12 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.model.repository.GenericResponseAttributesModel
 import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOrUpdateOperations
+import shared.io.helpers.BasicAdapterHelper
 import shared.io.loggers.AppLogger
 
 trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
@@ -26,17 +28,14 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
       return null
     }
 
-    val wrapperResponses = entityWrappers.map(
+    val responsesEntityWrappers = entityWrappers.map(
       entityWrapper =>
         addOrUpdateAsync(entityWrapper.entityId, entityWrapper.entity)
-    ).map(responseInFuture => {
-      val response = toRegular(responseInFuture, defaultTimeout)
-      EntityWrapper(response.entityId, response.entity)
-    })
+    )
 
-    RepositoryOperationResults(
-      wrapperResponses.nonEmpty,
-      wrapperResponses,
-      DatabaseActionType.AddOrUpdate)
+    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+      responsesEntityWrappers,
+      databaseActionType = DatabaseActionType.AddOrUpdate
+    )
   }
 }
