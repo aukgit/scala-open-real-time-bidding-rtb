@@ -1,5 +1,5 @@
 package shared.io.implementations
 
-import shared.io.traits.jsonParse.JsonParser
-
-class JsonParserImplementation[T] extends JsonParser[T]
+//import shared.io.traits.jsonParse.JsonDefaultCodec
+//
+//class JsonParserImplementation[T] extends JsonDefaultCodec[T]
