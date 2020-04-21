@@ -1,6 +1,6 @@
 package controllers.webapi.core
 
-import shared.com.ortb.implicits.implementations.{CirceSupport, CircleJsonSupport}
+import shared.com.ortb.implicits.implementations.{CirceSupport, CirceJsonSupport}
 import shared.com.ortb.webapi.traits._
 
 trait RestWebApiContracts[TTable, TRow, TKey]
@@ -10,4 +10,4 @@ trait RestWebApiContracts[TTable, TRow, TKey]
     RestWebApiMessages[TTable, TRow, TKey] with
     RestWebApiJson[TTable, TRow, TKey] with
     RestWebApiEntityJsonAdapter[TTable, TRow, TKey] with
-    CircleJsonSupport
+    CirceJsonSupport
