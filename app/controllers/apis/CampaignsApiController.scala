@@ -15,11 +15,14 @@ import shared.com.ortb.model.wrappers.persistent.{WebApiEntitiesResponseWrapper,
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 
 class CampaignsApiController @Inject()(
   campaignService : CampaignService,
   components      : ControllerComponents)
   extends AbstractRestWebApi[Campaign, CampaignRow, Int](components) {
+
+  def encoders: JsonCirceDefaultEncoders[CampaignRow] = new JsonCirceDefaultEncoders[CampaignRow]()
 
   override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
     val campaigns = campaignService.getAll
@@ -277,17 +280,4 @@ class CampaignsApiController @Inject()(
   override def fromJsonToEntities(jsonString : Option[String])
   : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] =
     service.fromJsonToEntitiesWrapper(jsonString)
-
-  //
-  //  override implicit val listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
-  //  override implicit val encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
-  //  override implicit val decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
-  //  override implicit val listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
-  override def listEncoder : Encoder[List[CampaignRow]] = Encoder[List[CampaignRow]]
-
-  override def encoder : Encoder[CampaignRow] = Encoder[CampaignRow]
-
-  override def decoder : Decoder[CampaignRow] = Decoder[CampaignRow]
-
-  override def listDecoder : Decoder[List[CampaignRow]] = Decoder[List[CampaignRow]]
 }

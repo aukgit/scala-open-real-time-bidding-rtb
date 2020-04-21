@@ -1,13 +1,17 @@
 package controllers.webapi.core
 
-import io.circe.{Decoder, Encoder}
+import io.circe.generic.codec.DerivedAsObjectCodec
+import io.circe.generic.decoding.DerivedDecoder
+import io.circe.generic.encoding.DerivedAsObjectEncoder
 import play.api.mvc.{Action, _}
 import services.core.AbstractBasicPersistentService
+import shapeless.Lazy
 import shared.com.ortb.enumeration._
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.io.helpers.JsonHelper
 import shared.io.loggers.AppLogger
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 
 abstract class AbstractRestWebApi[TTable, TRow, TKey]
 (components : ControllerComponents)
@@ -17,20 +21,13 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
 
   val service : AbstractBasicPersistentService[TTable, TRow, TKey]
   val noContentMessage = "No content in request."
-
-  def listEncoder : Encoder[List[TRow]]
-
-  def encoder : Encoder[TRow]
-
-  def decoder : Decoder[TRow]
-
-  def listDecoder : Decoder[List[TRow]]
+  def encoders: JsonCirceDefaultEncoders[TRow]
 
   def getAll : Action[AnyContent] = Action { implicit request =>
     //      implicit val listEncoder: Encoder[List[CampaignRow]] = deriveEncoder[List[CampaignRow]]
     // implicit val listEncoder: Codec[List[TRow]] =  Codec.derived[List[TRow]]
     val campaigns = service.getAll
-    val json = JsonHelper.toJson(campaigns)(listEncoder)
+    val json = JsonHelper.toJson(campaigns)(encoders.defaultListEncoder)
     Ok(json.get.spaces2)
   }
 

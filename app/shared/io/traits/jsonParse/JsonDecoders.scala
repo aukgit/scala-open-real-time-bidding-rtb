@@ -14,12 +14,3 @@ class JsonDecoders[T]
 
   implicit def defaultListDecoder : Decoder[List[T]] = deriveDecoder[List[T]]
 }
-
-object WApp extends App with CirceJsonSupport {
-
-  import shared.com.ortb.persistent.schema.Tables._
-
-  val re = new JsonCirceDefaultEncoders[AuctionRow]
-  //  val re3 = new JsonDecoders[Seq[AuctionRow]]
-
-}
