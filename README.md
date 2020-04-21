@@ -110,3 +110,7 @@ object CirceSupport
     extends de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
     with AnyValCirceEncoding 
 ```
+
+
+# Important Issue Tracking
+- https://github.com/circe/circe/issues/1442
