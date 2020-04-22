@@ -9,7 +9,10 @@ trait RepositoryJsonAdapter[TTable, TRow, TKey]
   def fromEntityToJson(entity : Option[TRow])
   : Option[String]
 
-  def fromEntitiesToJson(entities : Option[List[TRow]])
+  def fromListEntitiesToJson(entities : Option[List[TRow]])
+  : Option[String]
+
+  def fromEntitiesToJson(entities : Option[Iterable[TRow]])
   : Option[String]
 
   def fromJsonToEntityWrapper(jsonContent : Option[String])

@@ -1,18 +1,14 @@
 package controllers.webapi.core
 
-import io.circe.generic.codec.DerivedAsObjectCodec
-import io.circe.generic.decoding.DerivedDecoder
-import io.circe.generic.encoding.DerivedAsObjectEncoder
 import play.api.Logger
 import play.api.mvc.{ Action, _ }
-import services.core.AbstractBasicPersistentService
-import shapeless.Lazy
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration._
+import shared.com.ortb.model.wrappers.PaginationWrapperModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
-import shared.io.helpers.JsonHelper
 import shared.io.loggers.AppLogger
-import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
+
 
 abstract class AbstractRestWebApi[TTable, TRow, TKey]
 (components : ControllerComponents)
@@ -21,26 +17,62 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
     RestWebApiContracts[TTable, TRow, TKey] {
 
   val noContentMessage = "No content in request."
+
   protected val logger : Logger = Logger(this.getClass)
 
+  def getPaginationWrapperModel(request : Request[AnyContent]) : Option[PaginationWrapperModel] = {
+    try {
+      val page = request.getQueryString(AppConstants.QueryStringNameConstants.page)
+      if (page.isDefined && page.nonEmpty) {
+        val currentPageSize = request.getQueryString(AppConstants.QueryStringNameConstants.pageSize)
+        val pageToInt = page.get.toInt
+        if (currentPageSize.isDefined && currentPageSize.nonEmpty) {
+          Some(PaginationWrapperModel(pageToInt, currentPageSize.get.toInt))
+        }
+
+        return Some(PaginationWrapperModel(pageToInt))
+      }
+    } catch {
+      case e : Exception => AppLogger.error(e)
+    }
+
+    None
+  }
+
   override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
-    val allEntities = service.getAll
+    val paginationWrapperModel = getPaginationWrapperModel(request)
+    var allEntities : Seq[TRow] = null
+
+    if (paginationWrapperModel.isEmpty) {
+      allEntities = service.getAll
+    } else {
+      // pagination
+      val pagedWrapper = paginationWrapperModel.get
+      val allEntities : Seq[TRow] = service.repository.getCurrentTablePaged(pagedWrapper)
+    }
+
     val json = service.fromEntitiesToJson(Some(allEntities))
-    if(json.isDefined){
+    if (json.isDefined) {
       Ok(json.get)
-    } else{
+    } else {
       performBadRequest()
     }
   }
 
-  //  def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
-  //    val entity = service.getById(id)
-  //    val json = entity.asJson.spaces2 //fromEntityToJson(entity)(encoder) // entity.get.asJson.spaces2
-  //    Ok(json)
-  //  }
+  def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
+    val entity = service.getById(id)
+    val json = service.fromEntityToJson(entity)
+
+    if (json.isDefined) {
+      Ok(json.get)
+    } else {
+      performBadRequest()
+    }
+  }
 
   /**
    * Http Post method executes this.
+   *
    * @return
    */
   def add() : Action[AnyContent] = Action { implicit request =>

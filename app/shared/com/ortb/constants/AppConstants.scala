@@ -14,7 +14,11 @@ object AppConstants {
 
   lazy val PathConstants = new PathConstants
 
+  lazy val QueryStringNameConstants = new QueryStringNameConstants
+
   lazy val SentryDSN = "https://3540a18396eb4373b3c843b149c55f5d@sentry.io/5183951"
+
+  lazy val DefaultPageSize = 100
 
   /**
     * ",\n <br >"

@@ -29,14 +29,12 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
         None
       })
 
-  //noinspection DuplicatedCode
-  def fromEntitiesToJson(entities : Option[List[TRow]]) : Option[String] = {
-    convertItemTo[List[TRow], String](
+  def fromEntitiesToJson(entities : Option[Iterable[TRow]]) : Option[String] = {
+    convertItemTo[Iterable[TRow], String](
       entities,
       _ => {
         try {
-          val encoder = this.encoders.defaultListEncoder
-          if (entities.isDefined && encoder != null) {
+          if (entities.isDefined && entities.nonEmpty) {
             val jsonString = this.encoders.toJsonString(entities.get)
             return Some(jsonString)
           }
@@ -47,6 +45,15 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
         None
       }
     )
+  }
+
+  //noinspection DuplicatedCode
+  def fromListEntitiesToJson(entities : Option[List[TRow]]) : Option[String] = {
+    if (entities.isDefined && entities.nonEmpty) {
+      return fromEntitiesToJson(entities)
+    }
+    
+    None
   }
 
   def fromJsonToEntityWrapper(jsonContent : Option[String])

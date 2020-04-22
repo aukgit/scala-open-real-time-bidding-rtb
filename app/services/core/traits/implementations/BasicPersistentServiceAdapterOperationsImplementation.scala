@@ -35,9 +35,6 @@ trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
   override def fromEntityToJson(entity: Option[TRow]): Option[String] =
     repository.fromEntityToJson(entity)
 
-  override def fromEntitiesToJson(entities: Option[List[TRow]]): Option[String] =
-    repository.fromEntitiesToJson(entities)
-
   override def fromJsonToEntityWrapper(jsonContent: Option[String])
     : Option[EntityWrapperWithOptions[TRow, TKey]] =
     repository.fromJsonToEntityWrapper(jsonContent)
@@ -56,4 +53,12 @@ trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
       adapterLogic: PartialFunction[Option[Iterable[A]], Option[Iterable[B]]])
     : Option[Iterable[B]] =
     repository.convertItemsTo(items, adapterLogic)
+
+  override def fromListEntitiesToJson(
+    entities : Option[List[TRow]]) : Option[String] =
+    repository.fromListEntitiesToJson(entities)
+
+  override def fromEntitiesToJson(
+    entities : Option[Iterable[TRow]]) : Option[String] =
+    repository.fromEntitiesToJson(entities)
 }

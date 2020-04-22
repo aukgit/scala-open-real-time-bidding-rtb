@@ -46,7 +46,17 @@ class JsonCirceDefaultEncoders[T]
     json.Json.parse(toJsonString(entities))
   }
 
-  def toJsonString(entities : Iterable[T]) : String = {
-    entities.map(entity => defaultEncoder(entity)).mkString("[", ",", "]")
+  def toJsonString(entities : Iterable[T], additionalAnnotationForItems: String = null) : String = {
+    if(additionalAnnotationForItems.isBlank){
+      return toIterableJson(entities).mkString("[", ",", "]")
+    }
+
+    val quote ="\""
+
+    toIterableJson(entities).mkString(s"{${quote}${additionalAnnotationForItems}${quote}:[", ",", "]}")
+  }
+
+  def toIterableJson(entities : Iterable[T]) : Iterable[Json] = {
+    entities.map(entity => defaultEncoder(entity))
   }
 }
