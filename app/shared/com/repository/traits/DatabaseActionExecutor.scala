@@ -164,8 +164,8 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
       case sqlStreaming: SqlStreamingAction[_, _, _] =>
         Some(db.run(sqlStreaming).asInstanceOf[Future[Seq[TRow2]]])
       case dbAction2: DBIOAction[_, _, _] =>
-        val x = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow2]]];
-        Some(x)
+        val dbIOAction = db.call("run", dbAction2).asInstanceOf[Future[Seq[TRow2]]];
+        Some(dbIOAction)
       case _ =>
         throw new InvalidDnDOperationException(
           s"${headerMessage} Invalid operation for runAsync. Operation $dbAction"

@@ -1,5 +1,6 @@
 package controllers.webapi.core
 
+import controllers.webapi.core.traits.RestWebApiContracts
 import play.api.Logger
 import play.api.mvc.{ Action, _ }
 import shared.com.ortb.constants.AppConstants
@@ -7,6 +8,7 @@ import shared.com.ortb.enumeration._
 import shared.com.ortb.model.wrappers.PaginationWrapperModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
+import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 
 
@@ -23,15 +25,18 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   def getPaginationWrapperModel(request : Request[AnyContent]) : Option[PaginationWrapperModel] = {
     try {
       val page = request.getQueryString(AppConstants.QueryStringNameConstants.page)
-      if (page.isDefined && page.nonEmpty) {
-        val currentPageSize = request.getQueryString(AppConstants.QueryStringNameConstants.pageSize)
-        val pageToInt = page.get.toInt
-        if (currentPageSize.isDefined && currentPageSize.nonEmpty) {
-          Some(PaginationWrapperModel(pageToInt, currentPageSize.get.toInt))
-        }
-
-        return Some(PaginationWrapperModel(pageToInt))
+      if (EmptyValidateHelper.isEmpty(page)) {
+        return None
       }
+
+      val currentPageSize = request.getQueryString(AppConstants.QueryStringNameConstants.pageSize)
+      val pageToInt = page.get.toInt
+
+      if (EmptyValidateHelper.isDefined(currentPageSize)) {
+        return Some(PaginationWrapperModel(pageToInt, currentPageSize.get.toInt))
+      }
+
+      return Some(PaginationWrapperModel(pageToInt, AppConstants.DefaultPageSize))
     } catch {
       case e : Exception => AppLogger.error(e)
     }
@@ -48,7 +53,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
     } else {
       // pagination
       val pagedWrapper = paginationWrapperModel.get
-      val allEntities : Seq[TRow] = service.repository.getCurrentTablePaged(pagedWrapper)
+      allEntities = service.repository.getCurrentTablePaged(pagedWrapper)
     }
 
     val json = service.fromEntitiesToJson(Some(allEntities))

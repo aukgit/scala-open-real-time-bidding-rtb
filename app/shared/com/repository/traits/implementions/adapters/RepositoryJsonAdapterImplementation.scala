@@ -52,7 +52,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     if (entities.isDefined && entities.nonEmpty) {
       return fromEntitiesToJson(entities)
     }
-    
+
     None
   }
 
@@ -92,7 +92,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
       val possibleEntities = decode[List[TRow]](jsonContent.get)(decoder)
         .getOrElse(null)
 
-      if (possibleEntities != null) {
+      if (possibleEntities != null && possibleEntities.isInstanceOf[List[TRow]]) {
         val entities = possibleEntities.asInstanceOf[List[TRow]]
 
         return toEntitiesWrapperWithOptions(Some(entities))

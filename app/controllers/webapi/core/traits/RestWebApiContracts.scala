@@ -1,4 +1,4 @@
-package controllers.webapi.core
+package controllers.webapi.core.traits
 
 import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.com.ortb.webapi.traits._
@@ -10,5 +10,3 @@ trait RestWebApiContracts[TTable, TRow, TKey]
     RestWebApiMessages[TTable, TRow, TKey] with
     CirceJsonSupport with
     ServiceContract[TTable, TRow, TKey]
-
-

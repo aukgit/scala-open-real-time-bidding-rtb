@@ -1,4 +1,4 @@
-package controllers.webapi.core
+package controllers.webapi.core.traits
 
 import services.core.AbstractBasicPersistentService
 

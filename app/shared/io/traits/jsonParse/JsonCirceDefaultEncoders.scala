@@ -11,6 +11,8 @@ import play.api.libs.json
 import play.api.libs.json.{ JsValue, Json }
 import shapeless.Lazy
 import shared.com.ortb.implicits.implementations.CirceJsonSupport
+import shared.io.helpers.EmptyValidateHelper
+import shared.io.loggers.AppLogger
 import spray.json.JsArray
 
 import scala.reflect.ClassTag
@@ -47,13 +49,21 @@ class JsonCirceDefaultEncoders[T]
   }
 
   def toJsonString(entities : Iterable[T], additionalAnnotationForItems: String = null) : String = {
-    if(additionalAnnotationForItems.isBlank){
-      return toIterableJson(entities).mkString("[", ",", "]")
+    try {
+      val toIterableJsonCollection : Iterable[Json] = toIterableJson(entities)
+      val jsonStringCollection =  toIterableJsonCollection.map(w => w.noSpaces)
+      if(EmptyValidateHelper.isEmptyString(additionalAnnotationForItems)){
+        return jsonStringCollection.mkString("[", ",\n", "]")
+      }
+
+      val quote ="\""
+
+      jsonStringCollection.mkString(s"{${quote}${additionalAnnotationForItems}${quote}:[", ",\n", "]}")
+    } catch {
+      case e:Exception => AppLogger.errorCaptureAndThrow(e)
     }
 
-    val quote ="\""
-
-    toIterableJson(entities).mkString(s"{${quote}${additionalAnnotationForItems}${quote}:[", ",", "]}")
+    ""
   }
 
   def toIterableJson(entities : Iterable[T]) : Iterable[Json] = {
