@@ -1,9 +1,13 @@
 package shared.com.ortb.persistent.repositories
 
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
 import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.Query
@@ -48,4 +52,11 @@ class CampaignRepository @Inject()(appManager : AppManager)
   }
 
   override def getAllQuery = for {record <- table} yield record
+
+  /**
+   * All encoders, decoders and codec for circe
+   *
+   * @return
+   */
+  override def encoders : JsonCirceDefaultEncoders[CampaignRow] = new JsonCirceDefaultEncoders[CampaignRow]()
 }

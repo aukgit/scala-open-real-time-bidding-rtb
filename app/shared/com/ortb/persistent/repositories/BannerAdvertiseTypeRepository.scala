@@ -1,11 +1,16 @@
 package shared.com.ortb.persistent.repositories
 
+
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
 import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 import slick.dbio.Effect
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
@@ -53,4 +58,11 @@ class BannerAdvertiseTypeRepository @Inject()(appManager: AppManager)
     table.filter(c => c.banneradvertisetypeid === id)
 
   override def getAllQuery = for { record <- table } yield record
+
+  /**
+   * All encoders, decoders and codec for circe
+   *
+   * @return
+   */
+  override def encoders : JsonCirceDefaultEncoders[BanneradvertisetypeRow] = new JsonCirceDefaultEncoders[BanneradvertisetypeRow]()
 }

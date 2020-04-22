@@ -1,5 +1,9 @@
 package shared.com.repository
 
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
+
 import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
@@ -10,6 +14,7 @@ import shared.com.repository.traits.implementions.operations.mutations.Repositor
 import shared.com.repository.traits.implementions.operations.mutations.async.RepositoryOperationsAsyncImplementation
 import shared.com.repository.traits.implementions.operations.queries.SingleRepositoryBaseImplementation
 import shared.io.traits.FutureToRegular
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -40,4 +45,10 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
 
   lazy protected val config: ConfigModel = appManager.config
   lazy protected val headerMessage: String = s"[$tableName] ->"
+
+  /**
+   * All encoders, decoders and codec for circe
+   * @return
+   */
+  def encoders: JsonCirceDefaultEncoders[TRow]
 }

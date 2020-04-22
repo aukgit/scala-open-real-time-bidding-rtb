@@ -1,16 +1,22 @@
 package shared.com.ortb.persistent.repositories
 
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
+
 import com.google.inject.Inject
-import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 import slick.dbio.Effect
+import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlAction
 
 /**
   * Also known as for seats
+  *
   * @param appManager
   */
 class PublisherRepository @Inject()(appManager: AppManager)
@@ -23,8 +29,8 @@ class PublisherRepository @Inject()(appManager: AppManager)
     else -1
 
   override def setEntityId(
-    entityId: Option[Int],
-    entity: Option[Tables.PublisherRow]
+      entityId: Option[Int],
+      entity: Option[Tables.PublisherRow]
   ): Option[Tables.PublisherRow] = {
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
@@ -33,19 +39,30 @@ class PublisherRepository @Inject()(appManager: AppManager)
     Some(entity.get.copy(publisherid = entityId.get))
   }
 
-  override def getAddAction(entity: Tables.PublisherRow) =
+  override def getAddAction(entity: Tables.PublisherRow)
+    : FixedSqlAction[PublisherRow, NoStream, Effect.Write] =
     table returning table.map(_.publisherid) into
       ((entityProjection,
         entityId) => entityProjection.copy(publisherid = entityId)) += entity
 
-  override def table = this.publishers
+  override def table: TableQuery[Publisher] = this.publishers
 
   override def getDeleteAction(
-    entityId: Int
+      entityId: Int
   ): FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
 
-  override def getQueryById(id: Int) = table.filter(c => c.publisherid === id)
+  override def getQueryById(id: Int): Query[Publisher, PublisherRow, Seq] =
+    table.filter(c => c.publisherid === id)
 
-  override def getAllQuery = for { record <- table } yield record
+  override def getAllQuery: Query[Publisher, PublisherRow, Seq] =
+    for { record <- table } yield record
+
+  /**
+    * All encoders, decoders and codec for circe
+    *
+    * @return
+    */
+  override def encoders: JsonCirceDefaultEncoders[PublisherRow] =
+    new JsonCirceDefaultEncoders[PublisherRow]()
 }

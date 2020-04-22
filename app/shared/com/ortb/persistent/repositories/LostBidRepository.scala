@@ -1,11 +1,16 @@
 package shared.com.ortb.persistent.repositories
 
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
 import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
+import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
+import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
@@ -29,7 +34,8 @@ class LostBidRepository @Inject()(appManager: AppManager)
     Some(entity.get.copy(lostbidid = entityId.get))
   }
 
-  override def getAddAction(entity: Tables.LostbidRow) =
+  override def getAddAction(entity: Tables.LostbidRow) :
+  FixedSqlAction[LostbidRow, NoStream, Effect.Write] =
     table returning table.map(_.lostbidid) into
       ((entityProjection,
         entityId) => entityProjection.copy(lostbidid = entityId)) += entity
@@ -41,7 +47,17 @@ class LostBidRepository @Inject()(appManager: AppManager)
   ): FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
 
-  override def getQueryById(id: Int) = table.filter(c => c.lostbidid === id)
+  override def getQueryById(id: Int) : Query[Lostbid, LostbidRow, Seq] =
+    table.filter(c => c.lostbidid === id)
 
-  override def getAllQuery = for { record <- table } yield record
+  override def getAllQuery : Query[Lostbid, LostbidRow, Seq] =
+    for {record <- table} yield record
+
+  /**
+   * All encoders, decoders and codec for circe
+   *
+   * @return
+   */
+  override def encoders : JsonCirceDefaultEncoders[LostbidRow] =
+    new JsonCirceDefaultEncoders[LostbidRow]()
 }
