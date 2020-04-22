@@ -50,8 +50,9 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
         val response = service.addUsingOption(entity.entity).get
         val successMessageToString = successMessage(None)
         val responseEntity = response.data.get
+        val attributes = response.attributes.get
 
-        if (response.attributes.isSuccess && responseEntity != null) {
+        if (attributes.isSuccess && responseEntity != null) {
           val entityWrapper = Some(EntityWrapperWithOptions[TRow, TKey](
             Some(responseEntity.entityId),
             Some(responseEntity.entity)))

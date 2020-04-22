@@ -1,6 +1,5 @@
 package shared.com.repository.traits.adapters
 
-import io.circe.{Decoder, Encoder}
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
 

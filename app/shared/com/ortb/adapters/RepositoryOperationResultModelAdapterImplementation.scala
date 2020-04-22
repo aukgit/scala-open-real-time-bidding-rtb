@@ -11,21 +11,21 @@ import scala.concurrent.Future
 trait RepositoryOperationResultModelAdapterImplementation {
   def getEmptyResponse[TRow, TKey](
     databaseActionType : DatabaseActionType) = new RepositoryOperationResultModel[TRow, TKey](
-    attributes = GenericResponseAttributesModel(
+    attributes = Some(GenericResponseAttributesModel(
       isSuccess = false,
-      databaseActionType,
+      Some(databaseActionType),
       "Empty response."
-    )
+    ))
   )
 
   def getEmptyResultsResponse[TRow, TKey](
     databaseActionType : DatabaseActionType) = new
       RepositoryOperationResultsModel[TRow, TKey](
-        attributes = GenericResponseAttributesModel(
+        attributes = Some(GenericResponseAttributesModel(
           isSuccess = false,
-          databaseActionType,
+          Some(databaseActionType),
           "Empty response."
-        ),
+        )),
         data = null
       )
 
@@ -45,11 +45,11 @@ trait RepositoryOperationResultModelAdapterImplementation {
 
     val attributesModel = GenericResponseAttributesModel(
       items.nonEmpty,
-      databaseActionType,
+      Some(databaseActionType),
       message)
 
     RepositoryOperationResultsModel(
-      attributesModel,
+      Some(attributesModel),
       items
     )
   }

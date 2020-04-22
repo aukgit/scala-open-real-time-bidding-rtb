@@ -73,8 +73,9 @@ class CampaignsApiController @Inject()(
         }
 
         val response = campaignService.update(id, entity)
+        val attributes = response.attributes.get
 
-        if (!response.attributes.isSuccess) {
+        if (!attributes.isSuccess) {
           BadRequest(s"Update request failed (source received:$body).")
         } else {
           val e2 = response.data
@@ -176,22 +177,6 @@ class CampaignsApiController @Inject()(
     }
   }
 
-
-  override def fromEntityToJson(
-    entity : Option[CampaignRow]) : Option[String] =
-    service.fromEntityToJson(entity)
-
-  override def fromEntitiesToJson(
-    entities : Option[List[CampaignRow]]): Option[String] =
-    service.fromEntitiesToJson(entities)
-
-  override def fromJsonToEntityWrapper(jsonContent : Option[String]) : Option[EntityWrapperWithOptions[CampaignRow, Int]]
-  = service.fromJsonToEntityWrapper(jsonContent)
-
-  override def fromJsonToEntitiesWrapper(jsonContent : Option[String]) :
-  Option[List[EntityWrapperWithOptions[CampaignRow, Int]]]
-  = service.fromJsonToEntitiesWrapper(jsonContent)
-
   override def failedMessage(
     databaseActionType : Option[DatabaseActionType],
     entity             : Option[CampaignRow],
@@ -223,7 +208,7 @@ class CampaignsApiController @Inject()(
 
   override def bodyRequestToEntity(request : Request[AnyContent])
   : Option[WebApiEntityResponseWrapper[Tables.CampaignRow, Int]] = {
-    val entityWrapper = fromJsonToEntity(request.body.asText)
+    val entityWrapper = service.fromJsonToEntityWrapper(request.body.asText)
     val webApiEntityResponseWrapper = new WebApiEntityResponseWrapper(
       entityWrapper = entityWrapper,
       toString(request))
@@ -233,7 +218,7 @@ class CampaignsApiController @Inject()(
 
   override def bodyRequestToEntities(request : Request[AnyContent])
   : Option[WebApiEntitiesResponseWrapper[CampaignRow, Int]] = {
-    val entitiesWrapper = fromJsonToEntities(request.body.asText)
+    val entitiesWrapper = service.fromJsonToEntitiesWrapper(request.body.asText)
     val webApiEntitiesResponseWrapper =
       WebApiEntitiesResponseWrapper(entitiesWrapper, toString(request))
 

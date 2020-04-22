@@ -81,11 +81,11 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val attributesModel = GenericResponseAttributesModel(
       isSuccess,
-      actionType,
+      Some(actionType),
       message)
 
     RepositoryOperationResultModel(
-      attributesModel,
+      Some(attributesModel),
       Some(EntityWrapper(entityId.get, entity.get))
     )
   }
