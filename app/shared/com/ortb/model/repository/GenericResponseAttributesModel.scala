@@ -4,5 +4,5 @@ import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 
 case class GenericResponseAttributesModel(
   isSuccess : Boolean,
-  actionType : DatabaseActionType,
+  actionType : Option[DatabaseActionType],
   message : String = null)

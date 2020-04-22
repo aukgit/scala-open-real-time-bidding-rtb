@@ -1,6 +1,7 @@
 package controllers.webapi.core
 
-import shared.com.ortb.implicits.implementations.{CirceSupport, CirceJsonSupport}
+import services.core.AbstractBasicPersistentService
+import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.com.ortb.webapi.traits._
 
 trait RestWebApiContracts[TTable, TRow, TKey]
@@ -10,4 +11,7 @@ trait RestWebApiContracts[TTable, TRow, TKey]
     RestWebApiMessages[TTable, TRow, TKey] with
     RestWebApiJson[TTable, TRow, TKey] with
     RestWebApiEntityJsonAdapter[TTable, TRow, TKey] with
-    CirceJsonSupport
+    CirceJsonSupport with
+    ServiceContract[TTable, TRow, TKey]
+
+

@@ -19,7 +19,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
     AbstractController(components) with
     RestWebApiContracts[TTable, TRow, TKey] {
 
-  val service : AbstractBasicPersistentService[TTable, TRow, TKey]
+
   val noContentMessage = "No content in request."
   def encoders: JsonCirceDefaultEncoders[TRow]
 

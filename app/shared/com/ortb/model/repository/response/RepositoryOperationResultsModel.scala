@@ -4,5 +4,5 @@ import shared.com.ortb.model.repository.GenericResponseAttributesModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 
 case class RepositoryOperationResultsModel[TRow, TKey](
-  attributes : GenericResponseAttributesModel,
+  attributes : Option[GenericResponseAttributesModel],
   data : List[EntityWrapper[TRow, TKey]])

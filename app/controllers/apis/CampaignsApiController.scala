@@ -239,37 +239,4 @@ class CampaignsApiController @Inject()(
 
     Some(webApiEntitiesResponseWrapper)
   }
-
-  override def fromRequestToEntity(request : Option[Request[AnyContent]])
-  : Option[EntityWrapperWithOptions[CampaignRow, Int]] = {
-    if (request == null || request.isEmpty) {
-      AppLogger.debug(noContentMessage)
-      return None
-    }
-
-    val entityWrapper = fromJsonToEntity(Some(toString(request.get)))
-
-    entityWrapper
-  }
-
-  override def fromRequestToEntities(request : Option[Request[AnyContent]])
-  : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] = {
-    if (request == null || request.isEmpty) {
-      AppLogger.debug(noContentMessage)
-      return None
-    }
-
-    val entitiesWrapper = fromJsonToEntities(Some(toString(request.get)))
-
-    entitiesWrapper
-  }
-
-  override def fromJsonToEntity(jsonString : Option[String])
-  : Option[EntityWrapperWithOptions[CampaignRow, Int]] = {
-    service.fromJsonToEntityWrapper(jsonString)
-  }
-
-  override def fromJsonToEntities(jsonString : Option[String])
-  : Option[Iterable[EntityWrapperWithOptions[CampaignRow, Int]]] =
-    service.fromJsonToEntitiesWrapper(jsonString)
 }

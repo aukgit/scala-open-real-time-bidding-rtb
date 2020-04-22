@@ -3,13 +3,13 @@ package shared.com.repository
 import io.circe.generic.semiauto._
 import io.circe._
 import io.circe.generic.auto._
-
 import com.google.inject.Inject
+import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.schema.DatabaseSchema
 import shared.com.repository.traits._
-import shared.com.repository.traits.implementions.adapters.{RepositoryJsonAdapterImplementation, RepositoryWrapperAdapterImplementation}
+import shared.com.repository.traits.implementions.adapters.{ RepositoryJsonAdapterImplementation, RepositoryWrapperAdapterImplementation }
 import shared.com.repository.traits.implementions.operations.mutations.RepositoryOperationsImplementation
 import shared.com.repository.traits.implementions.operations.mutations.async.RepositoryOperationsAsyncImplementation
 import shared.com.repository.traits.implementions.operations.queries.SingleRepositoryBaseImplementation
@@ -28,6 +28,7 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
     with RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     with RepositoryOperationsImplementation[TTable, TRow, TKey]
     with RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
+    with CirceJsonSupport
     with FutureToRegular {
 
   //noinspection ScalaDeprecation
