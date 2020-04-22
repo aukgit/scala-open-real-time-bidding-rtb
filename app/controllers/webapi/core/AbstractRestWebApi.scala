@@ -37,7 +37,12 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
   //    Ok(json)
   //  }
 
+  /**
+   * Http Post method executes this.
+   * @return
+   */
   def add() : Action[AnyContent] = Action { implicit request =>
+    AppLogger.info("Performing add action from abstraction")
     try {
       val entityResponseWrapper = bodyRequestToEntity(request);
       val isDefinedProperly = entityResponseWrapper.isDefined &&
