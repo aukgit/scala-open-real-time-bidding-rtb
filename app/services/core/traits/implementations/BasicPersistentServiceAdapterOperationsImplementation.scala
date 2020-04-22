@@ -32,23 +32,19 @@ trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
     : Option[List[EntityWrapperWithOptions[TRow, TKey]]] =
     repository.toEntitiesWrapperWithOptions(items)
 
-  override def fromEntityToJson(entity: Option[TRow])(
-      implicit encoder: Encoder[TRow]): Option[String] =
+  override def fromEntityToJson(entity: Option[TRow]): Option[String] =
     repository.fromEntityToJson(entity)
 
-  override def fromEntitiesToJson(entities: Option[List[TRow]])(
-      implicit encoder: Encoder[List[TRow]]): Option[String] =
-    repository.fromEntitiesToJson(entities)(encoder)
+  override def fromEntitiesToJson(entities: Option[List[TRow]]): Option[String] =
+    repository.fromEntitiesToJson(entities)
 
-  override def fromJsonToEntityWrapper(jsonContent: Option[String])(
-      implicit decoder: Decoder[TRow])
+  override def fromJsonToEntityWrapper(jsonContent: Option[String])
     : Option[EntityWrapperWithOptions[TRow, TKey]] =
-    repository.fromJsonToEntityWrapper(jsonContent)(decoder)
+    repository.fromJsonToEntityWrapper(jsonContent)
 
-  override def fromJsonToEntitiesWrapper(jsonContent: Option[String])(
-      implicit decoder: Decoder[List[TRow]])
+  override def fromJsonToEntitiesWrapper(jsonContent: Option[String])
     : Option[List[EntityWrapperWithOptions[TRow, TKey]]] =
-    repository.fromJsonToEntitiesWrapper(jsonContent)(decoder)
+    repository.fromJsonToEntitiesWrapper(jsonContent)
 
   def convertItemTo[A, B](
       item: Option[A],

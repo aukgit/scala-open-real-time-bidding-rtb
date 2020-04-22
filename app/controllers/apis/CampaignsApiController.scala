@@ -178,27 +178,19 @@ class CampaignsApiController @Inject()(
 
 
   override def fromEntityToJson(
-    entity : Option[CampaignRow])(
-    implicit
-    encoder : Encoder[CampaignRow]) : Option[String] =
-    service.fromEntityToJson(entity)(encoder)
+    entity : Option[CampaignRow]) : Option[String] =
+    service.fromEntityToJson(entity)
 
   override def fromEntitiesToJson(
-    entities : Option[List[CampaignRow]])(
-    implicit
-    encoder : Encoder[List[CampaignRow]]) : Option[String] =
-    service.fromEntitiesToJson(entities)(encoder)
+    entities : Option[List[CampaignRow]]): Option[String] =
+    service.fromEntitiesToJson(entities)
 
-  override def fromJsonToEntityWrapper(jsonContent : Option[String])(
-    implicit
-    decoder : Decoder[CampaignRow]) : Option[EntityWrapperWithOptions[CampaignRow, Int]]
-  = service.fromJsonToEntityWrapper(jsonContent)(decoder)
+  override def fromJsonToEntityWrapper(jsonContent : Option[String]) : Option[EntityWrapperWithOptions[CampaignRow, Int]]
+  = service.fromJsonToEntityWrapper(jsonContent)
 
-  override def fromJsonToEntitiesWrapper(jsonContent : Option[String])(
-    implicit
-    decoder : Decoder[List[CampaignRow]]) :
+  override def fromJsonToEntitiesWrapper(jsonContent : Option[String]) :
   Option[List[EntityWrapperWithOptions[CampaignRow, Int]]]
-  = service.fromJsonToEntitiesWrapper(jsonContent)(decoder)
+  = service.fromJsonToEntitiesWrapper(jsonContent)
 
   override def failedMessage(
     databaseActionType : Option[DatabaseActionType],

@@ -11,48 +11,46 @@ import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 
 trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
-  extends
-    BasicAdapterImplementation with
-    RepositoryJsonAdapter[TTable, TRow, TKey] {
-  this : RepositoryBase[TTable, TRow, TKey] =>
+    extends BasicAdapterImplementation
+    with RepositoryJsonAdapter[TTable, TRow, TKey] {
+  this: RepositoryBase[TTable, TRow, TKey] =>
 
   //noinspection DuplicatedCode
-  def fromEntityToJson(entity : Option[TRow])
-    (implicit encoder : Encoder[TRow]) :
-  Option[String] = convertItemTo[TRow, String](
-    entity, _ => {
+  def fromEntityToJson(entity: Option[TRow]): Option[String] =
+    convertItemTo[TRow, String](entity, _ => {
       try {
+        val encoder = this.encoders.defaultEncoder
         return Some(entity.get.asJson(encoder).spaces2)
       } catch {
-        case e : Exception => AppLogger.error(e)
+        case e: Exception => AppLogger.error(e)
       }
 
       None
     })
 
   //noinspection DuplicatedCode
-  def fromEntitiesToJson(entities : Option[List[TRow]])
-    (implicit encoder : Encoder[List[TRow]])
-  : Option[String] = {
+  def fromEntitiesToJson(entities: Option[List[TRow]]): Option[String] = {
     convertItemTo[List[TRow], String](
-      entities, _ => {
+      entities,
+      _ => {
         try {
+          val encoder = this.encoders.defaultListEncoder
           return Some(entities.get.asJson(encoder).spaces2)
         } catch {
-          case e : Exception => AppLogger.error(e)
+          case e: Exception => AppLogger.error(e)
         }
 
         None
-      })
+      }
+    )
   }
 
-
-  def fromJsonToEntityWrapper(jsonContent : Option[String])
-    (implicit decoder : Decoder[TRow]) :
-  Option[EntityWrapperWithOptions[TRow, TKey]] = {
-    def converter(jsonAsString : Option[String]) :
-    Option[EntityWrapperWithOptions[TRow, TKey]] = {
+  def fromJsonToEntityWrapper(jsonContent: Option[String])
+    : Option[EntityWrapperWithOptions[TRow, TKey]] = {
+    def converter(jsonAsString: Option[String])
+      : Option[EntityWrapperWithOptions[TRow, TKey]] = {
       try {
+        val decoder = this.encoders.defaultDecoder
         val possibleEntity = decode[TRow](jsonAsString.get)(decoder)
           .getOrElse(null)
 
@@ -62,7 +60,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
           return toEntityWrapperWithOptions(Some(entity))
         }
       } catch {
-        case e : Exception => AppLogger.error(e, jsonContent.get)
+        case e: Exception => AppLogger.error(e, jsonAsString.get)
       }
 
       None
@@ -71,15 +69,15 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     convertItemTo(jsonContent, converter)
   }
 
-  override def fromJsonToEntitiesWrapper(jsonContent : Option[String])
-    (implicit decoder : Decoder[List[TRow]]) :
-  Option[List[EntityWrapperWithOptions[TRow, TKey]]] = {
+  override def fromJsonToEntitiesWrapper(jsonContent: Option[String])
+    : Option[List[EntityWrapperWithOptions[TRow, TKey]]] = {
     val isEmpty = EmptyValidateHelper.isEmpty(jsonContent)
     if (isEmpty) {
       return None
     }
 
     try {
+      val decoder = this.encoders.defaultListDecoder
       val possibleEntities = decode[List[TRow]](jsonContent.get)(decoder)
         .getOrElse(null)
 
@@ -89,7 +87,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
         return toEntitiesWrapperWithOptions(Some(entities))
       }
     } catch {
-      case e : Exception => AppLogger.error(e, jsonContent.get)
+      case e: Exception => AppLogger.error(e, jsonContent.get)
     }
 
     None

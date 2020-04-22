@@ -8,18 +8,14 @@ trait RepositoryJsonAdapter[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
 
   def fromEntityToJson(entity : Option[TRow])
-    (implicit encoder : Encoder[TRow])
   : Option[String]
 
   def fromEntitiesToJson(entities : Option[List[TRow]])
-    (implicit encoder : Encoder[List[TRow]])
   : Option[String]
 
-  def fromJsonToEntityWrapper(jsonContent : Option[String])(
-    implicit decoder : Decoder[TRow])
+  def fromJsonToEntityWrapper(jsonContent : Option[String])
   : Option[EntityWrapperWithOptions[TRow, TKey]]
 
-  def fromJsonToEntitiesWrapper(jsonContent : Option[String])(
-    implicit decoder : Decoder[List[TRow]])
+  def fromJsonToEntitiesWrapper(jsonContent : Option[String])
   : Option[List[EntityWrapperWithOptions[TRow, TKey]]]
 }
