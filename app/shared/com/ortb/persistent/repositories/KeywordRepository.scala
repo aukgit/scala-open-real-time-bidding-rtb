@@ -61,5 +61,6 @@ class KeywordRepository @Inject()(appManager: AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncoders[KeywordRow] = new JsonCirceDefaultEncoders[KeywordRow]()
+  override def encoders : JsonCirceDefaultEncoders[KeywordRow] =
+    new JsonCirceDefaultEncoders[KeywordRow]()
 }

@@ -14,19 +14,19 @@ import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlAction
 
-class TransactionRepository @Inject()(appManager : AppManager)
-  extends RepositoryBase[Transaction, TransactionRow, Int](appManager) {
+class TransactionRepository @Inject()(appManager: AppManager)
+    extends RepositoryBase[Transaction, TransactionRow, Int](appManager) {
 
-  override def tableName : String = this.transactionTableName
+  override def tableName: String = this.transactionTableName
 
-  override def getEntityId(entity : Option[Tables.TransactionRow]) : Int =
+  override def getEntityId(entity: Option[Tables.TransactionRow]): Int =
     if (entity.isDefined) entity.get.transactionid
     else -1
 
   override def setEntityId(
-    entityId : Option[Int],
-    entity   : Option[Tables.TransactionRow]
-  ) : Option[Tables.TransactionRow] = {
+      entityId: Option[Int],
+      entity: Option[Tables.TransactionRow]
+  ): Option[Tables.TransactionRow] = {
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
     }
@@ -34,32 +34,31 @@ class TransactionRepository @Inject()(appManager : AppManager)
     Some(entity.get.copy(transactionid = entityId.get))
   }
 
-  override def getAddAction(entity : Tables.TransactionRow)
-  : FixedSqlAction[TransactionRow, NoStream, Effect.Write] =
+  override def getAddAction(entity: Tables.TransactionRow)
+    : FixedSqlAction[TransactionRow, NoStream, Effect.Write] =
     table returning table.map(_.transactionid) into
-      ((
-      entityProjection,
-      entityId) => entityProjection.copy(transactionid = entityId)) += entity
+      ((entityProjection,
+        entityId) => entityProjection.copy(transactionid = entityId)) += entity
 
-  override def table : TableQuery[Transaction] =
+  override def table: TableQuery[Transaction] =
     this.transactions
 
   override def getDeleteAction(
-    entityId : Int
-  ) : FixedSqlAction[Int, NoStream, Effect.Write] =
+      entityId: Int
+  ): FixedSqlAction[Int, NoStream, Effect.Write] =
     getQueryById(entityId).delete
 
-  override def getQueryById(id : Int) : Query[Transaction, TransactionRow, Seq] =
+  override def getQueryById(id: Int): Query[Transaction, TransactionRow, Seq] =
     table.filter(c => c.transactionid === id)
 
-  override def getAllQuery : Query[Transaction, TransactionRow, Seq] =
-    for {record <- table} yield record
+  override def getAllQuery: Query[Transaction, TransactionRow, Seq] =
+    for { record <- table } yield record
 
   /**
-   * All encoders, decoders and codec for circe
-   *
-   * @return
-   */
-  override def encoders : JsonCirceDefaultEncoders[TransactionRow] =
+    * All encoders, decoders and codec for circe
+    *
+    * @return
+    */
+  override def encoders: JsonCirceDefaultEncoders[TransactionRow] =
     new JsonCirceDefaultEncoders[TransactionRow]()
 }
