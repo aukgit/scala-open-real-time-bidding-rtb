@@ -1,5 +1,9 @@
 package shared.com.ortb.persistent.repositories
 
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
+
 import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
