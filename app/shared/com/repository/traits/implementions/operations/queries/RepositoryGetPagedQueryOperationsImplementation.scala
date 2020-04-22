@@ -1,13 +1,15 @@
 package shared.com.repository.traits.implementions.operations.queries
 
 import shared.com.ortb.model.wrappers.PaginationWrapperModel
-import slick.jdbc.SQLiteProfile.api._
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.queries.RepositoryGetPagedQueryOperations
 import shared.io.loggers.AppLogger
 import slick.dbio.Effect
+import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.Query
 import slick.sql.FixedSqlStreamingAction
+
+import scala.concurrent.Future
 
 trait RepositoryGetPagedQueryOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryGetPagedQueryOperations[TRow] {
@@ -53,8 +55,8 @@ trait RepositoryGetPagedQueryOperationsImplementation[TTable, TRow, TKey]
   }
 
   def getPaged[TTable2, TRow2](
-    rows  : Query[TTable2, TRow2, Seq],
-    pageIndex : Int = 1,
+    rows          : Query[TTable2, TRow2, Seq],
+    pageIndex     : Int = 1,
     eachPageItems : Int) : Seq[TRow2] = {
     /**
      * eachPageItems = 10

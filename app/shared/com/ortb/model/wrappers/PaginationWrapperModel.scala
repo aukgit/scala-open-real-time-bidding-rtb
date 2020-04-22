@@ -1,3 +1,5 @@
 package shared.com.ortb.model.wrappers
 
-case class PaginationWrapperModel(page : Int, pageSize : Int)
+import shared.com.ortb.constants.AppConstants
+
+case class PaginationWrapperModel(page : Int, pageSize : Int = AppConstants.DefaultPageSize)

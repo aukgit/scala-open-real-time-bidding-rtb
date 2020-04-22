@@ -1,10 +1,16 @@
 package controllers.webapi.core
 
+import io.circe.generic.auto._
 import controllers.webapi.core.traits.RestWebApiContracts
+import io.circe.{ Codec, _ }
+import io.circe.generic.semiauto._
+import io.circe.syntax._
 import play.api.Logger
 import play.api.mvc.{ Action, _ }
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration._
+import shared.com.ortb.model.repository.ApiPaginationResponseAttributesModel
+import shared.com.ortb.model.repository.response.ApiPaginationStringResultsModel
 import shared.com.ortb.model.wrappers.PaginationWrapperModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
@@ -36,7 +42,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
         return Some(PaginationWrapperModel(pageToInt, currentPageSize.get.toInt))
       }
 
-      return Some(PaginationWrapperModel(pageToInt, AppConstants.DefaultPageSize))
+      return Some(PaginationWrapperModel(pageToInt))
     } catch {
       case e : Exception => AppLogger.error(e)
     }
@@ -56,9 +62,20 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
       allEntities = service.repository.getCurrentTablePaged(pagedWrapper)
     }
 
-    val json = service.fromEntitiesToJson(Some(allEntities))
-    if (json.isDefined) {
-      Ok(json.get)
+    if (!EmptyValidateHelper.isItemsEmpty(Some(allEntities))) {
+      val data = allEntities
+      val length = data.length
+      val dataAsJson = service.repository.fromEntitiesToJsonObjects(Some(data)).get
+      val paged = paginationWrapperModel.get
+      val count = service.repository.count.get
+      val totalPages = Math.ceil(count / paged.pageSize.asInstanceOf[Double]).asInstanceOf[Int]
+
+      val apiAttribute = ApiPaginationResponseAttributesModel(
+        true,
+        length, "domain", "nextPage", "prevPage", paged.pageSize, paged.page, totalPages, count)
+      val encoder = deriveEncoder[ApiPaginationResponseAttributesModel]
+      val finalJSON = Json.obj(("attributes", apiAttribute.asJson(encoder)), ("data", Json.fromValues(dataAsJson)))
+      Ok(finalJSON.noSpaces)
     } else {
       performBadRequest()
     }

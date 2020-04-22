@@ -1,5 +1,6 @@
 package shared.com.repository.traits.implementions.adapters
 
+import io.circe.Json
 import io.circe.parser.decode
 import io.circe.syntax._
 import shared.com.ortb.adapters.BasicAdapterImplementation
@@ -28,6 +29,24 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
 
         None
       })
+
+  def fromEntitiesToJsonObjects(entities : Option[Iterable[TRow]]) : Option[Iterable[Json]] = {
+    convertItemTo[Iterable[TRow], Iterable[Json]](
+      entities,
+      _ => {
+        try {
+          if (entities.isDefined && entities.nonEmpty) {
+            val jsonString = this.encoders.toIterableJson(entities.get)
+            return Some(jsonString)
+          }
+        } catch {
+          case e : Exception => AppLogger.error(e)
+        }
+
+        None
+      }
+    )
+  }
 
   def fromEntitiesToJson(entities : Option[Iterable[TRow]]) : Option[String] = {
     convertItemTo[Iterable[TRow], String](
