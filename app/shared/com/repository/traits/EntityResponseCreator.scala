@@ -70,7 +70,7 @@ trait EntityResponseCreator[TTable, TRow, TKey] {
   }
 
   def getEmptyResponseFor(actionType : DatabaseActionType) : RepositoryOperationResultModel[TRow, TKey] =
-    BasicAdapterHelper.getEmptyResponse[TRow, TKey](actionType)
+    BasicAdapterHelper.repositoryAdapter.getEmptyResponse[TRow, TKey](actionType)
 
   protected def createResponseFor(
     entityId : Option[TKey],

@@ -37,7 +37,7 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
       list(i) = this.addAsync(entity)
     }
 
-    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       list,
       databaseActionType = DatabaseActionType.Create
     )
@@ -55,7 +55,7 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
     val responsesEntityWrappers = entities
       .map(entity => this.addAsync(entity))
 
-    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responsesEntityWrappers,
       databaseActionType = DatabaseActionType.Create
     )

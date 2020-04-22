@@ -23,7 +23,7 @@ trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]
 
     val responses = entities.map(id => deleteAsync(id))
 
-    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responses,
       databaseActionType = DatabaseActionType.Delete
     )

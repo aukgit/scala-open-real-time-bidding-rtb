@@ -33,7 +33,7 @@ trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
         )
       });
 
-    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responseEntityWrappers,
       databaseActionType = DatabaseActionType.Update
     )

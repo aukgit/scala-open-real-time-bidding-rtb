@@ -40,7 +40,7 @@ trait RepositoryOperationResultModelAdapterImplementation {
 
     val items = inputModel.map(w => {
       val response : RepositoryOperationResultModel[TRow, TKey] = FutureToRegular.toRegular(w)
-      BasicAdapterHelper.fromResultModelToEntityWrap(response)
+      BasicAdapterHelper.entityWrapperAdapter.fromResultModelToEntityWrap(response)
     }).toList
 
     val attributesModel = GenericResponseAttributesModel(

@@ -33,7 +33,7 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
         addOrUpdateAsync(entityWrapper.entityId, entityWrapper.entity)
     )
 
-    BasicAdapterHelper.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responsesEntityWrappers,
       databaseActionType = DatabaseActionType.AddOrUpdate
     )
