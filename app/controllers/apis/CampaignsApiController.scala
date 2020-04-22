@@ -22,13 +22,9 @@ class CampaignsApiController @Inject()(
   components      : ControllerComponents)
   extends AbstractRestWebApi[Campaign, CampaignRow, Int](components) {
 
-  def encoders: JsonCirceDefaultEncoders[CampaignRow] = new JsonCirceDefaultEncoders[CampaignRow]()
+ //  def encoders: JsonCirceDefaultEncoders[CampaignRow] = new JsonCirceDefaultEncoders[CampaignRow]()
 
-  override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
-    val campaigns = campaignService.getAll
-    val json = campaigns.asJson.spaces2
-    Ok(json)
-  }
+
 
   override def byId(id : Int) : Action[AnyContent] = Action { implicit request =>
     val campaign = campaignService.getById(id)

@@ -3,7 +3,8 @@ package controllers.webapi.core
 import io.circe.generic.codec.DerivedAsObjectCodec
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
-import play.api.mvc.{Action, _}
+import play.api.Logger
+import play.api.mvc.{ Action, _ }
 import services.core.AbstractBasicPersistentService
 import shapeless.Lazy
 import shared.com.ortb.enumeration._
@@ -19,16 +20,17 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey]
     AbstractController(components) with
     RestWebApiContracts[TTable, TRow, TKey] {
 
-
   val noContentMessage = "No content in request."
-  def encoders: JsonCirceDefaultEncoders[TRow]
+  protected val logger : Logger = Logger(this.getClass)
 
-  def getAll : Action[AnyContent] = Action { implicit request =>
-    //      implicit val listEncoder: Encoder[List[CampaignRow]] = deriveEncoder[List[CampaignRow]]
-    // implicit val listEncoder: Codec[List[TRow]] =  Codec.derived[List[TRow]]
-    val campaigns = service.getAll
-    val json = JsonHelper.toJson(campaigns)(encoders.defaultListEncoder)
-    Ok(json.get.spaces2)
+  override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
+    val allEntities = service.getAll
+    val json = service.fromEntitiesToJson(Some(allEntities))
+    if(json.isDefined){
+      Ok(json.get)
+    } else{
+      performBadRequest()
+    }
   }
 
   //  def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
