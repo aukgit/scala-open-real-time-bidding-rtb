@@ -1,10 +1,7 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.attributes.GenericResponseAttributesModel
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOperations
 import shared.io.helpers.BasicAdapterHelper
@@ -23,11 +20,11 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
     toRegular(addAsync(entity), defaultTimeout)
 
   def addEntities(
-    entity : TRow,
+    entity   : TRow,
     addTimes : Int
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entity == null) {
-      AppLogger.info(s"${headerMessage} No items passed for multiple adding.")
+      AppLogger.info(s"${ headerMessage } No items passed for multiple adding.")
 
       return null
     }
@@ -48,7 +45,7 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
     entities : Iterable[TRow]
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entities == null || entities.isEmpty) {
-      AppLogger.info(s"${headerMessage} No items passed for deleting.")
+      AppLogger.info(s"${ headerMessage } No items passed for deleting.")
 
       return null
     }

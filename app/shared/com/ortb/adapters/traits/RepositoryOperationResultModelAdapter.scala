@@ -1,7 +1,6 @@
 package shared.com.ortb.adapters.traits
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 
 import scala.concurrent.Future

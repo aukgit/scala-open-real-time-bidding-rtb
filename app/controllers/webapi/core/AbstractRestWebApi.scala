@@ -122,13 +122,13 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     val httpSuccessWrapper = HttpSuccessActionWrapper[TRow, TKey](
       additionalMessage = Some(successMessageToString),
       resultType = Some(HttpActionWrapperType.PutOk),
-      entityWrapper = Some(entityWrapperWithOptions),
+//      entityWrapper = Some(entityWrapperWithOptions),
       rawBodyRequest = request.body.asText,
       databaseActionType = Some(DatabaseActionType.Update)
     )
 
     performOkayOnEntity(Some(httpSuccessWrapper))
-    Ok(json)
+//    Ok(json)
   }
 
   def byId(id: TKey): Action[AnyContent] = Action { implicit request =>

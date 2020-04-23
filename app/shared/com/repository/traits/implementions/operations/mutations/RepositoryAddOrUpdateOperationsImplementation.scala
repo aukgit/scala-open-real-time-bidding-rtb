@@ -1,8 +1,6 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.attributes.GenericResponseAttributesModel
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
@@ -14,8 +12,8 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryAddOrUpdateOperations[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
   def addOrUpdate(
-    entityId         : TKey,
-    entity           : TRow) : RepositoryOperationResultModel[TRow, TKey] =
+    entityId : TKey,
+    entity   : TRow) : RepositoryOperationResultModel[TRow, TKey] =
     toRegular(addOrUpdateAsync(entityId, entity), defaultTimeout)
 
   def addOrUpdateEntities(
@@ -23,7 +21,7 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
       AppLogger.info(
-        s"${headerMessage} No items passed for multiple ${DatabaseActionType.AddOrUpdate}."
+        s"${ headerMessage } No items passed for multiple ${ DatabaseActionType.AddOrUpdate }."
       )
 
       return null

@@ -13,7 +13,7 @@ object ResponseHelper extends ResponseHelperBase {
 
   def getGenericResponseAttributesModelToGenericControllerResponseAttributesModel[TKey](
     genericResponseAttributesModel : GenericResponseAttributesModel,
-    entityIds: Iterable[TKey] = None):GenericControllerResponseAttributesModel[TKey] = {
+    entityIds: Iterable[String] = None):GenericControllerResponseAttributesModel = {
     GenericControllerResponseAttributesModel(
       genericResponseAttributesModel.isSuccess,
       genericResponseAttributesModel.actionType.toString,
@@ -28,11 +28,12 @@ object ResponseHelper extends ResponseHelperBase {
     val entityWrapper = responseEntityWrapper.get
     val attributes = getGenericResponseAttributesModelToGenericControllerResponseAttributesModel(
       repositoryResponse.get.attributes.get,
-      Seq(entityWrapper.entityId))
+      Seq(entityWrapper.entityId.toString))
 
     val response  = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), Seq(entityWrapper.entity))
 
     Some(response)
+    ""
   }
 
   def getSuccessResponse[TTable, TRow, TKey]
@@ -60,5 +61,6 @@ object ResponseHelper extends ResponseHelperBase {
     //     rawBodyRequest = request.body.asText,
     //     databaseActionType = Some(DatabaseActionType.Update)
     //   )
+    ""
   }
 }

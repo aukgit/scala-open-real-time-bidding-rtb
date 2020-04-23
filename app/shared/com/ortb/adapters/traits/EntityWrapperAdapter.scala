@@ -1,14 +1,7 @@
 package shared.com.ortb.adapters.traits
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import shared.com.ortb.model.attributes.GenericResponseAttributesModel
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.{ EntityWrapper, EntityWrapperWithOptions }
-import shared.com.repository.traits.FutureToRegular
-import shared.io.helpers.BasicAdapterHelper
-
-import scala.concurrent.Future
 
 trait EntityWrapperAdapter {
   def fromResultsModelToEntityWrap[TRow, TKey](

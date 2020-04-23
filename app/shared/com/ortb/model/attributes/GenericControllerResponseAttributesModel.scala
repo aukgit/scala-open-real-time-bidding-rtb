@@ -1,7 +1,7 @@
 package shared.com.ortb.model.attributes
 
-case class GenericControllerResponseAttributesModel[TKey](
+case class GenericControllerResponseAttributesModel(
   isSuccess : Boolean,
   databaseActionPerformed: String = "",
-  entityIds: Iterable[TKey],
+  entityIds: Iterable[String],
   message : String = "")

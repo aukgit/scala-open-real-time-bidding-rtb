@@ -2,7 +2,6 @@ package shared.com.ortb.adapters
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.BasicAdapterHelper
@@ -31,7 +30,7 @@ trait RepositoryOperationResultModelAdapterImplementation {
       )
 
   def fromRepositoryOperationResultModelsToRepositoryOperationResultsModel[TRow, TKey](
-    inputModel : Iterable[Future[RepositoryOperationResultModel[TRow, TKey]]],
+    inputModel         : Iterable[Future[RepositoryOperationResultModel[TRow, TKey]]],
     databaseActionType : DatabaseActionType,
     message            : String = "") :
   RepositoryOperationResultsModel[TRow, TKey] = {

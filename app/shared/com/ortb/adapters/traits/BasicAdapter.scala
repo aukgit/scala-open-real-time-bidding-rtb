@@ -1,8 +1,5 @@
 package shared.com.ortb.adapters.traits
 
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
-import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions}
-
 trait BasicAdapter {
   def convertItemTo[A, B](
     item         : Option[A],

@@ -1,7 +1,6 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
@@ -13,15 +12,15 @@ trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryUpdateOperations[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
   def update(
-    entityId     : TKey,
-    entity       : TRow) : RepositoryOperationResultModel[TRow, TKey] =
+    entityId : TKey,
+    entity   : TRow) : RepositoryOperationResultModel[TRow, TKey] =
     toRegular(updateAsync(entityId, entity), defaultTimeout)
 
   def updateEntities(
     entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
-      AppLogger.info(s"${headerMessage} No items passed for multiple updates.")
+      AppLogger.info(s"${ headerMessage } No items passed for multiple updates.")
 
       return null
     }
