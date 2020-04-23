@@ -1,7 +1,7 @@
 package shared.io.loggers
 
 import play.api.Logging
-import shared.io.traits.logger.{EntitiesLogger, _}
+import shared.io.loggers.traits._
 
 object AppLogger extends
   Logging with

@@ -1,4 +1,4 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
 import shared.com.ortb.constants.AppConstants
 

@@ -1,7 +1,7 @@
 package controllers.webapi.core.traits
 
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.com.ortb.webapi.traits._
+import shared.io.jsonParse.traits.CirceJsonSupport
 
 trait RestWebApiContracts[TTable, TRow, TKey]
   extends

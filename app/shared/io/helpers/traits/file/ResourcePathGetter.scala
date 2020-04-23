@@ -1,4 +1,4 @@
-package shared.io.traits.file
+package shared.io.helpers.traits.file
 
 import java.io.File
 import java.net.URL

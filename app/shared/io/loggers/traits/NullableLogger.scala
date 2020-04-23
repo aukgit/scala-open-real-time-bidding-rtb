@@ -1,9 +1,9 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
+import shared.com.repository.traits.FutureToRegular
 import shared.io.loggers.AppLogger
-import shared.io.traits.FutureToRegular
 
 import scala.concurrent.Future
 import scala.util.Try

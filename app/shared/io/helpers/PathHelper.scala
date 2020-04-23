@@ -2,7 +2,7 @@ package shared.io.helpers
 
 import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
-import shared.io.traits.file.ResourcePathGetter
+import shared.io.helpers.traits.file.ResourcePathGetter
 
 object PathHelper extends ResourcePathGetter {
 

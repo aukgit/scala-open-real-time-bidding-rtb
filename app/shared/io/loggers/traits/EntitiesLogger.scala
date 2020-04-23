@@ -1,4 +1,4 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
@@ -6,7 +6,7 @@ import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger
 
 import scala.concurrent.duration.Duration.Inf
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 
 trait EntitiesLogger {
   this : AppLogger.type =>

@@ -2,9 +2,9 @@ package shared.io.helpers
 
 import io.circe.parser._
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder, Error, Json}
-import shared.com.ortb.implicits.implementations.{CirceSupport, CirceJsonSupport}
+import io.circe.{ Decoder, Encoder, Error, Json }
 import shared.com.ortb.model.error.FileErrorModel
+import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.AppLogger
 
 object JsonHelper extends CirceJsonSupport {

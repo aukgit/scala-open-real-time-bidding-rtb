@@ -1,10 +1,10 @@
-package shared.io.traits.jsonParse
+package shared.io.jsonParse
 
 import io.circe.Encoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.semiauto.deriveEncoder
 import shapeless.Lazy
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
+import shared.io.jsonParse.traits.CirceJsonSupport
 
 class JsonEncoders[T]
 (implicit val encoder : Lazy[DerivedAsObjectEncoder[T]])

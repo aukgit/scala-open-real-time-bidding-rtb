@@ -2,9 +2,9 @@ package shared.com.ortb.adapters
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.repository.GenericResponseAttributesModel
-import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
+import shared.com.ortb.model.repository.response.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
+import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.BasicAdapterHelper
-import shared.io.traits.FutureToRegular
 
 import scala.concurrent.Future
 

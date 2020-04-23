@@ -1,10 +1,9 @@
-package shared.io.traits.jsonParse
+package shared.io.jsonParse
 
-import io.circe.generic.auto._ // must to import.
 import io.circe.Codec
 import io.circe.generic.codec.DerivedAsObjectCodec
 import io.circe.generic.semiauto.deriveCodec
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
+import shared.io.jsonParse.traits.CirceJsonSupport
 
 class JsonCodec[T](
   implicit val decodeCodec : DerivedAsObjectCodec[T],

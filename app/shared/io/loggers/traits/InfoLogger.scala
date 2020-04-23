@@ -1,8 +1,7 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
-import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType
-import shared.io.loggers.AppLogger.{getMethodNameHeaderForIndexes, _}
+import shared.io.loggers.AppLogger.{ additionalLogging, defaultStackIndex }
 
 trait InfoLogger {
   this : PrintStacks with MethodNameHeaderGetter =>

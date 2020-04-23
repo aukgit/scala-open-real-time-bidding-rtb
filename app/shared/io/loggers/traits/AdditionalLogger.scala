@@ -1,4 +1,4 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
 import com.sun.org.apache.xerces.internal.impl.dv.InvalidDatatypeValueException
 import shared.com.ortb.enumeration.LogLevelType

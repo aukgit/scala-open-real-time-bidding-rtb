@@ -1,19 +1,16 @@
-package shared.io.traits.jsonParse
+package shared.io.jsonParse
 
-
-import com.fasterxml.jackson.annotation.JsonValue
-import io.circe.{ Decoder, _ }
 import io.circe.generic.codec.DerivedAsObjectCodec
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.semiauto.{ deriveDecoder, _ }
+import io.circe.{ Decoder, _ }
 import play.api.libs.json
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.JsValue
 import shapeless.Lazy
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.io.helpers.EmptyValidateHelper
+import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.AppLogger
-import spray.json.JsArray
 
 import scala.reflect.ClassTag
 

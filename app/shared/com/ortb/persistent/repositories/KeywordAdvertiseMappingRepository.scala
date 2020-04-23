@@ -3,7 +3,6 @@ package shared.com.ortb.persistent.repositories
 import io.circe.generic.semiauto._
 import io.circe._
 import io.circe.generic.auto._
-
 import com.google.inject.Inject
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
@@ -11,7 +10,7 @@ import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.JsonCirceDefaultEncoders
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 

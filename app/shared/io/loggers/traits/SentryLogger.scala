@@ -1,4 +1,4 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
 import io.sentry.Sentry
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType

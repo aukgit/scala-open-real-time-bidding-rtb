@@ -1,6 +1,6 @@
-package shared.com.ortb.implicits.implementations
+package shared.io.jsonParse.traits
 
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 import shapeless.Unwrapped
 
 trait AnyValCirceEncoding {

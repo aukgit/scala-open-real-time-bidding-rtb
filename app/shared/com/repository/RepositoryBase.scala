@@ -1,18 +1,17 @@
 package shared.com.repository
 
 import com.google.inject.Inject
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.schema.DatabaseSchema
-import shared.com.repository.traits._
+import shared.com.repository.traits.{ FutureToRegular, _ }
 import shared.com.repository.traits.implementions.EntityResponseCreatorImplementation
 import shared.com.repository.traits.implementions.adapters.{ RepositoryJsonAdapterImplementation, RepositoryWrapperAdapterImplementation }
 import shared.com.repository.traits.implementions.operations.mutations.RepositoryOperationsImplementation
 import shared.com.repository.traits.implementions.operations.mutations.async.RepositoryOperationsAsyncImplementation
 import shared.com.repository.traits.implementions.operations.queries.SingleRepositoryBaseImplementation
-import shared.io.traits.FutureToRegular
-import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.traits.CirceJsonSupport
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._

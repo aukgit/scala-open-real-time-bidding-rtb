@@ -1,7 +1,7 @@
-package shared.io.traits.logger
+package shared.io.loggers.traits
 
 import shared.com.ortb.enumeration.LogLevelType
-import shared.io.loggers.AppLogger._
+import shared.io.loggers.AppLogger.{ additionalLogging, defaultStackIndex }
 
 trait WarnLogger {
   this : PrintStacks with MethodNameHeaderGetter =>

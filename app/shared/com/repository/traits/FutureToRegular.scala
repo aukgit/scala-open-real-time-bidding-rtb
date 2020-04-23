@@ -1,10 +1,10 @@
-package shared.io.traits
+package shared.com.repository.traits
 
 import shared.io.loggers.AppLogger
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.Duration.Inf
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 
 trait FutureToRegular {
   def toRegular[A](request : Future[A], wait : Duration = Inf) : A = {
@@ -44,6 +44,4 @@ trait FutureToRegular {
   }
 }
 
-object FutureToRegular extends FutureToRegular {
-
-}
+object FutureToRegular extends FutureToRegular

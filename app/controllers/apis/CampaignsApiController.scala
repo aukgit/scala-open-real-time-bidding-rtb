@@ -4,18 +4,18 @@ import controllers.webapi.core.AbstractRestWebApi
 import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
 import javax.inject.Inject
-import play.api.mvc.{Action, Request, _}
+import play.api.mvc.{ Action, Request, _ }
 import services.CampaignService
 import services.core.AbstractBasicPersistentService
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.wrappers.http._
-import shared.com.ortb.model.wrappers.persistent.{WebApiEntitiesResponseWrapper, _}
+import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, _ }
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
+import shared.io.jsonParse.JsonCirceDefaultEncoders
 import shared.io.loggers.AppLogger
-import shared.io.traits.jsonParse.JsonCirceDefaultEncoders
 
 class CampaignsApiController @Inject()(
   campaignService : CampaignService,

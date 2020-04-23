@@ -4,11 +4,11 @@ import io.circe.Json
 import io.circe.parser.decode
 import io.circe.syntax._
 import shared.com.ortb.adapters.BasicAdapterImplementation
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.adapters.RepositoryJsonAdapter
 import shared.io.helpers.EmptyValidateHelper
+import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.AppLogger
 
 trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]

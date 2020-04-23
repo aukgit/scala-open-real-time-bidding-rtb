@@ -1,10 +1,10 @@
-package shared.io.traits.jsonParse
-import io.circe.generic.auto._ // must to import.
+package shared.io.jsonParse
+
+import io.circe.Decoder
 import io.circe.generic.decoding.DerivedDecoder
-import io.circe.generic.semiauto.{deriveDecoder, _}
-import io.circe.{Decoder, Encoder, _}
+import io.circe.generic.semiauto.deriveDecoder
 import shapeless.Lazy
-import shared.com.ortb.implicits.implementations.CirceJsonSupport
+import shared.io.jsonParse.traits.CirceJsonSupport
 
 class JsonDecoders[T]
 (implicit val decoder : Lazy[DerivedDecoder[T]])
