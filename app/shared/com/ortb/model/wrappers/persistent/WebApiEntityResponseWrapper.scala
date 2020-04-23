@@ -4,5 +4,3 @@ case class WebApiEntityResponseWrapper[TRow, TKey](
   entityWrapper : Option[EntityWrapperWithOptions[TRow, TKey]],
   bodyRaw       : String
 )
-
-

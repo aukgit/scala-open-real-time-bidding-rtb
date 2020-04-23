@@ -3,7 +3,7 @@ package shared.com.ortb.enumeration
 object HttpActionWrapperType extends Enumeration {
   type HttpActionWrapperType = Value
   val GetOk,
-  PutOk,
+  PutUpdateOk,
   PostAddOk,
   DeleteOk,
   PatchOk,

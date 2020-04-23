@@ -5,6 +5,7 @@ import play.api.Logger
 import play.api.mvc.{Action, _}
 import shared.com.ortb.enumeration._
 import shared.com.ortb.model.requests
+import shared.com.ortb.model.requests.HttpResponseCreateRequestModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.{
   EntityWrapperWithOptions,
@@ -49,6 +50,11 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
       }
   }
 
+  def getRequestUri(request: Request[AnyContent]): String = {
+    // TODO should return current /suffix url after the domain.
+    "/Something after domain TODO"
+  }
+
   def update(id: TKey): Action[AnyContent] = Action { implicit request =>
     try {
       val webApiEntityResponseWrapper
@@ -71,38 +77,24 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
       val response = service.update(id, entity)
       val attributes = response.attributes.get
 
-      if (!attributes.isSuccess) {
-        val failedMessage =
-          s"Update request failed (source received:$bodyText)."
-        
-        val httpFailedActionWrapper = HttpFailedActionWrapper[TRow, TKey](
-          additionalMessage = Some(failedMessage),
-          resultType = Some(HttpActionWrapperType.PutUpdateFailed),
-          rawBodyRequest = request.body.asText,
-          databaseActionType = Some(DatabaseActionType.Update)
+      if (attributes.isSuccess) {
+        val httpResponseCreateRequestModel = HttpResponseCreateRequestModel(
+          this,
+          getRequestUri(request),
+          httpActionWrapperType = HttpActionWrapperType.PutUpdateOk,
+          databaseActionType = DatabaseActionType.Update,
+          repositoryOperationResultModel = Some(response)
         )
 
-        performBadRequest(Some(httpFailedActionWrapper))
+        val finalJsonResponse = ResponseHelper.genericControllerResponse
+          .getControllerSuccessResponse(httpResponseCreateRequestModel)
+
+        Ok(finalJsonResponse)
       } else {
-        val responseEntityWrapper = response.data
-        val entityWrapperWithOptions = BasicAdapterHelper.entityWrapperAdapter
-          .fromEntityWrapperToEntityWrapperWithOptions[TRow, TKey](
-            responseEntityWrapper.get)
-        val successMessageToString = successMessage(None)
-
-        val httpSuccessWrapper = HttpSuccessActionWrapper[TRow, TKey](
-          additionalMessage = Some(successMessageToString),
-          resultType = Some(HttpActionWrapperType.PutOk),
-          entityWrapper = Some(entityWrapperWithOptions),
-          rawBodyRequest = request.body.asText,
-          databaseActionType = Some(DatabaseActionType.Update)
-        )
-
-        performOkayOnEntity(Some(httpSuccessWrapper))
+        throw new Exception("Invalid Result")
       }
     } catch {
       case e: Exception =>
-        AppLogger.error(e)
         val httpFailedExceptionActionWrapper =
           HttpFailedExceptionActionWrapper[TRow, TKey](
             exception = Some(e),
@@ -111,25 +103,33 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
             databaseActionType = Some(DatabaseActionType.Create)
           )
 
+        AppLogger.error(e)
         performBadRequestOnException(httpFailedExceptionActionWrapper)
+        throw e
     }
   }
 
   def delete(id: TKey): Action[AnyContent] = Action { implicit request =>
     val response = service.delete(id)
-    val json = response.data.get // TODO convert to JSON
     //noinspection DuplicatedCode
-    val successMessageToString = successMessage(None)
-    val httpSuccessWrapper = HttpSuccessActionWrapper[TRow, TKey](
-      additionalMessage = Some(successMessageToString),
-      resultType = Some(HttpActionWrapperType.PutOk),
-//      entityWrapper = Some(entityWrapperWithOptions),
-      rawBodyRequest = request.body.asText,
-      databaseActionType = Some(DatabaseActionType.Update)
-    )
+    val attributes = response.attributes.get
 
-    performOkayOnEntity(Some(httpSuccessWrapper))
-//    Ok(json)
+    if (attributes.isSuccess) {
+      val httpResponseCreateRequestModel = HttpResponseCreateRequestModel(
+        this,
+        getRequestUri(request),
+        httpActionWrapperType = HttpActionWrapperType.DeleteOk,
+        databaseActionType = DatabaseActionType.Delete,
+        repositoryOperationResultModel = Some(response)
+      )
+
+      val finalJsonResponse = ResponseHelper.genericControllerResponse
+                                            .getControllerSuccessResponse(httpResponseCreateRequestModel)
+
+      Ok(finalJsonResponse)
+    } else {
+      throw new Exception("Invalid Result")
+    }
   }
 
   def byId(id: TKey): Action[AnyContent] = Action { implicit request =>
@@ -164,33 +164,37 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
         val attributes = response.attributes.get
 
         if (attributes.isSuccess && responseEntity != null) {
-          val entityWrapper = Some(
-            EntityWrapperWithOptions[TRow, TKey](Some(responseEntity.entityId),
-                                                 Some(responseEntity.entity)))
-
-          val httpSuccessWrapper = HttpSuccessActionWrapper[TRow, TKey](
-            additionalMessage = Some(successMessageToString),
-            resultType = Some(HttpActionWrapperType.PutOk),
-            entityWrapper = entityWrapper,
-            rawBodyRequest = request.body.asText,
-            databaseActionType = Some(DatabaseActionType.Create)
+          //noinspection DuplicatedCode
+          val httpResponseCreateRequestModel = HttpResponseCreateRequestModel(
+            this,
+            getRequestUri(request),
+            httpActionWrapperType = HttpActionWrapperType.DeleteOk,
+            databaseActionType = DatabaseActionType.Delete,
+            repositoryOperationResultModel = Some(response)
           )
 
-          performOkayOnEntity(Some(httpSuccessWrapper))
+          val finalJsonResponse = ResponseHelper.genericControllerResponse
+                                                .getControllerSuccessResponse(httpResponseCreateRequestModel)
+
+          Ok(finalJsonResponse)
+        }
+        else {
+          performBadRequest()
         }
       }
+      else {
+        val operationFailedMessage =
+          failedMessage(databaseActionType = Some(DatabaseActionType.Create))
 
-      val operationFailedMessage =
-        failedMessage(databaseActionType = Some(DatabaseActionType.Create))
+        val httpFailedActionWrapper = HttpFailedActionWrapper[TRow, TKey](
+          additionalMessage = Some(operationFailedMessage),
+          resultType = Some(HttpActionWrapperType.PostAddFailed),
+          rawBodyRequest = request.body.asText,
+          databaseActionType = Some(DatabaseActionType.Create)
+        )
 
-      val httpFailedActionWrapper = HttpFailedActionWrapper[TRow, TKey](
-        additionalMessage = Some(operationFailedMessage),
-        resultType = Some(HttpActionWrapperType.PostAddFailed),
-        rawBodyRequest = request.body.asText,
-        databaseActionType = Some(DatabaseActionType.Create)
-      )
-
-      performBadRequest(Some(httpFailedActionWrapper))
+        performBadRequest(Some(httpFailedActionWrapper))
+      }
     } catch {
       case e: Exception =>
         AppLogger.error(e)
