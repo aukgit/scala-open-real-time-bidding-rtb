@@ -84,6 +84,15 @@ object EmptyValidateHelper {
     hasItem
   }
 
+  def isOptionsDefined(
+    items    : Option[Any]*) : Boolean = {
+    val hasItems = items != null &&
+      items.nonEmpty &&
+      items.forall(item => isDefinedAny(item))
+
+    hasItems
+  }
+
   //noinspection DuplicatedCode
   def isEmpty[A](
     item    : Option[A],

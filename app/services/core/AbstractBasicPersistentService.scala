@@ -1,6 +1,7 @@
 package services.core
 
-import services.core.traits.{ BasicPersistentServiceContracts, ServiceEncoders, ServiceEncodersImplementation }
+import services.core.implementations.ServiceEncodersImplementation
+import services.core.traits.{ BasicPersistentServiceContracts, ServiceEncoders }
 
 abstract class AbstractBasicPersistentService[TTable, TRow, TKey]
   extends

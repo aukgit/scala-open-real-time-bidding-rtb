@@ -56,7 +56,8 @@ object PaginationHelper extends PaginationHelperBase {
       count)
 
     val apiModel = ApiPaginationResultsModel[TRow, TKey](Some(apiAttribute), allEntities)
-    val finalJson = service.apiPaginationEncoder.getJsonGenericParser
+    val encoder = service.serviceEncoders.apiPaginationEncoder
+    val finalJson = encoder.getJsonGenericParser
                            .toJsonString(Some(apiModel))
 
     finalJson.get
