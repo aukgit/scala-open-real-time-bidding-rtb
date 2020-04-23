@@ -10,7 +10,7 @@ import shared.com.repository.traits.implementions.adapters.{ RepositoryJsonAdapt
 import shared.com.repository.traits.implementions.operations.mutations.RepositoryOperationsImplementation
 import shared.com.repository.traits.implementions.operations.mutations.async.RepositoryOperationsAsyncImplementation
 import shared.com.repository.traits.implementions.operations.queries.SingleRepositoryBaseImplementation
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import shared.io.jsonParse.traits.CirceJsonSupport
 
 import scala.concurrent.ExecutionContext
@@ -48,5 +48,5 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
    * All encoders, decoders and codec for circe
    * @return
    */
-  def encoders: JsonCirceDefaultEncoders[TRow]
+  def encoders: JsonCirceDefaultEncodersImplementation[TRow]
 }

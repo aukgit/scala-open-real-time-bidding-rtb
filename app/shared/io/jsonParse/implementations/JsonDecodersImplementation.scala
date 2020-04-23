@@ -1,14 +1,14 @@
-package shared.io.jsonParse
+package shared.io.jsonParse.implementations
 
 import io.circe.Decoder
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.semiauto.deriveDecoder
 import shapeless.Lazy
-import shared.io.jsonParse.traits.CirceJsonSupport
+import shared.io.jsonParse.traits.JsonDecoders
 
-class JsonDecoders[T]
+class JsonDecodersImplementation[T]
 (implicit val decoder : Lazy[DerivedDecoder[T]])
-  extends CirceJsonSupport {
+  extends JsonDecoders[T] {
 
   implicit def defaultDecoder : Decoder[T] = deriveDecoder[T]
 

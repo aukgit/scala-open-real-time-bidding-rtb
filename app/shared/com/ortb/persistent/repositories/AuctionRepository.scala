@@ -8,7 +8,7 @@ import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.lifted.Query
 import slick.sql.FixedSqlAction
@@ -56,5 +56,5 @@ class AuctionRepository @Inject()(appManager: AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncoders[AuctionRow] = new JsonCirceDefaultEncoders[AuctionRow]()
+  override def encoders : JsonCirceDefaultEncodersImplementation[AuctionRow] = new JsonCirceDefaultEncodersImplementation[AuctionRow]()
 }

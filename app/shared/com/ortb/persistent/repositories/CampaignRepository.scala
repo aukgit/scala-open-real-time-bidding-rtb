@@ -7,7 +7,7 @@ import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.Query
@@ -58,5 +58,5 @@ class CampaignRepository @Inject()(appManager : AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncoders[CampaignRow] = new JsonCirceDefaultEncoders[CampaignRow]()
+  override def encoders : JsonCirceDefaultEncodersImplementation[CampaignRow] = new JsonCirceDefaultEncodersImplementation[CampaignRow]()
 }

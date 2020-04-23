@@ -7,7 +7,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.jdbc.SQLiteProfile.api._
 import slick.dbio.{ Effect, NoStream }
 import slick.sql.FixedSqlAction
@@ -61,6 +61,6 @@ class ContentCategoryRepository(appManager: AppManager)
     *
     * @return
     */
-  override def encoders: JsonCirceDefaultEncoders[ContentcategoryRow] =
-    new JsonCirceDefaultEncoders[ContentcategoryRow]()
+  override def encoders: JsonCirceDefaultEncodersImplementation[ContentcategoryRow] =
+    new JsonCirceDefaultEncodersImplementation[ContentcategoryRow]()
 }

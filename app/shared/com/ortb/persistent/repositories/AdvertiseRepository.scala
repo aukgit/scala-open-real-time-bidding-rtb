@@ -8,7 +8,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.Query
@@ -62,6 +62,6 @@ class AdvertiseRepository @Inject()(appManager: AppManager)
     *
     * @return
     */
-  override def encoders: JsonCirceDefaultEncoders[AdvertiseRow] =
-    new JsonCirceDefaultEncoders[AdvertiseRow]()
+  override def encoders: JsonCirceDefaultEncodersImplementation[AdvertiseRow] =
+    new JsonCirceDefaultEncodersImplementation[AdvertiseRow]()
 }

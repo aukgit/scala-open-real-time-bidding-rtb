@@ -8,7 +8,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlAction
@@ -62,6 +62,6 @@ class PublisherRepository @Inject()(appManager: AppManager)
     *
     * @return
     */
-  override def encoders: JsonCirceDefaultEncoders[PublisherRow] =
-    new JsonCirceDefaultEncoders[PublisherRow]()
+  override def encoders: JsonCirceDefaultEncodersImplementation[PublisherRow] =
+    new JsonCirceDefaultEncodersImplementation[PublisherRow]()
 }

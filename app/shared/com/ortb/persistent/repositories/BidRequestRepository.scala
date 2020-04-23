@@ -9,7 +9,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile
 import slick.lifted.Query
@@ -59,5 +59,5 @@ class BidRequestRepository @Inject()(appManager: AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncoders[BidrequestRow] = new JsonCirceDefaultEncoders[BidrequestRow]()
+  override def encoders : JsonCirceDefaultEncodersImplementation[BidrequestRow] = new JsonCirceDefaultEncodersImplementation[BidrequestRow]()
 }

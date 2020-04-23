@@ -1,0 +1,6 @@
+package shared.io.jsonParse.traits
+
+import shared.com.ortb.model.repository.ApiPaginationResponseAttributesModel
+
+trait ApiPaginationResponseAttributesModelCustomJsonEncoder
+  extends BasicJsonEncoder[ApiPaginationResponseAttributesModel]

@@ -8,7 +8,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlAction
@@ -63,6 +63,6 @@ class NoBidResponseTypeRepository @Inject()(appManager : AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncoders[NobidresponsetypeRow] =
-    new JsonCirceDefaultEncoders[NobidresponsetypeRow]()
+  override def encoders : JsonCirceDefaultEncodersImplementation[NobidresponsetypeRow] =
+    new JsonCirceDefaultEncodersImplementation[NobidresponsetypeRow]()
 }

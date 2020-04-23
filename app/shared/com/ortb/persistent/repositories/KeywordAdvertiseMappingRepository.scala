@@ -10,7 +10,7 @@ import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
@@ -67,6 +67,6 @@ class KeywordAdvertiseMappingRepository @Inject()(appManager: AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncoders[KeywordadvertisemappingRow] =
-    new JsonCirceDefaultEncoders[KeywordadvertisemappingRow]()
+  override def encoders : JsonCirceDefaultEncodersImplementation[KeywordadvertisemappingRow] =
+    new JsonCirceDefaultEncodersImplementation[KeywordadvertisemappingRow]()
 }

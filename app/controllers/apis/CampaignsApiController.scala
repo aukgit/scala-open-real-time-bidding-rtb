@@ -14,7 +14,7 @@ import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, _ }
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
-import shared.io.jsonParse.JsonCirceDefaultEncoders
+import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import shared.io.loggers.AppLogger
 
 class CampaignsApiController @Inject()(

@@ -4,18 +4,64 @@ import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
+  def isDefinedAny(
+    item    : Any,
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    val hasItem = item != null && !isEmptyAny(item, None)
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
+
+    if (!hasItem && hasMessage) {
+      AppLogger.debug(message.get)
+    }
+
+    hasItem
+  }
+
+  def isEmptyAny(
+    item : Any,
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    item match {
+      case someString : Option[String] => EmptyValidateHelper.isEmptyOptionString(someString, message)
+      case someIterable : Option[Iterable[_]] => EmptyValidateHelper.isItemsEmpty(someIterable, message)
+      case asString : String => EmptyValidateHelper.isEmptyString(asString, message)
+      case asSome : Option[_] => EmptyValidateHelper.isEmpty(asSome, message)
+      case asEither : Either[_, _] => EmptyValidateHelper.isRightEmptyOnEither(asEither, message)
+      case asAny => EmptyValidateHelper.isEmpty(Some(asAny), message)
+    }
+  }
+
+  def isRightEmptyOnEither[A, B](
+    item    : Either[A, B],
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    !isRightDefinedOnEither(item, message)
+  }
+
+  def isRightDefinedOnEither[A, B](
+    item    : Either[A, B],
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    val hasItem = item != null && item.getOrElse(null) != null
+
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
+
+    if (!hasItem && hasMessage) {
+      AppLogger.debug(message.get)
+    }
+
+    hasItem
+  }
 
   def isDefined[A](
-      item: Option[A],
-      message: Option[String] = Some(AppConstants.NoContent)): Boolean = {
+    item    : Option[A],
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val hasItem = item != null
     item.isDefined &&
-    item.get != null &&
-    item.get != None
+      item.get != null &&
+      item.get != None
 
-    val hasMessage = message != null &&
-      message.isDefined &&
-      !message.get.isEmpty
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
 
     if (!hasItem && hasMessage) {
       AppLogger.debug(message.get)
@@ -26,59 +72,117 @@ object EmptyValidateHelper {
 
   //noinspection DuplicatedCode
   def isEmpty[A](
-      item: Option[A],
-      message: Option[String] = Some(AppConstants.NoContent)): Boolean = {
+    item    : Option[A],
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isDefined(item, message)
   }
 
+  /**
+   * Returns true of the string is None, null or "" or has emptySpaces("   ")
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
   def isEmptyOptionString(
-      givenString: Option[String],
-      message: Option[String] = Some(AppConstants.NoContent)): Boolean = {
+    givenString : Option[String],
+    message     : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    !isOptionStringDefined(givenString, message)
+  }
+
+  /**
+   * Returns true of the has at least a valid character expect empty(" ")
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
+  def isOptionStringDefinedWithoutMessage(
+    givenString : Option[String]) : Boolean = {
     val hasItem = givenString != null &&
       givenString.isDefined &&
       givenString.nonEmpty &&
       !givenString.get.isBlank;
 
-    val hasMessage = message != null &&
-      message.isDefined &&
-      !message.get.isEmpty
+    hasItem
+  }
+
+  /**
+   * Returns true of the has at least a valid character expect empty(" ")
+   * Writes to message if message given and not empty.
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
+  def isOptionStringDefined(
+    givenString : Option[String],
+    message     : Option[String] = None) : Boolean = {
+    val hasItem = isOptionStringDefinedWithoutMessage(givenString)
+
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
 
     if (!hasItem && hasMessage) {
       AppLogger.debug(message.get)
     }
 
-    !hasItem
+    hasItem
   }
 
-  def isEmptyString(
-      givenString: String,
-      message: Option[String] = Some(AppConstants.NoContent)): Boolean = {
+  /**
+   * Returns true of the has at least a valid character expect empty(" ")
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
+  def isStringDefined(
+    givenString : String,
+    message     : Option[String] = None) : Boolean = {
     val hasItem = givenString != null &&
       givenString.nonEmpty &&
       !givenString.isBlank;
 
-    val hasMessage = message != null &&
-      message.isDefined &&
-      !message.get.isEmpty
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
 
     if (!hasItem && hasMessage) {
       AppLogger.debug(message.get)
     }
 
-    !hasItem
+    hasItem
+  }
+
+  /**
+   * Returns true if string is null, "", or even "  " empty spaces.
+   * Writes to message if message given and not empty.
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
+  def isEmptyString(
+    givenString : String,
+    message     : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    !isStringDefined(givenString, message)
   }
 
   //noinspection DuplicatedCode
-  def isItemsEmpty[A](items: Option[Iterable[A]],
-                      message: Option[String] = None): Boolean = {
+  def isItemsEmpty[A](
+    items   : Option[Iterable[A]],
+    message : Option[String] = None) : Boolean = {
     val hasItem = items != null &&
       items.isDefined &&
       items.get != null &&
       items.get.nonEmpty
 
-    val hasMessage = message != null &&
-      message.isDefined &&
-      !message.get.isEmpty
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
 
     if (!hasItem && hasMessage) {
       AppLogger.debug(message.get)

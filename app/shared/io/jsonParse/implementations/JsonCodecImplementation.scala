@@ -1,14 +1,14 @@
-package shared.io.jsonParse
+package shared.io.jsonParse.implementations
 
 import io.circe.Codec
 import io.circe.generic.codec.DerivedAsObjectCodec
 import io.circe.generic.semiauto.deriveCodec
-import shared.io.jsonParse.traits.CirceJsonSupport
+import shared.io.jsonParse.traits.JsonCodec
 
-class JsonCodec[T](
+class JsonCodecImplementation[T](
   implicit val decodeCodec : DerivedAsObjectCodec[T],
-  val decodeListCodec : DerivedAsObjectCodec[List[T]])
-  extends CirceJsonSupport {
+  val decodeListCodec      : DerivedAsObjectCodec[List[T]])
+  extends JsonCodec[T] {
 
   implicit def defaultCodec : Codec.AsObject[T] = deriveCodec[T](decodeCodec)
 
