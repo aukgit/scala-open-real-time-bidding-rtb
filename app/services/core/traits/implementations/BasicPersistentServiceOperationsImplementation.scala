@@ -11,7 +11,8 @@ trait BasicPersistentServiceOperationsImplementation[TTable, TRow, TKey]
       return None
     }
 
-    Some(add(entity.get))
+    val addResponse = add(entity.get)
+    Some(addResponse)
   }
 
   def add(entity : TRow) : RepositoryOperationResultModel[TRow, TKey] =

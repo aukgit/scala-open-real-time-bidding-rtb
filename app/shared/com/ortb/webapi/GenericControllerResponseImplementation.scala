@@ -15,7 +15,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
   : GenericControllerResponseAttributesModel = {
     GenericControllerResponseAttributesModel(
       genericResponseAttributesModel.isSuccess,
-      genericResponseAttributesModel.actionType.toString,
+      genericResponseAttributesModel.actionType.get.toString,
       entityIds,
       genericResponseAttributesModel.message)
   }

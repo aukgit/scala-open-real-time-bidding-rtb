@@ -133,6 +133,6 @@
     "compiledOutputDir": "",
     "pkg": "shared.com.ortb.persistent.schema"
   },
-  "defaultTimeout": 5,
+  "defaultTimeout": 5000,
   "defaultParallelProcessing": 5
 }
