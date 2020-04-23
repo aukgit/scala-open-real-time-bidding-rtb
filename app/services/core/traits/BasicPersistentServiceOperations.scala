@@ -1,6 +1,6 @@
 package services.core.traits
 
-import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.results.RepositoryOperationResultModel
 
 trait BasicPersistentServiceOperations[TTable, TRow, TKey]
     extends BasicPersistentServiceCore[TTable, TRow, TKey] {

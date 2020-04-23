@@ -5,7 +5,7 @@ import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
   def isDefinedAny(
-    item    : Any,
+    item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val hasItem = item != null && !isEmptyAny(item, None)
     //noinspection DuplicatedCode
@@ -16,6 +16,20 @@ object EmptyValidateHelper {
     }
 
     hasItem
+  }
+
+  def throwOnNullOrNone(
+    item : Any,
+    message : Option[String] = None) : Unit = {
+    val isEmpty = item == null || isEmptyAny(item, None)
+
+    if (isEmpty && isOptionStringDefinedWithoutMessage(message)) {
+      throw new NullPointerException(message.get)
+    }
+
+    if (isEmpty) {
+      throw new NullPointerException
+    }
   }
 
   def isEmptyAny(
@@ -32,13 +46,13 @@ object EmptyValidateHelper {
   }
 
   def isRightEmptyOnEither[A, B](
-    item    : Either[A, B],
+    item : Either[A, B],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isRightDefinedOnEither(item, message)
   }
 
   def isRightDefinedOnEither[A, B](
-    item    : Either[A, B],
+    item : Either[A, B],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val hasItem = item != null && item.getOrElse(null) != null
 

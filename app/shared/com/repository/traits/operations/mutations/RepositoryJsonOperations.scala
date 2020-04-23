@@ -1,6 +1,6 @@
 package shared.com.repository.traits.operations.mutations
 
-import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.results.RepositoryOperationResultModel
 
 trait RepositoryJsonOperations[TRow, TKey]
     extends RepositoryOperationsBase[TRow] {

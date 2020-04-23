@@ -1,6 +1,6 @@
 package shared.com.repository.traits.implementions.operations.mutations.async
 
-import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.async.RepositoryAddOrUpdateOperationsAsync
 

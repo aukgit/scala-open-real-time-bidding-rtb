@@ -1,6 +1,4 @@
-package shared.com.ortb.model.repository
-
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+package shared.com.ortb.model.attributes
 
 case class ApiPaginationResponseAttributesModel(
   isSuccess : Boolean,
@@ -13,3 +11,5 @@ case class ApiPaginationResponseAttributesModel(
   totalPagesExist: Int,
   totalCount: Int,
   message : String = "")
+
+

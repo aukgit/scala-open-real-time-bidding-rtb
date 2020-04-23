@@ -1,7 +1,7 @@
 package services.core.traits.implementations
 
 import services.core.traits.BasicPersistentServiceOperations
-import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.io.helpers.EmptyValidateHelper
 
 trait BasicPersistentServiceOperationsImplementation[TTable, TRow, TKey]

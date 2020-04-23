@@ -1,9 +1,8 @@
 package services.core.traits.implementations
 
 import services.core.traits.MultiplePersistentServiceOperation
-import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
+import shared.com.ortb.model.results.RepositoryOperationResultsModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
-import shared.com.repository.RepositoryBase
 
 trait MultiplePersistentServiceOperationImplementation[TTable, TRow, TKey]
   extends MultiplePersistentServiceOperation[TTable, TRow, TKey] {
@@ -11,7 +10,7 @@ trait MultiplePersistentServiceOperationImplementation[TTable, TRow, TKey]
   override def addEntities(
     entity   : TRow,
     addTimes : Int) : RepositoryOperationResultsModel[TRow, TKey] =
-  repository.addEntities(entity, addTimes)
+    repository.addEntities(entity, addTimes)
 
   override def addEntities(
     entities : Iterable[TRow]) : RepositoryOperationResultsModel[TRow, TKey] =

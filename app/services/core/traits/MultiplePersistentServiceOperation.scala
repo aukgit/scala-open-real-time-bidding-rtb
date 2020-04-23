@@ -1,6 +1,6 @@
 package services.core.traits
 
-import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
+import shared.com.ortb.model.results.RepositoryOperationResultsModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 
 trait MultiplePersistentServiceOperation[TTable, TRow, TKey]

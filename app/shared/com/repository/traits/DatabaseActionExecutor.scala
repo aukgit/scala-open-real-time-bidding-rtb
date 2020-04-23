@@ -4,13 +4,13 @@ import java.awt.dnd.InvalidDnDOperationException
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.implicits.implementations.ImplicitsImplementation.anyRefCaller
-import shared.com.ortb.model.repository.response.RepositoryOperationResultModel
+import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase
 import shared.io.loggers.AppLogger
 import slick.dbio._
 import slick.sql._
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 
 trait DatabaseActionExecutor[TTable, TRow, TKey] {
   this: RepositoryBase[TTable, TRow, TKey] =>

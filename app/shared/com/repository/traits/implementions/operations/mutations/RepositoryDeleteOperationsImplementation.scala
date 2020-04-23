@@ -1,11 +1,12 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
+import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
+import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryDeleteOperations
 import shared.io.helpers.BasicAdapterHelper
-import slick.dbio.{Effect, NoStream}
+import slick.dbio.{ Effect, NoStream }
 import slick.sql.FixedSqlAction
 
 trait RepositoryDeleteOperationsImplementation[TTable, TRow, TKey]

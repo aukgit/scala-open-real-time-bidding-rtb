@@ -1,7 +1,8 @@
 package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.model.repository.response.{RepositoryOperationResultModel, RepositoryOperationResultsModel}
+import shared.com.ortb.model.repository.response.RepositoryOperationResultsModel
+import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryUpdateOperations
