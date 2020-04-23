@@ -74,6 +74,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
       if (!attributes.isSuccess) {
         val failedMessage =
           s"Update request failed (source received:$bodyText)."
+        
         val httpFailedActionWrapper = HttpFailedActionWrapper[TRow, TKey](
           additionalMessage = Some(failedMessage),
           resultType = Some(HttpActionWrapperType.PutUpdateFailed),

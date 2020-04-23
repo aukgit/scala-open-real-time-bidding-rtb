@@ -25,11 +25,12 @@ object ResponseHelper extends ResponseHelperBase {
     httpResponseCreateRequestModel : HttpResponseCreateRequestModel[TTable, TRow, TKey],
     repositoryResponse : Option[RepositoryOperationResultModel[TRow, TKey]]) : String = {
     val responseEntityWrapper = repositoryResponse.get.data
+    val service = httpResponseCreateRequestModel.controller.service
+    val encoder = service.controllerSuccessEncoder.
     val entityWrapper = responseEntityWrapper.get
     val attributes = getGenericResponseAttributesModelToGenericControllerResponseAttributesModel(
       repositoryResponse.get.attributes.get,
       Seq(entityWrapper.entityId.toString))
-
     val response  = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), Seq(entityWrapper.entity))
 
     Some(response)

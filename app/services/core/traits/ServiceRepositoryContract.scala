@@ -6,4 +6,3 @@ import shared.io.jsonParse.implementations.custom.models.{ ApiPaginationResultsM
 trait ServiceRepositoryContract[TTable, TRow, TKey]{
   val repository : RepositoryBase[TTable, TRow, TKey]
 }
-
