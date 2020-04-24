@@ -3,13 +3,32 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET  /api/campaigns  controllers.apis.CampaignsApiController.getAll
-GET  /api/campaigns/:id  controllers.apis.CampaignsApiController.byId(id: Int)
-DELETE  /api/campaigns/:id  controllers.apis.CampaignsApiController.delete(id: Int)
-PUT  /api/campaigns/:id  controllers.apis.CampaignsApiController.update(id: Int)
-POST  /api/campaigns/create  controllers.apis.CampaignsApiController.add
-# ->         /v1/posts               v1.post.PostRouter
-->         /admin/v1/campaigns               controllers.controllerRoutes.CampaignApiRouter
+->         /admin/v1/advertises                             controllers.controllerRoutes.AdvertiseApiRouter
+->         /admin/v1/campaigns                              controllers.controllerRoutes.CampaignApiRouter
+->         /admin/v1/auctions                               controllers.controllerRoutes.AuctionApiRouter
+->         /admin/v1/bannerAdvertiseTypes                   controllers.controllerRoutes.BannerAdvertiseTypeApiRouter
+->         /admin/v1/bat                                    controllers.controllerRoutes.BannerAdvertiseTypeApiRouter
+->         /admin/v1/bidRequests                            controllers.controllerRoutes.BidRequestApiRouter
+->         /admin/v1/bidResponses                           controllers.controllerRoutes.BidResponseApiRouter
+->         /admin/v1/campaignTargetCities                   controllers.controllerRoutes.CampaignTargetCityApiRouter
+->         /admin/v1/ctc                                    controllers.controllerRoutes.CampaignTargetCityApiRouter
+->         /admin/v1/CampaignTargetOperatingSystems         controllers.controllerRoutes.CampaignTargetOperatingSystemApiRouter
+->         /admin/v1/ctos                                   controllers.controllerRoutes.CampaignTargetOperatingSystemApiRouter
+->         /admin/v1/CampaignTargetSiteSystems              controllers.controllerRoutes.CampaignTargetSiteSystemApiRouter
+->         /admin/v1/ctss                                   controllers.controllerRoutes.CampaignTargetSiteSystemApiRouter
+->         /admin/v1/ContentCategories                      controllers.controllerRoutes.ContentCategoryApiRouter
+->         /admin/v1/contentContexts                        controllers.controllerRoutes.ContentContextApiRouter
+->         /admin/v1/demandSidePlatforms                    controllers.controllerRoutes.DemandSidePlatformApiRouter
+->         /admin/v1/dsps                                   controllers.controllerRoutes.DemandSidePlatformApiRouter
+->         /admin/v1/geoMappings                            controllers.controllerRoutes.GeoMappingApiRouter
+->         /admin/v1/impressions                            controllers.controllerRoutes.ImpressionApiRouter
+->         /admin/v1/KeywordAdvertiseMappings               controllers.controllerRoutes.KeywordAdvertiseMappingApiRouter
+->         /admin/v1/keywords                               controllers.controllerRoutes.KeywordApiRouter
+->         /admin/v1/lostBids                               controllers.controllerRoutes.LostBidApiRouter
+->         /admin/v1/noBidResponses                         controllers.controllerRoutes.NoBidResponseTypeApiRouter
+->         /admin/v1/publishers                             controllers.controllerRoutes.PublisherApiRouter
+->         /admin/v1/transactions                           controllers.controllerRoutes.TransactionApiRouter
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
