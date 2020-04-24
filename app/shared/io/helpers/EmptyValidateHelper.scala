@@ -5,7 +5,7 @@ import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
   def isDefinedAny(
-    item : Any,
+    item    : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val hasItem = item != null && !isEmptyAny(item, None)
     //noinspection DuplicatedCode
@@ -19,7 +19,7 @@ object EmptyValidateHelper {
   }
 
   def throwOnNullOrNone(
-    item : Any,
+    item    : Any,
     message : Option[String] = None) : Unit = {
     val isEmpty = item == null || isEmptyAny(item, None)
 
@@ -33,7 +33,7 @@ object EmptyValidateHelper {
   }
 
   def isEmptyAny(
-    item : Any,
+    item    : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     item match {
       case someString : Option[String] => EmptyValidateHelper.isEmptyOptionString(someString, message)
@@ -46,13 +46,13 @@ object EmptyValidateHelper {
   }
 
   def isRightEmptyOnEither[A, B](
-    item : Either[A, B],
+    item    : Either[A, B],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isRightDefinedOnEither(item, message)
   }
 
   def isRightDefinedOnEither[A, B](
-    item : Either[A, B],
+    item    : Either[A, B],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val hasItem = item != null && item.getOrElse(null) != null
 
@@ -69,8 +69,8 @@ object EmptyValidateHelper {
   def isDefined[A](
     item    : Option[A],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
-    val hasItem = item != null
-    item.isDefined &&
+    val hasItem = item != null &&
+      item.isDefined &&
       item.get != null &&
       item.get != None
 
@@ -85,7 +85,7 @@ object EmptyValidateHelper {
   }
 
   def isOptionsDefined(
-    items    : Option[Any]*) : Boolean = {
+    items : Option[Any]*) : Boolean = {
     val hasItems = items != null &&
       items.nonEmpty &&
       items.forall(item => isDefinedAny(item))
@@ -169,7 +169,7 @@ object EmptyValidateHelper {
     message     : Option[String] = None) : Boolean = {
     val hasItem = givenString != null &&
       givenString.nonEmpty &&
-      !givenString.isBlank;
+      !givenString.isBlank
 
     //noinspection DuplicatedCode
     val hasMessage = isOptionStringDefinedWithoutMessage(message)
@@ -200,11 +200,11 @@ object EmptyValidateHelper {
   def isItemsEmpty[A](
     items   : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
-   !hasAnyItem(items, message)
+    !hasAnyItem(items, message)
   }
 
   def hasAnyItem[A](
-    items   : Option[Iterable[A]],
+    items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
     val hasItem = items != null &&
       items.isDefined &&

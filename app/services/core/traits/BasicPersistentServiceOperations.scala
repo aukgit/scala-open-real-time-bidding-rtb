@@ -9,9 +9,9 @@ trait BasicPersistentServiceOperations[TTable, TRow, TKey]
 
   def add(entity: TRow): RepositoryOperationResultModel[TRow, TKey]
 
-  def getAll: Seq[TRow] = repository.getAll
+  def getAll: Seq[TRow]
 
-  def getAllList: List[TRow] = repository.getAllAsList
+  def getAllList: List[TRow]
 
   def update(id: TKey, entity: TRow): RepositoryOperationResultModel[TRow, TKey]
 

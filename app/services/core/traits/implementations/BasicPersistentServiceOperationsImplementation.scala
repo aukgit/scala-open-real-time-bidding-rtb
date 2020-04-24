@@ -32,4 +32,6 @@ trait BasicPersistentServiceOperationsImplementation[TTable, TRow, TKey]
     repository.delete(id)
 
   def getById(id : TKey) : Option[TRow] = repository.getById(id)
+
+  override def getAllList : List[TRow] = repository.getAllAsList
 }

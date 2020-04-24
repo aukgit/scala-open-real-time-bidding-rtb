@@ -5,4 +5,5 @@ import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 case class GenericResponseAttributesModel(
   isSuccess : Boolean,
   actionType : Option[DatabaseActionType],
-  message    : String = "")
+  requestUri : String = "",
+  message         : String = "")

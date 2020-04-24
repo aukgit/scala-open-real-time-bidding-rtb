@@ -9,13 +9,18 @@ import shared.io.helpers.EmptyValidateHelper
 
 class GenericControllerResponseImplementation extends GenericControllerResponse {
   //TODO : Refactor to SOLID as REPOSITORY
-  def getGenericResponseAttributesModelToGenericControllerResponseAttributesModel[TKey](
-    genericResponseAttributesModel                      : GenericResponseAttributesModel,
-    entityIds                                           : Iterable[String] = None)
+  def getGenericResponseAttributesModelToGenericControllerResponseAttributesModel[TTable, TRow, TKey](
+    httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
+    genericResponseAttributesModel : GenericResponseAttributesModel,
+    entityIds                      : Iterable[String] = None)
   : GenericControllerResponseAttributesModel = {
+    val hasUri = EmptyValidateHelper.isStringDefined(genericResponseAttributesModel.requestUri)
+    val requestUri : String = if (hasUri) genericResponseAttributesModel.requestUri else httpResponseCreateRequestModel
+      .requestUri
     GenericControllerResponseAttributesModel(
       genericResponseAttributesModel.isSuccess,
       genericResponseAttributesModel.actionType.get.toString,
+      requestUri,
       entityIds,
       genericResponseAttributesModel.message)
   }
@@ -28,6 +33,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
 
     val entityWrapper = responseEntityWrapper.get
     val attributes = getGenericResponseAttributesModelToGenericControllerResponseAttributesModel(
+      httpResponseCreateRequestModel,
       repositoryResponse.get.attributes.get,
       Seq(entityWrapper.entityId.toString))
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), Seq(entityWrapper.entity))
@@ -47,6 +53,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val rows = responseEntityWrapper.map(w => w.entity)
     val idsString = listOfEntityWrappers.map(w => w.entityId.toString)
     val attributes = getGenericResponseAttributesModelToGenericControllerResponseAttributesModel(
+      httpResponseCreateRequestModel,
       repositoryResponse.get.attributes.get,
       idsString)
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), rows)
@@ -64,9 +71,10 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val service = httpResponseCreateRequestModel.controller.service
     val attributesModel = GenericControllerResponseAttributesModel(
       isSuccess = true,
-      "Unknown",
-      Seq(entityWrapper.entityId.get.toString),
-      "")
+      databaseActionPerformed = "Unknown",
+      requestUri = httpResponseCreateRequestModel.requestUri,
+      entityIds = Seq(entityWrapper.entityId.get.toString)
+    )
 
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributesModel), Seq(entityWrapper.entity.get))
     val encoder = service.serviceEncoders.controllerSuccessEncoder

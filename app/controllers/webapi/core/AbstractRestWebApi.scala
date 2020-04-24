@@ -69,8 +69,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
   }
 
   def getRequestUri(request : Request[AnyContent]) : String = {
-    // TODO should return current /suffix url after the domain.
-    "/Something after domain TODO"
+    request.uri.toString
   }
 
   def update(id : TKey) : Action[AnyContent] = Action { implicit request =>
@@ -95,6 +94,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
       val attributes = response.attributes.get
 
       if (attributes.isSuccess) {
+        //noinspection DuplicatedCode
         val httpResponseCreateRequestModel = HttpSuccessResponseCreateRequestModel(
           this,
           getRequestUri(request),

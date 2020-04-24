@@ -18,7 +18,6 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
       return null
     }
 
-    val ids =  getIdsAsString(rows)
     val attributes = GenericResponseAttributesModel(
       isSuccess = true,
       dbAction,
