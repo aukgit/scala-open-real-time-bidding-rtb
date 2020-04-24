@@ -1,11 +1,12 @@
-package controllers.webapi.core.traits.implementations.actions
+package controllers.webapi.core.traits.implementations
 
-import controllers.webapi.core.{ AbstractRestWebApi, RestWebApiResponsePerform }
+import controllers.webapi.core.AbstractRestWebApi
+import controllers.webapi.core.traits.RestWebApiResponsePerform
 import play.api.mvc._
 import play.mvc.Http.MimeTypes
 import shared.com.ortb.model.wrappers.http._
 
-trait RestWebApiPerformActionImplementation[TTable, TRow, TKey]
+trait RestWebApiResponsePerformImplementation[TTable, TRow, TKey]
   extends RestWebApiResponsePerform[TTable, TRow, TKey] {
   this : AbstractRestWebApi[TTable, TRow, TKey] =>
 

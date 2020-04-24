@@ -1,6 +1,5 @@
 package controllers.webapi.core.traits
 
-import controllers.webapi.core.{ RestWebApiMessages, RestWebApiResponsePerform }
 import shared.io.jsonParse.traits.CirceJsonSupport
 
 trait RestWebApiContracts[TTable, TRow, TKey]

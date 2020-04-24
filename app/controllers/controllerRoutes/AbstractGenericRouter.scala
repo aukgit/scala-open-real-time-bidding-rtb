@@ -66,7 +66,7 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
       s"Couldn't convert [$stringToInt] to integer.",
       actionWrapper = routingActionWrapper
     )
-    controller.performBadRequestAsAction(
+    controller.pef(
       Some(httpFailedActionWrapper))
   }
 

@@ -1,10 +1,16 @@
 package controllers.webapi.core.traits.implementations.actions
 
+import controllers.webapi.core.AbstractRestWebApi
 import controllers.webapi.core.traits.actions.RestWebApiGetAllAction
+import play.api.mvc.{ Action, _ }
+import shared.com.ortb.enumeration.ControllerDefaultActionType
+import shared.com.ortb.model.requests.{ HttpSuccessResponseCreateRequestModel, PaginationRequestModel }
+import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
+import shared.io.helpers.{ EmptyValidateHelper, PaginationHelper, ResponseHelper }
 
 trait RestWebApiGetAllActionImplementation[TTable, TRow, TKey]
   extends RestWebApiGetAllAction[TTable, TRow, TKey] {
-  this: AbstractRestWebApi[TTable, TRow, TKey] =>
+  this : AbstractRestWebApi[TTable, TRow, TKey] =>
 
   //noinspection DuplicatedCode
   override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
@@ -30,7 +36,7 @@ trait RestWebApiGetAllActionImplementation[TTable, TRow, TKey]
 
     if (hasResults && hasPagination) {
       val paginationRequest =
-        requests.PaginationRequestModel(
+        PaginationRequestModel(
           this,
           request,
           allEntities,
@@ -54,7 +60,7 @@ trait RestWebApiGetAllActionImplementation[TTable, TRow, TKey]
 
       OkJson(finalJsonResponse)
     } else {
-      performBadRequest()
+      performBadResponse()
     }
   }
 }

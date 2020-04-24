@@ -1,4 +1,4 @@
-package controllers.webapi.core
+package controllers.webapi.core.traits.actions
 
 import play.api.mvc.{ Action, AnyContent }
 

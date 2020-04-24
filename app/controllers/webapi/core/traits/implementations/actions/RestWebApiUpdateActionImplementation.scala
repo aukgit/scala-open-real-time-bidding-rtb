@@ -1,6 +1,7 @@
 package controllers.webapi.core.traits.implementations.actions
 
-import controllers.webapi.core.{ AbstractRestWebApi, RestWebApiUpdateAction }
+import controllers.webapi.core.AbstractRestWebApi
+import controllers.webapi.core.traits.actions.RestWebApiUpdateAction
 import play.api.mvc.{ Action, AnyContent }
 import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel

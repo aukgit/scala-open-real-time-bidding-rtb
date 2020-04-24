@@ -1,6 +1,6 @@
 package controllers.webapi.core
 
-import controllers.webapi.core.traits.RestWebApiContracts
+import controllers.webapi.core.traits.{ RestWebApiContracts, RestWebApiResponsePerform }
 import controllers.webapi.core.traits.implementations.{ RestWebApiBodyProcessorImplementation, RestWebApiHandleErrorImplementation }
 import play.api.mvc._
 import shared.com.ortb.model.wrappers.http._
@@ -11,8 +11,8 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
   extends AbstractController(components)
     with RestWebApiContracts[TTable, TRow, TKey]
     with RestWebApiHandleErrorImplementation[TTable, TRow, TKey]
-with RestWebApiBodyProcessorImplementation[TTable, TRow, TKey]
-with RestWebApiResponsePerform[TTable, TRow, TKey] {
+    with RestWebApiBodyProcessorImplementation[TTable, TRow, TKey]
+    with RestWebApiResponsePerform[TTable, TRow, TKey] {
 
   def getRequestUri(request : Request[AnyContent]) : String = {
     request.uri.toString
@@ -42,13 +42,5 @@ with RestWebApiResponsePerform[TTable, TRow, TKey] {
     entity : Option[TRow] = None,
     message : String = "") : String = "Success Operation" // TODO Enhance
 
-  override def performBadRequest(
-    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]]) : Result = {
-    if (httpFailedActionWrapper.isDefined) {
-      return BadRequest(httpFailedActionWrapper.toString)
-    }
-
-    BadRequest(getDefaultFailedMessage())
-  }
 
 }

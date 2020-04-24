@@ -1,4 +1,4 @@
-package controllers.webapi.core
+package controllers.webapi.core.traits
 
 import play.api.mvc.Result
 import shared.com.ortb.model.wrappers.http._
