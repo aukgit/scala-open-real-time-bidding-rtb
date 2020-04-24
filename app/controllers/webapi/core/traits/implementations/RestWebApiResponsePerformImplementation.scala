@@ -10,13 +10,13 @@ trait RestWebApiResponsePerformImplementation[TTable, TRow, TKey]
   extends RestWebApiResponsePerform[TTable, TRow, TKey] {
   this : AbstractRestWebApi[TTable, TRow, TKey] =>
 
-  def performBadRequestAsAction(
-    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]]) : Action[AnyContent] = {
+  override def performBadResponse(
+    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]]) : Result = {
     if (httpFailedActionWrapper.isDefined) {
-      components.actionBuilder(BadRequest(httpFailedActionWrapper.toString))
-    } else {
-      components.actionBuilder(BadRequest(getDefaultFailedMessage()))
+      return BadRequest(httpFailedActionWrapper.toString)
     }
+
+    BadRequest(getDefaultFailedMessage())
   }
 
   def performBadResponseOnException(
@@ -39,6 +39,15 @@ trait RestWebApiResponsePerformImplementation[TTable, TRow, TKey]
     }
 
     Ok(getDefaultSuccessMessage())
+  }
+
+  def performBadResponseAsAction(
+    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]]) : Action[AnyContent] = {
+    if (httpFailedActionWrapper.isDefined) {
+      components.actionBuilder(BadRequest(httpFailedActionWrapper.toString))
+    } else {
+      components.actionBuilder(BadRequest(getDefaultFailedMessage()))
+    }
   }
 
   override def OkJson(jsonString : String): Result = Ok(jsonString).as(MimeTypes.JSON)

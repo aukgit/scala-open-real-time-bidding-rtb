@@ -52,9 +52,8 @@ trait RestWebApiAddEntitiesActionImplementation[TTable, TRow, TKey]
       requestContent = Some(request),
       isMultipleTransaction = true)
 
-    val entityResponseWrapper = bodyRequestToEntities(request)
-
     try {
+      val entityResponseWrapper = bodyRequestToEntities(request)
       if (entityResponseWrapper.isDefined) {
         val entities = entityResponseWrapper.get.entityWrapper.get
         val response = service.addEntities(entities.map(w => w.entity.get))

@@ -1,7 +1,8 @@
 package controllers.webapi.core
 
-import controllers.webapi.core.traits.{ RestWebApiContracts, RestWebApiResponsePerform }
-import controllers.webapi.core.traits.implementations.{ RestWebApiBodyProcessorImplementation, RestWebApiHandleErrorImplementation }
+import controllers.webapi.core.traits._
+import controllers.webapi.core.traits.implementations._
+import controllers.webapi.core.traits.implementations.actions._
 import play.api.mvc._
 import shared.com.ortb.model.wrappers.http._
 import shared.io.loggers.AppLogger
@@ -12,10 +13,19 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     with RestWebApiContracts[TTable, TRow, TKey]
     with RestWebApiHandleErrorImplementation[TTable, TRow, TKey]
     with RestWebApiBodyProcessorImplementation[TTable, TRow, TKey]
-    with RestWebApiResponsePerform[TTable, TRow, TKey] {
+    with RestWebApiResponsePerformImplementation[TTable, TRow, TKey]
+    with RestWebApiAddActionImplementation[TTable, TRow, TKey]
+    with RestWebApiAddOrUpdateActionImplementation[TTable, TRow, TKey]
+    with RestWebApiDeleteActionImplementation[TTable, TRow, TKey]
+    with RestWebApiUpdateActionImplementation[TTable, TRow, TKey]
+    with RestWebApiAddEntitiesActionImplementation[TTable, TRow, TKey]
+    with RestWebApiGetByIdActionImplementation[TTable, TRow, TKey]
+    with RestWebApiGetAllActionImplementation[TTable, TRow, TKey]
+    with RestWebApiMessagesImplementation[TTable, TRow, TKey]
+    with RestWebApiPropertiesImplementation[TTable, TRow, TKey] {
 
   def getRequestUri(request : Request[AnyContent]) : String = {
-    request.uri.toString
+    request.uri
   }
 
   def createHttpFailedActionWrapper(
@@ -31,16 +41,4 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
 
     httpFailedActionWrapper
   }
-
-  override def getDefaultFailedMessage(
-    controllerGenericActionWrapper : Option[ControllerGenericActionWrapper] = None,
-    entity : Option[TRow] = None,
-    message : String = "") : String = "Failed Operation" // TODO Enhance
-
-  override def getDefaultSuccessMessage(
-    controllerGenericActionWrapper : Option[ControllerGenericActionWrapper] = None,
-    entity : Option[TRow] = None,
-    message : String = "") : String = "Success Operation" // TODO Enhance
-
-
 }

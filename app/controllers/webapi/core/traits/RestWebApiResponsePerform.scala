@@ -1,6 +1,6 @@
 package controllers.webapi.core.traits
 
-import play.api.mvc.Result
+import play.api.mvc.{ Action, AnyContent, Result }
 import shared.com.ortb.model.wrappers.http._
 
 trait RestWebApiResponsePerform[TTable, TRow, TKey] {
@@ -21,4 +21,7 @@ trait RestWebApiResponsePerform[TTable, TRow, TKey] {
   def performOkay(
     httpSuccessActionWrapper : Option[HttpSuccessActionWrapper[TRow, TKey]] = None)
   : Result
+
+  def performBadResponseAsAction(
+    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]]) : Action[AnyContent] 
 }

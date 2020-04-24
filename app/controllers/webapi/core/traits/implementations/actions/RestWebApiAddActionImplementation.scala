@@ -70,37 +70,4 @@ trait RestWebApiAddActionImplementation[TTable, TRow, TKey]
         handleError(e, addActionWrapper)
     }
   }
-
-  //noinspection DuplicatedCode
-  def addEntitiesBySinge(addTimes : Int) : Action[AnyContent] = Action { implicit request =>
-    val addActionWrapper = ControllerGenericActionWrapper(
-      ControllerDefaultActionType.Add,
-      requestContent = Some(request),
-      isMultipleTransaction = true)
-
-    val entityResponseWrapper = bodyRequestToEntity(request)
-
-    try {
-      if (entityResponseWrapper.isDefined) {
-        val entity = entityResponseWrapper.get.entityWrapper.get.entity.get
-        val response = service.addEntities(entity, addTimes)
-        //noinspection DuplicatedCode
-        val httpResponseCreateRequestModel = HttpSuccessResponseCreateRequestModel(
-          this,
-          getRequestUri(request),
-          controllerGenericActionWrapper = addActionWrapper,
-          repositoryOperationResultsModel = Some(response)
-        )
-
-        val finalJsonResponse = ResponseHelper.genericControllerResponse
-                                              .getControllerSuccessResponse(httpResponseCreateRequestModel)
-
-        OkJson(finalJsonResponse)
-      } else {
-        performBadResponse()
-      }
-    } catch {
-      case e : Exception => handleError(e, addActionWrapper)
-    }
-  }
 }
