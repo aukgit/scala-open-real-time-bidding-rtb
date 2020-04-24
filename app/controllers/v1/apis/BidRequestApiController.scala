@@ -7,13 +7,10 @@ import services.core.AbstractBasicPersistentService
 import services._
 import shared.com.ortb.persistent.schema.Tables._
 
-class CampaignsApiController @Inject()(
-  campaignService : CampaignService,
+class BidRequestApiController @Inject()(
+  injectedService : BidRequestService,
   components : ControllerComponents)
-  extends AbstractRestWebApi[Campaign, CampaignRow, Int](components) {
+  extends AbstractRestWebApi[Bidrequest,  BidrequestRow, Int](components) {
 
-  override val service : AbstractBasicPersistentService[Campaign, CampaignRow, Int] =
-    campaignService
+  override val service = injectedService
 }
-
-
