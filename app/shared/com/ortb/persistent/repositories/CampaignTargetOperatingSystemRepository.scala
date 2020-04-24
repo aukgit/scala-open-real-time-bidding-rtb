@@ -23,13 +23,13 @@ class CampaignTargetOperatingSystemRepository @Inject()(appManager : AppManager)
 
   override def tableName : String = this.campaignTargetOperatingSystemTableName
 
-  override def getEntityId(
+  override def getEntityIdFromOptionRow(
     entity : Option[Tables.CampaigntargetoperatingsystemRow]
   ) : Int =
     if (entity.isDefined) entity.get.campaigntargetoperatingsystemid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId : Option[Int],
     entity   : Option[Tables.CampaigntargetoperatingsystemRow]
   ) : Option[Tables.CampaigntargetoperatingsystemRow] = {

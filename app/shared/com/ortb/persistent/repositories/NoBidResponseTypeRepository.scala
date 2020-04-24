@@ -20,11 +20,11 @@ class NoBidResponseTypeRepository @Inject()(appManager : AppManager)
 
   override def tableName : String = this.noBidResponseTypeTableName
 
-  override def getEntityId(entity : Option[Tables.NobidresponsetypeRow]) : Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.NobidresponsetypeRow]) : Int =
     if (entity.isDefined) entity.get.nobidresponsetypeid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId : Option[Int],
     entity : Option[Tables.NobidresponsetypeRow]
   ) : Option[Tables.NobidresponsetypeRow] = {

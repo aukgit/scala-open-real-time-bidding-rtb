@@ -22,11 +22,11 @@ class CampaignTargetCityRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.bidResponseTableName
 
-  override def getEntityId(entity: Option[Tables.CampaigntargetcityRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.CampaigntargetcityRow]): Int =
     if (entity.isDefined) entity.get.campaigntargetcityid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.CampaigntargetcityRow]
   ): Option[Tables.CampaigntargetcityRow] = {

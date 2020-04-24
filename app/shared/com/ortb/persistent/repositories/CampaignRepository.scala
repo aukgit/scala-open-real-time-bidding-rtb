@@ -37,11 +37,11 @@ class CampaignRepository @Inject()(appManager : AppManager)
       entityProjection,
       entityId) => entityProjection.copy(campaignid = entityId)) += entity
 
-  override def getEntityId(entity : Option[CampaignRow]) : Int =
+  override def getEntityIdFromOptionRow(entity : Option[CampaignRow]) : Int =
     if (entity.isDefined) entity.get.campaignid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId : Option[Int],
     entity   : Option[CampaignRow]) : Option[CampaignRow] = {
     if (isEmptyGivenEntity(entityId, entity)) {

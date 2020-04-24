@@ -21,7 +21,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
       return None
     }
 
-    val id = getEntityId(item)
+    val id = getEntityIdFromOptionRow(item)
 
     Some(EntityWrapper(id, entity = item.get))
   }
@@ -36,7 +36,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
       return None
     }
 
-    val id = getEntityId(item)
+    val id = getEntityIdFromOptionRow(item)
 
     Some(EntityWrapperWithOptions(Some(id), entity = item))
   }

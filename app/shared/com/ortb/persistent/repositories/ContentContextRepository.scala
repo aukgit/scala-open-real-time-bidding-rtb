@@ -19,11 +19,11 @@ class ContentContextRepository @Inject()(appManager : AppManager)
 
   override def tableName : String = this.contentContextTableName
 
-  override def getEntityId(entity : Option[Tables.ContentcontextRow]) : Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.ContentcontextRow]) : Int =
     if (entity.isDefined) entity.get.contentcontextid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId : Option[Int],
     entity   : Option[Tables.ContentcontextRow]
   ) : Option[Tables.ContentcontextRow] = {

@@ -18,11 +18,11 @@ class LostBidRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.lostBidTableName
 
-  override def getEntityId(entity: Option[Tables.LostbidRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.LostbidRow]): Int =
     if (entity.isDefined) entity.get.lostbidid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
       entityId: Option[Int],
       entity: Option[Tables.LostbidRow]
   ): Option[Tables.LostbidRow] = {

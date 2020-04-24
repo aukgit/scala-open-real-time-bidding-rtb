@@ -20,11 +20,11 @@ class DemandSidePlatformRepository @Inject()(appManager : AppManager)
 
   override def tableName : String = this.demandSidePlatformTableName
 
-  override def getEntityId(entity : Option[Tables.DemandsideplatformRow]) : Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.DemandsideplatformRow]) : Int =
     if (entity.isDefined) entity.get.demandsideplatformid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId : Option[Int],
     entity   : Option[Tables.DemandsideplatformRow]
   ) : Option[Tables.DemandsideplatformRow] = {

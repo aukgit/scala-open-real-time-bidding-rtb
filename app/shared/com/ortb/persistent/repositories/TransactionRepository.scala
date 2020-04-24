@@ -18,11 +18,11 @@ class TransactionRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.transactionTableName
 
-  override def getEntityId(entity: Option[Tables.TransactionRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.TransactionRow]): Int =
     if (entity.isDefined) entity.get.transactionid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
       entityId: Option[Int],
       entity: Option[Tables.TransactionRow]
   ): Option[Tables.TransactionRow] = {

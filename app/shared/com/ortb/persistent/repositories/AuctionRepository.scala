@@ -18,11 +18,11 @@ class AuctionRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.auctionTableName
 
-  override def getEntityId(entity: Option[AuctionRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[AuctionRow]): Int =
     if (entity.isDefined) entity.get.auctionid else -1
 
-  override def setEntityId(entityId: Option[Int],
-                           entity: Option[AuctionRow]): Option[AuctionRow] = {
+  override def setEntityIdFromOptionRow(entityId : Option[Int],
+                           entity                : Option[AuctionRow]): Option[AuctionRow] = {
     if (isEmptyGivenEntity(entityId, entity)) {
       return None
     }

@@ -30,7 +30,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
     if (hasAffected) {
       return createResponseFor(
-        entityId = Some(getEntityId(entity)),
+        entityId = Some(getEntityIdFromOptionRow(entity)),
         entity = entity,
         actionType = actionType,
         message = message2,
@@ -61,7 +61,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
       )
 
       return createResponseFor(
-        entityId = Some(getEntityId(affectedEntity)),
+        entityId = Some(getEntityIdFromOptionRow(affectedEntity)),
         entity = affectedEntity,
         actionType = actionType,
         message = message2,

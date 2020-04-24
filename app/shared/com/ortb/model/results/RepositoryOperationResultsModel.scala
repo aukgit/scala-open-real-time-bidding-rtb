@@ -5,4 +5,4 @@ import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 
 case class RepositoryOperationResultsModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
-  data : List[EntityWrapper[TRow, TKey]])
+  data : Iterable[EntityWrapper[TRow, TKey]])

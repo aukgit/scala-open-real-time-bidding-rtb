@@ -18,11 +18,11 @@ class GeoMappingRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.geoMappingTableName
 
-  override def getEntityId(entity: Option[Tables.GeomappingRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.GeomappingRow]): Int =
     if (entity.isDefined) entity.get.geomappingid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.GeomappingRow]
   ): Option[Tables.GeomappingRow] = {

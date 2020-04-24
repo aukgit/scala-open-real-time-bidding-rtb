@@ -19,10 +19,10 @@ class BidResponseRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.bidResponseTableName
 
-  override def getEntityId(entity: Option[Tables.BidresponseRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.BidresponseRow]): Int =
     if (entity.isDefined) entity.get.bidresponseid else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.BidresponseRow]
   ): Option[Tables.BidresponseRow] = {

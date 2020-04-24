@@ -20,11 +20,11 @@ class CampaignTargetSiteRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.campaignTargetSiteTableName
 
-  override def getEntityId(entity: Option[Tables.CampaigntargetsiteRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.CampaigntargetsiteRow]): Int =
     if (entity.isDefined) entity.get.campaigntargetsiteid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.CampaigntargetsiteRow]
   ): Option[Tables.CampaigntargetsiteRow] = {

@@ -19,11 +19,11 @@ class ImpressionRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.impressionTableName
 
-  override def getEntityId(entity: Option[Tables.ImpressionRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.ImpressionRow]): Int =
     if (entity.isDefined) entity.get.impressionid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.ImpressionRow]
   ): Option[Tables.ImpressionRow] = {

@@ -18,11 +18,11 @@ class ContentCategoryRepository(appManager: AppManager)
 
   override def tableName: String = this.contentCategoryTableName
 
-  override def getEntityId(entity: Option[Tables.ContentcategoryRow]): String =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.ContentcategoryRow]): String =
     if (entity.isDefined) entity.get.contentcategoryid
     else ""
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
       entityId: Option[String],
       entity: Option[Tables.ContentcategoryRow]
   ): Option[Tables.ContentcategoryRow] = {

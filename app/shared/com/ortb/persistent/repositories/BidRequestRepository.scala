@@ -20,10 +20,10 @@ class BidRequestRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.bidRequestTableName
 
-  override def getEntityId(entity: Option[Tables.BidrequestRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.BidrequestRow]): Int =
     if (entity.isDefined) entity.get.bidrequestid else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.BidrequestRow]
   ): Option[Tables.BidrequestRow] = {

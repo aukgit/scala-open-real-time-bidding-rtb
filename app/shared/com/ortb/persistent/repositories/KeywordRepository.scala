@@ -19,11 +19,11 @@ class KeywordRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.keywordTableName
 
-  override def getEntityId(entity: Option[Tables.KeywordRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.KeywordRow]): Int =
     if (entity.isDefined) entity.get.keywordid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.KeywordRow]
   ): Option[Tables.KeywordRow] = {

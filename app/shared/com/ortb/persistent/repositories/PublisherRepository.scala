@@ -23,11 +23,11 @@ class PublisherRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.publisherTableName
 
-  override def getEntityId(entity: Option[Tables.PublisherRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.PublisherRow]): Int =
     if (entity.isDefined) entity.get.publisherid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
       entityId: Option[Int],
       entity: Option[Tables.PublisherRow]
   ): Option[Tables.PublisherRow] = {

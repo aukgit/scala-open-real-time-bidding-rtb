@@ -3,8 +3,10 @@ package controllers.webapi.core
 import controllers.webapi.core.traits.RestWebApiContracts
 import play.api.mvc.{ Action, _ }
 import shared.com.ortb.enumeration._
+import shared.com.ortb.model.attributes.GenericControllerResponseAttributesModel
 import shared.com.ortb.model.requests
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
+import shared.com.ortb.model.results.RepositoryOperationResultsModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper }
 import shared.io.helpers._
@@ -16,27 +18,51 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     with RestWebApiContracts[TTable, TRow, TKey] {
 
   override def getAll : Action[AnyContent] = Action { implicit request : Request[AnyContent] =>
+    val actionWrapper = ControllerGenericActionWrapper(
+      ControllerDefaultActionType.GetOrRead,
+      Some(request))
+
+    val dbAction = actionWrapper.getControllerActionPropertiesWrapper.databaseActionType
+
     val paginationWrapperModel =
       PaginationHelper.getPaginationWrapperModel(request)
     var allEntities : Seq[TRow] = null
-
-    if (paginationWrapperModel.isEmpty) {
+    val hasPagination = paginationWrapperModel.isDefined
+    if (!hasPagination) {
       allEntities = service.getAll
     } else {
-      // pagination
       val pagedWrapper = paginationWrapperModel.get
       allEntities = service.repository.getCurrentTablePaged(pagedWrapper)
     }
 
-    if (!EmptyValidateHelper.isItemsEmpty(Some(allEntities))) {
+    val rowsOption = Some(allEntities)
+    val hasResults = EmptyValidateHelper.hasAnyItem(rowsOption)
+
+    if (hasResults && hasPagination) {
       val paginationRequest =
         requests.PaginationRequestModel(
           this,
           request,
           allEntities,
           paginationWrapperModel)
+
       val response = PaginationHelper.getPaginationResponse(paginationRequest)
       Ok(response)
+    } else if (hasResults) {
+      val resultsToResponse = service.repository.getRowsToResponse(rowsOption, Some(dbAction))
+
+      //noinspection DuplicatedCode
+      val httpResponseCreateRequestModel = HttpSuccessResponseCreateRequestModel(
+        this,
+        getRequestUri(request),
+        controllerGenericActionWrapper = actionWrapper,
+        repositoryOperationResultsModel = Some(resultsToResponse)
+      )
+
+      val finalJsonResponse = ResponseHelper.genericControllerResponse
+                                            .getControllerSuccessResponse(httpResponseCreateRequestModel)
+
+      Ok(finalJsonResponse)
     } else {
       performBadRequest()
     }

@@ -23,13 +23,13 @@ class KeywordAdvertiseMappingRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.keywordAdvertiseMappingTableName
 
-  override def getEntityId(
+  override def getEntityIdFromOptionRow(
     entity: Option[Tables.KeywordadvertisemappingRow]
   ): Int =
     if (entity.isDefined) entity.get.keywordadvertisemappingid
     else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.KeywordadvertisemappingRow]
   ): Option[Tables.KeywordadvertisemappingRow] = {

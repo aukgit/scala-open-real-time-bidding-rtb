@@ -22,10 +22,10 @@ class BannerAdvertiseTypeRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.bannerAdvertiseTypeTableName
 
-  override def getEntityId(entity: Option[Tables.BanneradvertisetypeRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.BanneradvertisetypeRow]): Int =
     if (entity.isDefined) entity.get.banneradvertisetypeid else -1
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
     entityId: Option[Int],
     entity: Option[Tables.BanneradvertisetypeRow]
   ): Option[Tables.BanneradvertisetypeRow] = {

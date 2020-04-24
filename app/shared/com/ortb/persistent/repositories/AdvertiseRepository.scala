@@ -19,10 +19,10 @@ class AdvertiseRepository @Inject()(appManager: AppManager)
 
   override def tableName: String = this.advertiseTableName
 
-  override def getEntityId(entity: Option[Tables.AdvertiseRow]): Int =
+  override def getEntityIdFromOptionRow(entity : Option[Tables.AdvertiseRow]): Int =
     entity.getOrElse(-1).asInstanceOf[Int]
 
-  override def setEntityId(
+  override def setEntityIdFromOptionRow(
       entityId: Option[Int],
       entity: Option[Tables.AdvertiseRow]
   ): Option[Tables.AdvertiseRow] = {

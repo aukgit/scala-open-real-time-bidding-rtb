@@ -200,6 +200,12 @@ object EmptyValidateHelper {
   def isItemsEmpty[A](
     items   : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
+   !hasAnyItem(items, message)
+  }
+
+  def hasAnyItem[A](
+    items   : Option[Iterable[A]],
+    message : Option[String] = None) : Boolean = {
     val hasItem = items != null &&
       items.isDefined &&
       items.get != null &&
@@ -211,6 +217,6 @@ object EmptyValidateHelper {
       AppLogger.debug(message.get)
     }
 
-    !hasItem
+    hasItem
   }
 }
