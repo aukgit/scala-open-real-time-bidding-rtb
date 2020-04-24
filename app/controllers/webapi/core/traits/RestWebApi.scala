@@ -1,5 +1,7 @@
 package controllers.webapi.core.traits
 
+import play.api.mvc.{ Action, AnyContent }
+
 trait RestWebApi[TTable, TRow, TKey] {
   def getAll : Action[AnyContent]
 

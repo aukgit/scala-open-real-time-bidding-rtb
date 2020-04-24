@@ -1,4 +1,6 @@
-package controllers.webapi.core.traits
+package controllers.webapi.core.traits.implementations.actions
+
+import controllers.webapi.core.traits.actions.RestWebApiDeleteAction
 
 trait RestWebApiDeleteActionImplementation[TTable, TRow, TKey]
   extends RestWebApiDeleteAction[TTable, TRow, TKey] {

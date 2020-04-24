@@ -1,5 +1,7 @@
-package controllers.webapi.core
+package controllers.webapi.core.traits.implementations
 
+import controllers.webapi.core.AbstractRestWebApi
+import controllers.webapi.core.traits.RestWebApiHandleError
 import play.api.mvc.Result
 import shared.com.ortb.model.wrappers.http.{ ControllerGenericActionWrapper, HttpFailedExceptionActionWrapper }
 import shared.io.loggers.AppLogger

@@ -1,5 +1,6 @@
-package controllers.webapi.core.traits
+package controllers.webapi.core.traits.implementations
 
+import controllers.webapi.core.traits.RestWebApiProperties
 import play.api.Logger
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.manager.AppManager

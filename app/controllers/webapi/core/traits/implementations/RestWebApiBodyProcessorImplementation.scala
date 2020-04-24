@@ -1,4 +1,11 @@
-package controllers.webapi.core.traits
+package controllers.webapi.core.traits.implementations
+import controllers.webapi.core.AbstractRestWebApi
+import play.api.libs.json.Writes
+import play.api.mvc.{ Action, _ }
+import play.libs.Json
+import play.mvc.Http.MimeTypes
+import controllers.webapi.core.traits.RestWebApiBodyProcessor
+import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper }
 
 trait RestWebApiBodyProcessorImplementation[TTable, TRow, TKey]
   extends RestWebApiBodyProcessor[TTable, TRow, TKey] {

@@ -1,6 +1,6 @@
 package shared.io.helpers
 
-import controllers.webapi.core.GenericControllerResponseImplementation
+import controllers.webapi.core.implementations.GenericControllerResponseImplementation
 import shared.com.ortb.webapi.traits.GenericControllerResponse
 import shared.io.helpers.traits.ResponseHelperBase
 

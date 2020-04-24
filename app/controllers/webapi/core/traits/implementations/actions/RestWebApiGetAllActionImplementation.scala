@@ -1,4 +1,6 @@
-package controllers.webapi.core.traits
+package controllers.webapi.core.traits.implementations.actions
+
+import controllers.webapi.core.traits.actions.RestWebApiGetAllAction
 
 trait RestWebApiGetAllActionImplementation[TTable, TRow, TKey]
   extends RestWebApiGetAllAction[TTable, TRow, TKey] {

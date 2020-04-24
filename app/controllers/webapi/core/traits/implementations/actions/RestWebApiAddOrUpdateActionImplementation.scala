@@ -1,4 +1,6 @@
-package controllers.webapi.core.traits
+package controllers.webapi.core.traits.implementations.actions
+
+import controllers.webapi.core.traits.actions.RestWebApiAddOrUpdateAction
 
 trait RestWebApiAddOrUpdateActionImplementation[TTable, TRow, TKey]
   extends RestWebApiAddOrUpdateAction[TTable, TRow, TKey] {

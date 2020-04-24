@@ -1,6 +1,8 @@
 package controllers.webapi.core.traits
 
-import controllers.webapi.core.{ RestWebApiMessages, RestWebApiPerformAction, RestWebApiPerformActionImplementation }
+import controllers.webapi.core.traits.implementations.actions.RestWebApiPerformActionImplementation
+import controllers.webapi.core.traits.implementations.{ RestWebApiBodyProcessorImplementation, RestWebApiPropertiesImplementation }
+import controllers.webapi.core.{ RestWebApiMessages, RestWebApiPerformAction }
 import shared.com.ortb.webapi.traits._
 import shared.io.jsonParse.traits.CirceJsonSupport
 

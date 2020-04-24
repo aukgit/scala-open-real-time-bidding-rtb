@@ -1,5 +1,6 @@
-package controllers.webapi.core
+package controllers.webapi.core.implementations
 
+import controllers.webapi.core.traits.GenericControllerResponse
 import shared.com.ortb.model.attributes.{ GenericControllerResponseAttributesModel, GenericResponseAttributesModel }
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
 import shared.com.ortb.model.results._

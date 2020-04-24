@@ -1,6 +1,7 @@
 package controllers.webapi.core
 
-import controllers.webapi.core.traits.{ RestWebApiContracts, RestWebApiContractsImplementation, RestWebApiHandleErrorImplementation }
+import controllers.webapi.core.traits.implementations.RestWebApiHandleErrorImplementation
+import controllers.webapi.core.traits.{ RestWebApiContracts, RestWebApiContractsImplementation }
 import play.api.libs.json.Writes
 import play.api.mvc.{ Action, _ }
 import play.libs.Json
@@ -10,7 +11,6 @@ import shared.com.ortb.model.requests
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper }
-import shared.com.ortb.webapi.traits.{ RestWebApiDeleteAction, RestWebApiGetAllAction }
 import shared.io.helpers._
 import shared.io.loggers.AppLogger
 

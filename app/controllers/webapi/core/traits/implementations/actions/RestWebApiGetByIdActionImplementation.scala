@@ -1,4 +1,6 @@
-package controllers.webapi.core.traits
+package controllers.webapi.core.traits.implementations.actions
+
+import controllers.webapi.core.traits.actions.RestWebApiGetByIdAction
 
 trait RestWebApiGetByIdActionImplementation[TTable, TRow, TKey]
   extends RestWebApiGetByIdAction[TTable, TRow, TKey] {
