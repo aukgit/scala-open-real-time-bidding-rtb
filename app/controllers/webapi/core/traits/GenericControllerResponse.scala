@@ -1,9 +1,4 @@
-package shared.com.ortb.webapi.traits
-
-import shared.com.ortb.model.attributes.{ GenericControllerResponseAttributesModel, GenericResponseAttributesModel }
-import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
-import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.com.ortb.model.wrappers.persistent.WebApiEntityResponseWrapper
+package controllers.webapi.core.traits
 
 trait GenericControllerResponse {
   def getGenericResponseAttributesModelToGenericControllerResponseAttributesModel[TTable, TRow, TKey](

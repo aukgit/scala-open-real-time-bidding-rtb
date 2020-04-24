@@ -1,7 +1,4 @@
-package shared.com.ortb.webapi.traits
-
-import play.api.mvc.{AnyContent, Request}
-import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions, WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper}
+package controllers.webapi.core.traits
 
 trait RestWebApiBodyProcessor[TTable, TRow, TKey] {
 
@@ -12,6 +9,3 @@ trait RestWebApiBodyProcessor[TTable, TRow, TKey] {
 
   def bodyRequestToEntities(request : Request[AnyContent]) : Option[WebApiEntitiesResponseWrapper[TRow, TKey]]
 }
-
-
-

@@ -1,10 +1,6 @@
-package shared.com.ortb.webapi.traits
+package controllers.webapi.core
 
-import play.api.mvc.Result
-import shared.com.ortb.model.wrappers.http._
-
-
-
+import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 
 trait RestWebApiMessages[TTable, TRow, TKey] {
   val entityCreateFailedMessage = "Entity failed to create"

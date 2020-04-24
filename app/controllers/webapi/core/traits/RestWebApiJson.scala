@@ -1,4 +1,4 @@
-package shared.com.ortb.webapi.traits
+package controllers.webapi.core.traits
 
 import shared.com.repository.traits.adapters.RepositoryJsonAdapter
 

@@ -1,10 +1,9 @@
-package shared.com.ortb.webapi
+package controllers.webapi.core
 
 import shared.com.ortb.model.attributes.{ GenericControllerResponseAttributesModel, GenericResponseAttributesModel }
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
 import shared.com.ortb.model.results._
 import shared.com.ortb.model.wrappers.persistent.WebApiEntityResponseWrapper
-import shared.com.ortb.webapi.traits.GenericControllerResponse
 import shared.io.helpers.EmptyValidateHelper
 
 class GenericControllerResponseImplementation extends GenericControllerResponse {

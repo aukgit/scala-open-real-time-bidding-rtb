@@ -1,6 +1,4 @@
-package shared.com.ortb.webapi.traits
-
-import play.api.mvc.{Action, AnyContent}
+package controllers.webapi.core.traits
 
 trait RestWebApi[TTable, TRow, TKey] {
   def getAll : Action[AnyContent]
