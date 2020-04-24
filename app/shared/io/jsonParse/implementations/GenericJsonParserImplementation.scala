@@ -71,7 +71,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
 
       val results = new mutable.ArrayBuffer[T]
 
-      jsonNodes.foreach(w => {
+      jsonNodes.get.foreach(w => {
         val modelAsAny = decode[T](w.toString)(decoder).getOrElse(null)
         val model = if (modelAsAny != null) Some(modelAsAny.asInstanceOf[T]) else None
         if (EmptyValidateHelper.isDefined(model)) {
