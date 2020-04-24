@@ -45,9 +45,10 @@ trait MethodNameHeaderGetter extends
   private def getMethodNameForDisplay(
     methodName : String = ""
   ) : String = {
-    if (EmptyValidateHelper.isEmptyString(methodName)) {
+    if (methodName == null || methodName.isBlank) {
       return " - "
     }
+
     s" ($methodName) - "
   }
 }
