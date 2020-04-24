@@ -37,7 +37,6 @@ class CampaignTargetOperatingSystemApiRouter @Inject()(
   injectedApiController : CampaignTargetOperatingSystemApiController) extends
   AbstractGenericRouter[Campaigntargetoperatingsystem, CampaigntargetoperatingsystemRow, Int](injectedApiController)
 
-
 class CampaignTargetSiteSystemApiRouter @Inject()(
   injectedApiController : CampaignTargetSiteSystemApiController) extends
   AbstractGenericRouter[Campaigntargetsite, CampaigntargetsiteRow, Int](injectedApiController)
@@ -45,7 +44,6 @@ class CampaignTargetSiteSystemApiRouter @Inject()(
 class ContentCategoryApiRouter @Inject()(
   injectedApiController : ContentCategoryApiController) extends
   AbstractGenericRouter[Contentcategory, ContentcategoryRow, String](injectedApiController)
-
 
 class ContentContextApiRouter @Inject()(
   injectedApiController : ContentContextApiController) extends
@@ -55,7 +53,6 @@ class DemandSidePlatformApiRouter @Inject()(
   injectedApiController : DemandSidePlatformApiController) extends
   AbstractGenericRouter[Demandsideplatform, DemandsideplatformRow, Int](injectedApiController)
 
-
 class GeoMappingApiRouter @Inject()(
   injectedApiController : GeoMappingApiController) extends
   AbstractGenericRouter[Geomapping, GeomappingRow, Int](injectedApiController)
@@ -64,11 +61,9 @@ class ImpressionApiRouter @Inject()(
   injectedApiController : ImpressionApiController) extends
   AbstractGenericRouter[Impression, ImpressionRow, Int](injectedApiController)
 
-
 class KeywordAdvertiseMappingApiRouter @Inject()(
   injectedApiController : KeywordAdvertiseMappingApiController) extends
   AbstractGenericRouter[Keywordadvertisemapping, KeywordadvertisemappingRow, Int](injectedApiController)
-
 
 class KeywordApiRouter @Inject()(
   injectedApiController : KeywordApiController) extends
@@ -85,7 +80,6 @@ class NoBidResponseTypeApiRouter @Inject()(
 class PublisherApiRouter @Inject()(
   injectedApiController : PublisherApiController) extends
   AbstractGenericRouter[Publisher, PublisherRow, Int](injectedApiController)
-
 
 class TransactionApiRouter @Inject()(
   injectedApiController : TransactionApiController) extends
