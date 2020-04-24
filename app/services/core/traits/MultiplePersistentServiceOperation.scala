@@ -5,19 +5,19 @@ import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 
 trait MultiplePersistentServiceOperation[TTable, TRow, TKey]
   extends BasicPersistentServiceCore[TTable, TRow, TKey] {
-   def addEntities(
+  def addEntities(
     entity   : TRow,
     addTimes : Int) : RepositoryOperationResultsModel[TRow, TKey] = ???
 
-   def addEntities(
+  def addEntities(
     entities : Iterable[TRow]) : RepositoryOperationResultsModel[TRow, TKey] = ???
 
-   def addOrUpdateEntities(
+  def addOrUpdateEntities(
     entityWrappers : Iterable[EntityWrapper[TRow, TKey]]) : RepositoryOperationResultsModel[TRow, TKey] = ???
 
-   def updateEntities(
+  def updateEntities(
     entityWrappers : Iterable[EntityWrapper[TRow, TKey]]) : RepositoryOperationResultsModel[TRow, TKey] = ???
 
-   def deleteEntities(
+  def deleteEntities(
     entities : Iterable[TKey]) : RepositoryOperationResultsModel[TRow, TKey] = ???
 }

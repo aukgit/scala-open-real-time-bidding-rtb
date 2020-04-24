@@ -23,3 +23,11 @@ class AdvertiseApiController @Inject()(
 
   override val service = injectedService
 }
+
+class AdvertiseApiController @Inject()(
+  injectedService : AdvertiseService,
+  components      : ControllerComponents)
+  extends AbstractRestWebApi[Advertise, AdvertiseRow, Int](components) {
+
+  override val service = injectedService
+}

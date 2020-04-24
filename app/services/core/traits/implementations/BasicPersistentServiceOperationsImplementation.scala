@@ -24,7 +24,7 @@ trait BasicPersistentServiceOperationsImplementation[TTable, TRow, TKey]
     repository.update(id, entity)
 
   def addOrUpdate(
-    id : TKey,
+    id     : TKey,
     entity : TRow) : RepositoryOperationResultModel[TRow, TKey] =
     repository.addOrUpdate(id, entity)
 
