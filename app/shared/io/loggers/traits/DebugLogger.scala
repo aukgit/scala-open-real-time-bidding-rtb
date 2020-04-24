@@ -10,9 +10,11 @@ trait DebugLogger {
     stackIndex   : Int = defaultStackIndex,
     isPrintStack : Boolean = false) : Unit = {
     val msgCompiled = if (msg2.isEmpty) msg1 else s"${msg1} - ${msg2}"
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+
     val message = s"${
       LogLevelType.DEBUG
-    } : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}) - ${msgCompiled}"
+    } :$methodNameDisplay ${msgCompiled}"
 
     additionalLogging(
       message = message,

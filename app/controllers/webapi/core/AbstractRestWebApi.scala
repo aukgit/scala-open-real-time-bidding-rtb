@@ -3,10 +3,8 @@ package controllers.webapi.core
 import controllers.webapi.core.traits.RestWebApiContracts
 import play.api.mvc.{ Action, _ }
 import shared.com.ortb.enumeration._
-import shared.com.ortb.model.attributes.GenericControllerResponseAttributesModel
 import shared.com.ortb.model.requests
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
-import shared.com.ortb.model.results.RepositoryOperationResultsModel
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper }
 import shared.io.helpers._
@@ -145,11 +143,26 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
   }
 
   def byId(id : TKey) : Action[AnyContent] = Action { implicit request =>
-    val entity = service.getById(id)
-    val json = service.fromEntityToJson(entity)
+    val actionWrapper = ControllerGenericActionWrapper(
+      ControllerDefaultActionType.GetOrRead,
+      Some(request))
+    val dbAction = actionWrapper.getControllerActionPropertiesWrapper.databaseActionType
 
-    if (json.isDefined) {
-      Ok(json.get)
+    val entity = service.getById(id)
+
+    if (entity.isDefined) {
+      val response = service.repository.getRowToResponse(entity, Some(dbAction))
+      //noinspection DuplicatedCode
+      val httpResponseCreateRequestModel = HttpSuccessResponseCreateRequestModel(
+        this,
+        getRequestUri(request),
+        controllerGenericActionWrapper = actionWrapper,
+        repositoryOperationResultModel = Some(response)
+      )
+
+      val finalJsonResponse = ResponseHelper.genericControllerResponse
+                                            .getControllerSuccessResponse(httpResponseCreateRequestModel)
+      Ok(finalJsonResponse)
     } else {
       performBadRequest()
     }
@@ -213,7 +226,21 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     }
   }
 
-  protected def handleError(
+  def createHttpFailedActionWrapper(
+    message: String,
+    actionWrapper: ControllerGenericActionWrapper,
+    methodName : String = ""
+  ) : HttpFailedActionWrapper[TRow, TKey] = {
+    AppLogger.error(s"${message} $methodName")
+    val httpFailedActionWrapper = HttpFailedActionWrapper[TRow, TKey](
+      additionalMessage = Some(message),
+      methodName = Some(methodName),
+      controllerGenericActionWrapper = actionWrapper)
+
+    httpFailedActionWrapper
+  }
+
+  def handleError(
     exception : Exception,
     controllerGenericActionWrapper : ControllerGenericActionWrapper
   ) : Result = {
@@ -293,7 +320,6 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     }
   }
 
-
   override def addOrUpdate(id : TKey) : Action[AnyContent] = Action { implicit request =>
     val addOrUpdateActionWrapper = ControllerGenericActionWrapper(
       ControllerDefaultActionType.AddOrUpdate,
@@ -342,6 +368,15 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     }
 
     BadRequest(getDefaultFailedMessage())
+  }
+
+  def performBadRequestAsAction(
+    httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]]) : Action[AnyContent] = {
+    if (httpFailedActionWrapper.isDefined) {
+      components.actionBuilder(BadRequest(httpFailedActionWrapper.toString))
+    } else {
+      components.actionBuilder(BadRequest(getDefaultFailedMessage()))
+    }
   }
 
   def performBadRequestOnException(

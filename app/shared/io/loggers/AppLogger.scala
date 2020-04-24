@@ -22,6 +22,5 @@ object AppLogger extends
   def loggerStatus() : Unit = {
     printLoggerStatus(logger, "logger")
   }
-
 }
 

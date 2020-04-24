@@ -7,7 +7,8 @@ trait WarnLogger {
   this : PrintStacks with MethodNameHeaderGetter =>
 
   def warn(msg : String, stackIndex : Int = defaultStackIndex, isPrintStack : Boolean = false) : Unit = {
-    val message = s"WARN : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}) - ${msg}"
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+    val message = s"WARN :$methodNameDisplay ${msg}"
 
     additionalLogging(
       message = message,

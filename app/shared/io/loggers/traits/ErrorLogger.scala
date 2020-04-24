@@ -24,7 +24,8 @@ trait ErrorLogger {
   }
 
   def error(msg : String, stackIndex : Int, isPrintStack : Boolean) : Unit = {
-    val message = s"${LogLevelType.ERROR} : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}}) - ${msg}"
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+    val message = s"${LogLevelType.ERROR} :$methodNameDisplay ${msg}"
     additionalLogging(
       message = message,
       logLevelType = LogLevelType.ERROR,
@@ -38,7 +39,8 @@ trait ErrorLogger {
     stackIndex : Int = defaultStackIndex,
     isPrintStack : Boolean = false) : Unit = {
     val message = getFileErrorMessage(fileError)
-    val finalMessage = s"File ${LogLevelType.ERROR} : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}) - ${message}"
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+    val finalMessage = s"File ${LogLevelType.ERROR} :${methodNameDisplay} ${message}"
 
     additionalLogging(
       message = finalMessage,
@@ -59,8 +61,8 @@ trait ErrorLogger {
     stackIndex        : Int = defaultStackIndex,
     isPrintStack      : Boolean = false
   ) : Unit = {
-    val methodNameDisplay = getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)
-    val message = s"Exception Error: ${methodNameDisplay} - ${
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+    val message = s"Exception Error:${methodNameDisplay} ${
       exception
         .toString
     }${newLine}${additionalMessage}"

@@ -1,7 +1,7 @@
 package shared.io.loggers.traits
 
 import shared.com.ortb.enumeration.LogLevelType
-import shared.io.loggers.AppLogger.{ additionalLogging, defaultStackIndex }
+import shared.io.loggers.AppLogger.{ additionalLogging, defaultStackIndex, getMethodNameDisplayWrapper }
 
 trait InfoLogger {
   this : PrintStacks with MethodNameHeaderGetter =>
@@ -15,7 +15,8 @@ trait InfoLogger {
   def info(
     msg                             : String, stackIndex : Int = defaultStackIndex,
     isPrintStack                    : Boolean = false) : Unit = {
-    val message = s"${LogLevelType.INFO} : (${getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)}) - ${msg}"
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+    val message = s"${LogLevelType.INFO} :$methodNameDisplay ${msg}"
 
     additionalLogging(
       message = message,

@@ -2,7 +2,7 @@ package shared.com.repository.traits.implementions
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
-import shared.com.ortb.model.results.RepositoryOperationResultsModel
+import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.RepositoryRowsToResponseConverter
@@ -28,6 +28,29 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
     val repositoryResponse = RepositoryOperationResultsModel(
       Some(attributes),
       rowsToEntityRows
+    )
+
+    repositoryResponse
+  }
+
+  def getRowToResponse(
+    rowOption: Option[TRow] ,
+    dbAction : Option[DatabaseActionType],
+    message : String = ""): RepositoryOperationResultModel[TRow, TKey] = {
+    if(EmptyValidateHelper.isEmpty(rowOption)){
+      return null
+    }
+
+    val attributes = GenericResponseAttributesModel(
+      isSuccess = true,
+      dbAction,
+      message)
+
+    val row = rowOption.get
+
+    val repositoryResponse = RepositoryOperationResultModel(
+      Some(attributes),
+      Some(EntityWrapper(getEntityId(row), row))
     )
 
     repositoryResponse
