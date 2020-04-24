@@ -1,5 +1,6 @@
 package shared.com.ortb.persistent.repositories
 
+import com.google.inject.Inject
 import io.circe.generic.semiauto._
 import io.circe._
 import io.circe.generic.auto._
@@ -12,7 +13,7 @@ import slick.jdbc.SQLiteProfile.api._
 import slick.dbio.{ Effect, NoStream }
 import slick.sql.FixedSqlAction
 
-class ContentCategoryRepository(appManager: AppManager)
+class ContentCategoryRepository @Inject()(appManager: AppManager)
     extends RepositoryBase[Contentcategory, ContentcategoryRow, String](
       appManager) {
 
