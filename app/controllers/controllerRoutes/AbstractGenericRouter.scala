@@ -2,10 +2,8 @@ package controllers.controllerRoutes
 
 import java.security.spec.InvalidParameterSpecException
 
-import controllers.apis.CampaignsApiController
 import controllers.controllerRoutes.traits.RouterActionPerformByIds
 import controllers.webapi.core.AbstractRestWebApi
-import javax.inject.Inject
 import play.api.mvc.{ Action, AnyContent }
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
@@ -13,7 +11,6 @@ import play.api.routing.sird._
 import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.model.results.ResultWithBooleanModel
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
-import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.NumberHelper
 
 import scala.reflect.runtime.universe._
@@ -73,7 +70,7 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
       Some(httpFailedActionWrapper))
   }
 
-  protected def performGetByIdAsInteger(id                           : String) : Action[AnyContent] = {
+  protected def performGetByIdAsInteger(id : String) : Action[AnyContent] = {
     val idAsInt = NumberHelper.isInt(id)
 
     if (idAsInt.isSuccess) {
@@ -118,5 +115,4 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
       case _ => throw new InvalidParameterSpecException("Id is not type of Integer or String")
     }
   }
-
 }
