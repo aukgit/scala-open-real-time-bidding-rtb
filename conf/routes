@@ -11,8 +11,8 @@ GET  /api/campaigns/:id  controllers.apis.CampaignsApiController.byId(id: Int)
 DELETE  /api/campaigns/:id  controllers.apis.CampaignsApiController.delete(id: Int)
 PUT  /api/campaigns/:id  controllers.apis.CampaignsApiController.update(id: Int)
 POST  /api/campaigns/create  controllers.apis.CampaignsApiController.add
-->         /v1/posts               v1.post.PostRouter
-->         /admin/v1/campaigns               controllers.controllerRoutes.GenericRouter
+# ->         /v1/posts               v1.post.PostRouter
+->         /admin/v1/campaigns               controllers.controllerRoutes.CampaignApiRouter
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

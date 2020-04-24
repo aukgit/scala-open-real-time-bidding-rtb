@@ -1,7 +1,10 @@
 package controllers.webapi.core
 
 import controllers.webapi.core.traits.RestWebApiContracts
+import play.api.libs.json.Writes
 import play.api.mvc.{ Action, _ }
+import play.libs.Json
+import play.mvc.Http.MimeTypes
 import shared.com.ortb.enumeration._
 import shared.com.ortb.model.requests
 import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
@@ -45,7 +48,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
           paginationWrapperModel)
 
       val response = PaginationHelper.getPaginationResponse(paginationRequest)
-      Ok(response)
+      OkJson(response)
     } else if (hasResults) {
       val resultsToResponse = service.repository.getRowsToResponse(rowsOption, Some(dbAction))
 
@@ -60,7 +63,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
       val finalJsonResponse = ResponseHelper.genericControllerResponse
                                             .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-      Ok(finalJsonResponse)
+      OkJson(finalJsonResponse)
     } else {
       performBadRequest()
     }
@@ -103,7 +106,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
         val finalJsonResponse = ResponseHelper.genericControllerResponse
                                               .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-        Ok(finalJsonResponse)
+        OkJson(finalJsonResponse)
       } else {
         throw new Exception(s"Invalid result during update. Action: $actionWrapper")
       }
@@ -132,7 +135,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
         val finalJsonResponse = ResponseHelper.genericControllerResponse
                                               .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-        Ok(finalJsonResponse)
+        OkJson(finalJsonResponse)
       }
       else {
         throw new Exception("Invalid delete request or failed during performing database transaction.")
@@ -162,7 +165,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
 
       val finalJsonResponse = ResponseHelper.genericControllerResponse
                                             .getControllerSuccessResponse(httpResponseCreateRequestModel)
-      Ok(finalJsonResponse)
+      OkJson(finalJsonResponse)
     } else {
       performBadRequest()
     }
@@ -203,7 +206,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
           val finalJsonResponse = ResponseHelper.genericControllerResponse
                                                 .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-          Ok(finalJsonResponse)
+          OkJson(finalJsonResponse)
         }
         else {
           performBadRequest()
@@ -278,7 +281,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
         val finalJsonResponse = ResponseHelper.genericControllerResponse
                                               .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-        Ok(finalJsonResponse)
+        OkJson(finalJsonResponse)
       } else {
         performBadRequest()
       }
@@ -311,7 +314,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
         val finalJsonResponse = ResponseHelper.genericControllerResponse
                                               .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-        Ok(finalJsonResponse)
+        OkJson(finalJsonResponse)
       } else {
         performBadRequest()
       }
@@ -342,7 +345,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
         val finalJsonResponse = ResponseHelper.genericControllerResponse
                                               .getControllerSuccessResponse(httpResponseCreateRequestModel)
 
-        Ok(finalJsonResponse)
+        OkJson(finalJsonResponse)
       } else {
         performBadRequest()
       }
@@ -422,4 +425,6 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
 
     Some(webApiEntitiesResponseWrapper)
   }
+
+  override def OkJson(jsonString : String): Result = Ok(jsonString).as(MimeTypes.JSON)
 }
