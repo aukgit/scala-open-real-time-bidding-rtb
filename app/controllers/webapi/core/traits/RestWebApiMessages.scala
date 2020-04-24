@@ -2,7 +2,7 @@ package controllers.webapi.core.traits
 
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 
-trait RestWebApiMessages[TTable, TRow, TKey] {
+trait RestWebApiMessages[TRow] {
   val entityCreateFailedMessage = "Entity failed to create"
   val entityCreateSuccessMessage = "Entity create successful"
 

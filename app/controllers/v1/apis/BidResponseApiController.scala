@@ -9,7 +9,9 @@ import shared.com.ortb.persistent.schema.Tables._
 class BidResponseApiController @Inject()(
   injectedService : BidResponseService,
   components      : ControllerComponents)
-  extends AbstractRestWebApi[Bidresponse, BidresponseRow, Int](components) {
+  extends AbstractController[Bidresponse, BidresponseRow, Int](components) {
 
   override val service = injectedService
+
+
 }
