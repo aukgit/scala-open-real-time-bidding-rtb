@@ -109,10 +109,6 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     }
 
     try {
-      val decoder = this.encoders.defaultListDecoder
-//      val possibleEntities = decode[List[TRow]](jsonContent.get)(decoder)
-//        .getOrElse(null)
-
       val possibleEntities= this.encoders.getJsonGenericParser.toModels(jsonContent)
 
       if (!EmptyValidateHelper.isItemsEmpty(possibleEntities)) {
