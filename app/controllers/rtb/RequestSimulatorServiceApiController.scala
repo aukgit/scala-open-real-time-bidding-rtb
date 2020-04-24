@@ -1,14 +1,12 @@
 package controllers.rtb
 
-import controllers.webapi.core.traits.implementations.RestWebApiMessagesImplementation
 import javax.inject.Inject
-import play.api.mvc.{ AbstractController, _ }
+import play.api.mvc._
 import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.model.config.{ ConfigModel, ServiceModel }
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.persistent.Repositories
-import shared.io.helpers.JsonHelper
+import shared.io.helpers.{ FileHelper, JsonHelper }
 import shared.io.loggers.AppLogger
 
 class RequestSimulatorServiceApiController @Inject()(
@@ -16,8 +14,9 @@ class RequestSimulatorServiceApiController @Inject()(
   appManager      : AppManager,
   components      : ControllerComponents)
   extends ServiceBaseApiController(repositories, appManager, components) {
-  
+
   lazy val selfProperties = new ServiceControllerPropertiesImplementation(this)
+  lazy val jsonDirectory = "jsonRequestSamples"
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     val actionWrapper = ControllerGenericActionWrapper(
@@ -63,6 +62,18 @@ class RequestSimulatorServiceApiController @Inject()(
         BadRequest
     }
   }
+
+  def getBannerRequestSample : Action[AnyContent] = Action { implicit request =>
+    try {
+      val jsonString = FileHelper.getContentsFromResourcesPaths(jsonDirectory, "bannerJsonBidRequest.json")
+      selfProperties.restWebApiOkJson.OkJson(jsonString)
+    } catch {
+      case e : Exception =>
+        AppLogger.error(e)
+        BadRequest
+    }
+  }
+
 
   def performBadResponse(
     controllerGenericActionWrapper : Option[ControllerGenericActionWrapper]) : Result = {

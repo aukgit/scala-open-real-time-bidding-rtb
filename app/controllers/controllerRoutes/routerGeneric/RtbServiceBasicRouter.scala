@@ -1,5 +1,6 @@
 package controllers.controllerRoutes.routerGeneric
 
+import com.google.inject.Inject
 import controllers.controllerRoutes.traits.RouterActionPerformByIds
 import controllers.rtb.RequestSimulatorServiceApiController
 import play.api.routing.Router.Routes
@@ -10,10 +11,9 @@ import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 
 import scala.reflect.runtime.universe._
 
-abstract class AbstractRtbServiceBasicRouter[TTable, TRow, TKey : TypeTag](
+class RtbServiceBasicRouter @Inject()(
   controller : RequestSimulatorServiceApiController)
-  extends SimpleRouter
-    with RouterActionPerformByIds {
+  extends SimpleRouter {
 
   val routingActionWrapper : ControllerGenericActionWrapper = ControllerGenericActionWrapper(
     ControllerDefaultActionType.Routing)
@@ -25,6 +25,8 @@ abstract class AbstractRtbServiceBasicRouter[TTable, TRow, TKey : TypeTag](
 
       case GET(p"/commands") | GET(p"/available-commands") | GET(p"/routes") =>
         controller.getAvailableCommands()
+      case GET(p"/bannerRequest") =>
+        controller.getBannerRequestSample()
     } catch {
       case e : Exception =>
         controller.handleError(e, routingActionWrapper)

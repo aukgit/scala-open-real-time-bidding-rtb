@@ -9,6 +9,6 @@ class ServiceControllerPropertiesImplementation
   lazy val restWebApiOkJson = new RestWebApiOkJsonImplementation(serviceBaseApiController)
   lazy val config : ConfigModel = appManager.config
   lazy val serviceModel : ServiceModel = config.server.services.requestSimulatorService
-  val serviceTitle : String = serviceModel.title
+  lazy val serviceTitle : String = serviceModel.title
   override val appManager : AppManager = serviceBaseApiController.appManager
 }

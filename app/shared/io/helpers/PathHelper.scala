@@ -18,6 +18,10 @@ object PathHelper extends ResourcePathGetter {
    *         issue.
    */
   def getResourceFileAbsolutePath(relativePathInResources : String*) : String = {
+    getResourceFileAbsolutePathSequence(relativePathInResources)
+  }
+
+  def getResourceFileAbsolutePathSequence(relativePathInResources : Seq[String]) : String = {
     try {
       val relativeCombined = relativePathInResources.mkString(pathSeparator)
       var separator = ""
@@ -28,6 +32,7 @@ object PathHelper extends ResourcePathGetter {
 
       val absolutePath = s"${AppConstants.PathConstants.ResourcePath}${separator}${relativeCombined}"
       AppLogger.info(absolutePath);
+      return absolutePath
     }
     catch {
       case e : Exception => AppLogger.error(e)
