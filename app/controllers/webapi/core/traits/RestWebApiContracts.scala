@@ -7,7 +7,7 @@ trait RestWebApiContracts[TTable, TRow, TKey]
   extends
     RestWebApi[TTable, TRow, TKey]
     with RestWebApiBodyProcessor[TTable, TRow, TKey]
-    with RestWebApiMessages[TTable, TRow, TKey]
+    with RestWebApiMessages[TRow]
     with CirceJsonSupport
     with RestWebApiResponsePerform[TTable, TRow, TKey]
     with WebApiServiceContract[TTable, TRow, TKey]

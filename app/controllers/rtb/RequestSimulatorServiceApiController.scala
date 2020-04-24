@@ -36,7 +36,7 @@ class RequestSimulatorServiceApiController @Inject()(
     exception : Exception
   ) : Result = {
     AppLogger.error(exception)
-    BadRequest(exception)
+    BadRequest(exception.toString)
   }
 
   def handleError(
@@ -64,7 +64,7 @@ class RequestSimulatorServiceApiController @Inject()(
     }
   }
 
-  override def performBadResponse(
+  def performBadResponse(
     controllerGenericActionWrapper : Option[ControllerGenericActionWrapper]) : Result = {
     if (controllerGenericActionWrapper.isDefined) {
       return BadRequest(controllerGenericActionWrapper.toString)

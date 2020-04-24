@@ -21,7 +21,7 @@ abstract class AbstractRestWebApi[TTable, TRow, TKey](
     with RestWebApiAddEntitiesActionImplementation[TTable, TRow, TKey]
     with RestWebApiGetByIdActionImplementation[TTable, TRow, TKey]
     with RestWebApiGetAllActionImplementation[TTable, TRow, TKey]
-    with RestWebApiMessagesImplementation[TTable, TRow, TKey]
+    with RestWebApiMessagesImplementation[TRow]
     with RestWebApiPropertiesImplementation[TTable, TRow, TKey] {
 
   def getRequestUri(request : Request[AnyContent]) : String = {
