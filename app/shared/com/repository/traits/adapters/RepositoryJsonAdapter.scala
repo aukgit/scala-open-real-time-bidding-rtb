@@ -19,5 +19,5 @@ trait RepositoryJsonAdapter[TTable, TRow, TKey]
   : Option[EntityWrapperWithOptions[TRow, TKey]]
 
   def fromJsonToEntitiesWrapper(jsonContent : Option[String])
-  : Option[List[EntityWrapperWithOptions[TRow, TKey]]]
+  : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]]
 }

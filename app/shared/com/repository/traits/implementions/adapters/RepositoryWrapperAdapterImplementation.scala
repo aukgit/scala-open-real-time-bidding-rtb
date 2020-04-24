@@ -1,11 +1,13 @@
 package shared.com.repository.traits.implementions.adapters
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions}
+import shared.com.ortb.model.wrappers.persistent.{ EntityWrapper, EntityWrapperWithOptions }
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.adapters.RepositoryWrapperAdapter
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
+
+import scala.collection.mutable.ArrayBuffer
 
 trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     extends RepositoryWrapperAdapter[TTable, TRow, TKey] {
@@ -93,8 +95,8 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     None
   }
 
-  override def toEntitiesWrapperWithOptions(items: Option[List[TRow]])
-    : Option[List[EntityWrapperWithOptions[TRow, TKey]]] = {
+  override def toEntitiesWrapperWithOptions(items: Option[Iterable[TRow]])
+    : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] = {
     val isEmpty =
       EmptyValidateHelper.isItemsEmpty(items, Some(AppConstants.NoContent))
 
@@ -107,8 +109,8 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
     Some(results)
   }
 
-  override def toEntitiesWrapper(items: Option[List[TRow]])
-    : Option[List[EntityWrapper[TRow, TKey]]] = {
+  override def toEntitiesWrapper(items: Option[Iterable[TRow]])
+    : Option[Iterable[EntityWrapper[TRow, TKey]]] = {
     val isEmpty =
       EmptyValidateHelper.isItemsEmpty(items, Some(AppConstants.NoContent))
 

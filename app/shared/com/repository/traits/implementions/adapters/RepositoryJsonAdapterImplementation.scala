@@ -11,6 +11,8 @@ import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.AppLogger
 
+import scala.collection.mutable
+
 trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
   extends BasicAdapterImplementation
     with RepositoryJsonAdapter[TTable, TRow, TKey] with CirceJsonSupport {
@@ -100,7 +102,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
   }
 
   override def fromJsonToEntitiesWrapper(jsonContent : Option[String])
-  : Option[List[EntityWrapperWithOptions[TRow, TKey]]] = {
+  : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] = {
     val isEmpty = EmptyValidateHelper.isEmpty(jsonContent)
     if (isEmpty) {
       return None
@@ -108,13 +110,13 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
 
     try {
       val decoder = this.encoders.defaultListDecoder
-      val possibleEntities = decode[List[TRow]](jsonContent.get)(decoder)
-        .getOrElse(null)
+//      val possibleEntities = decode[List[TRow]](jsonContent.get)(decoder)
+//        .getOrElse(null)
 
-      if (possibleEntities != null && possibleEntities.isInstanceOf[List[TRow]]) {
-        val entities = possibleEntities.asInstanceOf[List[TRow]]
+      val possibleEntities= this.encoders.getJsonGenericParser.toModels(jsonContent)
 
-        return toEntitiesWrapperWithOptions(Some(entities))
+      if (!EmptyValidateHelper.isItemsEmpty(possibleEntities)) {
+        return toEntitiesWrapperWithOptions(possibleEntities)
       }
     } catch {
       case e : Exception => AppLogger.error(e, jsonContent.get)

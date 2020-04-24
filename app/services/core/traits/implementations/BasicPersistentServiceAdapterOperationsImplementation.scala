@@ -24,12 +24,12 @@ trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
       item: Option[TRow]): Option[EntityWrapperWithOptions[TRow, TKey]] =
     repository.toEntityWrapperWithOptions(item)
 
-  override def toEntitiesWrapper(items: Option[List[TRow]])
-    : Option[List[EntityWrapper[TRow, TKey]]] =
+  override def toEntitiesWrapper(items: Option[Iterable[TRow]])
+    : Option[Iterable[EntityWrapper[TRow, TKey]]] =
     repository.toEntitiesWrapper(items)
 
-  override def toEntitiesWrapperWithOptions(items: Option[List[TRow]])
-    : Option[List[EntityWrapperWithOptions[TRow, TKey]]] =
+  override def toEntitiesWrapperWithOptions(items: Option[Iterable[TRow]])
+    : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] =
     repository.toEntitiesWrapperWithOptions(items)
 
   override def fromEntityToJson(entity: Option[TRow]): Option[String] =
@@ -40,7 +40,7 @@ trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
     repository.fromJsonToEntityWrapper(jsonContent)
 
   override def fromJsonToEntitiesWrapper(jsonContent: Option[String])
-    : Option[List[EntityWrapperWithOptions[TRow, TKey]]] =
+    : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]] =
     repository.fromJsonToEntitiesWrapper(jsonContent)
 
   def convertItemTo[A, B](

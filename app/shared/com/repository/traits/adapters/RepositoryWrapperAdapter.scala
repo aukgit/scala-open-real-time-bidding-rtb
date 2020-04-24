@@ -1,7 +1,9 @@
 package shared.com.repository.traits.adapters
 
-import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWithOptions}
+import shared.com.ortb.model.wrappers.persistent.{ EntityWrapper, EntityWrapperWithOptions }
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
+
+import scala.collection.mutable.ArrayBuffer
 
 trait RepositoryWrapperAdapter[TTable, TRow, TKey]
     extends RepositoryOperationsBase[TRow] {
@@ -18,9 +20,9 @@ trait RepositoryWrapperAdapter[TTable, TRow, TKey]
   def toEntityWrapperWithOptions(
       item: Option[TRow]): Option[EntityWrapperWithOptions[TRow, TKey]]
 
-  def toEntitiesWrapper(items: Option[List[TRow]])
-    : Option[List[EntityWrapper[TRow, TKey]]]
+  def toEntitiesWrapper(items: Option[Iterable[TRow]])
+    : Option[Iterable[EntityWrapper[TRow, TKey]]]
 
-  def toEntitiesWrapperWithOptions(items: Option[List[TRow]])
-    : Option[List[EntityWrapperWithOptions[TRow, TKey]]]
+  def toEntitiesWrapperWithOptions(items: Option[Iterable[TRow]])
+    : Option[Iterable[EntityWrapperWithOptions[TRow, TKey]]]
 }
