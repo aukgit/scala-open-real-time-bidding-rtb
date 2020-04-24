@@ -1,4 +1,4 @@
-package controllers.apis
+package controllers.v1.apis
 
 import controllers.webapi.core.AbstractRestWebApi
 import javax.inject.Inject
