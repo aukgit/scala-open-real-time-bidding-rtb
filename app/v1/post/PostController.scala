@@ -57,7 +57,7 @@ class PostController @Inject()(cc: PostControllerComponents)(
     }
 
     def success(input: PostFormInput) = {
-      postResourceHandler.create(input).map { post =>
+      postResourceHandler.create(input).map { post : PostResource =>
         Created(Json.toJson(post)).withHeaders(LOCATION -> post.link)
       }
     }

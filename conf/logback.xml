@@ -1,83 +1,193 @@
 <!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
 <configuration>
-
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
-
-  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+  <appender name="RollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${application.home:-.}/logs/application.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/allArchive/application-log-%i.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
     <encoder>
-      <pattern>%date [%level] from %logger in %thread - %message%n%xException</pattern>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
     </encoder>
   </appender>
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="InfoRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.info.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/info/application-log-%i.info.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n - %coloredLevel %logger{15} - [%X{akkaSource}] %message%n%xException{10}</pattern>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
     </encoder>
   </appender>
-  
-  <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
-    <appender-ref ref="FILE" />
+  <appender name="DebugRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.debug.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/debug/application-log-%i.debug.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
   </appender>
-   <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
-    <appender-ref ref="STDOUT" />
+  <appender name="WarnRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.warn.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/warn/application-log-%i.warn.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
   </appender>
-  
+  <appender name="ErrorRollingWeeklyFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.error.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- Daily rollover with compression -->
+      <fileNamePattern>${application.home:-.}/logs/error/application-log-%i.error.log.gz</fileNamePattern>
+      <maxFileSize>5MB</maxFileSize>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+        %message%n%xException
+      </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="SecurityFileAppender" class="ch.qos.logback.core.FileAppender">
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+        <marker>SECURITY</marker>
+      </evaluator>
+      <OnMismatch>DENY</OnMismatch>
+      <OnMatch>ACCEPT</OnMatch>
+    </filter>
+    <file>${application.home:-.}/logs/security.log</file>
+    <encoder>
+      <pattern>%date [%level] [%marker] from %logger in %thread - @%method:%line) - %message%n%xException</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="ConsoleDefaultPrintAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}@%method:%line - %msg%n - %coloredLevel %logger{15} -
+        [%X{akkaSource}] %message%n%xException{10}
+      </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="AllLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="RollingWeeklyFileAppender"/>
+    <appender-ref ref="ConsoleDefaultPrintAppender"/>
+    <appender-ref ref="SecurityFileAppender"/>
+  </appender>
+
+  <appender name="InfoLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="InfoRollingWeeklyFileAppender"/>
+  </appender>
+
+  <appender name="DebugLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="DebugRollingWeeklyFileAppender"/>
+  </appender>
+  <appender name="WarnLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="WarnRollingWeeklyFileAppender"/>
+  </appender>
+  <appender name="ErrorLogger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="ErrorRollingWeeklyFileAppender"/>
+  </appender>
+
   <logger name="play" level="ALL"/>
   <logger name="akka" level="ALL"/>
-  <logger name="akka.stream.Log" level="ALL"/>
+  <logger name="akka.stream.Log" level="NONE"/>
   <logger name="actors" level="ALL"/>
   <logger name="controllers" level="ALL"/>
+  <logger name="slick.jdbc" level="ERROR" />
 
   <root level="ALL">
-    <appender-ref ref="STDOUT"/>
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="AllLogger"/>
+    <appender-ref ref="RollingWeeklyFileAppender"/>
+    <appender-ref ref="ConsoleDefaultPrintAppender"/>
+    <appender-ref ref="SecurityFileAppender"/>
   </root>
-  <root level="${log.root:-info}">
-    <appender-ref ref="STDOUT" />
-  </root>
-  <logger name="slick.basic.BasicBackend.action"          level="${log.action:-info}" />
-  <logger name="slick.basic.BasicBackend.stream"          level="${log.stream:-info}" />
-  <logger name="slick.compiler"                           level="${log.qcomp:-info}" />
-  <logger name="slick.compiler.QueryCompiler"             level="${log.qcomp.phases:-inherited}" />
-  <logger name="slick.compiler.QueryCompilerBenchmark"    level="${log.qcomp.bench:-inherited}" />
-  <logger name="slick.compiler.Inline"                    level="${log.qcomp.inline:-inherited}" />
-  <logger name="slick.compiler.AssignUniqueSymbols"       level="${log.qcomp.assignUniqueSymbols:-inherited}" />
-  <logger name="slick.compiler.InferTypes"                level="${log.qcomp.inferTypes:-inherited}" />
-  <logger name="slick.compiler.ExpandTables"              level="${log.qcomp.expandTables:-inherited}" />
-  <logger name="slick.compiler.EmulateOuterJoins"         level="${log.qcomp.emulateOuterJoins:-inherited}" />
-  <logger name="slick.compiler.ForceOuterBinds"           level="${log.qcomp.forceOuterBinds:-inherited}" />
-  <logger name="slick.compiler.RemoveMappedTypes"         level="${log.qcomp.removeMappedTypes:-inherited}" />
-  <logger name="slick.compiler.CreateResultSetMapping"    level="${log.qcomp.createResultSetMapping:-inherited}" />
-  <logger name="slick.compiler.ExpandSums"                level="${log.qcomp.expandSums:-inherited}" />
-  <logger name="slick.compiler.ExpandRecords"             level="${log.qcomp.expandRecords:-inherited}" />
-  <logger name="slick.compiler.ExpandConditionals"        level="${log.qcomp.expandConditionals:-inherited}" />
-  <logger name="slick.compiler.FlattenProjections"        level="${log.qcomp.flattenProjections:-inherited}" />
-  <logger name="slick.compiler.CreateAggregates"          level="${log.qcomp.createAggregates:-inherited}" />
-  <logger name="slick.compiler.RewriteJoins"              level="${log.qcomp.rewriteJoins:-inherited}" />
-  <logger name="slick.compiler.RemoveTakeDrop"            level="${log.qcomp.removeTakeDrop:-inherited}" />
-  <logger name="slick.compiler.ResolveZipJoins"           level="${log.qcomp.resolveZipJoins:-inherited}" />
-  <logger name="slick.compiler.HoistClientOps"            level="${log.qcomp.hoistClientOps:-inherited}" />
-  <logger name="slick.compiler.ReorderOperations"         level="${log.qcomp.reorderOperations:-inherited}" />
-  <logger name="slick.compiler.MergeToComprehensions"     level="${log.qcomp.mergeToComprehensions:-inherited}" />
-  <logger name="slick.compiler.OptimizeScalar"            level="${log.qcomp.optimizeScalar:-inherited}" />
-  <logger name="slick.compiler.FixRowNumberOrdering"      level="${log.qcomp.fixRowNumberOrdering:-inherited}" />
-  <logger name="slick.compiler.PruneProjections"          level="${log.qcomp.pruneProjections:-inherited}" />
-  <logger name="slick.compiler.RewriteDistinct"           level="${log.qcomp.rewriteDistinct:-inherited}" />
-  <logger name="slick.compiler.RewriteBooleans"           level="${log.qcomp.rewriteBooleans:-inherited}" />
-  <logger name="slick.compiler.SpecializeParameters"      level="${log.qcomp.specializeParameters:-inherited}" />
-  <logger name="slick.compiler.CodeGen"                   level="${log.qcomp.codeGen:-inherited}" />
-  <logger name="slick.compiler.RemoveFieldNames"          level="${log.qcomp.removeFieldNames:-inherited}" />
-  <logger name="slick.compiler.InsertCompiler"            level="${log.qcomp.insertCompiler:-inherited}" />
-  <logger name="slick.compiler.VerifyTypes"               level="${log.qcomp.verifyTypes:-inherited}" />
-  <logger name="slick.jdbc.DriverDataSource"              level="${log.jdbc.driver:-info}" />
-  <logger name="slick.jdbc.JdbcBackend.statement"         level="${log.jdbc.statement:-info}" />
-  <logger name="slick.jdbc.JdbcBackend.parameter"         level="${log.jdbc.parameter:-info}" />
-  <logger name="slick.jdbc.JdbcBackend.benchmark"         level="${log.jdbc.bench:-info}" />
-  <logger name="slick.jdbc.StatementInvoker.result"       level="${log.jdbc.result:-info}" />
-  <logger name="slick.jdbc.JdbcModelBuilder"              level="${log.createModel:-info}" />
-  <logger name="slick.memory.HeapBackend"                 level="${log.heap:-inherited}" />
-  <logger name="slick.memory.QueryInterpreter"            level="${log.interpreter:-inherited}" />
-  <logger name="slick.relational.ResultConverterCompiler" level="${log.resultConverter:-inherited}" />
-  <logger name="slick.util.AsyncExecutor"                 level="${log.asyncExecutor:-inherited}" />
+
+<!--  <root level="INFO">-->
+<!--    <appender-ref ref="InfoLogger"/>-->
+<!--  </root>-->
+
+<!--  <root level="DEBUG">-->
+<!--    <appender-ref ref="DebugLogger"/>-->
+<!--  </root>-->
+
+<!--  <root level="${log.root:-ALL}">-->
+<!--    <appender-ref ref="ConsoleDefaultPrintAppender"/>-->
+<!--  </root>-->
+
+  <logger name="slick.basic.BasicBackend.action" level="${log.action:-error}"/>
+  <logger name="slick.basic.BasicBackend.stream" level="${log.stream:-error}"/>
+  <logger name="slick.compiler" level="${log.qcomp:-error}"/>
+  <logger name="slick.compiler.QueryCompiler" level="${log.qcomp.phases:-inherited}"/>
+  <logger name="slick.compiler.QueryCompilerBenchmark" level="${log.qcomp.bench:-inherited}"/>
+  <logger name="slick.compiler.Inline" level="${log.qcomp.inline:-inherited}"/>
+  <logger name="slick.compiler.AssignUniqueSymbols" level="${log.qcomp.assignUniqueSymbols:-inherited}"/>
+  <logger name="slick.compiler.InferTypes" level="${log.qcomp.inferTypes:-inherited}"/>
+  <logger name="slick.compiler.ExpandTables" level="${log.qcomp.expandTables:-inherited}"/>
+  <logger name="slick.compiler.EmulateOuterJoins" level="${log.qcomp.emulateOuterJoins:-inherited}"/>
+  <logger name="slick.compiler.ForceOuterBinds" level="${log.qcomp.forceOuterBinds:-inherited}"/>
+  <logger name="slick.compiler.RemoveMappedTypes" level="${log.qcomp.removeMappedTypes:-inherited}"/>
+  <logger name="slick.compiler.CreateResultSetMapping" level="${log.qcomp.createResultSetMapping:-inherited}"/>
+  <logger name="slick.compiler.ExpandSums" level="${log.qcomp.expandSums:-inherited}"/>
+  <logger name="slick.compiler.ExpandRecords" level="${log.qcomp.expandRecords:-inherited}"/>
+  <logger name="slick.compiler.ExpandConditionals" level="${log.qcomp.expandConditionals:-inherited}"/>
+  <logger name="slick.compiler.FlattenProjections" level="${log.qcomp.flattenProjections:-inherited}"/>
+  <logger name="slick.compiler.CreateAggregates" level="${log.qcomp.createAggregates:-inherited}"/>
+  <logger name="slick.compiler.RewriteJoins" level="${log.qcomp.rewriteJoins:-inherited}"/>
+  <logger name="slick.compiler.RemoveTakeDrop" level="${log.qcomp.removeTakeDrop:-inherited}"/>
+  <logger name="slick.compiler.ResolveZipJoins" level="${log.qcomp.resolveZipJoins:-inherited}"/>
+  <logger name="slick.compiler.HoistClientOps" level="${log.qcomp.hoistClientOps:-inherited}"/>
+  <logger name="slick.compiler.ReorderOperations" level="${log.qcomp.reorderOperations:-inherited}"/>
+  <logger name="slick.compiler.MergeToComprehensions" level="${log.qcomp.mergeToComprehensions:-inherited}"/>
+  <logger name="slick.compiler.OptimizeScalar" level="${log.qcomp.optimizeScalar:-inherited}"/>
+  <logger name="slick.compiler.FixRowNumberOrdering" level="${log.qcomp.fixRowNumberOrdering:-inherited}"/>
+  <logger name="slick.compiler.PruneProjections" level="${log.qcomp.pruneProjections:-inherited}"/>
+  <logger name="slick.compiler.RewriteDistinct" level="${log.qcomp.rewriteDistinct:-inherited}"/>
+  <logger name="slick.compiler.RewriteBooleans" level="${log.qcomp.rewriteBooleans:-inherited}"/>
+  <logger name="slick.compiler.SpecializeParameters" level="${log.qcomp.specializeParameters:-inherited}"/>
+  <logger name="slick.compiler.CodeGen" level="${log.qcomp.codeGen:-inherited}"/>
+  <logger name="slick.compiler.RemoveFieldNames" level="${log.qcomp.removeFieldNames:-inherited}"/>
+  <logger name="slick.compiler.InsertCompiler" level="${log.qcomp.insertCompiler:-inherited}"/>
+  <logger name="slick.compiler.VerifyTypes" level="${log.qcomp.verifyTypes:-inherited}"/>
+  <logger name="slick.jdbc.DriverDataSource" level="${log.jdbc.driver:-info}"/>
+  <logger name="slick.jdbc.JdbcBackend.statement" level="${log.jdbc.statement:-info}"/>
+  <logger name="slick.jdbc.JdbcBackend.parameter" level="${log.jdbc.parameter:-info}"/>
+  <logger name="slick.jdbc.JdbcBackend.benchmark" level="${log.jdbc.bench:-info}"/>
+  <logger name="slick.jdbc.StatementInvoker.result" level="${log.jdbc.result:-info}"/>
+  <logger name="slick.jdbc.JdbcModelBuilder" level="${log.createModel:-info}"/>
+  <logger name="slick.memory.HeapBackend" level="${log.heap:-inherited}"/>
+  <logger name="slick.memory.QueryInterpreter" level="${log.interpreter:-inherited}"/>
+  <logger name="slick.relational.ResultConverterCompiler" level="${log.resultConverter:-inherited}"/>
+  <logger name="slick.util.AsyncExecutor" level="${log.asyncExecutor:-inherited}"/>
 </configuration>

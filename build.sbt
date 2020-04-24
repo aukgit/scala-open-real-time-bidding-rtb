@@ -33,7 +33,7 @@ lazy val allDependencies = Seq(
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
-  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
+
   "com.typesafe.akka" %% "akka-http-caching" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.26",
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
@@ -45,6 +45,7 @@ lazy val allDependencies = Seq(
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
+  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
 
   ///////////////////////////////////////////////////
   // Serialization frameworks : AKKA Enhanced Serializing
@@ -61,7 +62,10 @@ lazy val allDependencies = Seq(
   "org.apache.logging.log4j" % "log4j-api" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
   "io.sentry" % "sentry-log4j2" % "1.7.30",
-  "org.slf4j" % "slf4j-nop" % "1.7.26",
+  // "org.slf4j" % "slf4j-nop" % "1.7.26",
+  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.4.1",
+  "org.apache.logging.log4j" % "log4j-api" % "2.4.1",
+  "org.apache.logging.log4j" % "log4j-core" % "2.4.1",
   "com.typesafe.play" %% "play-logback" % "2.8.1",
 
   ///////////////////////////////////////////////////

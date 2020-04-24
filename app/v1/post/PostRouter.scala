@@ -27,5 +27,4 @@ class PostRouter @Inject()(controller: PostController) extends SimpleRouter {
     case GET(p"/$id") =>
       controller.show(id)
   }
-
 }
