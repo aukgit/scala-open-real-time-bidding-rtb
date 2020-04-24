@@ -1,4 +1,9 @@
 package controllers.webapi.core.traits
+import play.api.libs.json.Writes
+import play.api.mvc.{ Action, _ }
+import play.libs.Json
+import play.mvc.Http.MimeTypes
+import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper }
 
 trait RestWebApiBodyProcessor[TTable, TRow, TKey] {
 

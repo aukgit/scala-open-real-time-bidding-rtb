@@ -1,10 +1,16 @@
 package controllers.webapi.core.traits.implementations.actions
 
+import controllers.webapi.core.AbstractRestWebApi
 import controllers.webapi.core.traits.actions.RestWebApiAddOrUpdateAction
+import play.api.mvc.{ Action, _ }
+import shared.com.ortb.enumeration.ControllerDefaultActionType
+import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
+import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
+import shared.io.helpers.ResponseHelper
 
 trait RestWebApiAddOrUpdateActionImplementation[TTable, TRow, TKey]
   extends RestWebApiAddOrUpdateAction[TTable, TRow, TKey] {
-  this: AbstractRestWebApi[TTable, TRow, TKey] =>
+  this : AbstractRestWebApi[TTable, TRow, TKey] =>
 
   def addOrUpdate(id : TKey) : Action[AnyContent] = Action { implicit request =>
     val addOrUpdateActionWrapper = ControllerGenericActionWrapper(
@@ -30,7 +36,7 @@ trait RestWebApiAddOrUpdateActionImplementation[TTable, TRow, TKey]
 
         OkJson(finalJsonResponse)
       } else {
-        performBadRequest()
+        performBadResponse()
       }
     } catch {
       case e : Exception => handleError(e, addOrUpdateActionWrapper)

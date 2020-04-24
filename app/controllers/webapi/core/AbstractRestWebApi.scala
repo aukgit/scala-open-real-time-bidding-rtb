@@ -1,36 +1,29 @@
 package controllers.webapi.core
 
-import controllers.webapi.core.traits.implementations.RestWebApiHandleErrorImplementation
-import controllers.webapi.core.traits.{ RestWebApiContracts, RestWebApiContractsImplementation }
-import play.api.libs.json.Writes
-import play.api.mvc.{ Action, _ }
-import play.libs.Json
-import play.mvc.Http.MimeTypes
-import shared.com.ortb.enumeration._
-import shared.com.ortb.model.requests
-import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
+import controllers.webapi.core.traits.RestWebApiContracts
+import controllers.webapi.core.traits.implementations.{ RestWebApiBodyProcessorImplementation, RestWebApiHandleErrorImplementation }
+import play.api.mvc._
 import shared.com.ortb.model.wrappers.http._
-import shared.com.ortb.model.wrappers.persistent.{ WebApiEntitiesResponseWrapper, WebApiEntityResponseWrapper }
-import shared.io.helpers._
 import shared.io.loggers.AppLogger
 
 abstract class AbstractRestWebApi[TTable, TRow, TKey](
   val components : ControllerComponents)
   extends AbstractController(components)
     with RestWebApiContracts[TTable, TRow, TKey]
-    with RestWebApiContractsImplementation[TTable, TRow, TKey]
-    with RestWebApiHandleErrorImplementation {
+    with RestWebApiHandleErrorImplementation[TTable, TRow, TKey]
+with RestWebApiBodyProcessorImplementation[TTable, TRow, TKey]
+with RestWebApiResponsePerform[TTable, TRow, TKey] {
 
   def getRequestUri(request : Request[AnyContent]) : String = {
     request.uri.toString
   }
 
   def createHttpFailedActionWrapper(
-    message: String,
-    actionWrapper: ControllerGenericActionWrapper,
+    message : String,
+    actionWrapper : ControllerGenericActionWrapper,
     methodName : String = ""
   ) : HttpFailedActionWrapper[TRow, TKey] = {
-    AppLogger.error(s"${message} $methodName")
+    AppLogger.error(s"${ message } $methodName")
     val httpFailedActionWrapper = HttpFailedActionWrapper[TRow, TKey](
       additionalMessage = Some(message),
       methodName = Some(methodName),

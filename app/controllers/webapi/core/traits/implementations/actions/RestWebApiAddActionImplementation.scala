@@ -1,16 +1,16 @@
 package controllers.webapi.core.traits.implementations.actions
+
 import controllers.webapi.core.AbstractRestWebApi
-import play.api.libs.json.Writes
-import play.api.mvc.{ Action, _ }
-import play.libs.Json
-import play.mvc.Http.MimeTypes
 import controllers.webapi.core.traits.actions.RestWebApiAddAction
+import play.api.mvc.{ Action, _ }
 import shared.com.ortb.enumeration.ControllerDefaultActionType
-import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
+import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
+import shared.com.ortb.model.wrappers.http.{ ControllerGenericActionWrapper, HttpFailedActionWrapper }
+import shared.io.helpers.ResponseHelper
 
 trait RestWebApiAddActionImplementation[TTable, TRow, TKey]
   extends RestWebApiAddAction[TTable, TRow, TKey] {
-  this: AbstractRestWebApi[TTable, TRow, TKey] =>
+  this : AbstractRestWebApi[TTable, TRow, TKey] =>
 
   //noinspection DuplicatedCode
   /**
@@ -51,7 +51,7 @@ trait RestWebApiAddActionImplementation[TTable, TRow, TKey]
           OkJson(finalJsonResponse)
         }
         else {
-          performBadRequest()
+          performBadResponse()
         }
       }
       else {
@@ -63,7 +63,7 @@ trait RestWebApiAddActionImplementation[TTable, TRow, TKey]
           controllerGenericActionWrapper = addActionWrapper
         )
 
-        performBadRequest(Some(httpFailedActionWrapper))
+        performBadResponse(Some(httpFailedActionWrapper))
       }
     } catch {
       case e : Exception =>
@@ -97,7 +97,7 @@ trait RestWebApiAddActionImplementation[TTable, TRow, TKey]
 
         OkJson(finalJsonResponse)
       } else {
-        performBadRequest()
+        performBadResponse()
       }
     } catch {
       case e : Exception => handleError(e, addActionWrapper)

@@ -1,12 +1,12 @@
 package controllers.webapi.core.traits.implementations.actions
 
-import controllers.webapi.core.{ AbstractRestWebApi, RestWebApiPerformAction }
+import controllers.webapi.core.{ AbstractRestWebApi, RestWebApiResponsePerform }
 import play.api.mvc._
 import play.mvc.Http.MimeTypes
 import shared.com.ortb.model.wrappers.http._
 
 trait RestWebApiPerformActionImplementation[TTable, TRow, TKey]
-  extends RestWebApiPerformAction[TTable, TRow, TKey] {
+  extends RestWebApiResponsePerform[TTable, TRow, TKey] {
   this : AbstractRestWebApi[TTable, TRow, TKey] =>
 
   def performBadRequestAsAction(
@@ -18,7 +18,7 @@ trait RestWebApiPerformActionImplementation[TTable, TRow, TKey]
     }
   }
 
-  def performBadRequestOnException(
+  def performBadResponseOnException(
     httpFailedActionWrapper : HttpFailedExceptionActionWrapper[TRow, TKey]) : Result =
     BadRequest(httpFailedActionWrapper.toString)
 

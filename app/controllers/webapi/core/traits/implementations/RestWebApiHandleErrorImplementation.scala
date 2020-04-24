@@ -9,6 +9,7 @@ import shared.io.loggers.AppLogger
 trait RestWebApiHandleErrorImplementation[TTable, TRow, TKey]
   extends RestWebApiHandleError[TTable, TRow, TKey] {
   this : AbstractRestWebApi[TTable, TRow, TKey] =>
+
   def handleError(
     exception : Exception,
     controllerGenericActionWrapper : ControllerGenericActionWrapper
@@ -20,7 +21,7 @@ trait RestWebApiHandleErrorImplementation[TTable, TRow, TKey]
         controllerGenericActionWrapper = controllerGenericActionWrapper
       )
 
-    performBadRequestOnException(httpFailedExceptionActionWrapper)
+    performBadResponseOnException(httpFailedExceptionActionWrapper)
     throw exception
   }
 }
