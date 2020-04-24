@@ -23,13 +23,16 @@
 ->         /admin/v1/geoMappings                            controllers.v1.router.GeoMappingApiRouter
 ->         /admin/v1/impressions                            controllers.v1.router.ImpressionApiRouter
 ->         /admin/v1/KeywordAdvertiseMappings               controllers.v1.router.KeywordAdvertiseMappingApiRouter
+->         /admin/v1/kam                                    controllers.v1.router.KeywordAdvertiseMappingApiRouter
 ->         /admin/v1/keywords                               controllers.v1.router.KeywordApiRouter
 ->         /admin/v1/lostBids                               controllers.v1.router.LostBidApiRouter
 ->         /admin/v1/noBidResponses                         controllers.v1.router.NoBidResponseTypeApiRouter
+->         /admin/v1/nbr                                    controllers.v1.router.NoBidResponseTypeApiRouter
 ->         /admin/v1/publishers                             controllers.v1.router.PublisherApiRouter
 ->         /admin/v1/transactions                           controllers.v1.router.TransactionApiRouter
 
 
 # Map static resources from the /public folder to the /assets URL path
+
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
