@@ -28,6 +28,8 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
     with CirceJsonSupport
     with FutureToRegular {
 
+  lazy val appManagerInstance : AppManager = appManager
+
   //noinspection ScalaDeprecation
   lazy protected implicit val executionContext: ExecutionContext =
     appManager.executionContextManager
@@ -41,7 +43,7 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager: AppManag
     if (config != null && config.defaultTimeout < 0) Duration.Inf
     else config.defaultTimeout.seconds
 
-  lazy protected val config: ConfigModel = appManager.config
+  lazy val config: ConfigModel = appManager.config
   lazy protected val headerMessage: String = s"[$tableName] ->"
 
   /**

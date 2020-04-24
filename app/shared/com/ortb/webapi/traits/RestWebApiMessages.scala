@@ -1,7 +1,6 @@
 package shared.com.ortb.webapi.traits
 
-import play.api.mvc.{Request, Result}
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import play.api.mvc.Result
 import shared.com.ortb.model.wrappers.http._
 
 trait RestWebApiMessages[TTable, TRow, TKey] {
@@ -9,14 +8,14 @@ trait RestWebApiMessages[TTable, TRow, TKey] {
   val entityCreateSuccessMessage = "Entity create successful"
 
   def getDefaultFailedMessage(
-    databaseActionType   : Option[DatabaseActionType] = None,
-    entity               : Option[TRow] = None,
-    additionalMessage : String = "") : String
+    controllerGenericActionWrapper : Option[ControllerGenericActionWrapper] = None,
+    entity : Option[TRow] = None,
+    message              : String = "") : String
 
   def getDefaultSuccessMessage(
-    databaseActionType    : Option[DatabaseActionType] = None,
-    entity                : Option[TRow] = None,
-    additionalMessage     : String = "") : String
+    controllerGenericActionWrapper : Option[ControllerGenericActionWrapper] = None,
+    entity : Option[TRow] = None,
+    message              : String = "") : String
 
   def performBadRequest(
     httpFailedActionWrapper : Option[HttpFailedActionWrapper[TRow, TKey]] = None)

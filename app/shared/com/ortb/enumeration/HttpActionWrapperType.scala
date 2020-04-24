@@ -2,16 +2,18 @@ package shared.com.ortb.enumeration
 
 object HttpActionWrapperType extends Enumeration {
   type HttpActionWrapperType = Value
-  val GetOk,
+  val
+  GetOk,
   PutUpdateOk,
   PostAddOk,
   DeleteOk,
-  PatchOk,
+  PatchUpdatePartialOk,
   GetFailed,
   PutUpdateFailed,
   PostAddFailed,
   DeleteFailed,
   GenericFailed,
   GenericOkay,
-  PatchFailed = Value
+  PatchUpdatePartialFailed = Value
 }
+
