@@ -6,7 +6,7 @@ import javax.inject.Inject
 import shared.com.ortb.persistent.schema.Tables._
 
 class CampaignApiRouter @Inject()(
-  injectedApiController : CampaignsApiController) extends
+  injectedApiController  : CampaignsApiController) extends
   AbstractGenericRouter[Campaign, CampaignRow, Int](injectedApiController)
 
 class AdvertiseApiRouter @Inject()(
@@ -77,8 +77,6 @@ class KeywordApiRouter @Inject()(
 class LostBidApiRouter @Inject()(
   injectedApiController : LostBidApiController) extends
   AbstractGenericRouter[Lostbid, LostbidRow, Int](injectedApiController)
-
-
 
 class NoBidResponseTypeApiRouter @Inject()(
   injectedApiController : NoBidResponseTypeApiController) extends
