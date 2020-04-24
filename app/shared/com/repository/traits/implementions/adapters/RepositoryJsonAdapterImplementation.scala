@@ -11,8 +11,6 @@ import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.AppLogger
 
-import scala.collection.mutable
-
 trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
   extends BasicAdapterImplementation
     with RepositoryJsonAdapter[TTable, TRow, TKey] with CirceJsonSupport {
@@ -109,7 +107,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     }
 
     try {
-      val possibleEntities= this.encoders.getJsonGenericParser.toModels(jsonContent)
+      val possibleEntities = this.encoders.getJsonGenericParser.toModels(jsonContent)
 
       if (!EmptyValidateHelper.isItemsEmpty(possibleEntities)) {
         return toEntitiesWrapperWithOptions(possibleEntities)
