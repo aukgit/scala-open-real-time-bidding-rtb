@@ -38,4 +38,6 @@ object AppConstants {
   lazy val DefaultParallelExecution = 3
 
   lazy val NoContent = "No content, no operation performed."
+
+  lazy val NoContentInRequest = "No content in request"
 }

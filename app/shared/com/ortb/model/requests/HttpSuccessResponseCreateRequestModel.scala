@@ -6,7 +6,7 @@ import shared.com.ortb.enumeration.HttpActionWrapperType.HttpActionWrapperType
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.WebApiEntityResponseWrapper
 
-case class HttpResponseCreateRequestModel[TTable, TRow, TKey](
+case class HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey](
   controller           : AbstractRestWebApi[TTable, TRow, TKey],
   requestUri           : String = "",
   httpActionWrapperType : HttpActionWrapperType,

@@ -1,7 +1,7 @@
 package shared.com.ortb.webapi
 
 import shared.com.ortb.model.attributes.{ GenericControllerResponseAttributesModel, GenericResponseAttributesModel }
-import shared.com.ortb.model.requests.HttpResponseCreateRequestModel
+import shared.com.ortb.model.requests.HttpSuccessResponseCreateRequestModel
 import shared.com.ortb.model.results._
 import shared.com.ortb.model.wrappers.persistent.WebApiEntityResponseWrapper
 import shared.com.ortb.webapi.traits.GenericControllerResponse
@@ -21,7 +21,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
   }
 
   def getSuccessResponseForRepositoryOperationResultModel[TTable, TRow, TKey](
-    httpResponseCreateRequestModel    : HttpResponseCreateRequestModel[TTable, TRow, TKey],
+    httpResponseCreateRequestModel    : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
     repositoryResponse                : Option[RepositoryOperationResultModel[TRow, TKey]]) : String = {
     val responseEntityWrapper = repositoryResponse.get.data
     val service = httpResponseCreateRequestModel.controller.service
@@ -38,7 +38,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
   }
 
   def getSuccessResponseForRepositoryOperationResultsModel[TTable, TRow, TKey](
-    httpResponseCreateRequestModel                     : HttpResponseCreateRequestModel[TTable, TRow, TKey],
+    httpResponseCreateRequestModel                     : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
     repositoryResponse                                 : Option[RepositoryOperationResultsModel[TRow, TKey]])
   : String = {
     val responseEntityWrapper = repositoryResponse.get.data
@@ -57,7 +57,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
   }
 
   def getSuccessResponseForWebApiResponseWrapper[TTable, TRow, TKey](
-    httpResponseCreateRequestModel          : HttpResponseCreateRequestModel[TTable, TRow, TKey],
+    httpResponseCreateRequestModel          : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
     webApiResponse                          : Option[WebApiEntityResponseWrapper[TRow, TKey]]) : String = {
     val responseEntityWrapperOptions = webApiResponse.get.entityWrapper
     val entityWrapper = responseEntityWrapperOptions.get
@@ -76,13 +76,13 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
   }
 
   def getControllerSuccessResponse[TTable, TRow, TKey]
-    (httpResponseCreateRequestModel : HttpResponseCreateRequestModel[TTable, TRow, TKey]) : String = {
+    (httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey]) : String = {
     EmptyValidateHelper.throwOnNullOrNone(httpResponseCreateRequestModel)
 
     val repositoryResponse = httpResponseCreateRequestModel.repositoryOperationResultModel
     if (EmptyValidateHelper.isDefined(repositoryResponse)) {
       return getSuccessResponseForRepositoryOperationResultModel(
-        httpResponseCreateRequestModel : HttpResponseCreateRequestModel[TTable, TRow, TKey],
+        httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
         repositoryResponse
       )
     }
@@ -90,7 +90,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val repositoryResultsResponse = httpResponseCreateRequestModel.repositoryOperationResultsModel
     if (EmptyValidateHelper.isDefined(repositoryResultsResponse)) {
       return getSuccessResponseForRepositoryOperationResultsModel(
-        httpResponseCreateRequestModel : HttpResponseCreateRequestModel[TTable, TRow, TKey],
+        httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
         repositoryResultsResponse
       )
     }
@@ -98,7 +98,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val webApiResponse = httpResponseCreateRequestModel.webApiEntityResponseWrapper
     if (EmptyValidateHelper.isDefined(webApiResponse)) {
       return getSuccessResponseForWebApiResponseWrapper(
-        httpResponseCreateRequestModel : HttpResponseCreateRequestModel[TTable, TRow, TKey],
+        httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
         webApiResponse
       )
     }

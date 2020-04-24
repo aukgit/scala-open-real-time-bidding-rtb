@@ -6,11 +6,10 @@ import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 
 //noinspection DuplicatedCode
 case class HttpSuccessActionWrapper[TRow, TKey](
-  additionalMessage  : Option[String] = None,
-
-  methodName         : Option[String] = None,
-  lineNumber         : Option[Int] = None,
-  resultType         : Option[HttpActionWrapperType] = None,
+  additionalMessage : Option[String] = None,
+  methodName : Option[String] = None,
+  lineNumber : Option[Int] = None,
+  resultType : Option[HttpActionWrapperType] = None,
   entityWrapper      : Option[EntityWrapperWithOptions[TRow, TKey]] = None,
   rawBodyRequest     : Option[String] = None,
   databaseActionType : Option[DatabaseActionType] = None

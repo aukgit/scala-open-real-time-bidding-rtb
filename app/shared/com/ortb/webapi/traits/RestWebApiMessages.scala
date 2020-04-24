@@ -8,12 +8,12 @@ trait RestWebApiMessages[TTable, TRow, TKey] {
   val entityCreateFailedMessage = "Entity failed to create"
   val entityCreateSuccessMessage = "Entity create successful"
 
-  def failedMessage(
+  def getDefaultFailedMessage(
     databaseActionType   : Option[DatabaseActionType] = None,
     entity               : Option[TRow] = None,
     additionalMessage : String = "") : String
 
-  def successMessage(
+  def getDefaultSuccessMessage(
     databaseActionType    : Option[DatabaseActionType] = None,
     entity                : Option[TRow] = None,
     additionalMessage     : String = "") : String

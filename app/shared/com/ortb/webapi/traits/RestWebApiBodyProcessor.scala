@@ -5,7 +5,7 @@ import shared.com.ortb.model.wrappers.persistent.{EntityWrapper, EntityWrapperWi
 
 trait RestWebApiBodyProcessor[TTable, TRow, TKey] {
 
-  def toString(request : Request[AnyContent]) : String
+  def bodyToString(request : Request[AnyContent]) : String
 
   def bodyRequestToEntity(request : Request[AnyContent]) :
   Option[WebApiEntityResponseWrapper[TRow, TKey]]
