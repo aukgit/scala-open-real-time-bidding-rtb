@@ -3,9 +3,6 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET  /  controllers.ApiController.index
-GET  /api/ping  controllers.ApiController.ping
-
 GET  /api/campaigns  controllers.apis.CampaignsApiController.getAll
 GET  /api/campaigns/:id  controllers.apis.CampaignsApiController.byId(id: Int)
 DELETE  /api/campaigns/:id  controllers.apis.CampaignsApiController.delete(id: Int)

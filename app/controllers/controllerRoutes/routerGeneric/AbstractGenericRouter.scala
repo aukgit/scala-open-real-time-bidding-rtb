@@ -1,4 +1,4 @@
-package controllers.controllerRoutes
+package controllers.controllerRoutes.routerGeneric
 
 import java.security.spec.InvalidParameterSpecException
 
