@@ -22,6 +22,12 @@ object FileHelper extends ExecuteInputOutputAction {
     getContents(actualPath)
   }
 
+  def getContentsFromResourcesPaths(relativePathsToResource : String*) : String = {
+    val actualPath = PathHelper.getResourceFileAbsolutePathSequence(relativePathsToResource)
+
+    getContents(actualPath)
+  }
+
   /**
    * return given path's content if file exist or else returns empty string ("").
    *

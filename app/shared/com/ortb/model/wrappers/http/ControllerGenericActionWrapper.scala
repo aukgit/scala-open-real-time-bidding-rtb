@@ -7,14 +7,13 @@ import shared.com.ortb.enumeration._
 /**
  * Using a matcher it
  *
- * @param httpMethodType
  * @param isMultipleTransaction true meaning performing addEntities, updateEntities or deleteEntities
- * @param requestContent
  */
 case class ControllerGenericActionWrapper(
   controllerDefaultActionType : ControllerDefaultActionType,
   requestContent : Option[Request[AnyContent]] = None,
-  isMultipleTransaction : Boolean = false
+  isMultipleTransaction : Boolean = false,
+  message: String = ""
 ) {
   /**
    * Using a pattern matcher.

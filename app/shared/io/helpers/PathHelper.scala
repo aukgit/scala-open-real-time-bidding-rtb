@@ -18,6 +18,10 @@ object PathHelper extends ResourcePathGetter {
    *         issue.
    */
   def getResourceFileAbsolutePath(relativePathInResources : String*) : String = {
+    getResourceFileAbsolutePathSequence(relativePathInResources)
+  }
+
+  def getResourceFileAbsolutePathSequence(relativePathInResources : Seq[String]) : String = {
     try {
       val relativeCombined = relativePathInResources.mkString(pathSeparator)
       var separator = ""
@@ -28,6 +32,7 @@ object PathHelper extends ResourcePathGetter {
 
       val absolutePath = s"${AppConstants.PathConstants.ResourcePath}${separator}${relativeCombined}"
       AppLogger.info(absolutePath);
+      return absolutePath
     }
     catch {
       case e : Exception => AppLogger.error(e)
@@ -36,6 +41,12 @@ object PathHelper extends ResourcePathGetter {
     null
   }
 
+  /**
+   * Expand variables to specific paths ${WorkingDirectory},${WDir}, ${WDir} to Working Directory (Root).
+   * ${ResourceDirectory},${ResourceDir}, ${RDir} to Resource Directory.
+   * @param expressionPath
+   * @return
+   */
   def getExpendedPath(expressionPath : String) : String = {
     try {
       val expending1 = expressionPath.replace(genericSeparator, pathSeparator)
@@ -43,7 +54,7 @@ object PathHelper extends ResourcePathGetter {
       val expending3 = expending2.replace("${WDir}", AppConstants.PathConstants.WorkingDirectory)
       val expending4 = expending3.replace("${ResourceDirectory}", AppConstants.PathConstants.ResourcePath)
       val expending5 = expending4.replace("${ResourceDir}", AppConstants.PathConstants.ResourcePath)
-      val expending6 = expending5.replace("${WDir}", AppConstants.PathConstants.ResourcePath)
+      val expending6 = expending5.replace("${RDir}", AppConstants.PathConstants.ResourcePath)
 
       AppLogger.info(expending6);
       return expending6
