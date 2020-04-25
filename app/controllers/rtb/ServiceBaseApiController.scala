@@ -9,7 +9,7 @@ import shared.com.ortb.persistent.Repositories
 
 class ServiceBaseApiController @Inject()(
   val repositories : Repositories,
-  val appManager : AppManager,
-  components : ControllerComponents)
+  val appManager   : AppManager,
+  components       : ControllerComponents)
   extends AbstractController(components)
     with RestWebApiMessagesImplementation[ServiceModel]

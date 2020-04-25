@@ -4,7 +4,6 @@ import controllers.rtb.implementations.ServiceControllerPropertiesImplementation
 import controllers.rtb.traits.ServiceControllerProperties
 import javax.inject.Inject
 import play.api.mvc._
-import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
@@ -19,16 +18,12 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
 
   lazy val config : ConfigModel = appManager.config
   lazy val services : ServicesModel = config.server.services
-  val currentServiceModel : ServiceModel
   lazy val selfProperties : ServiceControllerProperties = new ServiceControllerPropertiesImplementation(
     this,
     currentServiceModel)
+  val currentServiceModel : ServiceModel
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
-    val actionWrapper = ControllerGenericActionWrapper(
-      ControllerDefaultActionType.GetOrRead,
-      Some(request))
-
     try {
       selfProperties.restWebApiOkJson.OkJson(selfProperties.serviceTitle)
     } catch {
@@ -45,7 +40,7 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   }
 
   def handleError(
-    exception : Exception,
+    exception                      : Exception,
     controllerGenericActionWrapper : ControllerGenericActionWrapper
   ) : Result = {
     val message = controllerGenericActionWrapper.toString

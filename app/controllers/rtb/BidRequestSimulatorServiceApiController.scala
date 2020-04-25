@@ -11,7 +11,7 @@ import shared.io.helpers.{ FileHelper, JsonHelper }
 import shared.io.loggers.AppLogger
 
 class BidRequestSimulatorServiceApiController @Inject()(
-  repositories    : Repositories,
+  repositories : Repositories,
   appManager      : AppManager,
   components      : ControllerComponents)
   extends ServiceBaseApiController(repositories, appManager, components) {
@@ -40,7 +40,7 @@ class BidRequestSimulatorServiceApiController @Inject()(
   }
 
   def handleError(
-    exception : Exception,
+    exception                      : Exception,
     controllerGenericActionWrapper : ControllerGenericActionWrapper
   ) : Result = {
     val message = controllerGenericActionWrapper.toString
@@ -64,12 +64,12 @@ class BidRequestSimulatorServiceApiController @Inject()(
     }
   }
 
-  def getBannerRequestSample(bannerSuffix: String) : Action[AnyContent] = Action { implicit request =>
+  def getBannerRequestSample(bannerSuffix : String) : Action[AnyContent] = Action { implicit request =>
     try {
       val jsonString = FileHelper.getContentsFromResourcesPaths(
         jsonDirectory,
         "requests",
-        s"${bannerSuffix}-bid-request.json")
+        s"${ bannerSuffix }-bid-request.json")
 
       selfProperties.restWebApiOkJson.OkJson(jsonString)
     } catch {

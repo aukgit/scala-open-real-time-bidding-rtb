@@ -1,19 +1,15 @@
 package controllers.rtb
 
-import controllers.rtb.implementations.ServiceControllerPropertiesImplementation
-import controllers.rtb.traits.ServiceControllerProperties
 import javax.inject.Inject
 import play.api.mvc._
-import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
-import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.{ FileHelper, JsonHelper }
 import shared.io.loggers.AppLogger
 
 class RequestSimulatorServiceApiController @Inject()(
-  repositories: Repositories,
+  repositories : Repositories,
   appManager : AppManager,
   components : ControllerComponents)
   extends AbstractBaseSimulatorServiceApiController(repositories, appManager, components) {
