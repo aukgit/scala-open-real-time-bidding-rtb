@@ -12,6 +12,8 @@ import shared.com.ortb.model.config.ServiceModel
 import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.JsonHelper
 
+
+
 class DemandSidePlatformSimulatorServiceApiController @Inject()(
   repositories : Repositories,
   appManager      : AppManager,
@@ -31,5 +33,4 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         handleError(e)
     }
   }
-
 }

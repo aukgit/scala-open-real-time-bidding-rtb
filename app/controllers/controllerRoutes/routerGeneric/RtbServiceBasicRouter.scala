@@ -17,9 +17,8 @@ class RtbServiceBasicRouter @Inject()(
 
   override def routes : Routes = {
     try {
-      case GET(p"/serviceName") | GET(p"/") | HEAD(p"/") =>
+      case GET(p"/serviceName") | GET(p"/") | POST(p"/") | HEAD(p"/") =>
         controller.getServiceName()
-
       case GET(p"/commands") | GET(p"/available-commands") | GET(p"/routes") =>
         controller.getAvailableCommands()
       case GET(p"/banner-json") =>

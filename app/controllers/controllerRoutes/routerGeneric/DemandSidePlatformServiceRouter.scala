@@ -17,7 +17,7 @@ class DemandSidePlatformServiceRouter @Inject()(
 
   override def routes : Routes = {
     try {
-      case GET(p"/serviceName") | GET(p"/") | HEAD(p"/") =>
+      case GET(p"/serviceName") | GET(p"/") | POST(p"/") | HEAD(p"/") =>
         controller.getServiceName()
       case POST(p"/makeBidRequst") =>
         controller.makeBidRequest()
