@@ -2,6 +2,7 @@ package controllers.rtb
 
 import controllers.webapi.core.traits.implementations.RestWebApiMessagesImplementation
 import javax.inject.Inject
+import play.api.Logger
 import play.api.mvc.{ AbstractController, ControllerComponents }
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.ServiceModel
@@ -12,4 +13,6 @@ class ServiceBaseApiController @Inject()(
   val appManager   : AppManager,
   components       : ControllerComponents)
   extends AbstractController(components)
-    with RestWebApiMessagesImplementation[ServiceModel]
+    with RestWebApiMessagesImplementation[ServiceModel] {
+  lazy protected val logger : Logger = Logger(this.getClass)
+}

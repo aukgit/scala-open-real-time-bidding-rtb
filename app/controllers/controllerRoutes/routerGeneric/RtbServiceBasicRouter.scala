@@ -1,7 +1,7 @@
 package controllers.controllerRoutes.routerGeneric
 
 import com.google.inject.Inject
-import controllers.rtb.RequestSimulatorServiceApiController
+import controllers.rtb.{ DemandSidePlatformSimulatorServiceApiController, RequestSimulatorServiceApiController }
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 import play.api.routing.sird.{ GET, _ }
@@ -17,7 +17,7 @@ class RtbServiceBasicRouter @Inject()(
 
   override def routes : Routes = {
     try {
-      case GET(p"/serviceName") | GET(p"/") =>
+      case GET(p"/serviceName") | GET(p"/") | HEAD(p"/") =>
         controller.getServiceName()
 
       case GET(p"/commands") | GET(p"/available-commands") | GET(p"/routes") =>
