@@ -4,6 +4,7 @@
   "server": {
     "commonDomain": "",
     "isUseDefaultDomainForAll": true,
+    "isStaticSimulate": true,
     "services": {
       "root": {
         "prefix": "",
