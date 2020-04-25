@@ -1,5 +1,6 @@
 package controllers.rtb
 
+import controllers.rtb.core.AbstractBaseSimulatorServiceApiController
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.manager.AppManager

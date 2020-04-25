@@ -1,5 +1,6 @@
-package controllers.rtb
+package controllers.rtb.core
 
+import controllers.rtb.ServiceBaseApiController
 import controllers.rtb.implementations.ServiceControllerPropertiesImplementation
 import controllers.rtb.traits.ServiceControllerProperties
 import javax.inject.Inject
