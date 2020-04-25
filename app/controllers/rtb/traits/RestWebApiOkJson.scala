@@ -1,4 +1,4 @@
-package controllers.rtb
+package controllers.rtb.traits
 
 import play.api.mvc.Result
 

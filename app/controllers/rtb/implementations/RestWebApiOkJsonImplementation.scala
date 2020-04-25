@@ -1,4 +1,4 @@
-package controllers.rtb
+package controllers.rtb.implementations
 
 import play.api.mvc.{ AbstractController, Result }
 import play.mvc.Http.MimeTypes

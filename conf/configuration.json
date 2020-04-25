@@ -24,10 +24,10 @@
           "banner-minmax",
           "banner-minmax-mimes",
           "geo-request",
-          "bannerRequest-wmax",
-          "bannerRequest-hmax",
-          "bannerRequest-hmaxMin",
-          "contextExample"
+          "banner-wmax",
+          "banner-hmax",
+          "banner-hmax-min",
+          "content-context"
         ]
       },
       "monitorService": {

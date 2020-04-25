@@ -24,6 +24,7 @@ object FileHelper extends ExecuteInputOutputAction {
 
   def getContentsFromResourcesPaths(relativePathsToResource : String*) : String = {
     val actualPath = PathHelper.getResourceFileAbsolutePathSequence(relativePathsToResource)
+    AppLogger.debug(actualPath)
 
     getContents(actualPath)
   }

@@ -6,9 +6,11 @@ import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 import play.api.routing.sird.{ GET, _ }
 import shared.com.ortb.enumeration.ControllerDefaultActionType
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 
-class RtbServiceBasicRouter @Inject()(
+class RtbDemandSidePlatformServiceRouter @Inject()(
   controller : RequestSimulatorServiceApiController)
   extends SimpleRouter {
 

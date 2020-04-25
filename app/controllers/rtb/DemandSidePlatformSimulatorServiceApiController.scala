@@ -1,29 +1,22 @@
 package controllers.rtb
 
 import controllers.rtb.implementations.ServiceControllerPropertiesImplementation
-import controllers.rtb.traits.ServiceControllerProperties
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.model.config.{ ConfigModel, ServicesModel }
 import shared.com.ortb.model.wrappers.http._
 import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.{ FileHelper, JsonHelper }
 import shared.io.loggers.AppLogger
 
-class RequestSimulatorServiceApiController @Inject()(
+class DemandSidePlatformSimulatorServiceApiController @Inject()(
   repositories    : Repositories,
   appManager      : AppManager,
   components      : ControllerComponents)
   extends ServiceBaseApiController(repositories, appManager, components) {
 
-  lazy val config : ConfigModel = appManager.config
-  lazy val services : ServicesModel = config.server.services
-  lazy val selfProperties : ServiceControllerProperties = new ServiceControllerPropertiesImplementation(
-    this,
-    services.requestSimulatorService)
-
+  lazy val selfProperties = new ServiceControllerPropertiesImplementation(this)
   lazy val jsonDirectory = "jsonRequestSamples"
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
@@ -125,4 +118,10 @@ class RequestSimulatorServiceApiController @Inject()(
       components.actionBuilder(BadRequest(getDefaultFailedMessage()))
     }
   }
-}
+}pper.isDefined) {
+        components.actionBuilder(BadRequest(controllerGenericActionWrapper.toString))
+      } else {
+        components.actionBuilder(BadRequest(getDefaultFailedMessage()))
+      }
+    }
+  }
