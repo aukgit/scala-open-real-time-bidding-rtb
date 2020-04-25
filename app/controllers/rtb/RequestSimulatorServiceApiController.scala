@@ -74,7 +74,6 @@ class RequestSimulatorServiceApiController @Inject()(
     }
   }
 
-
   def performBadResponse(
     controllerGenericActionWrapper : Option[ControllerGenericActionWrapper]) : Result = {
     if (controllerGenericActionWrapper.isDefined) {

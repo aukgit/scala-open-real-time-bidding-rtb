@@ -63,7 +63,7 @@
         "IAB3-1"
       ],
       "domain": "www.foobar.com",
-      "page": "http://www.foobar.com/1234.html ",
+      "page": "http://www.foobar.com/1234.html",
       "publisher": {
         "id": "1",
         "name": "Alim Advertise Server",
