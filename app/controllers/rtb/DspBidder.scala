@@ -1,14 +1,16 @@
 package controllers.rtb
 
-import shared.com.ortb.importedModels.biddingRequests.BidRequest
 import shared.com.ortb.model.results.DspBidderRequestModel
 
 trait DspBidder {
-  def getBid(
-    request: DspBidderRequestModel) : BidRequest = {
-    val isStatic = request.controller.config.server.isStaticSimulate
+  def isStatic(request : DspBidderRequestModel) : Boolean = request.controller.config.server.isStaticSimulate
 
-    if(isStatic){
+  def getBidPrices(request : DspBidderRequestModel): Option[DspBidderResultModel]
+
+  def getBid(
+    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
+
+    if (isStatic(request)) {
       return getBidStatic(request)
     }
 
@@ -16,14 +18,14 @@ trait DspBidder {
   }
 
   def getBidStatic(
-    request: DspBidderRequestModel) : BidRequest
+    request    : DspBidderRequestModel) : Option[DspBidderResultModel]
 
   def getBidStaticNoContent(
-    request: DspBidderRequestModel) : BidRequest
+    request    : DspBidderRequestModel) : Option[DspBidderResultModel]
 
   def getBidActual(
-    request: DspBidderRequestModel) : BidRequest
+    request : DspBidderRequestModel) : Option[DspBidderResultModel]
 
   def getBidActualNoContent(
-    request: DspBidderRequestModel) : BidRequest
+    request : DspBidderRequestModel) : Option[DspBidderResultModel]
 }
