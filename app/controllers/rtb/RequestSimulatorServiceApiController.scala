@@ -65,7 +65,7 @@ class RequestSimulatorServiceApiController @Inject()(
 
   def getBannerRequestSample : Action[AnyContent] = Action { implicit request =>
     try {
-      val jsonString = FileHelper.getContentsFromResourcesPaths(jsonDirectory, "bannerJsonBidRequest.json")
+      val jsonString = FileHelper.getContentsFromResourcesPaths(jsonDirectory, "banner-json-bid-request.json")
       selfProperties.restWebApiOkJson.OkJson(jsonString)
     } catch {
       case e : Exception =>

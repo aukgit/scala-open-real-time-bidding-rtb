@@ -20,11 +20,13 @@
         "title": "Request Simulator Service",
         "description": "Gives a JSON BID REQUEST Sample based on request.",
         "routing": [
-          "bannerRequest",
-          "geoRequest",
-          "wmax",
-          "hmax",
-          "hmaxMin",
+          "banner-json",
+          "banner-minmax",
+          "banner-minmax-mimes",
+          "geo-request",
+          "bannerRequest-wmax",
+          "bannerRequest-hmax",
+          "bannerRequest-hmaxMin",
           "contextExample"
         ]
       },
