@@ -183,24 +183,21 @@ trait Tables {
    *  @param targetedsites Database column TargetedSites SqlType(TEXT)
    *  @param targetedcities Database column TargetedCities SqlType(TEXT)
    *  @param rawbidrequest Database column RawBidRequest SqlType(TEXT)
-   *  @param price1 Database column Price1 SqlType(REAL), Default(Some(0.0))
-   *  @param price2 Database column Price2 SqlType(REAL), Default(Some(0.0))
-   *  @param price3 Database column Price3 SqlType(REAL), Default(Some(0.0))
    *  @param currency Database column Currency SqlType(TEXT), Length(5,false)
    *  @param contentcontextid Database column ContentContextId SqlType(INTEGER)
    *  @param iswontheauction Database column IsWonTheAuction SqlType(INTEGER), Length(1,false), Default(0)
    *  @param createddate Database column CreatedDate SqlType(REAL) */
-  case class BidrequestRow(bidrequestid: Int, demandsideplatformid: Int, auctionid: Option[Int], isbanner: Int = 0, isvideo: Int = 0, height: Option[Int], width: Option[Int], countries: Option[String], cities: Option[String], targetedsites: Option[String], targetedcities: Option[String], rawbidrequest: Option[String], price1: Option[Double] = Some(0.0), price2: Option[Double] = Some(0.0), price3: Option[Double] = Some(0.0), currency: Option[String], contentcontextid: Option[Int], iswontheauction: Int = 0, createddate: Option[Double])
+  case class BidrequestRow(bidrequestid: Int, demandsideplatformid: Int, auctionid: Option[Int], isbanner: Int = 0, isvideo: Int = 0, height: Option[Int], width: Option[Int], countries: Option[String], cities: Option[String], targetedsites: Option[String], targetedcities: Option[String], rawbidrequest: Option[String], currency: Option[String], contentcontextid: Option[Int], iswontheauction: Int = 0, createddate: Option[Double])
   /** GetResult implicit for fetching BidrequestRow objects using plain SQL queries */
   implicit def GetResultBidrequestRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[Double]]): GR[BidrequestRow] = GR{
     prs => import prs._
-    BidrequestRow.tupled((<<[Int], <<[Int], <<?[Int], <<[Int], <<[Int], <<?[Int], <<?[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Double], <<?[Double], <<?[Double], <<?[String], <<?[Int], <<[Int], <<?[Double]))
+    BidrequestRow.tupled((<<[Int], <<[Int], <<?[Int], <<[Int], <<[Int], <<?[Int], <<?[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Int], <<[Int], <<?[Double]))
   }
   /** Table description of table BidRequest. Objects of this class serve as prototypes for rows in queries. */
   class Bidrequest(_tableTag: Tag) extends profile.api.Table[BidrequestRow](_tableTag, "BidRequest") {
-    def * = (bidrequestid, demandsideplatformid, auctionid, isbanner, isvideo, height, width, countries, cities, targetedsites, targetedcities, rawbidrequest, price1, price2, price3, currency, contentcontextid, iswontheauction, createddate) <> (BidrequestRow.tupled, BidrequestRow.unapply)
+    def * = (bidrequestid, demandsideplatformid, auctionid, isbanner, isvideo, height, width, countries, cities, targetedsites, targetedcities, rawbidrequest, currency, contentcontextid, iswontheauction, createddate) <> (BidrequestRow.tupled, BidrequestRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(bidrequestid), Rep.Some(demandsideplatformid), auctionid, Rep.Some(isbanner), Rep.Some(isvideo), height, width, countries, cities, targetedsites, targetedcities, rawbidrequest, price1, price2, price3, currency, contentcontextid, Rep.Some(iswontheauction), createddate)).shaped.<>({r=>import r._; _1.map(_=> BidrequestRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18.get, _19)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(bidrequestid), Rep.Some(demandsideplatformid), auctionid, Rep.Some(isbanner), Rep.Some(isvideo), height, width, countries, cities, targetedsites, targetedcities, rawbidrequest, currency, contentcontextid, Rep.Some(iswontheauction), createddate)).shaped.<>({r=>import r._; _1.map(_=> BidrequestRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15.get, _16)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column BidRequestId SqlType(INTEGER), AutoInc, PrimaryKey */
     val bidrequestid: Rep[Int] = column[Int]("BidRequestId", O.AutoInc, O.PrimaryKey)
@@ -226,12 +223,6 @@ trait Tables {
     val targetedcities: Rep[Option[String]] = column[Option[String]]("TargetedCities")
     /** Database column RawBidRequest SqlType(TEXT) */
     val rawbidrequest: Rep[Option[String]] = column[Option[String]]("RawBidRequest")
-    /** Database column Price1 SqlType(REAL), Default(Some(0.0)) */
-    val price1: Rep[Option[Double]] = column[Option[Double]]("Price1", O.Default(Some(0.0)))
-    /** Database column Price2 SqlType(REAL), Default(Some(0.0)) */
-    val price2: Rep[Option[Double]] = column[Option[Double]]("Price2", O.Default(Some(0.0)))
-    /** Database column Price3 SqlType(REAL), Default(Some(0.0)) */
-    val price3: Rep[Option[Double]] = column[Option[Double]]("Price3", O.Default(Some(0.0)))
     /** Database column Currency SqlType(TEXT), Length(5,false) */
     val currency: Rep[Option[String]] = column[Option[String]]("Currency", O.Length(5,varying=false))
     /** Database column ContentContextId SqlType(INTEGER) */
@@ -253,7 +244,10 @@ trait Tables {
 
   /** Entity class storing rows of table Bidresponse
    *  @param bidresponseid Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey
-   *  @param price Database column Price SqlType(REAL)
+   *  @param price1 Database column Price1 SqlType(REAL), Default(Some(0.0))
+   *  @param price2 Database column Price2 SqlType(REAL), Default(Some(0.0))
+   *  @param price3 Database column Price3 SqlType(REAL), Default(Some(0.0))
+   *  @param actualselectedprice Database column ActualSelectedPrice SqlType(REAL)
    *  @param currency Database column Currency SqlType(TEXT)
    *  @param adm Database column Adm SqlType(TEXT)
    *  @param nurl Database column NUrl SqlType(TEXT)
@@ -266,22 +260,28 @@ trait Tables {
    *  @param issendnobidresponse Database column IsSendNoBidResponse SqlType(INTEGER), Length(1,false), Default(0)
    *  @param nobidresponsetypeid Database column NoBidResponseTypeId SqlType(INTEGER)
    *  @param createddate Database column CreatedDate SqlType(REAL) */
-  case class BidresponseRow(bidresponseid: Int, price: Double, currency: String, adm: Option[String], nurl: String, iurl: Option[String], advertiseid: Int, bidrequestid: Option[Int], iswontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int], createddate: Option[Double])
+  case class BidresponseRow(bidresponseid: Int, price1: Option[Double] = Some(0.0), price2: Option[Double] = Some(0.0), price3: Option[Double] = Some(0.0), actualselectedprice: Double, currency: String, adm: Option[String], nurl: String, iurl: Option[String], advertiseid: Int, bidrequestid: Option[Int], iswontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int], createddate: Option[Double])
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
-  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[String], e3: GR[Option[String]], e4: GR[Option[Int]], e5: GR[Option[Double]]): GR[BidresponseRow] = GR{
+  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[Double]], e2: GR[Double], e3: GR[String], e4: GR[Option[String]], e5: GR[Option[Int]]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<[Double], <<[String], <<?[String], <<[String], <<?[String], <<[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[Double]))
+    BidresponseRow.tupled((<<[Int], <<?[Double], <<?[Double], <<?[Double], <<[Double], <<[String], <<?[String], <<[String], <<?[String], <<[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[Double]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
-    def * = (bidresponseid, price, currency, adm, nurl, iurl, advertiseid, bidrequestid, iswontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddate) <> (BidresponseRow.tupled, BidresponseRow.unapply)
+    def * = (bidresponseid, price1, price2, price3, actualselectedprice, currency, adm, nurl, iurl, advertiseid, bidrequestid, iswontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddate) <> (BidresponseRow.tupled, BidresponseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(bidresponseid), Rep.Some(price), Rep.Some(currency), adm, Rep.Some(nurl), iurl, Rep.Some(advertiseid), bidrequestid, Rep.Some(iswontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, createddate)).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2.get, _3.get, _4, _5.get, _6, _7.get, _8, _9.get, _10.get, _11.get, _12.get, _13, _14)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(bidresponseid), price1, price2, price3, Rep.Some(actualselectedprice), Rep.Some(currency), adm, Rep.Some(nurl), iurl, Rep.Some(advertiseid), bidrequestid, Rep.Some(iswontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, createddate)).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4, _5.get, _6.get, _7, _8.get, _9, _10.get, _11, _12.get, _13.get, _14.get, _15.get, _16, _17)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val bidresponseid: Rep[Int] = column[Int]("BidResponseId", O.AutoInc, O.PrimaryKey)
-    /** Database column Price SqlType(REAL) */
-    val price: Rep[Double] = column[Double]("Price")
+    /** Database column Price1 SqlType(REAL), Default(Some(0.0)) */
+    val price1: Rep[Option[Double]] = column[Option[Double]]("Price1", O.Default(Some(0.0)))
+    /** Database column Price2 SqlType(REAL), Default(Some(0.0)) */
+    val price2: Rep[Option[Double]] = column[Option[Double]]("Price2", O.Default(Some(0.0)))
+    /** Database column Price3 SqlType(REAL), Default(Some(0.0)) */
+    val price3: Rep[Option[Double]] = column[Option[Double]]("Price3", O.Default(Some(0.0)))
+    /** Database column ActualSelectedPrice SqlType(REAL) */
+    val actualselectedprice: Rep[Double] = column[Double]("ActualSelectedPrice")
     /** Database column Currency SqlType(TEXT) */
     val currency: Rep[String] = column[String]("Currency")
     /** Database column Adm SqlType(TEXT) */
@@ -679,18 +679,20 @@ trait Tables {
    *  @param lostbidid Database column LostBidId SqlType(INTEGER), AutoInc, PrimaryKey
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER)
    *  @param reason Database column Reason SqlType(TEXT)
-   *  @param createddate Database column CreatedDate SqlType(REAL) */
-  case class LostbidRow(lostbidid: Int, bidrequestid: Int, reason: Option[String], createddate: Option[Double])
+   *  @param losingprice Database column LosingPrice SqlType(REAL)
+   *  @param createddate Database column CreatedDate SqlType(REAL)
+   *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER) */
+  case class LostbidRow(lostbidid: Int, bidrequestid: Int, reason: Option[String], losingprice: Option[Double], createddate: Option[Double], demandsideplatformid: Int)
   /** GetResult implicit for fetching LostbidRow objects using plain SQL queries */
   implicit def GetResultLostbidRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Double]]): GR[LostbidRow] = GR{
     prs => import prs._
-    LostbidRow.tupled((<<[Int], <<[Int], <<?[String], <<?[Double]))
+    LostbidRow.tupled((<<[Int], <<[Int], <<?[String], <<?[Double], <<?[Double], <<[Int]))
   }
   /** Table description of table LostBid. Objects of this class serve as prototypes for rows in queries. */
   class Lostbid(_tableTag: Tag) extends profile.api.Table[LostbidRow](_tableTag, "LostBid") {
-    def * = (lostbidid, bidrequestid, reason, createddate) <> (LostbidRow.tupled, LostbidRow.unapply)
+    def * = (lostbidid, bidrequestid, reason, losingprice, createddate, demandsideplatformid) <> (LostbidRow.tupled, LostbidRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(lostbidid), Rep.Some(bidrequestid), reason, createddate)).shaped.<>({r=>import r._; _1.map(_=> LostbidRow.tupled((_1.get, _2.get, _3, _4)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(lostbidid), Rep.Some(bidrequestid), reason, losingprice, createddate, Rep.Some(demandsideplatformid))).shaped.<>({r=>import r._; _1.map(_=> LostbidRow.tupled((_1.get, _2.get, _3, _4, _5, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column LostBidId SqlType(INTEGER), AutoInc, PrimaryKey */
     val lostbidid: Rep[Int] = column[Int]("LostBidId", O.AutoInc, O.PrimaryKey)
@@ -698,11 +700,17 @@ trait Tables {
     val bidrequestid: Rep[Int] = column[Int]("BidRequestId")
     /** Database column Reason SqlType(TEXT) */
     val reason: Rep[Option[String]] = column[Option[String]]("Reason")
+    /** Database column LosingPrice SqlType(REAL) */
+    val losingprice: Rep[Option[Double]] = column[Option[Double]]("LosingPrice")
     /** Database column CreatedDate SqlType(REAL) */
     val createddate: Rep[Option[Double]] = column[Option[Double]]("CreatedDate")
+    /** Database column DemandSidePlatformId SqlType(INTEGER) */
+    val demandsideplatformid: Rep[Int] = column[Int]("DemandSidePlatformId")
 
     /** Foreign key referencing Bidrequest (database name BidRequest_FK_1) */
     lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => r.bidrequestid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Demandsideplatform (database name DemandSidePlatform_FK_2) */
+    lazy val demandsideplatformFk = foreignKey("DemandSidePlatform_FK_2", demandsideplatformid, Demandsideplatform)(r => r.demandsideplatformid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Lostbid */
   lazy val Lostbid = new TableQuery(tag => new Lostbid(tag))
