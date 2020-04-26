@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/04/2020 01:22:54
+ Date: 27/04/2020 01:30:20
 */
 
 PRAGMA foreign_keys = false;
@@ -270,7 +270,9 @@ CREATE TABLE "LostBid" (
   "Reason" TEXT,
   "LosingPrice" real,
   "CreatedDate" real,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  "DemandSidePlatformId" integer NOT NULL,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -308,6 +310,34 @@ CREATE TABLE "Transaction" (
   "CreatedDate" real,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _LostBid_old_20200427
+-- ----------------------------
+DROP TABLE IF EXISTS "_LostBid_old_20200427";
+CREATE TABLE "_LostBid_old_20200427" (
+  "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRequestId" INTEGER NOT NULL,
+  "Reason" TEXT,
+  "LosingPrice" real,
+  "CreatedDate" real,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _LostBid_old_20200427_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_LostBid_old_20200427_1";
+CREATE TABLE "_LostBid_old_20200427_1" (
+  "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRequestId" INTEGER NOT NULL,
+  "Reason" TEXT,
+  "LosingPrice" real,
+  "CreatedDate" real,
+  "DemandSidePlatform" integer NOT NULL,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatform") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -382,6 +412,14 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
 -- Auto increment value for Transaction
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _LostBid_old_20200427
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _LostBid_old_20200427_1
 -- ----------------------------
 
 PRAGMA foreign_keys = true;
