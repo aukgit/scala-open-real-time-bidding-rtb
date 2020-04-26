@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : rtbDB
+ Source Server         : rtb
  Source Server Type    : SQLite
  Source Server Version : 3030001
  Source Schema         : main
@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 11/04/2020 17:43:23
+ Date: 26/04/2020 16:37:24
 */
 
 PRAGMA foreign_keys = false;
@@ -39,6 +39,7 @@ CREATE TABLE "Advertise" (
   "HasAgeRestriction" INTEGER(1) NOT NULL,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
+  "CreatedDate" real,
   CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
@@ -92,6 +93,7 @@ CREATE TABLE "BidRequest" (
   "Currency" TEXT(5) DEFAULT USD,
   "ContentContextId" INTEGER,
   "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "CreatedDate" real,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -115,6 +117,7 @@ CREATE TABLE "BidResponse" (
   "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER,
+  "CreatedDate" real,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -140,6 +143,8 @@ CREATE TABLE "Campaign" (
   "IsRetrictToUserGender" integer(1) NOT NULL DEFAULT 0,
   "ExpectedUserGender" TEXT(2),
   "PublisherId" INTEGER,
+  "CreatedDate" REAL DEFAULT 0,
+  "ModifiedDate" REAL DEFAULT 0,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE SET NULL ON UPDATE SET NULL,
@@ -153,6 +158,17 @@ DROP TABLE IF EXISTS "CampaignTargetCity";
 CREATE TABLE "CampaignTargetCity" (
   "CampaignTargetCityId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignTargetCity" TEXT NOT NULL,
+  "CampaignId" integer NOT NULL,
+  CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Table structure for CampaignTargetOperatingSystem
+-- ----------------------------
+DROP TABLE IF EXISTS "CampaignTargetOperatingSystem";
+CREATE TABLE "CampaignTargetOperatingSystem" (
+  "CampaignTargetOperatingSystemId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CampaignTargetOperatingSystem" TEXT NOT NULL,
   "CampaignId" integer NOT NULL,
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -216,10 +232,10 @@ DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER NOT NULL,
-  "Dated" INTEGER NOT NULL,
   "BidRequestId" INTEGER NOT NULL,
   "Price" REAL NOT NULL,
   "Currency" TEXT NOT NULL,
+  "CreatedDate" real NOT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -252,6 +268,7 @@ CREATE TABLE "LostBid" (
   "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BidRequestId" INTEGER NOT NULL,
   "Reason" TEXT,
+  "CreatedDate" real,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -287,6 +304,7 @@ CREATE TABLE "Transaction" (
   "Spend" real NOT NULL,
   "ImpressionId" INTEGER NOT NULL,
   "Currency" TEXT NOT NULL,
+  "CreatedDate" real,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -319,6 +337,10 @@ UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
 
 -- ----------------------------
 -- Auto increment value for CampaignTargetCity
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for CampaignTargetOperatingSystem
 -- ----------------------------
 
 -- ----------------------------
