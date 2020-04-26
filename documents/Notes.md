@@ -24,6 +24,21 @@
 - Variance : https://medium.com/@wiemzin/variances-in-scala-9c7d17af9dc4
 - Scala Generic with Shapeless: https://meta.plasm.us/posts/2015/11/08/type-classes-and-generic-derivation/
 - Reflection : https://bit.ly/350JYx7 | https://bit.ly/3bwnjem | https://bit.ly/2VBq60l | https://bit.ly/2x4GHA8
+- Bytes to object and object to Bytes https://bit.ly/2SaE9I7 (Serializing)
+
+
+```scala
+def anyTypeToByteArray(value: Any): Array[Byte] = {
+    val valueConverted :Array[Byte] = SerializationUtils.serialize(value.isInstanceOf[Serializable])
+    valueConverted
+  }
+
+  def ByteArrayToAny(value: Array[Byte]): Any = {
+    val valueConverted: Any = SerializationUtils.deserialize(value)
+    valueConverted
+  }
+
+```
 
 ## Logger References
 - Example of logging : https://bit.ly/2RNFowy

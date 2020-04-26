@@ -66,6 +66,36 @@ object EmptyValidateHelper {
     hasItem
   }
 
+  /**
+   * Returns true if only all are defined or else returns false.
+   * @param items
+   * @tparam A
+   * @return
+   */
+  def isAllDefinedFromMultiple[A](
+    items    : Option[A]*): Boolean = {
+    if(isItemsEmpty(Some(items))){
+      return false
+    }
+
+    items.forall(item => isDefined(item))
+  }
+
+  /**
+   * Returns true if only all are empty or else returns false.
+   * @param items
+   * @tparam A
+   * @return
+   */
+  def isAllEmptyFromMultiple[A](
+    items    : Option[A]*): Boolean = {
+    if(isItemsEmpty(Some(items))){
+      return true
+    }
+
+    items.forall(item => isEmpty(item))
+  }
+
   def isDefined[A](
     item    : Option[A],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {

@@ -117,8 +117,8 @@
       }
     ],
     "redisServer": {
-      "domain": "",
-      "port": 0
+      "domain": "localhost",
+      "port": 6379
     }
   },
   "databaseRelativePath": "openRTBSample.db",

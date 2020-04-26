@@ -1,8 +1,8 @@
 package controllers.rtb
 
-import shared.com.ortb.importedModels.biddingRequests.Impression
+import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
 
 case class ImpressionDealModel (
-  impression: Impression,
+  impression: ImpressionModel,
   deal: Option[Double]
 )
