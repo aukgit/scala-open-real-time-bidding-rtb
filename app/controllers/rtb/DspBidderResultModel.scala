@@ -1,16 +1,40 @@
 package controllers.rtb
 
-import shared.com.ortb.importedModels.biddingRequests.{ BidRequest, Impression }
+import shared.com.ortb.importedModels.biddingRequests.BidRequest
 import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.io.helpers.IterableHelper
 
-case class ImpressionDealModel (
-  impression: Impression,
-  deal: Option[Double]
-)
+import scala.collection.mutable.ArrayBuffer
 
-case class DspBidderResultModel (
+case class DspBidderResultModel(
   request : DspBidderRequestModel,
-  bidRequest : BidRequest,
-  deals : Option[List[ImpressionDealModel]],
-  callStacks : Option[List[CallStackModel]]
-)
+  bidRequest      : BidRequest,
+  deals : Option[List[ImpressionDealModel]] = None,
+  isNoContent     : Boolean = false
+) {
+  private val callStacks : ArrayBuffer[CallStackModel] = new ArrayBuffer[CallStackModel](3)
+
+  def addCallStack(callStackModel : CallStackModel) : Unit = {
+    callStacks.addOne(callStackModel)
+  }
+
+  def addCallStacks(callStackModels : Iterable[CallStackModel]) : Unit = {
+    callStacks.addAll(callStackModels)
+  }
+
+  def getCallStacks : List[CallStackModel] = {
+    callStacks.toList
+  }
+
+  def toPrintModel : DspBidderPrintResultModel = {
+    val callStacksAsStrings = IterableHelper.toListStrings(Some(getCallStacks))
+    val dealsAsStrings = IterableHelper.toListStrings(deals)
+
+    DspBidderPrintResultModel(
+      request.toString,
+      bidRequest,
+      dealsAsStrings,
+      callStacksAsStrings
+    )
+  }
+}

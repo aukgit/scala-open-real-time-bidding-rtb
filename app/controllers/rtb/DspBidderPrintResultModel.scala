@@ -5,6 +5,6 @@ import shared.com.ortb.importedModels.biddingRequests.BidRequest
 case class DspBidderPrintResultModel(
   request: String,
   bidRequest: BidRequest,
-  deals : Option[List[Double]],
+  deals : Option[List[String]],
   callStacks : Option[List[String]]
 )
