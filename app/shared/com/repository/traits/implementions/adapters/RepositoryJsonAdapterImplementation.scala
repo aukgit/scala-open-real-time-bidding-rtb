@@ -3,7 +3,7 @@ package shared.com.repository.traits.implementions.adapters
 import io.circe.Json
 import io.circe.parser.decode
 import io.circe.syntax._
-import shared.com.ortb.adapters.BasicAdapterImplementation
+import shared.com.ortb.adapters.traits.implementations.BasicAdapterImplementation
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperWithOptions
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.adapters.RepositoryJsonAdapter

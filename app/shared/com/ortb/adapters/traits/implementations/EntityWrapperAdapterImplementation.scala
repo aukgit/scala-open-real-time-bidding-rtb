@@ -1,4 +1,4 @@
-package shared.com.ortb.adapters
+package shared.com.ortb.adapters.traits.implementations
 
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.{ EntityWrapper, EntityWrapperWithOptions }

@@ -1,4 +1,4 @@
-package shared.com.ortb.adapters
+package shared.com.ortb.adapters.traits.implementations
 
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel

@@ -1,3 +1,5 @@
 package shared.com.ortb.adapters
 
+import shared.com.ortb.adapters.traits.implementations.RepositoryOperationResultModelAdapterImplementation
+
 class RepositoryOperationResultModelAdapterConcreteImplementation extends RepositoryOperationResultModelAdapterImplementation
