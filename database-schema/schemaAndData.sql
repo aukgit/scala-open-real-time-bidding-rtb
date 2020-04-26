@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 26/04/2020 16:45:50
+ Date: 27/04/2020 01:22:47
 */
 
 PRAGMA foreign_keys = false;
@@ -87,9 +87,6 @@ CREATE TABLE "BidRequest" (
   "TargetedSites" TEXT,
   "TargetedCities" TEXT,
   "RawBidRequest" TEXT,
-  "Price1" real DEFAULT 0,
-  "Price2" real DEFAULT 0,
-  "Price3" real DEFAULT 0,
   "Currency" TEXT(5) DEFAULT USD,
   "ContentContextId" INTEGER,
   "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
@@ -105,7 +102,10 @@ CREATE TABLE "BidRequest" (
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "Price" REAL NOT NULL,
+  "Price1" real DEFAULT 0,
+  "Price2" real DEFAULT 0,
+  "Price3" real DEFAULT 0,
+  "ActualSelectedPrice" REAL NOT NULL,
   "Currency" TEXT NOT NULL,
   "Adm" text,
   "NUrl" text NOT NULL,
@@ -329,6 +329,7 @@ CREATE TABLE "LostBid" (
   "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BidRequestId" INTEGER NOT NULL,
   "Reason" TEXT,
+  "LosingPrice" real,
   "CreatedDate" real,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -413,13 +414,13 @@ INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
-INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
-INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Auction', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
