@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 26/04/2020 16:37:16
+ Date: 26/04/2020 16:45:50
 */
 
 PRAGMA foreign_keys = false;
@@ -52,11 +52,11 @@ DROP TABLE IF EXISTS "Auction";
 CREATE TABLE "Auction" (
   "AuctionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER NOT NULL,
-  "Dated" real NOT NULL,
   "WinningBidderId" INTEGER,
   "IsPrecachedAdvertiseServed" integer(1) NOT NULL DEFAULT 0,
   "WinningPrice" REAL NOT NULL DEFAULT -1,
   "Currency" TEXT NOT NULL DEFAULT USD,
+  "CreatedDated" real NOT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "WinningBidderIdFK" FOREIGN KEY ("WinningBidderId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
 );
@@ -419,9 +419,14 @@ INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Auction', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for Auction
 -- ----------------------------
 
 -- ----------------------------
