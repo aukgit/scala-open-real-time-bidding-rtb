@@ -1,11 +1,29 @@
 package shared.io.jsonParse.traits
 
+import com.redis.api.StringApi.{ Always, SetBehaviour }
+import io.circe.generic.decoding.DerivedDecoder
+import io.circe.generic.encoding.DerivedAsObjectEncoder
+import shapeless.Lazy
+
+import scala.concurrent.duration.Duration
 import scala.reflect.ClassTag
 
-trait CommonJsonParsingMechanism{
-  def setObjectAsJson[T](key: String, value: Option[T])(implicit classTag : ClassTag[T]): Unit
-  def getObjectFromJsonAs[T](key: String)(implicit classTag : ClassTag[T]): Option[T]
+trait CommonJsonParsingMechanism {
+  def setObjectAsJson[T](
+    key : String,
+    value : Option[T],
+    whenSet : SetBehaviour = Always,
+    expire : Duration = null
+  )(
+    implicit decoder : Lazy[DerivedDecoder[T]],
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit
 
-  def setIterableObjectsAsJson[T](key: String, value: Iterable[T])(implicit classTag : ClassTag[T]): Unit
-  def getIterableObjectsAs[T](key: String)(implicit classTag : ClassTag[T]): Iterable[T]
+  def getObjectFromJsonAs[T](key : String)(implicit classTag : ClassTag[T]) : Option[T]
+
+  def setIterableObjectsAsJson[T](
+    key : String, value : Iterable[T],
+    whenSet : SetBehaviour = Always,
+    expire : Duration = null)(implicit classTag : ClassTag[T]) : Unit
+
+  def getIterableObjectsAs[T](key : String)(implicit classTag : ClassTag[T]) : Iterable[T]
 }

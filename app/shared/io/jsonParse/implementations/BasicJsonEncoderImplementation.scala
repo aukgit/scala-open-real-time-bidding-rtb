@@ -10,7 +10,7 @@ import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
 class BasicJsonEncoderImplementation[T]
 (
   implicit val decoder : Lazy[DerivedDecoder[T]],
-  val encoder : Lazy[DerivedAsObjectEncoder[T]]
+  implicit val encoder : Lazy[DerivedAsObjectEncoder[T]]
 )
   extends BasicJsonEncoder[T] {
   def getEncoder : Encoder[T] = deriveEncoder[T](encoder)
