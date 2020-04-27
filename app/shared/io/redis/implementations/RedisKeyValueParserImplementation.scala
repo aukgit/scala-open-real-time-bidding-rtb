@@ -1,10 +1,8 @@
 package shared.io.redis.implementations
 
 import com.google.inject.Inject
-import com.redis.RedisClient
 import com.redis.api.StringApi
 import com.redis.serialization.Parse.Implicits.parseByteArray
-import shared.com.ortb.model.config.DomainPortModel
 import shared.io.helpers.{ EmptyValidateHelper, SerializingHelper }
 import shared.io.loggers.AppLogger
 import shared.io.redis.traits.{ RedisClientCoreProperties, RedisKeyValueParser }

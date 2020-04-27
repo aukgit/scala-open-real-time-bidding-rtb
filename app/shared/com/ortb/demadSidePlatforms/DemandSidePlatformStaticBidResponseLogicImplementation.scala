@@ -13,6 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 class DemandSidePlatformStaticBidResponseLogicImplementation
 (demandSidePlatformCoreProperties : DemandSidePlatformCoreProperties)
   extends DemandSidePlatformStaticBidResponseLogic with DemandSidePlatformBiddingProperties {
+
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     demandSidePlatformCoreProperties.demandSidePlatformConfiguration
 
@@ -58,5 +59,19 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     Some(dspBidderResultModel)
   }
 
-  override def getBidStaticNoContent(request : DspBidderRequestModel) : Option[DspBidderResultModel] = ???
+  override def getBidStaticNoContent(
+    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
+    val dspBidderResultModel =
+      model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
+
+    val callStackModel = CallStackModel(
+      deal = demandSidePlatformCoreProperties.noDealPrice,
+      performingAction = s"[getBidStaticNoContent] -> No deals.",
+      isServedAnyDeal = false
+    )
+
+    dspBidderResultModel.addCallStack(callStackModel)
+
+    Some(dspBidderResultModel)
+  }
 }

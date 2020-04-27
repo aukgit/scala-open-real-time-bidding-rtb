@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformBiddingLogic
+import shared.com.ortb.demadSidePlatforms.traits.logics.{ DemandSidePlatformBiddingLogic, DemandSidePlatformStaticBidResponseLogic }
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCoreProperties }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.model
@@ -10,29 +10,19 @@ import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.io.helpers.EmptyValidateHelper
 import slick.jdbc.SQLiteProfile.api._
 
+import scala.collection.mutable.ArrayBuffer
+
 class DemandSidePlatformBiddingAgent(
   coreProperties : DemandSidePlatformCoreProperties,
   algorithmType : DemandSidePlatformBiddingAlgorithmType)
   extends DemandSidePlatformBiddingLogic with DemandSidePlatformBiddingProperties {
 
+  lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
+      DemandSidePlatformStaticBidResponseLogicImplementation(coreProperties)
+
   override def getBidPrices(
     request : DspBidderRequestModel) : Option[DspBidderResultModel] = ???
 
-  override def getBidStaticNoContent(
-    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
-    val dspBidderResultModel =
-      model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
-
-    val callStackModel = CallStackModel(
-      deal = coreProperties.noDealPrice,
-      performingAction = s"[getBidStaticNoContent] -> No deals.",
-      isServedAnyDeal = false
-    )
-
-    dspBidderResultModel.addCallStack(callStackModel)
-
-    Some(dspBidderResultModel)
-  }
 
   def getLastFailedDeals(
     request : DspBidderRequestModel,
@@ -61,13 +51,31 @@ class DemandSidePlatformBiddingAgent(
     val advertises = repositories.advertises
     val impressions = request.bidRequest.imp.get
 
-    impressions.map(impression => {
-      if (EmptyValidateHelper.isDefined(impression.banner)) {
-        val banner = impression.banner
+    val list = new ArrayBuffer[ImpressionBiddableInfoModel](impressions.length)
 
-        advertises.filter(advertise =>
-          advertise.isvideo === 0)
+    impressions.foreach(impression => {
+      if (EmptyValidateHelper.isEmpty(impression.banner)) {
+        list += ImpressionBiddableInfoModel(
+          impression,
+          None,
+          ImpressionBiddableAttributesModel(
+            isBiddable = false,
+            hasBanner = false,
+            0))
+
+//        return
       }
+
+      val banner = impression.banner.get
+      var advertisesQuery = advertises.filter(advertise =>
+        advertise.isvideo === 0)
+
+//      if (EmptyValidateHelper.isDefined(banner.wmax)){
+//        advertisesQuery = advertisesQuery.filter(ad => ad.maxweight)
+//      }
+
+      // val hasMaxMin = EmptyValidateHelper.isAllDefinedFromMultiple(banner.get.hmax,banner.get.wmax)
+
     })
 
 
@@ -96,10 +104,14 @@ class DemandSidePlatformBiddingAgent(
     Some(dspBidderResultModel)
   }
 
-  override def getBidStatic(request : DspBidderRequestModel) : Option[DspBidderResultModel] = ???
+  override def getBidStatic(request : DspBidderRequestModel) : Option[DspBidderResultModel] =
+    demandSidePlatformStaticBidResponseLogic.getBidStatic(request)
 
   override def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
 
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     coreProperties.demandSidePlatformConfiguration
+
+  override def getBidStaticNoContent(request : DspBidderRequestModel) : Option[DspBidderResultModel] =
+    demandSidePlatformStaticBidResponseLogic.getBidStaticNoContent(request)
 }
