@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/04/2020 01:30:13
+ Date: 28/04/2020 00:30:46
 */
 
 PRAGMA foreign_keys = false;
@@ -33,9 +33,9 @@ CREATE TABLE "Advertise" (
   "Height" REAL NOT NULL DEFAULT 0,
   "Weight" REAL NOT NULL DEFAULT 0,
   "MinHeight" REAL NOT NULL DEFAULT 0,
-  "MinWeight" REAL NOT NULL DEFAULT 0,
+  "MinWidth" REAL NOT NULL DEFAULT 0,
   "MaxHeight" REAL NOT NULL DEFAULT 0,
-  "MaxWeight" REAL NOT NULL DEFAULT 0,
+  "MaxWidth" REAL NOT NULL DEFAULT 0,
   "HasAgeRestriction" INTEGER(1) NOT NULL,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
@@ -394,34 +394,6 @@ CREATE TABLE "Transaction" (
 );
 
 -- ----------------------------
--- Table structure for _LostBid_old_20200427
--- ----------------------------
-DROP TABLE IF EXISTS "_LostBid_old_20200427";
-CREATE TABLE "_LostBid_old_20200427" (
-  "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BidRequestId" INTEGER NOT NULL,
-  "Reason" TEXT,
-  "LosingPrice" real,
-  "CreatedDate" real,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-
--- ----------------------------
--- Table structure for _LostBid_old_20200427_1
--- ----------------------------
-DROP TABLE IF EXISTS "_LostBid_old_20200427_1";
-CREATE TABLE "_LostBid_old_20200427_1" (
-  "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BidRequestId" INTEGER NOT NULL,
-  "Reason" TEXT,
-  "LosingPrice" real,
-  "CreatedDate" real,
-  "DemandSidePlatform" integer NOT NULL,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatform") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-
--- ----------------------------
 -- Table structure for sqlite_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS "sqlite_sequence";
@@ -446,13 +418,11 @@ INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Auction', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
-INSERT INTO "sqlite_sequence" VALUES ('_LostBid_old_20200427', 0);
-INSERT INTO "sqlite_sequence" VALUES ('_LostBid_old_20200427_1', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
@@ -517,14 +487,6 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
 -- Auto increment value for Transaction
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for _LostBid_old_20200427
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for _LostBid_old_20200427_1
 -- ----------------------------
 
 PRAGMA foreign_keys = true;
