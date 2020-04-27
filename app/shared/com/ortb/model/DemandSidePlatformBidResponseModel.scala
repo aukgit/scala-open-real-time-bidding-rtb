@@ -6,7 +6,7 @@ import shared.io.helpers.IterableHelper
 
 import scala.collection.mutable.ArrayBuffer
 
-case class DspBidderResultModel(
+case class DemandSidePlatformBidResponseModel(
   request : DspBidderRequestModel,
   bidRequest      : BidRequest,
   deals : Option[List[ImpressionDealModel]] = None,

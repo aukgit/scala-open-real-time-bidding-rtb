@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 28/04/2020 00:30:46
+ Date: 28/04/2020 04:16:24
 */
 
 PRAGMA foreign_keys = false;
@@ -24,7 +24,7 @@ CREATE TABLE "Advertise" (
   "CampaignId" INTEGER NOT NULL,
   "BannerAdvertiseTypeId" INTEGER NOT NULL,
   "AdvertiseTitle" TEXT NOT NULL,
-  "ContentContextId" INTEGER NOT NULL,
+  "ContentContextId" INTEGER,
   "BidUrl" TEXT NOT NULL,
   "IFrameHtml" TEXT,
   "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS "Campaign";
 CREATE TABLE "Campaign" (
   "CampaignId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignName" TEXT NOT NULL,
-  "ContentCategoryId" text NOT NULL,
+  "ContentCategoryId" text,
   "TotalBudgetCPM" real NOT NULL DEFAULT 0,
   "SpendAlready" real NOT NULL DEFAULT 0,
   "RemainingAmount" real NOT NULL DEFAULT 0,
@@ -415,7 +415,6 @@ INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetCity', 0);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Auction', 0);
@@ -423,6 +422,7 @@ INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 
 -- ----------------------------
 -- Auto increment value for Advertise

@@ -2,8 +2,11 @@ package shared.com.repository.traits.implementions.operations.queries
 
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.queries.RepositorySingleQueryOperations
+import shared.io.helpers.EmptyValidateHelper
+import slick.dbio.Effect
+import slick.sql.FixedSqlStreamingAction
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 
 trait RepositorySingleQueryOperationsImplementation[TTable, TRow, TKey]
   extends RepositorySingleQueryOperations[TTable, TRow, TKey] {
@@ -22,5 +25,16 @@ trait RepositorySingleQueryOperationsImplementation[TTable, TRow, TKey]
     }
 
     None
+  }
+
+  def getFirstOrDefaultFromQuery(
+    queryResult : FixedSqlStreamingAction[Seq[TTable], TRow, Effect.Read]) : Option[TRow] = {
+    val result = this.run(queryResult)
+
+    if(EmptyValidateHelper.isItemsEmpty(result)){
+      return None
+    }
+
+    Some(result.head)
   }
 }

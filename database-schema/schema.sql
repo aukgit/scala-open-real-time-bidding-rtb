@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 28/04/2020 00:30:53
+ Date: 28/04/2020 04:16:32
 */
 
 PRAGMA foreign_keys = false;
@@ -24,7 +24,7 @@ CREATE TABLE "Advertise" (
   "CampaignId" INTEGER NOT NULL,
   "BannerAdvertiseTypeId" INTEGER NOT NULL,
   "AdvertiseTitle" TEXT NOT NULL,
-  "ContentContextId" INTEGER NOT NULL,
+  "ContentContextId" INTEGER,
   "BidUrl" TEXT NOT NULL,
   "IFrameHtml" TEXT,
   "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS "Campaign";
 CREATE TABLE "Campaign" (
   "CampaignId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignName" TEXT NOT NULL,
-  "ContentCategoryId" text NOT NULL,
+  "ContentCategoryId" text,
   "TotalBudgetCPM" real NOT NULL DEFAULT 0,
   "SpendAlready" real NOT NULL DEFAULT 0,
   "RemainingAmount" real NOT NULL DEFAULT 0,

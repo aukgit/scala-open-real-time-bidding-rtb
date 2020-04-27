@@ -1,6 +1,9 @@
 package shared.com.repository.traits.operations.queries
 
+import shared.com.ortb.persistent
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
+import slick.dbio.Effect
+import slick.sql.FixedSqlStreamingAction
 
 import scala.concurrent.Future
 
@@ -13,4 +16,7 @@ trait RepositorySingleQueryOperations[TTable, TRow, TKey]
   def getFirstOrDefault(rows : Future[Seq[TRow]]) : Option[TRow]
 
   def getFirstOrDefault(rows : Seq[TRow]) : Option[TRow]
+
+  def getFirstOrDefaultFromQuery(
+    queryResult : FixedSqlStreamingAction[Seq[TTable], TRow, Effect.Read]) : Option[TRow]
 }

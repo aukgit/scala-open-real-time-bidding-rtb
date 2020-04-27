@@ -18,7 +18,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     demandSidePlatformCoreProperties.demandSidePlatformConfiguration
 
   override def getBidStatic(
-    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
+    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val impressions : Seq[ImpressionModel] = request.bidRequest.imp.get
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
@@ -53,16 +53,16 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     }
 
     val dspBidderResultModel =
-      model.DspBidderResultModel(request, request.bidRequest, Some(deals.toList))
+      model.DemandSidePlatformBidResponseModel(request, request.bidRequest, Some(deals.toList))
     dspBidderResultModel.addCallStacks(callStacks)
 
     Some(dspBidderResultModel)
   }
 
   override def getBidStaticNoContent(
-    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
+    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val dspBidderResultModel =
-      model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
+      model.DemandSidePlatformBidResponseModel(request, request.bidRequest, isNoContent = true)
 
     val callStackModel = CallStackModel(
       deal = demandSidePlatformCoreProperties.noDealPrice,

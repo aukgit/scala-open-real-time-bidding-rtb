@@ -233,6 +233,13 @@ object EmptyValidateHelper {
     !hasAnyItem(items, message)
   }
 
+  def isItemsEmpty[A](
+    items   : Iterable[A],
+    message : Option[String] = None) : Boolean = {
+    !hasAnyItem(Some(items), message)
+  }
+
+
   def isItemsDefined[A](
     items   : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {

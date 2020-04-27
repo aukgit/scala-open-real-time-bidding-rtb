@@ -4,5 +4,8 @@ case class DemandSidePlatformConfigurationModel(
   defaultBidIncrementNumber : Double,
   defaultBidStaticDeal : Double,
   isStaticSimulate : Boolean,
-  isAddNewAdvertiseOnNotFound : Boolean
+  defaultAdvertiseLimit: Int,
+  defaultGenericLimit: Int,
+  isAddNewAdvertiseOnNotFound : Boolean,
+  isRedisCacheEnabled : Boolean
 )

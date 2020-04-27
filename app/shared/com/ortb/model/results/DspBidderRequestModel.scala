@@ -4,6 +4,5 @@ import shared.com.ortb.demadSidePlatforms.DemandSidePlatformSimulatorServiceApiC
 import shared.com.ortb.importedModels.biddingRequests.BidRequest
 
 case class DspBidderRequestModel(
-
   bidRequest  : BidRequest,
   dspId       : Int)

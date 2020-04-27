@@ -7,8 +7,11 @@
     "demandSidePlatformConfiguration": {
       "defaultBidIncrementNumber": 0.1,
       "defaultBidStaticDeal": 0.3,
+      "defaultAdvertiseLimit": 5,
+      "defaultGenericLimit": 5,
       "isStaticSimulate": true,
-      "isAddNewAdvertiseOnNotFound": true
+      "isAddNewAdvertiseOnNotFound": true,
+      "isRedisCacheEnabled": true
     },
     "services": {
       "root": {
