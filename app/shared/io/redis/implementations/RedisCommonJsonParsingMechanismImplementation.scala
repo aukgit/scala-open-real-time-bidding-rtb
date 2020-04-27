@@ -1,4 +1,4 @@
-package shared.io.redis
+package shared.io.redis.implementations
 
 import com.google.inject.Inject
 import com.redis.RedisClient
@@ -10,14 +10,15 @@ import shared.com.ortb.model.config.DomainPortModel
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.traits.{ CommonJsonParsingMechanism, JsonParserCreator }
 import shared.io.loggers.AppLogger
-import shared.io.redis.traits.RedisClientCore
+import shared.io.redis.traits.RedisClientCoreProperties
+
 import scala.concurrent.duration.Duration
 
-class CommonJsonParsingMechanismForRedisImplementation @Inject()(
-  redisClientCore : RedisClientCore
+class RedisCommonJsonParsingMechanismImplementation @Inject()(
+  redisClientCore : RedisClientCoreProperties
 )
   extends CommonJsonParsingMechanism
-    with RedisClientCore
+    with RedisClientCoreProperties
     with JsonParserCreator {
 
   override def setObjectAsJson[T](
