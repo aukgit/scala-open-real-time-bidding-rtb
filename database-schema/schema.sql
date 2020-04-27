@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 28/04/2020 04:16:32
+ Date: 28/04/2020 04:30:34
 */
 
 PRAGMA foreign_keys = false;
@@ -261,6 +261,21 @@ CREATE TABLE "KeywordAdvertiseMapping" (
 );
 
 -- ----------------------------
+-- Table structure for LogTrace
+-- ----------------------------
+DROP TABLE IF EXISTS "LogTrace";
+CREATE TABLE "LogTrace" (
+  "LogTraceId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "MethodName" TEXT,
+  "ClassName" TEXT,
+  "Request" TEXT,
+  "Message" TEXT,
+  "EntityData" TEXT,
+  "DatabaseTransactionTypeId" integer,
+  "CreatedDate" real
+);
+
+-- ----------------------------
 -- Table structure for LostBid
 -- ----------------------------
 DROP TABLE IF EXISTS "LostBid";
@@ -366,6 +381,10 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
 
 -- ----------------------------
 -- Auto increment value for Impression
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for LogTrace
 -- ----------------------------
 
 -- ----------------------------
