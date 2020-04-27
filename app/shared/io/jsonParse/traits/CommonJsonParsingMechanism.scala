@@ -31,5 +31,5 @@ trait CommonJsonParsingMechanism {
 
   def getIterableObjectsAs[T](key : String)(
     implicit decoder : Lazy[DerivedDecoder[T]],
-    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Iterable[T]
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Option[Iterable[T]]
 }

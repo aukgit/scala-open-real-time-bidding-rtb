@@ -22,6 +22,8 @@ trait GenericJsonParser[T] {
 
   def fromModelsToJsonString(models : Option[Iterable[T]]) : Option[String]
 
+  def fromJsonStringToModels(jsonString : Option[String]) : Option[Iterable[T]]
+
   def toModels(jsonString : Option[String]) : Option[ArrayBuffer[T]]
 
   def toJsonObject(model : Option[T]) : Option[Json]

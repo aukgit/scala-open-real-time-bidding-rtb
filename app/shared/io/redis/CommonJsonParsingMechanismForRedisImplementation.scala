@@ -8,19 +8,10 @@ import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
 import shared.com.ortb.model.config.DomainPortModel
 import shared.io.helpers.EmptyValidateHelper
-import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
-import shared.io.jsonParse.traits.{ BasicJsonEncoder, CommonJsonParsingMechanism }
+import shared.io.jsonParse.traits.{ CommonJsonParsingMechanism, JsonParserCreator }
 import shared.io.loggers.AppLogger
 import shared.io.redis.traits.RedisClientCore
-
 import scala.concurrent.duration.Duration
-
-trait JsonParserCreator {
-  def getBasicJsonEncoder[T](
-    implicit decoder : Lazy[DerivedDecoder[T]],
-    encoder : Lazy[DerivedAsObjectEncoder[T]]) : BasicJsonEncoder[T] =
-    new BasicJsonEncoderImplementation[T]()
-}
 
 class CommonJsonParsingMechanismForRedisImplementation @Inject()(
   redisClientCore : RedisClientCore
@@ -54,7 +45,7 @@ class CommonJsonParsingMechanismForRedisImplementation @Inject()(
 
   override def getObjectFromJsonAs[T](key : String)(
     implicit decoder : Lazy[DerivedDecoder[T]],
-    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Option[T] =  {
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Option[T] = {
     try {
       val value = redisClient.get(key)
       val jsonParser = getBasicJsonEncoder[T]
@@ -76,7 +67,7 @@ class CommonJsonParsingMechanismForRedisImplementation @Inject()(
     implicit decoder : Lazy[DerivedDecoder[T]],
     encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
     try {
-      if (EmptyValidateHelper.isItemsEmpty(Some(items), Some(s"Key: $key, value given is empty."))) {
+      if (EmptyValidateHelper.isItemsEmpty(Some(items), Some(s"[setIterableObjectsAsJson] -> Key: $key, value given is empty."))) {
         return
       }
 
@@ -90,9 +81,30 @@ class CommonJsonParsingMechanismForRedisImplementation @Inject()(
     }
   }
 
-  override def getIterableObjectsAs[T](key : String)(
+  def getIterableObjectsAs[T](key : String)(
     implicit decoder : Lazy[DerivedDecoder[T]],
-    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Iterable[T] = ???
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Option[Iterable[T]] = {
+    try {
+      //noinspection DuplicatedCode
+      val valuesAsJsonString = redisClient.get(key)
+      val emptyMessage = Some(s"[getIterableObjectsAs] -> Key: ${ key }, received empty value")
+      if (EmptyValidateHelper.isEmptyOptionString(valuesAsJsonString, emptyMessage)) {
+        return None
+      }
+
+      val jsonParser = getBasicJsonEncoder[T]
+      val models = jsonParser.getJsonGenericParser
+        .toModels(valuesAsJsonString)
+
+      return models
+    }
+    catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, key)
+    }
+
+    None
+  }
 
   override val redisClient : RedisClient =
     redisClientCore.redisClient

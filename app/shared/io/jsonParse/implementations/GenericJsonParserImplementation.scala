@@ -14,6 +14,11 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   extends GenericJsonParser[T] {
   val quote = "\""
 
+  override def fromJsonStringToModels(jsonString : Option[String]) : Option[Iterable[T]] = {
+    val models = toModels(jsonString)
+    models
+  }
+
   override def toModel(jsonString : Option[String]) : Option[T] = {
     if (EmptyValidateHelper.isEmptyOptionString(jsonString)) {
       return None
