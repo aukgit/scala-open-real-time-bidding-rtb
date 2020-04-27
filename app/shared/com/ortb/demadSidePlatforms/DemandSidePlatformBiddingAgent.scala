@@ -3,18 +3,16 @@ package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.demadSidePlatforms.traits.logics.{ DemandSidePlatformBiddingLogic, DemandSidePlatformStaticBidResponseLogic }
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCoreProperties }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
-import shared.com.ortb.importedModels.biddingRequests.{ BannerModel, ImpressionModel, SiteModel }
+import shared.com.ortb.importedModels.biddingRequests._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
-import shared.com.ortb.{ model, persistent }
-import shared.com.ortb.persistent.schema.Tables._
-import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.model._
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DspBidderRequestModel
-import shared.com.ortb.persistent.repositories.AdvertiseRepository
-import shared.com.ortb.persistent.schema
+import shared.com.ortb.persistent
+import shared.com.ortb.persistent.repositories.{ AdvertiseRepository, LogTraceRepository }
 import shared.com.ortb.persistent.schema.Tables
+import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
@@ -23,6 +21,29 @@ import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlStreamingAction
 
 import scala.concurrent.Future
+
+case class LogTraceModel(
+  methodName : Option[String],
+  className : Option[String],
+  request : Option[String],
+  message : Option[String] = None,
+  entityData : Option[String],
+  databaseTransactionId : Option[Int] = None
+)
+
+trait DatabaseLogTrace {
+  val logTraceRepository: LogTraceRepository
+  def trace(log: LogTraceModel) = {
+    val row = LogtraceRow(
+      -1,
+      log.methodName,
+      log.className,
+      log.request.getOrElse(""),
+      log.message,
+
+    log.entityData,log.databaseTransactionId,)
+  }
+}
 
 class DemandSidePlatformBiddingAgent(
   coreProperties : DemandSidePlatformCoreProperties,
@@ -164,7 +185,7 @@ class DemandSidePlatformBiddingAgent(
     request : DspBidderRequestModel,
     isEmpty : Boolean,
     impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {
-    if(!demandSidePlatformConfiguration.isAddNewAdvertiseOnNotFound || !isEmpty){
+    if (!demandSidePlatformConfiguration.isAddNewAdvertiseOnNotFound || !isEmpty) {
       return
     }
 
@@ -186,16 +207,16 @@ class DemandSidePlatformBiddingAgent(
       .take(1)
       .result
 
-    val x= impressionBiddableInfoModel.impression
+    val x = impressionBiddableInfoModel.impression
     val bidReq = request.bidRequest
     val site = bidReq.site
 
-    def getCategories(site: Option[SiteModel]) : Option[List[String]] = {
-      if(site.isEmpty){
+    def getCategories(site : Option[SiteModel]) : Option[List[String]] = {
+      if (site.isEmpty) {
         return None
       }
 
-      if( site.get.cat.isDefined){
+      if (site.get.cat.isDefined) {
         return site.get.cat
       }
 
@@ -207,17 +228,17 @@ class DemandSidePlatformBiddingAgent(
 
     // create campaign
     val banner = x.banner.get.toString
-    val categories =  getCategories(site)
-//    CampaignRow(-1, s"Generated: Campaign - Banner($banner)",)
+    val categories = getCategories(site)
+    //    CampaignRow(-1, s"Generated: Campaign - Banner($banner)",)
 
 
   }
 
   def getImpressionDealsFromBiddableImpressionInfoModels(
     request : DspBidderRequestModel,
-    biddableImpressionInfoModels : Seq[ImpressionBiddableInfoModel]):
+    biddableImpressionInfoModels : Seq[ImpressionBiddableInfoModel]) :
   Option[List[ImpressionDealModel]] = {
-    if(EmptyValidateHelper.isItemsEmpty(Some(biddableImpressionInfoModels))){
+    if (EmptyValidateHelper.isItemsEmpty(Some(biddableImpressionInfoModels))) {
       return None
     }
 
