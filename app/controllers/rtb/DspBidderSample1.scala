@@ -6,71 +6,41 @@ import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.EmptyValidateHelper
 import slick.jdbc.SQLiteProfile.api._
+import com.redis._
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.model.config.{ ConfigModel, DomainPortModel }
 
 import scala.collection.mutable.ArrayBuffer
+import scala.reflect.ClassTag
 
-case class BidFailedReasonsModel(
-    lostbids: Seq[LostbidRow]
-)
+trait RedisClientWrapper {
+  val redisClient : RedisClient
+  val redisServer : DomainPortModel
+}
 
-case class ImpressionBiddableInfo(
-  impression: ImpressionModel,
-  isBiddable : Boolean,
-  hasBanner: Boolean,
-  advertises: Array[AdvertiseRow],
-  advertisesFoundCount : Int
-)
+class RedisClientImplementation(appManager: AppManager) extends RedisClientWrapper{
+  lazy val config : ConfigModel = appManager.config
+  lazy val redisServer : DomainPortModel = config.server.redisServer
+  lazy val redisClient : RedisClient = new RedisClient(redisServer.domain, 6379)
+}
 
-class DspBidderSample1(algorithmType: DemandSidePlatformBiddingAlgorithmType)
+trait BiddingDefaultProperties {
+  val defaultIncrementNumber: Double
+  val defaultStaticDeal: Double
+}
+
+class BiddingDefaultPropertiesImplementation(controller : DemandSidePlatformSimulatorServiceApiController) extends BiddingDefaultProperties{
+  lazy val defaultIncrementNumber : Double = controller.config.services.de
+  lazy val defaultStaticDeal : Double = 0.03
+}
+
+class DspBidderSample1(
+  controller : DemandSidePlatformSimulatorServiceApiController,
+  algorithmType: DemandSidePlatformBiddingAlgorithmType)
     extends DspBidder {
-  val defaultIncrementNumber = 0.01
-  val defaultStaticDeal = 0.03
-
 
   override def getBidPrices(
       request: DspBidderRequestModel): Option[DspBidderResultModel] = ???
-
-  override def getBidStatic(
-      request: DspBidderRequestModel): Option[DspBidderResultModel] = {
-    val impressions: Seq[ImpressionModel] = request.bidRequest.imp.get
-    val length = impressions.length
-    val deals = new ArrayBuffer[ImpressionDealModel](length)
-    val callStacks = new ArrayBuffer[CallStackModel](length)
-
-    for (impression <- impressions) {
-      if (impression.bidFloor.isDefined) {
-        val deal: Double = impression.bidFloor.get + defaultIncrementNumber
-        val impressionDealModel = ImpressionDealModel(impression, Some(deal))
-        deals.addOne(impressionDealModel)
-
-        val callStackModel = CallStackModel(
-          deal = deal,
-          performingAction =
-            s"[getBidStatic] -> adding deals($deal) for given bid request.",
-          isServedAnyDeal = true
-        )
-
-        callStacks.addOne(callStackModel)
-      } else {
-        deals.addOne(ImpressionDealModel(impression, Some(defaultStaticDeal)))
-
-        val callStackModel = CallStackModel(
-          deal = defaultStaticDeal,
-          performingAction =
-            s"[getBidStatic] -> adding deals($defaultStaticDeal) for given bid request.",
-          isServedAnyDeal = true
-        )
-
-        callStacks.addOne(callStackModel)
-      }
-    }
-
-    val dspBidderResultModel =
-      DspBidderResultModel(request, request.bidRequest, Some(deals.toList))
-    dspBidderResultModel.addCallStacks(callStacks)
-
-    Some(dspBidderResultModel)
-  }
 
   override def getBidStaticNoContent(
       request: DspBidderRequestModel): Option[DspBidderResultModel] = {
@@ -110,7 +80,7 @@ class DspBidderSample1(algorithmType: DemandSidePlatformBiddingAlgorithmType)
     )
   }
 
-  def biddableImpressionInfo(request: DspBidderRequestModel): Array[ImpressionBiddableInfo] = {
+  def biddableImpressionInfo(request: DspBidderRequestModel): Array[ImpressionBiddableInfoModel] = {
     val controller = request.controller
     val demandSidePlatformId = controller.demandSideId
     val repositories = controller.repositories

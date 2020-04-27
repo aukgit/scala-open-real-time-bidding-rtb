@@ -5,6 +5,10 @@
     "commonDomain": "",
     "isUseDefaultDomainForAll": true,
     "isStaticSimulate": true,
+    "demandSidePlatformConfiguration": {
+      "defaultBidIncrementNumber": 0.1,
+      "defaultBidStaticDeal": 0.3
+    },
     "services": {
       "root": {
         "prefix": "",

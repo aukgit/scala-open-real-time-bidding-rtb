@@ -1,10 +1,16 @@
 package shared.com.ortb.model.config
 
 case class ServerInfoModel(
-  commonDomain             : String,
-  services                 : ServicesModel,
+  commonDomain : String,
+  services : ServicesModel,
   isUseDefaultDomainForAll : Boolean,
-  isStaticSimulate         : Boolean,
-  requestDefaultHeaders    : Array[KeyValuePairModel],
-  redisServer              : DomainPortModel
+  isStaticSimulate : Boolean,
+  demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel,
+  requestDefaultHeaders : Array[KeyValuePairModel],
+  redisServer : DomainPortModel
+)
+
+case class DemandSidePlatformConfigurationModel(
+  defaultBidIncrementNumber : Double,
+  defaultBidStaticDeal : Double
 )

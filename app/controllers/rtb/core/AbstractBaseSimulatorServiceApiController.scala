@@ -2,8 +2,9 @@ package controllers.rtb.core
 
 import controllers.rtb.ServiceBaseApiController
 import controllers.rtb.implementations.ServiceControllerPropertiesImplementation
-import controllers.rtb.traits.ServiceControllerProperties
+import controllers.rtb.traits.properties.ServiceControllerCoreProperties
 import javax.inject.Inject
+import play.api.Logger
 import play.api.mvc._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
@@ -11,15 +12,20 @@ import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 import shared.com.ortb.persistent.Repositories
 import shared.io.loggers.AppLogger
 
+
+
+
+
 abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   repositories : Repositories,
   appManager   : AppManager,
   components   : ControllerComponents)
-  extends ServiceBaseApiController(repositories, appManager, components) {
+  extends ServiceBaseApiController(repositories, appManager, components)
+    with ServiceControllerCoreProperties {
 
   lazy val config : ConfigModel = appManager.config
   lazy val services : ServicesModel = config.server.services
-  lazy val selfProperties : ServiceControllerProperties = new ServiceControllerPropertiesImplementation(
+  lazy val selfProperties : ServiceControllerCoreProperties = new ServiceControllerPropertiesImplementation(
     this,
     currentServiceModel)
   val currentServiceModel : ServiceModel

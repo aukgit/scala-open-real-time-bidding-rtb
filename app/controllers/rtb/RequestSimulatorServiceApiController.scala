@@ -20,10 +20,6 @@ class RequestSimulatorServiceApiController @Inject()(
   lazy val jsonDirectory = "jsonRequestSamples"
 
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
-    //    val actionWrapper = ControllerGenericActionWrapper(
-    //      ControllerDefaultActionType.GetOrRead,
-    //      Some(request))
-
     try {
       val jsonString = JsonHelper.toJson(selfProperties.serviceModel.routing).get.toString()
       selfProperties.restWebApiOkJson.OkJson(jsonString)

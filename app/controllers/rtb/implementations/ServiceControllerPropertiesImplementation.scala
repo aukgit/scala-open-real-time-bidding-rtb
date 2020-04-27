@@ -1,7 +1,7 @@
 package controllers.rtb.implementations
 
 import controllers.rtb.ServiceBaseApiController
-import controllers.rtb.traits.ServiceControllerProperties
+import controllers.rtb.traits.properties.ServiceControllerCoreProperties
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.{ ConfigModel, ServiceModel }
 import shared.io.helpers.EmptyValidateHelper
@@ -9,7 +9,7 @@ import shared.io.helpers.EmptyValidateHelper
 
 class ServiceControllerPropertiesImplementation
 (val serviceBaseApiController : ServiceBaseApiController, val serviceModelInstance : ServiceModel)
-  extends ServiceControllerProperties {
+  extends ServiceControllerCoreProperties {
   EmptyValidateHelper.throwOnNullOrNone(serviceModelInstance)
   lazy val restWebApiOkJson = new RestWebApiOkJsonImplementation(serviceBaseApiController)
   lazy val config : ConfigModel = appManager.config

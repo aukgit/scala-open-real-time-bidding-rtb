@@ -13,10 +13,6 @@ import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.JsonHelper
 
-
-
-
-
 class DemandSidePlatformSimulatorServiceApiController @Inject()(
   repositories    : Repositories,
   appManager      : AppManager,
