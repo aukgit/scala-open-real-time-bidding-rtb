@@ -16,7 +16,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Demandsideplatform.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Lostbid.schema, Nobidresponsetype.schema, Publisher.schema, Transaction.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Demandsideplatform.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Logtrace.schema, Lostbid.schema, Nobidresponsetype.schema, Publisher.schema, Transaction.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -41,17 +41,17 @@ trait Tables {
    *  @param minage Database column MinAge SqlType(INTEGER), Default(Some(0))
    *  @param maxage Database column MaxAge SqlType(INTEGER), Default(Some(0))
    *  @param createddate Database column CreatedDate SqlType(REAL) */
-  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Int, bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isvideo: Int = 0, impressioncount: Int = 0, height: Double = 0.0, weight: Double = 0.0, minheight: Double = 0.0, minwidth: Double = 0.0, maxheight: Double = 0.0, maxwidth: Double = 0.0, hasagerestriction: Int, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), createddate: Option[Double])
+  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Option[Int], bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isvideo: Int = 0, impressioncount: Int = 0, height: Double = 0.0, weight: Double = 0.0, minheight: Double = 0.0, minwidth: Double = 0.0, maxheight: Double = 0.0, maxwidth: Double = 0.0, hasagerestriction: Int, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), createddate: Option[Double])
   /** GetResult implicit for fetching AdvertiseRow objects using plain SQL queries */
-  implicit def GetResultAdvertiseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Double], e4: GR[Option[Int]], e5: GR[Option[Double]]): GR[AdvertiseRow] = GR{
+  implicit def GetResultAdvertiseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[String]], e4: GR[Double], e5: GR[Option[Double]]): GR[AdvertiseRow] = GR{
     prs => import prs._
-    AdvertiseRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<[Int], <<[String], <<?[String], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<?[Int], <<?[Int], <<?[Double]))
+    AdvertiseRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<?[Int], <<[String], <<?[String], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<?[Int], <<?[Int], <<?[Double]))
   }
   /** Table description of table Advertise. Objects of this class serve as prototypes for rows in queries. */
   class Advertise(_tableTag: Tag) extends profile.api.Table[AdvertiseRow](_tableTag, "Advertise") {
     def * = (advertiseid, campaignid, banneradvertisetypeid, advertisetitle, contentcontextid, bidurl, iframehtml, iscountryspecific, isvideo, impressioncount, height, weight, minheight, minwidth, maxheight, maxwidth, hasagerestriction, minage, maxage, createddate) <> (AdvertiseRow.tupled, AdvertiseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(advertiseid), Rep.Some(campaignid), Rep.Some(banneradvertisetypeid), Rep.Some(advertisetitle), Rep.Some(contentcontextid), Rep.Some(bidurl), iframehtml, Rep.Some(iscountryspecific), Rep.Some(isvideo), Rep.Some(impressioncount), Rep.Some(height), Rep.Some(weight), Rep.Some(minheight), Rep.Some(minwidth), Rep.Some(maxheight), Rep.Some(maxwidth), Rep.Some(hasagerestriction), minage, maxage, createddate)).shaped.<>({r=>import r._; _1.map(_=> AdvertiseRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18, _19, _20)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(advertiseid), Rep.Some(campaignid), Rep.Some(banneradvertisetypeid), Rep.Some(advertisetitle), contentcontextid, Rep.Some(bidurl), iframehtml, Rep.Some(iscountryspecific), Rep.Some(isvideo), Rep.Some(impressioncount), Rep.Some(height), Rep.Some(weight), Rep.Some(minheight), Rep.Some(minwidth), Rep.Some(maxheight), Rep.Some(maxwidth), Rep.Some(hasagerestriction), minage, maxage, createddate)).shaped.<>({r=>import r._; _1.map(_=> AdvertiseRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6.get, _7, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18, _19, _20)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column AdvertiseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val advertiseid: Rep[Int] = column[Int]("AdvertiseId", O.AutoInc, O.PrimaryKey)
@@ -62,7 +62,7 @@ trait Tables {
     /** Database column AdvertiseTitle SqlType(TEXT) */
     val advertisetitle: Rep[String] = column[String]("AdvertiseTitle")
     /** Database column ContentContextId SqlType(INTEGER) */
-    val contentcontextid: Rep[Int] = column[Int]("ContentContextId")
+    val contentcontextid: Rep[Option[Int]] = column[Option[Int]]("ContentContextId")
     /** Database column BidUrl SqlType(TEXT) */
     val bidurl: Rep[String] = column[String]("BidUrl")
     /** Database column IFrameHtml SqlType(TEXT) */
@@ -99,7 +99,7 @@ trait Tables {
     /** Foreign key referencing Campaign (database name Campaign_FK_2) */
     lazy val campaignFk = foreignKey("Campaign_FK_2", campaignid, Campaign)(r => r.campaignid, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
     /** Foreign key referencing Contentcontext (database name ContentContext_FK_3) */
-    lazy val contentcontextFk = foreignKey("ContentContext_FK_3", contentcontextid, Contentcontext)(r => r.contentcontextid, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
+    lazy val contentcontextFk = foreignKey("ContentContext_FK_3", contentcontextid, Contentcontext)(r => Rep.Some(r.contentcontextid), onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
   }
   /** Collection-like TableQuery object for table Advertise */
   lazy val Advertise = new TableQuery(tag => new Advertise(tag))
@@ -335,24 +335,24 @@ trait Tables {
    *  @param publisherid Database column PublisherId SqlType(INTEGER)
    *  @param createddate Database column CreatedDate SqlType(REAL), Default(Some(0.0))
    *  @param modifieddate Database column ModifiedDate SqlType(REAL), Default(Some(0.0)) */
-  case class CampaignRow(campaignid: Int, campaignname: String, contentcategoryid: String, totalbudgetcpm: Double = 0.0, spendalready: Double = 0.0, remainingamount: Double = 0.0, startdate: Option[Double] = Some(0.0), enddate: Option[Double] = Some(0.0), impressioncount: Int = 0, demandsideplatformid: Int, isrunning: Int = 0, priority: Int = 999, isretricttousergender: Int = 0, expectedusergender: Option[String], publisherid: Option[Int], createddate: Option[Double] = Some(0.0), modifieddate: Option[Double] = Some(0.0))
+  case class CampaignRow(campaignid: Int, campaignname: String, contentcategoryid: Option[String], totalbudgetcpm: Double = 0.0, spendalready: Double = 0.0, remainingamount: Double = 0.0, startdate: Option[Double] = Some(0.0), enddate: Option[Double] = Some(0.0), impressioncount: Int = 0, demandsideplatformid: Int, isrunning: Int = 0, priority: Int = 999, isretricttousergender: Int = 0, expectedusergender: Option[String], publisherid: Option[Int], createddate: Option[Double] = Some(0.0), modifieddate: Option[Double] = Some(0.0))
   /** GetResult implicit for fetching CampaignRow objects using plain SQL queries */
-  implicit def GetResultCampaignRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Double], e3: GR[Option[Double]], e4: GR[Option[String]], e5: GR[Option[Int]]): GR[CampaignRow] = GR{
+  implicit def GetResultCampaignRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Double], e4: GR[Option[Double]], e5: GR[Option[Int]]): GR[CampaignRow] = GR{
     prs => import prs._
-    CampaignRow.tupled((<<[Int], <<[String], <<[String], <<[Double], <<[Double], <<[Double], <<?[Double], <<?[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[String], <<?[Int], <<?[Double], <<?[Double]))
+    CampaignRow.tupled((<<[Int], <<[String], <<?[String], <<[Double], <<[Double], <<[Double], <<?[Double], <<?[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[String], <<?[Int], <<?[Double], <<?[Double]))
   }
   /** Table description of table Campaign. Objects of this class serve as prototypes for rows in queries. */
   class Campaign(_tableTag: Tag) extends profile.api.Table[CampaignRow](_tableTag, "Campaign") {
     def * = (campaignid, campaignname, contentcategoryid, totalbudgetcpm, spendalready, remainingamount, startdate, enddate, impressioncount, demandsideplatformid, isrunning, priority, isretricttousergender, expectedusergender, publisherid, createddate, modifieddate) <> (CampaignRow.tupled, CampaignRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(campaignid), Rep.Some(campaignname), Rep.Some(contentcategoryid), Rep.Some(totalbudgetcpm), Rep.Some(spendalready), Rep.Some(remainingamount), startdate, enddate, Rep.Some(impressioncount), Rep.Some(demandsideplatformid), Rep.Some(isrunning), Rep.Some(priority), Rep.Some(isretricttousergender), expectedusergender, publisherid, createddate, modifieddate)).shaped.<>({r=>import r._; _1.map(_=> CampaignRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7, _8, _9.get, _10.get, _11.get, _12.get, _13.get, _14, _15, _16, _17)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(campaignid), Rep.Some(campaignname), contentcategoryid, Rep.Some(totalbudgetcpm), Rep.Some(spendalready), Rep.Some(remainingamount), startdate, enddate, Rep.Some(impressioncount), Rep.Some(demandsideplatformid), Rep.Some(isrunning), Rep.Some(priority), Rep.Some(isretricttousergender), expectedusergender, publisherid, createddate, modifieddate)).shaped.<>({r=>import r._; _1.map(_=> CampaignRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6.get, _7, _8, _9.get, _10.get, _11.get, _12.get, _13.get, _14, _15, _16, _17)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column CampaignId SqlType(INTEGER), AutoInc, PrimaryKey */
     val campaignid: Rep[Int] = column[Int]("CampaignId", O.AutoInc, O.PrimaryKey)
     /** Database column CampaignName SqlType(TEXT) */
     val campaignname: Rep[String] = column[String]("CampaignName")
     /** Database column ContentCategoryId SqlType(TEXT) */
-    val contentcategoryid: Rep[String] = column[String]("ContentCategoryId")
+    val contentcategoryid: Rep[Option[String]] = column[Option[String]]("ContentCategoryId")
     /** Database column TotalBudgetCPM SqlType(REAL), Default(0.0) */
     val totalbudgetcpm: Rep[Double] = column[Double]("TotalBudgetCPM", O.Default(0.0))
     /** Database column SpendAlready SqlType(REAL), Default(0.0) */
@@ -383,7 +383,7 @@ trait Tables {
     val modifieddate: Rep[Option[Double]] = column[Option[Double]]("ModifiedDate", O.Default(Some(0.0)))
 
     /** Foreign key referencing Contentcategory (database name ContentCategory_FK_1) */
-    lazy val contentcategoryFk = foreignKey("ContentCategory_FK_1", contentcategoryid, Contentcategory)(r => r.contentcategoryid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    lazy val contentcategoryFk = foreignKey("ContentCategory_FK_1", contentcategoryid, Contentcategory)(r => Rep.Some(r.contentcategoryid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Demandsideplatform (database name DemandSidePlatform_FK_2) */
     lazy val demandsideplatformFk = foreignKey("DemandSidePlatform_FK_2", demandsideplatformid, Demandsideplatform)(r => r.demandsideplatformid, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
     /** Foreign key referencing Publisher (database name Publisher_FK_3) */
@@ -674,6 +674,47 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Keywordadvertisemapping */
   lazy val Keywordadvertisemapping = new TableQuery(tag => new Keywordadvertisemapping(tag))
+
+  /** Entity class storing rows of table Logtrace
+   *  @param logtraceid Database column LogTraceId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param methodname Database column MethodName SqlType(TEXT)
+   *  @param classname Database column ClassName SqlType(TEXT)
+   *  @param request Database column Request SqlType(TEXT)
+   *  @param message Database column Message SqlType(TEXT)
+   *  @param entitydata Database column EntityData SqlType(TEXT)
+   *  @param databasetransactiontypeid Database column DatabaseTransactionTypeId SqlType(INTEGER)
+   *  @param createddate Database column CreatedDate SqlType(REAL) */
+  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontypeid: Option[Int], createddate: Option[Double])
+  /** GetResult implicit for fetching LogtraceRow objects using plain SQL queries */
+  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[Option[Double]]): GR[LogtraceRow] = GR{
+    prs => import prs._
+    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[Double]))
+  }
+  /** Table description of table LogTrace. Objects of this class serve as prototypes for rows in queries. */
+  class Logtrace(_tableTag: Tag) extends profile.api.Table[LogtraceRow](_tableTag, "LogTrace") {
+    def * = (logtraceid, methodname, classname, request, message, entitydata, databasetransactiontypeid, createddate) <> (LogtraceRow.tupled, LogtraceRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(logtraceid), methodname, classname, request, message, entitydata, databasetransactiontypeid, createddate)).shaped.<>({r=>import r._; _1.map(_=> LogtraceRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column LogTraceId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val logtraceid: Rep[Int] = column[Int]("LogTraceId", O.AutoInc, O.PrimaryKey)
+    /** Database column MethodName SqlType(TEXT) */
+    val methodname: Rep[Option[String]] = column[Option[String]]("MethodName")
+    /** Database column ClassName SqlType(TEXT) */
+    val classname: Rep[Option[String]] = column[Option[String]]("ClassName")
+    /** Database column Request SqlType(TEXT) */
+    val request: Rep[Option[String]] = column[Option[String]]("Request")
+    /** Database column Message SqlType(TEXT) */
+    val message: Rep[Option[String]] = column[Option[String]]("Message")
+    /** Database column EntityData SqlType(TEXT) */
+    val entitydata: Rep[Option[String]] = column[Option[String]]("EntityData")
+    /** Database column DatabaseTransactionTypeId SqlType(INTEGER) */
+    val databasetransactiontypeid: Rep[Option[Int]] = column[Option[Int]]("DatabaseTransactionTypeId")
+    /** Database column CreatedDate SqlType(REAL) */
+    val createddate: Rep[Option[Double]] = column[Option[Double]]("CreatedDate")
+  }
+  /** Collection-like TableQuery object for table Logtrace */
+  lazy val Logtrace = new TableQuery(tag => new Logtrace(tag))
 
   /** Entity class storing rows of table Lostbid
    *  @param lostbidid Database column LostBidId SqlType(INTEGER), AutoInc, PrimaryKey
