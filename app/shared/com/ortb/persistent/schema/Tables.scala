@@ -34,14 +34,14 @@ trait Tables {
    *  @param height Database column Height SqlType(REAL), Default(0.0)
    *  @param weight Database column Weight SqlType(REAL), Default(0.0)
    *  @param minheight Database column MinHeight SqlType(REAL), Default(0.0)
-   *  @param minweight Database column MinWeight SqlType(REAL), Default(0.0)
+   *  @param minwidth Database column MinWidth SqlType(REAL), Default(0.0)
    *  @param maxheight Database column MaxHeight SqlType(REAL), Default(0.0)
-   *  @param maxweight Database column MaxWeight SqlType(REAL), Default(0.0)
+   *  @param maxwidth Database column MaxWidth SqlType(REAL), Default(0.0)
    *  @param hasagerestriction Database column HasAgeRestriction SqlType(INTEGER), Length(1,false)
    *  @param minage Database column MinAge SqlType(INTEGER), Default(Some(0))
    *  @param maxage Database column MaxAge SqlType(INTEGER), Default(Some(0))
    *  @param createddate Database column CreatedDate SqlType(REAL) */
-  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Int, bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isvideo: Int = 0, impressioncount: Int = 0, height: Double = 0.0, weight: Double = 0.0, minheight: Double = 0.0, minweight: Double = 0.0, maxheight: Double = 0.0, maxweight: Double = 0.0, hasagerestriction: Int, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), createddate: Option[Double])
+  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Int, bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isvideo: Int = 0, impressioncount: Int = 0, height: Double = 0.0, weight: Double = 0.0, minheight: Double = 0.0, minwidth: Double = 0.0, maxheight: Double = 0.0, maxwidth: Double = 0.0, hasagerestriction: Int, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), createddate: Option[Double])
   /** GetResult implicit for fetching AdvertiseRow objects using plain SQL queries */
   implicit def GetResultAdvertiseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Double], e4: GR[Option[Int]], e5: GR[Option[Double]]): GR[AdvertiseRow] = GR{
     prs => import prs._
@@ -49,9 +49,9 @@ trait Tables {
   }
   /** Table description of table Advertise. Objects of this class serve as prototypes for rows in queries. */
   class Advertise(_tableTag: Tag) extends profile.api.Table[AdvertiseRow](_tableTag, "Advertise") {
-    def * = (advertiseid, campaignid, banneradvertisetypeid, advertisetitle, contentcontextid, bidurl, iframehtml, iscountryspecific, isvideo, impressioncount, height, weight, minheight, minweight, maxheight, maxweight, hasagerestriction, minage, maxage, createddate) <> (AdvertiseRow.tupled, AdvertiseRow.unapply)
+    def * = (advertiseid, campaignid, banneradvertisetypeid, advertisetitle, contentcontextid, bidurl, iframehtml, iscountryspecific, isvideo, impressioncount, height, weight, minheight, minwidth, maxheight, maxwidth, hasagerestriction, minage, maxage, createddate) <> (AdvertiseRow.tupled, AdvertiseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(advertiseid), Rep.Some(campaignid), Rep.Some(banneradvertisetypeid), Rep.Some(advertisetitle), Rep.Some(contentcontextid), Rep.Some(bidurl), iframehtml, Rep.Some(iscountryspecific), Rep.Some(isvideo), Rep.Some(impressioncount), Rep.Some(height), Rep.Some(weight), Rep.Some(minheight), Rep.Some(minweight), Rep.Some(maxheight), Rep.Some(maxweight), Rep.Some(hasagerestriction), minage, maxage, createddate)).shaped.<>({r=>import r._; _1.map(_=> AdvertiseRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18, _19, _20)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(advertiseid), Rep.Some(campaignid), Rep.Some(banneradvertisetypeid), Rep.Some(advertisetitle), Rep.Some(contentcontextid), Rep.Some(bidurl), iframehtml, Rep.Some(iscountryspecific), Rep.Some(isvideo), Rep.Some(impressioncount), Rep.Some(height), Rep.Some(weight), Rep.Some(minheight), Rep.Some(minwidth), Rep.Some(maxheight), Rep.Some(maxwidth), Rep.Some(hasagerestriction), minage, maxage, createddate)).shaped.<>({r=>import r._; _1.map(_=> AdvertiseRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18, _19, _20)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column AdvertiseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val advertiseid: Rep[Int] = column[Int]("AdvertiseId", O.AutoInc, O.PrimaryKey)
@@ -79,12 +79,12 @@ trait Tables {
     val weight: Rep[Double] = column[Double]("Weight", O.Default(0.0))
     /** Database column MinHeight SqlType(REAL), Default(0.0) */
     val minheight: Rep[Double] = column[Double]("MinHeight", O.Default(0.0))
-    /** Database column MinWeight SqlType(REAL), Default(0.0) */
-    val minweight: Rep[Double] = column[Double]("MinWeight", O.Default(0.0))
+    /** Database column MinWidth SqlType(REAL), Default(0.0) */
+    val minwidth: Rep[Double] = column[Double]("MinWidth", O.Default(0.0))
     /** Database column MaxHeight SqlType(REAL), Default(0.0) */
     val maxheight: Rep[Double] = column[Double]("MaxHeight", O.Default(0.0))
-    /** Database column MaxWeight SqlType(REAL), Default(0.0) */
-    val maxweight: Rep[Double] = column[Double]("MaxWeight", O.Default(0.0))
+    /** Database column MaxWidth SqlType(REAL), Default(0.0) */
+    val maxwidth: Rep[Double] = column[Double]("MaxWidth", O.Default(0.0))
     /** Database column HasAgeRestriction SqlType(INTEGER), Length(1,false) */
     val hasagerestriction: Rep[Int] = column[Int]("HasAgeRestriction", O.Length(1,varying=false))
     /** Database column MinAge SqlType(INTEGER), Default(Some(0)) */
