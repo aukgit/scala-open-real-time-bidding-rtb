@@ -1,70 +1,64 @@
 package shared.io.redis.traits
 
-import com.google.inject.Inject
 import com.redis.api.StringApi.{ Always, SetBehaviour }
 import shared.io.jsonParse.traits.CommonJsonParsingMechanism
-import shared.io.redis.implementations.RedisCommonJsonParsingMechanismImplementation
 
 import scala.concurrent.duration.Duration
 
 trait RedisKeyValueParser extends CommonJsonParsingMechanism {
   def set(
     key : String,
-    value : String,
-    whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
-
-  def setInt(
-    key : String, value : Option[Int],
-    whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
-
-  def setLong(
-    key : String, value : Option[Long],
-    whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
-
-  def setDouble(
-    key : String, value : Option[Double],
+    value : Any,
     whenSet : SetBehaviour = Always,
     expire : Duration = null) : Unit
 
   def appendItemToList(
-    listKey : String, value : String,
-    whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
+    listKey : String,
+    value : Any) : Unit
+
+  def setAnyList(
+    listKey : String,
+    items : Iterable[Any]) : Unit
 
   def setList[T](
-    key : String, value : Iterable[T],
-    whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
-
-  def getListAs[T](key : String) : Iterable[T]
+    listKey : String,
+    items : Iterable[T]) : Unit
 
   def setStringList(
-    key : String, value : Iterable[String],
-    whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
+    listKey : String,
+    items : Iterable[String]) : Unit
 
-  def getStringList(key : String) : Iterable[String]
+  def getStringList(listKey : String) : Option[List[Option[String]]]
 
-  def getListLength(key : String) : Option[Int]
+  def getListLength(listKey : String) : Option[Int]
 
   def setObject(
-    key : String, value : Option[Any],
+    key : String,
+    value : Option[Any],
     whenSet : SetBehaviour = Always,
     expire : Duration = null) : Unit
+
+  def clearList(listKey : String) : Unit
+
+  def removeKeys(keys : String*) : Unit
 
   def getObject(key : String) : Option[Any]
 
-  def setObjectToString(
-    key : String, value : Option[Any],
+  def setSerializedObjectToString(
+    key : String,
+    value : Option[Any],
     whenSet : SetBehaviour = Always,
     expire : Duration = null) : Unit
 
-  def getObjectAsString(key : String) : Option[String]
+  def getSerializedObjectAs[T](key : String) : Option[T]
 
-  def getObjectAs[T](key : String) : Option[T]
+  def setSerializedObjectsToString(
+    key : String,
+    items : Option[Iterable[Any]],
+    whenSet : SetBehaviour = Always,
+    expire : Duration = null) : Unit
+
+  def getSerializedObjectsAs[T](key : String) : Option[Iterable[T]]
 }
 
 

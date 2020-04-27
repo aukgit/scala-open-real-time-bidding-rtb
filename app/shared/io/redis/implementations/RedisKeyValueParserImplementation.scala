@@ -4,6 +4,8 @@ import com.google.inject.Inject
 import com.redis.RedisClient
 import com.redis.api.StringApi
 import shared.com.ortb.model.config.DomainPortModel
+import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
+import shared.io.loggers.AppLogger
 import shared.io.redis.traits.{ RedisClientCoreProperties, RedisKeyValueParser }
 
 import scala.concurrent.duration.Duration
@@ -15,38 +17,111 @@ class RedisKeyValueParserImplementation @Inject()(
     with RedisKeyValueParser
     with RedisClientCoreProperties {
 
-  override lazy val redisClient : RedisClient = redisClientCore.redisClient
-  override lazy val redisServerConfigurationInfo : DomainPortModel= redisClientCore.redisServerConfigurationInfo
+  override lazy val redisClient : RedisClient =
+    redisClientCore.redisClient
+  override lazy val redisServerConfigurationInfo : DomainPortModel =
+    redisClientCore.redisServerConfigurationInfo
 
-  override def set(key : String, value : String, whenSet : StringApi.SetBehaviour, expire : Duration) : Unit =
-    redisClient.set(key, value, whenSet, expire)
+  override def set(key : String, value : Any, whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = {
+    EmptyValidateHelper.throwOnNullOrNone(key)
 
-  override def setInt(key : String, value : Option[Int], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit =
-    redisClient.set(key, value.get, whenSet, expire)
+    try {
+      redisClient.set(key, value, whenSet, expire)
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during setting key: $key")
+    }
+  }
 
-  override def setLong(key : String, value : Option[Long], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
+  override def appendItemToList(listKey : String, value : Any) : Unit = {
+    EmptyValidateHelper.throwOnNullOrNone(listKey)
 
-  override def setDouble(key : String, value : Option[Double], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
+    try {
+      redisClient.lpush(listKey, value)
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during appendItemToList->lpush key: $listKey")
+    }
+  }
 
-  override def appendItemToList(listKey : String, value : String, whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
+  override def setAnyList(listKey : String, items : Iterable[Any]) : Unit = {
+    EmptyValidateHelper.throwOnNullOrNone(listKey)
 
-  override def setList[T](key : String, value : Iterable[T], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
+    try {
+      if (EmptyValidateHelper.isItemsEmpty(Some(items))) {
+        return
+      }
 
-  override def getListAs[T](key : String) : Iterable[T] = ???
+      items.foreach(item => redisClient.lpush(listKey, item))
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during appendItemToList->lpush key: $listKey")
+    }
+  }
 
-  override def setStringList(key : String, value : Iterable[String], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
+  override def removeKeys(keys : String*) : Unit = {
+    try {
+      redisClient.del(keys)
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during removeKeys->del key: $keys")
+    }
+  }
 
-  override def getStringList(key : String) : Iterable[String] = ???
+  override def clearList(listKey : String) : Unit = {
+    EmptyValidateHelper.throwOnNullOrNone(listKey)
 
-  override def getListLength(key : String) : Option[Int] = ???
+    try {
+      redisClient.del(listKey)
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during clearList->del key: $listKey")
+    }
+  }
+
+  override def setList[T](
+    listKey : String,
+    items : Iterable[T]) : Unit = {
+    EmptyValidateHelper.throwOnNullOrNone(listKey)
+
+    try {
+      if(EmptyValidateHelper.isItemsEmpty(Some(items))){
+        return
+      }
+
+      items.foreach(item => redisClient.lpush(listKey, item))
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during setList->lpush key: $listKey")
+    }
+  }
+
+  override def getStringList(listKey : String) : Option[List[Option[String]]] = {
+    try {
+      val rawLength = redisClient.llen(listKey)
+      if(EmptyValidateHelper.isDefined(rawLength)){
+        val length = rawLength.get.asInstanceOf[Int]
+        return redisClient.lrange(listKey, 0, length)
+      }
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(e, s"Having issue during getListAs->lpush key: $listKey")
+    }
+
+    None
+  }
+
+  override def getListLength(listKey : String) : Option[Int] = ???
 
   override def setObject(key : String, value : Option[Any], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
 
+  override def getSerializedObjectAs[T](key : String) : Option[T] = ???
+
+  override def getSerializedObjectsAs[T](key : String) : Option[Iterable[T]] = ???
+
   override def getObject(key : String) : Option[Any] = ???
 
-  override def setObjectToString(key : String, value : Option[Any], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
+  override def setSerializedObjectToString(key : String, value : Option[Any], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
 
-  override def getObjectAsString(key : String) : Option[String] = ???
-
-  override def getObjectAs[T](key : String) : Option[T] = ???
+  override def setSerializedObjectsToString(key : String, value : Option[Iterable[Any]], whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = ???
 }
