@@ -80,6 +80,8 @@ class DatabaseSchema(appManager : AppManager) {
    */
   lazy val transactions = TableQuery[Transaction]
 
+  lazy val logTraces = TableQuery[Logtrace]
+
   lazy val tables = Map(
     advertiseTableName -> advertises,
     auctionTableName -> auctions,
@@ -100,7 +102,8 @@ class DatabaseSchema(appManager : AppManager) {
     lostBidTableName -> lostBids,
     noBidResponseTypeTableName -> noBidResponseTypes,
     publisherTableName -> publishers,
-    transactionTableName -> transactions
+    transactionTableName -> transactions,
+    logTraceTableName -> logTraces
   )
 
   lazy val allSchema : profile.SchemaDescription = Tables.schema
@@ -124,6 +127,7 @@ class DatabaseSchema(appManager : AppManager) {
   lazy val noBidResponseTypeTableName = "NoBidResponseType"
   lazy val publisherTableName = "Publisher"
   lazy val transactionTableName = "Transaction"
+  lazy val logTraceTableName = "Logtrace"
   lazy val TableNames = List(
     advertiseTableName,
     auctionTableName,
@@ -144,7 +148,8 @@ class DatabaseSchema(appManager : AppManager) {
     lostBidTableName,
     noBidResponseTypeTableName,
     publisherTableName,
-    transactionTableName
+    transactionTableName,
+    logTraceTableName
   )
 
   def db = appManager.getDb

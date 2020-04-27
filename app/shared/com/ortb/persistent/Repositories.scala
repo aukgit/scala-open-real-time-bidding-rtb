@@ -42,6 +42,8 @@ class Repositories @Inject()(appManager: AppManager)
     */
   lazy val publisherRepository = new PublisherRepository(appManager)
   lazy val transactionRepository = new TransactionRepository(appManager)
+  lazy val logTraceRepository =
+    new LogTraceRepository(appManager)
 
   /**
     * All the repositories in the system in map Key => TableName
@@ -66,6 +68,7 @@ class Repositories @Inject()(appManager: AppManager)
     lostBidTableName -> lostBidRepository,
     noBidResponseTypeTableName -> noBidResponseTypeRepository,
     publisherTableName -> publisherRepository,
-    transactionTableName -> transactionRepository
+    transactionTableName -> transactionRepository,
+    logTraceTableName -> logTraceRepository
   )
 }
