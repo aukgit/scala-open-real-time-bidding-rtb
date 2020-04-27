@@ -1,7 +1,7 @@
 package controllers.controllerRoutes.routerGeneric
 
 import com.google.inject.Inject
-import controllers.rtb.{ DemandSidePlatformSimulatorServiceApiController, RequestSimulatorServiceApiController }
+import controllers.rtb.RequestSimulatorServiceApiController
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 import play.api.routing.sird.{ GET, _ }

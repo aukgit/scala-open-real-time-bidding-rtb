@@ -1,10 +1,10 @@
 package controllers.controllerRoutes.routerGeneric
 
 import com.google.inject.Inject
-import controllers.rtb.DemandSidePlatformSimulatorServiceApiController
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 import play.api.routing.sird.{ GET, _ }
+import shared.com.ortb.demadSidePlatforms.DemandSidePlatformSimulatorServiceApiController
 import shared.com.ortb.enumeration.ControllerDefaultActionType
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 

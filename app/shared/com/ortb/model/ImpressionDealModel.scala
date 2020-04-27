@@ -1,4 +1,4 @@
-package controllers.rtb
+package shared.com.ortb.model
 
 import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
 

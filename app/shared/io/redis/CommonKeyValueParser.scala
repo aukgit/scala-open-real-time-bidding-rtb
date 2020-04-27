@@ -1,4 +1,6 @@
-package controllers.rtb
+package shared.io.redis
+
+import shared.io.jsonParse.traits.CommonJsonParsingMechanism
 
 trait CommonKeyValueParser extends CommonJsonParsingMechanism{
   def set(key: String, value: String): Unit

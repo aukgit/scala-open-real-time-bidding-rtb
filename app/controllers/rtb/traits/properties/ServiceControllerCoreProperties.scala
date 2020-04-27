@@ -3,7 +3,7 @@ package controllers.rtb.traits.properties
 import controllers.rtb.implementations.RestWebApiOkJsonImplementation
 import play.api.Logger
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.model.config.{ ConfigModel, ServiceModel, ServicesModel }
+import shared.com.ortb.model.config.{ ConfigModel, DemandSidePlatformConfigurationModel, ServiceModel, ServicesModel }
 
 trait ServiceControllerCoreProperties {
   val config : ConfigModel
@@ -12,7 +12,6 @@ trait ServiceControllerCoreProperties {
   val currentServiceModel : ServiceModel
   val appManager : AppManager
   val restWebApiOkJson : RestWebApiOkJsonImplementation
-  val serviceModel : ServiceModel
   val serviceTitle : String
-  protected val logger : Logger
+  val logger : Logger
 }

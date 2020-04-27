@@ -1,4 +1,4 @@
-package controllers.rtb
+package shared.io.jsonParse.traits
 
 import scala.reflect.ClassTag
 

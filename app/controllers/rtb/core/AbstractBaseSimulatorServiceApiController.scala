@@ -1,7 +1,6 @@
 package controllers.rtb.core
 
-import controllers.rtb.ServiceBaseApiController
-import controllers.rtb.implementations.ServiceControllerPropertiesImplementation
+import controllers.rtb.implementations.{ RestWebApiOkJsonImplementation, ServiceControllerPropertiesImplementation }
 import controllers.rtb.traits.properties.ServiceControllerCoreProperties
 import javax.inject.Inject
 import play.api.Logger

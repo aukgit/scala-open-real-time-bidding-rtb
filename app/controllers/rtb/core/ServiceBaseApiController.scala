@@ -1,4 +1,4 @@
-package controllers.rtb
+package controllers.rtb.core
 
 import controllers.webapi.core.traits.implementations.RestWebApiMessagesImplementation
 import javax.inject.Inject
@@ -14,5 +14,5 @@ class ServiceBaseApiController @Inject()(
   components       : ControllerComponents)
   extends AbstractController(components)
     with RestWebApiMessagesImplementation[ServiceModel] {
-  lazy protected val logger : Logger = Logger(this.getClass)
+  lazy val logger : Logger = Logger(this.getClass)
 }

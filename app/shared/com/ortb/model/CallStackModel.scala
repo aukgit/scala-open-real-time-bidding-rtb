@@ -1,4 +1,4 @@
-package controllers.rtb
+package shared.com.ortb.model
 
 case class CallStackModel(
   deal: Double = 0,

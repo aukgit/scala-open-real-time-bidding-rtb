@@ -1,43 +1,20 @@
-package controllers.rtb
+package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
-import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
+import shared.com.ortb.model
 import shared.com.ortb.model.results.DspBidderRequestModel
-import shared.com.ortb.persistent.schema.Tables._
+import shared.com.ortb.model._
 import shared.io.helpers.EmptyValidateHelper
 import slick.jdbc.SQLiteProfile.api._
-import com.redis._
-import shared.com.ortb.manager.AppManager
-import shared.com.ortb.model.config.{ ConfigModel, DomainPortModel }
 
-import scala.collection.mutable.ArrayBuffer
-import scala.reflect.ClassTag
 
-trait RedisClientWrapper {
-  val redisClient : RedisClient
-  val redisServer : DomainPortModel
-}
 
-class RedisClientImplementation(appManager: AppManager) extends RedisClientWrapper{
-  lazy val config : ConfigModel = appManager.config
-  lazy val redisServer : DomainPortModel = config.server.redisServer
-  lazy val redisClient : RedisClient = new RedisClient(redisServer.domain, 6379)
-}
 
-trait BiddingDefaultProperties {
-  val defaultIncrementNumber: Double
-  val defaultStaticDeal: Double
-}
 
-class BiddingDefaultPropertiesImplementation(controller : DemandSidePlatformSimulatorServiceApiController) extends BiddingDefaultProperties{
-  lazy val defaultIncrementNumber : Double = controller.config.services.de
-  lazy val defaultStaticDeal : Double = 0.03
-}
-
-class DspBidderSample1(
-  controller : DemandSidePlatformSimulatorServiceApiController,
+class DemandSidePlatformBiddingAgent(
+  coreProperties : DemandSidePlatformCoreProperties,
   algorithmType: DemandSidePlatformBiddingAlgorithmType)
-    extends DspBidder {
+    extends DemandSidePlatformBiddingLogic {
 
   override def getBidPrices(
       request: DspBidderRequestModel): Option[DspBidderResultModel] = ???
@@ -45,12 +22,12 @@ class DspBidderSample1(
   override def getBidStaticNoContent(
       request: DspBidderRequestModel): Option[DspBidderResultModel] = {
     val dspBidderResultModel =
-      DspBidderResultModel(request, request.bidRequest, isNoContent = true)
+      model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
 
     val callStackModel = CallStackModel(
-      deal = defaultStaticDeal,
+      deal = coreProperties.noDealPrice,
       performingAction = s"[getBidStaticNoContent] -> No deals.",
-      isServedAnyDeal = true
+      isServedAnyDeal = false
     )
 
     dspBidderResultModel.addCallStack(callStackModel)
@@ -60,9 +37,8 @@ class DspBidderSample1(
 
   def getLastFailedDeals(request: DspBidderRequestModel,
                          limit: Int = 5): BidFailedReasonsModel = {
-    val controller = request.controller
-    val demandSidePlatformId = controller.demandSideId
-    val repositories = controller.repositories
+    val demandSidePlatformId = coreProperties.demandSideId
+    val repositories = coreProperties.repositories
     val lostBids = repositories.lostBids
 
     val lostBidsSqlProfileAction = lostBids
@@ -81,9 +57,7 @@ class DspBidderSample1(
   }
 
   def biddableImpressionInfo(request: DspBidderRequestModel): Array[ImpressionBiddableInfoModel] = {
-    val controller = request.controller
-    val demandSidePlatformId = controller.demandSideId
-    val repositories = controller.repositories
+    val repositories = coreProperties.repositories
     val advertises = repositories.advertises
     val impressions = request.bidRequest.imp.get
 
@@ -110,16 +84,17 @@ class DspBidderSample1(
   override def getBidActualNoContent(
       request: DspBidderRequestModel): Option[DspBidderResultModel] = {
     val dspBidderResultModel =
-      DspBidderResultModel(request, request.bidRequest, isNoContent = true)
+      model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
 
     val callStackModel = CallStackModel(
-      deal = defaultStaticDeal,
-      performingAction = s"[getBidActualNoContent] -> No deals.",
-      isServedAnyDeal = true
+      deal = coreProperties.noDealPrice,
+      performingAction = s"[getBidActualNoContent] -> No deals."
     )
 
     dspBidderResultModel.addCallStack(callStackModel)
 
     Some(dspBidderResultModel)
   }
+
+  override def getBidStatic(request : DspBidderRequestModel) : Option[DspBidderResultModel] = ???
 }
