@@ -30,7 +30,9 @@ trait RepositoryQueryOperationsImplementation[TTable, TRow, TKey]
     None
   }
 
-  def count(query : FixedSqlAction[Int, SQLiteProfile.api.NoStream, Effect.Read]) : Option[Int] = {
+  def count(
+    query :
+    FixedSqlAction[Int, SQLiteProfile.api.NoStream, Effect.Read]) : Option[Int] = {
     try {
       val count : Future[Int] = this.db.run(query)
 

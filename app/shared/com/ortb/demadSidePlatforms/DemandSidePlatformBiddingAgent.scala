@@ -161,8 +161,8 @@ class DemandSidePlatformBiddingAgent(
   }
 
   def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
-    isEmpty : Boolean,
     request : DspBidderRequestModel,
+    isEmpty : Boolean,
     impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {
     if(!demandSidePlatformConfiguration.isAddNewAdvertiseOnNotFound || !isEmpty){
       return
@@ -208,7 +208,7 @@ class DemandSidePlatformBiddingAgent(
     // create campaign
     val banner = x.banner.get.toString
     val categories =  getCategories(site)
-    CampaignRow(-1, s"Generated: Campaign - Banner($banner)",)
+//    CampaignRow(-1, s"Generated: Campaign - Banner($banner)",)
 
 
   }
@@ -221,12 +221,17 @@ class DemandSidePlatformBiddingAgent(
       return None
     }
 
-    biddableImpressionInfoModels.map(b => {
+    val list = biddableImpressionInfoModels.map(b => {
       val attr = b.attributes
       val isEmpty = !attr.isBiddable && attr.advertisesFoundCount == 0
-      addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(isEmpty, b)
+      addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
+        request,
+        isEmpty,
+        b)
+    }).toList
 
-    })
+    Some(list)
+    throw new NotImplementedError()
   }
 
   override def getBidActual(

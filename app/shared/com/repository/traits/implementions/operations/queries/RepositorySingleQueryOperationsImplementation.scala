@@ -28,10 +28,10 @@ trait RepositorySingleQueryOperationsImplementation[TTable, TRow, TKey]
   }
 
   def getFirstOrDefaultFromQuery(
-    queryResult : FixedSqlStreamingAction[Seq[TTable], TRow, Effect.Read]) : Option[TRow] = {
+    queryResult : FixedSqlStreamingAction[Seq[TRow], TRow, Effect.Read]) : Option[TRow] = {
     val result = this.run(queryResult)
 
-    if(EmptyValidateHelper.isItemsEmpty(result)){
+    if(EmptyValidateHelper.isItemsEmptyDirect(result)){
       return None
     }
 

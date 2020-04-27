@@ -233,7 +233,7 @@ object EmptyValidateHelper {
     !hasAnyItem(items, message)
   }
 
-  def isItemsEmpty[A](
+  def isItemsEmptyDirect[A](
     items   : Iterable[A],
     message : Option[String] = None) : Boolean = {
     !hasAnyItem(Some(items), message)
