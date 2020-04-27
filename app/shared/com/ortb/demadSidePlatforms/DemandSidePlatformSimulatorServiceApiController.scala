@@ -4,6 +4,7 @@ import controllers.rtb.core.AbstractBaseSimulatorServiceApiController
 import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
+import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCoreProperties
 import shared.com.ortb.importedModels.biddingRequests.BidRequest
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories

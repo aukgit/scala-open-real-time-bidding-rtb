@@ -21,7 +21,7 @@ class RequestSimulatorServiceApiController @Inject()(
 
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
     try {
-      val jsonString = JsonHelper.toJson(selfProperties.serviceModel.routing).get.toString()
+      val jsonString = JsonHelper.toJson(selfProperties.currentServiceModel.routing).get.toString()
       selfProperties.restWebApiOkJson.OkJson(jsonString)
     } catch {
       case e : Exception =>

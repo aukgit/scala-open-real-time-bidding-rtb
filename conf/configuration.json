@@ -4,10 +4,11 @@
   "server": {
     "commonDomain": "",
     "isUseDefaultDomainForAll": true,
-    "isStaticSimulate": true,
     "demandSidePlatformConfiguration": {
       "defaultBidIncrementNumber": 0.1,
-      "defaultBidStaticDeal": 0.3
+      "defaultBidStaticDeal": 0.3,
+      "isStaticSimulate": true,
+      "isAddNewAdvertiseOnNotFound": true
     },
     "services": {
       "root": {

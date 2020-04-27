@@ -1,9 +1,9 @@
-package shared.com.ortb.demadSidePlatforms
+package shared.com.ortb.demadSidePlatforms.traits.logics
 
 import shared.com.ortb.model.DspBidderResultModel
 import shared.com.ortb.model.results.DspBidderRequestModel
 
-trait DemandSidePlatformActualBidResponseLogic{
+trait DemandSidePlatformActualBidResponseLogic {
   def getBidActual(
     request : DspBidderRequestModel) : Option[DspBidderResultModel]
 

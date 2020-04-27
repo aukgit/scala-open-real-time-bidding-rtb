@@ -1,18 +1,10 @@
-package shared.com.ortb.demadSidePlatforms
+package shared.com.ortb.demadSidePlatforms.traits.properties
 
 import controllers.rtb.traits.properties.ServiceControllerCoreProperties
 import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, ServiceModel }
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository
 import shared.com.ortb.persistent.schema.Tables
-
-trait DemandSidePlatformBiddingProperties {
-  val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel
-
-  lazy val defaultIncrementNumber : Double = demandSidePlatformConfiguration.defaultBidIncrementNumber
-  lazy val defaultStaticDeal : Double = demandSidePlatformConfiguration.defaultBidStaticDeal
-  lazy val noDealPrice : Double = 0
-}
 
 trait DemandSidePlatformCoreProperties
   extends ServiceControllerCoreProperties with BiddingDefaultProperties with DemandSidePlatformBiddingProperties {

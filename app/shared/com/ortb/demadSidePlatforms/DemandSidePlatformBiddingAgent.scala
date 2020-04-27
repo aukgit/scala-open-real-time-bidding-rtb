@@ -1,26 +1,25 @@
 package shared.com.ortb.demadSidePlatforms
 
+import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformBiddingLogic
+import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCoreProperties }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.model
-import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.com.ortb.model._
+import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
+import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.io.helpers.EmptyValidateHelper
 import slick.jdbc.SQLiteProfile.api._
 
-
-
-
-
 class DemandSidePlatformBiddingAgent(
   coreProperties : DemandSidePlatformCoreProperties,
-  algorithmType: DemandSidePlatformBiddingAlgorithmType)
-    extends DemandSidePlatformBiddingLogic {
+  algorithmType : DemandSidePlatformBiddingAlgorithmType)
+  extends DemandSidePlatformBiddingLogic with DemandSidePlatformBiddingProperties {
 
   override def getBidPrices(
-      request: DspBidderRequestModel): Option[DspBidderResultModel] = ???
+    request : DspBidderRequestModel) : Option[DspBidderResultModel] = ???
 
   override def getBidStaticNoContent(
-      request: DspBidderRequestModel): Option[DspBidderResultModel] = {
+    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
     val dspBidderResultModel =
       model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
 
@@ -35,8 +34,9 @@ class DemandSidePlatformBiddingAgent(
     Some(dspBidderResultModel)
   }
 
-  def getLastFailedDeals(request: DspBidderRequestModel,
-                         limit: Int = 5): BidFailedReasonsModel = {
+  def getLastFailedDeals(
+    request : DspBidderRequestModel,
+    limit : Int = 5) : BidFailedReasonsModel = {
     val demandSidePlatformId = coreProperties.demandSideId
     val repositories = coreProperties.repositories
     val lostBids = repositories.lostBids
@@ -56,13 +56,13 @@ class DemandSidePlatformBiddingAgent(
     )
   }
 
-  def biddableImpressionInfo(request: DspBidderRequestModel): Array[ImpressionBiddableInfoModel] = {
+  def biddableImpressionInfo(request : DspBidderRequestModel) : Array[ImpressionBiddableInfoModel] = {
     val repositories = coreProperties.repositories
     val advertises = repositories.advertises
     val impressions = request.bidRequest.imp.get
 
     impressions.map(impression => {
-      if(EmptyValidateHelper.isDefined(impression.banner)){
+      if (EmptyValidateHelper.isDefined(impression.banner)) {
         val banner = impression.banner
 
         advertises.filter(advertise =>
@@ -75,14 +75,14 @@ class DemandSidePlatformBiddingAgent(
   }
 
   override def getBidActual(
-      request: DspBidderRequestModel): Option[DspBidderResultModel] = {
-//    val isCurrentRequestBiddable = biddableImpressionInfo(
-//      request: DspBidderRequestModel)
+    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
+    //    val isCurrentRequestBiddable = biddableImpressionInfo(
+    //      request: DspBidderRequestModel)
     throw new NotImplementedError()
   }
 
   override def getBidActualNoContent(
-      request: DspBidderRequestModel): Option[DspBidderResultModel] = {
+    request : DspBidderRequestModel) : Option[DspBidderResultModel] = {
     val dspBidderResultModel =
       model.DspBidderResultModel(request, request.bidRequest, isNoContent = true)
 
@@ -97,4 +97,9 @@ class DemandSidePlatformBiddingAgent(
   }
 
   override def getBidStatic(request : DspBidderRequestModel) : Option[DspBidderResultModel] = ???
+
+  override def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
+
+  lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
+    coreProperties.demandSidePlatformConfiguration
 }
