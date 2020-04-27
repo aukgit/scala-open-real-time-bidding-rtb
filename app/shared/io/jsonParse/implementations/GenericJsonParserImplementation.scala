@@ -12,6 +12,8 @@ import scala.collection.mutable.ArrayBuffer
 
 class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   extends GenericJsonParser[T] {
+  val quote = "\""
+
   override def toModel(jsonString : Option[String]) : Option[T] = {
     if (EmptyValidateHelper.isEmptyOptionString(jsonString)) {
       return None
@@ -43,8 +45,8 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
         if (jsonNode.isArray) {
           val results = new ArrayBuffer[JsonNode]
 
-          jsonNode.elements().forEachRemaining(w => {
-            results += w
+          jsonNode.elements().forEachRemaining(currentJsonNode => {
+            results += currentJsonNode
           })
 
           return Some(results)
@@ -169,7 +171,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     try{
       val results = models.get.map(model => fromModelToJsonNode(Some(model)).get)
 
-      Some(results)
+      return Some(results)
     } catch {
       case e: Exception =>
         AppLogger.error(e)
@@ -192,5 +194,56 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   override def toJsonObjectDirect(model : T) : Json = {
     val toJsonObjectOption = toJsonObject(Some(model))
     toJsonObjectOption.get
+  }
+
+  override def fromJsonToJsonString(model : Option[Json]) : Option[String] = {
+    EmptyValidateHelper.throwOnNullOrNone(model, Some("model is empty"))
+
+    Some(model.get.noSpaces)
+  }
+
+  def fromJsonsToJsonString(
+    models : Option[Iterable[Json]],
+    additionalAnnotationForItems : String = null) : Option[String] = {
+    try {
+      val jsonStringCollection = models.get.map(w => w.noSpaces)
+      if (EmptyValidateHelper.isEmptyString(additionalAnnotationForItems)) {
+        return Some(jsonStringCollection.mkString("[", ",\n", "]"))
+      }
+
+      val finalJsonString = jsonStringCollection.mkString(
+        s"{${ quote }${ additionalAnnotationForItems }${ quote }:[",
+        ",\n",
+        "]}")
+
+      return Some(finalJsonString)
+    } catch {
+      case e : Exception => AppLogger.errorCaptureAndThrow(e)
+    }
+
+    Some("")
+  }
+
+  override def fromModelsToJsonString(models : Option[Iterable[T]]) : Option[String] = {
+    if(EmptyValidateHelper.isItemsEmpty(models)){
+      return None
+    }
+
+    val toJsonNodes = fromModelsToJsonObjects(models)
+    fromJsonsToJsonString(toJsonNodes)
+  }
+
+  def toJsonString(
+    entities : Iterable[T],
+    additionalAnnotationForItems : String = null) : String = {
+    try {
+      val toIterableJsonCollection = fromModelsToJsonObjects(Some(entities))
+
+      fromJsonsToJsonString(toIterableJsonCollection, additionalAnnotationForItems)
+    } catch {
+      case e : Exception => AppLogger.errorCaptureAndThrow(e)
+    }
+
+    ""
   }
 }

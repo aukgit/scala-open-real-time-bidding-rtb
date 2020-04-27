@@ -6,7 +6,6 @@ import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
 
 import scala.concurrent.duration.Duration
-import scala.reflect.ClassTag
 
 trait CommonJsonParsingMechanism {
   def setObjectAsJson[T](
@@ -18,12 +17,19 @@ trait CommonJsonParsingMechanism {
     implicit decoder : Lazy[DerivedDecoder[T]],
     encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit
 
-  def getObjectFromJsonAs[T](key : String)(implicit classTag : ClassTag[T]) : Option[T]
+  def getObjectFromJsonAs[T](key : String)(
+    implicit decoder : Lazy[DerivedDecoder[T]],
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Option[T]
 
   def setIterableObjectsAsJson[T](
-    key : String, value : Iterable[T],
+    key : String,
+    items : Iterable[T],
     whenSet : SetBehaviour = Always,
-    expire : Duration = null)(implicit classTag : ClassTag[T]) : Unit
+    expire : Duration = null)(
+    implicit decoder : Lazy[DerivedDecoder[T]],
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit
 
-  def getIterableObjectsAs[T](key : String)(implicit classTag : ClassTag[T]) : Iterable[T]
+  def getIterableObjectsAs[T](key : String)(
+    implicit decoder : Lazy[DerivedDecoder[T]],
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Iterable[T]
 }
