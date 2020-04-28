@@ -9,7 +9,8 @@ object ToStringHelper {
     }
 
     try {
-      return Some(value.get.toString)
+      val typeName = ReflectionHelper.getTypeName(value)
+      return Some(s"$typeName : ${value.get.toString}")
     }
     catch {
       case e : Exception =>
@@ -28,7 +29,10 @@ object ToStringHelper {
     }
 
     try {
-      return Some(items.get.mkString(join))
+      val typeName = ReflectionHelper.getTypeName(Some(items.get.head))
+      val toStringAll = items.get.mkString(join)
+
+      return Some(s"$typeName :\n ${toStringAll}")
     }
     catch {
       case e : Exception =>

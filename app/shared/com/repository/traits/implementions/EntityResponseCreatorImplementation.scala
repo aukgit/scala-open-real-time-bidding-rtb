@@ -18,8 +18,8 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     affectedRow : Int,
     entity : Option[TRow],
     actionType : DatabaseActionType,
-    message     : String = "",
-    isSuccess   : Boolean = true
+    message : String = "",
+    isSuccess : Boolean = true
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val message2 = getMessageForEntity(Some(affectedRow), actionType, message)
     val hasAffected = affectedRow > 0
@@ -79,13 +79,18 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
   protected def createResponseFor(
     entityId : Option[TKey],
-    entity   : Option[TRow],
+    entity : Option[TRow],
     actionType : DatabaseActionType,
-    message    : String = "",
-    isSuccess  : Boolean = true
+    message : String = "",
+    isSuccess : Boolean = true
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val attributesModel =
-      GenericResponseAttributesModel(isSuccess, Some(actionType), message)
+      GenericResponseAttributesModel(
+        isSuccess,
+        id = Some(entity.get.toString),
+        ids = None,
+        Some(actionType),
+        message)
 
     RepositoryOperationResultModel(
       Some(attributesModel),
@@ -95,8 +100,8 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
   protected def getMessageForEntity(
     affectedRowsCount : Option[Int],
-    actionType        : DatabaseActionType,
-    message           : String) : String = {
+    actionType : DatabaseActionType,
+    message : String) : String = {
     var message2 = message;
     if (message2.isEmpty) {
       var affectedCount = ""

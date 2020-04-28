@@ -1,5 +1,8 @@
 package shared.io.helpers
 
+import java.security.spec.InvalidParameterSpecException
+import scala.reflect.runtime.universe._
+import com.sun.tools.javac.code.TypeTag
 import shared.io.loggers.AppLogger
 
 import scala.reflect.runtime.{ universe => ru }
@@ -39,6 +42,36 @@ object ReflectionHelper {
     }
 
     ""
+  }
+
+  def isIntegerType[T: TypeTag] : Boolean = {
+    val typeOfKey = typeOf[T]
+    typeOfKey match {
+      case i if i =:= typeOf[Int] =>
+        return true
+    }
+
+    false
+  }
+
+  def isStringType[T: TypeTag] : Boolean = {
+    val typeOfKey = typeOf[T]
+    typeOfKey match {
+      case i if i =:= typeOf[String] =>
+        return true
+    }
+
+    false
+  }
+
+  def isTypeOf[T: TypeTag, T2] : Boolean = {
+    val typeOfKey = typeOf[T]
+    typeOfKey match {
+      case i if i =:= typeOf[T2] =>
+        return true
+    }
+
+    false
   }
 }
 

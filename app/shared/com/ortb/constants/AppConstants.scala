@@ -3,13 +3,13 @@ package shared.com.ortb.constants
 object AppConstants {
 
   /**
-    * Dot(.) string.
-    */
+   * Dot(.) string.
+   */
   lazy val Dot = "."
 
   /**
-    * "configuration.json"
-    */
+   * "configuration.json"
+   */
   lazy val DefaultConfigFileNameWithExtension = "configuration.json"
 
   lazy val PathConstants = new PathConstants
@@ -21,18 +21,18 @@ object AppConstants {
   lazy val DefaultPageSize = 100
 
   /**
-    * ",\n <br >"
-    */
+   * ",\n <br >"
+   */
   lazy val NewLineForSentry = ",\n <br >"
 
   /**
-    * "-> "
-    */
+   * "-> "
+   */
   lazy val HyphenRightAngel = "-> "
 
   /**
-    * "localhost"
-    */
+   * "localhost"
+   */
   lazy val LocalHost = "localhost"
 
   lazy val DefaultParallelExecution = 3
@@ -44,4 +44,8 @@ object AppConstants {
   lazy val EmptyString : String = ""
 
   lazy val EmptyStringOption : Option[String] = Some("")
+
+  lazy val EmptyDoubleOption : Option[Double] = Some(0)
+
+  lazy val EmptyIntegerOption : Option[Int] = Some(0)
 }

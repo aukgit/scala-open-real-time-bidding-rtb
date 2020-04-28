@@ -1,12 +1,9 @@
 package shared.com.ortb.demadSidePlatforms
 
-import com.google.inject.Inject
-import org.joda.time.{ DateTime, DateTimeZone }
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.{ DemandSidePlatformBiddingLogic, DemandSidePlatformStaticBidResponseLogic }
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
-import shared.com.ortb.enumeration.LogLevelType
-import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.importedModels.biddingRequests._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
@@ -14,7 +11,7 @@ import shared.com.ortb.model._
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.com.ortb.persistent
-import shared.com.ortb.persistent.repositories.{ AdvertiseRepository, LogTraceRepository }
+import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.traits.FutureToRegular
@@ -88,9 +85,9 @@ class DemandSidePlatformBiddingAgent(
       advertisesQuery = advertisesQuery.filter(ad => ad.minheight >= minHeight)
     }
 
-    if (EmptyValidateHelper.isDefined(banner.hmin)) {
-      val minHeight = banner.hmin.get.toDouble
-      advertisesQuery = advertisesQuery.filter(ad => ad.minheight >= minHeight)
+    if (EmptyValidateHelper.isDefined(banner.hmax)) {
+      val maxHeight = banner.hmax.get.toDouble
+      advertisesQuery = advertisesQuery.filter(ad => ad.maxheight <= maxHeight)
     }
 
     advertisesQuery
@@ -102,6 +99,7 @@ class DemandSidePlatformBiddingAgent(
     impression : ImpressionModel,
     limit : Int = defaultAdvertiseLimit) : Option[ImpressionBiddableInfoModel] = {
     val methodName = "getImpressionBiddableInfoModel"
+
     if (EmptyValidateHelper.isEmpty(impression.banner)) {
       val model = ImpressionBiddableInfoModel(
         impression,
@@ -136,16 +134,15 @@ class DemandSidePlatformBiddingAgent(
       Some(rows.toArray),
       impressionAttributes)
 
-    val logModel  = LogTraceModel(
+    val logModel = LogTraceModel(
       methodName,
       request = Some(impression),
-      entity=Some(model))
-    
+      entity = Some(model))
+
     coreProperties.databaseLogger.trace(logModel)
 
     Some(model)
   }
-
 
   def getBiddableImpressionInfoModels(
     request : DspBidderRequestModel,
@@ -180,6 +177,8 @@ class DemandSidePlatformBiddingAgent(
     // create DSP -> campaign ->
     val methodName = "addNewAdvertiseIfNoAdvertiseInTheGivenCriteria"
     AppLogger.debug(methodName, "Adding Advertise as per configuration")
+
+    val demandSideId = coreProperties.demandSideId
 
     // get publisher
     val repositories = coreProperties.repositories
@@ -217,8 +216,25 @@ class DemandSidePlatformBiddingAgent(
     // create campaign
     val banner = x.banner.get.toString
     val categories = getCategories(site)
-    //    CampaignRow(-1, s"Generated: Campaign - Banner($banner)",)
+    val budget: Double = 1500
+    val campaignRow = CampaignRow(
+      -1,
+      s"Generated: Campaign - Banner($banner)",
+      AppConstants.EmptyStringOption,
+      budget,
+      0,
+      budget,
+      AppConstants.EmptyDoubleOption,
+      AppConstants.EmptyDoubleOption,
+      0,
+      demandsideplatformid = demandSideId,
+      1,
+      isretricttousergender = 0,
+      expectedusergender = None,
+      publisherid = Some(publisher.get.publisherid))
 
+    val campaginCreated = campaignRepository.add(campaignRow)
+    val campaginCreated.attributes.get.id
 
   }
 
