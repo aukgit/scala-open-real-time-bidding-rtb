@@ -25,7 +25,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     val hasAffected = affectedRow > 0
 
     if (hasAffected && entity.isDefined) {
-      AppLogger.logEntitiesNonFuture(isLogQueries, Seq(entity.get), message2)
+      AppLogger.logEntitiesNonFuture(isLogDatabaseQueryLogs, Seq(entity.get), message2)
     }
 
     if (hasAffected) {
@@ -58,7 +58,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
     if (affectedEntity != null) {
       AppLogger.logEntityNonFuture(
-        isLogQueries,
+        isLogDatabaseQueryLogs,
         affectedEntity,
         message2
       )
@@ -123,7 +123,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     AppLogger.conditionalInfo(
-      isLogQueries,
+      isLogDatabaseQueryLogs,
       s"${ headerMessage } $actionType is skipped."
     )
 

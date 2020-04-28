@@ -35,11 +35,11 @@ trait RepositoryUpdateOperationsAsyncImplementation[TTable, TRow, TKey]
         val result = this.saveAsync(
           entity = entity2,
           dbAction = getQueryById(entityId).update(entity2.get),
-          DatabaseActionType.Update
+          actionType
         )
 
         traceFutureResult(
-          isLogQueries,
+          isLogDatabaseActionsToDatabase,
           "updateAsync",
           Some(result),
           actionType)
@@ -50,7 +50,7 @@ trait RepositoryUpdateOperationsAsyncImplementation[TTable, TRow, TKey]
       return this.saveAsync(
         entity = Some(entity),
         dbAction = getQueryById(entityId).update(entity),
-        DatabaseActionType.Update
+        actionType
       )
     } catch {
       case e : Exception =>

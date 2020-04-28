@@ -22,7 +22,7 @@ trait RepositoryAddOperationsAsyncImplementation[TTable, TRow, TKey]
         DatabaseActionType.Create)
 
       traceFutureResult(
-        isLogQueries,
+        isLogDatabaseActionsToDatabase,
         "addAsync",
         Some(result),
         actionType)

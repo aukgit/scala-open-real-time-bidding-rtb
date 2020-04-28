@@ -123,7 +123,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   def runAsyncAs[T >: Null <: AnyRef, TRow2](dbAction: T): Future[Seq[TRow2]] = {
     try {
       val results = getDatabaseQueryResultAs[T, TRow2](dbAction).get
-      AppLogger.logEntities(isLogQueries, results)
+      AppLogger.logEntities(isLogDatabaseQueryLogs, results)
       return results
     } catch {
       case e: Exception => AppLogger.error(e)
@@ -144,7 +144,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   def runAsync[T >: Null <: AnyRef](dbAction: T): Future[Seq[TRow]] = {
     try {
       val results = getDatabaseQueryResult(dbAction).get
-      AppLogger.logEntities(isLogQueries, results)
+      AppLogger.logEntities(isLogDatabaseQueryLogs, results)
       return results
     } catch {
       case e: Exception => AppLogger.error(e)

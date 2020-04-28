@@ -8,7 +8,12 @@ class DatabaseSchema(appManager : AppManager) {
   /**
    * Determinate weather to log queries or not.
    */
-  lazy val isLogQueries : Boolean = appManager.config.isLogDatabaseQueryLogs
+  lazy val isLogDatabaseQueryLogs : Boolean = appManager.config.isLogDatabaseQueryLogs
+
+  /**
+   * Determinate weather to log queries to database or not
+   */
+  lazy val isLogDatabaseActionsToDatabase : Boolean = appManager.config.isLogDatabaseActionsToDatabase
 
   /**
    * Advertise available in the system

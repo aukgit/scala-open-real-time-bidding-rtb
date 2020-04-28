@@ -56,6 +56,13 @@ class DemandSidePlatformBiddingAgent(
     val results = repositories.lostBidRepository
       .run(lostBidsSqlProfileAction)
 
+    val logTraceModel = LogTraceModel(
+      "getLastFailedDeals",
+      Some(request),
+      entities = Some(results))
+
+    coreProperties.databaseLogger.trace(logTraceModel)
+
     BidFailedReasonsModel(
       results
     )
@@ -114,7 +121,7 @@ class DemandSidePlatformBiddingAgent(
     }
 
     val banner = impression.banner.get
-    val advertisesQueryIn : Query[Tables.Advertise, Tables.AdvertiseRow, Seq] = advertisesTable.filter(advertise =>
+    val advertisesQueryIn = advertisesTable.filter(advertise =>
       advertise.isvideo === 0)
 
     val advertisesQuery = appendQueryForBanner(advertisesQueryIn, banner)
@@ -175,19 +182,15 @@ class DemandSidePlatformBiddingAgent(
       return
     }
 
-    // create DSP -> campaign ->
+    // create DSP -> campaign -> Advertise
     val methodName = "addNewAdvertiseIfNoAdvertiseInTheGivenCriteria"
-    AppLogger.debug(methodName, "Adding Advertise as per configuration")
+    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${request.bidRequest.toString}")
 
     val demandSideId = coreProperties.demandSideId
-
-    // get publisher
     val repositories = coreProperties.repositories
     val publishersRepository = repositories.publisherRepository
     val campaignRepository = repositories.campaignRepository
     val advertiseRepository = repositories.advertiseRepository
-    val keywordRepository = repositories.keywordRepository
-    val keywordAdvertiseMappingRepository = repositories.keywordAdvertiseMappingRepository
 
     val publisherByDspQuery : FixedSqlStreamingAction[Seq[persistent.schema.Tables.PublisherRow], persistent.schema.Tables.PublisherRow, Effect.Read] = publishersRepository
       .getAllQuery
@@ -282,7 +285,11 @@ class DemandSidePlatformBiddingAgent(
       simpleBanner.wmax,
       0,
       Some(0),
-      Some(0), Some(0))
+      Some(0),
+      Some(0))
+
+    advertiseRepository.add(advertise)
+    AppLogger.debug("Advertise added")
     //    throw new NotImplementedError()
   }
 
@@ -303,6 +310,25 @@ class DemandSidePlatformBiddingAgent(
         b)
     }).toList
 
+    // create deals
+    biddableImpressionInfoModels.map(w => {
+      if(!w.attributes.isBiddable){
+        return None
+      }
+      val banner = w.impression.banner.get
+
+      var advs = w.advertises.get
+
+      if(banner.h.isDefined){
+        advs = advs.filter(r => banner.h.get == r.height)
+      }
+
+      if(banner.w.isDefined){
+        advs = advs.filter(r => banner.w.get == r.width)
+      }
+
+    })
+
     Some(list)
     throw new NotImplementedError()
   }
@@ -312,7 +338,15 @@ class DemandSidePlatformBiddingAgent(
     val biddableImpressionInfoModels = getBiddableImpressionInfoModels(
       request : DspBidderRequestModel)
 
-    getImpressionDealsFromBiddableImpressionInfoModels(request, biddableImpressionInfoModels)
+    val impressionDeals = getImpressionDealsFromBiddableImpressionInfoModels(request, biddableImpressionInfoModels)
+
+    if(EmptyValidateHelper.isItemsEmpty(impressionDeals)){
+      return getBidActualNoContent(request)
+    }
+
+    // has something
+    val has = impressionDeals.get.map(w => w.)
+
 
     throw new NotImplementedError()
   }

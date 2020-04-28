@@ -27,7 +27,7 @@ trait RepositoryDeleteOperationsAsyncImplementation[TTable, TRow, TKey]
       )
 
       traceFutureResult(
-        isLogQueries,
+        isLogDatabaseActionsToDatabase,
         "deleteAsync",
         Some(result),
         actionType)

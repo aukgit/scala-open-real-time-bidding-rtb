@@ -20,7 +20,7 @@ trait RepositoryAddOrUpdateOperationsAsyncImplementation[TTable, TRow, TKey]
       val result = updateAsync(entityId, entity)
 
       traceFutureResult(
-        isLogQueries,
+        isLogDatabaseActionsToDatabase,
         "addOrUpdateAsync",
         Some(result),
         DatabaseActionType.AddOrUpdate)
