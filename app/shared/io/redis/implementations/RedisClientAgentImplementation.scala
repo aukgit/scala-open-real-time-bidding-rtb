@@ -1,9 +1,9 @@
 package shared.io.redis.implementations
 
 import com.google.inject.Inject
-import shared.io.redis.traits.{ RedisClientCoreProperties, RedisKeyValueParser }
+import shared.io.redis.traits.{ RedisClientCorePropertiesContracts, RedisKeyValueParser }
 
-class RedisClientAgentImplementation @Inject()(redisClientCore : RedisClientCoreProperties)
+class RedisClientAgentImplementation @Inject()(redisClientCore : RedisClientCorePropertiesContracts)
   extends RedisKeyValueParserImplementation(redisClientCore)
-    with RedisClientCoreProperties
+    with RedisClientCorePropertiesContracts
     with RedisKeyValueParser

@@ -1,5 +1,5 @@
 package shared.io.redis.traits
 
 trait RedisClientAgent
-  extends RedisClientCoreProperties
+  extends RedisClientCorePropertiesContracts
     with RedisKeyValueParser

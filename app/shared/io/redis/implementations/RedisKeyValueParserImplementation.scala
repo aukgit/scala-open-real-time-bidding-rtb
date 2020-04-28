@@ -5,16 +5,16 @@ import com.redis.api.StringApi
 import com.redis.serialization.Parse.Implicits.parseByteArray
 import shared.io.helpers.{ EmptyValidateHelper, SerializingHelper }
 import shared.io.loggers.AppLogger
-import shared.io.redis.traits.{ RedisClientCoreProperties, RedisKeyValueParser }
+import shared.io.redis.traits.{ RedisClientCorePropertiesContracts, RedisKeyValueParser }
 
 import scala.concurrent.duration.Duration
 
 class RedisKeyValueParserImplementation @Inject()(
-  val redisClientCore : RedisClientCoreProperties
+  val redisClientCore : RedisClientCorePropertiesContracts
 )
   extends RedisCommonJsonParsingMechanismImplementation(redisClientCore)
     with RedisKeyValueParser
-    with RedisClientCoreProperties {
+    with RedisClientCorePropertiesContracts {
 
   override def set(key : String, value : Any, whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = {
     EmptyValidateHelper.throwOnNullOrNone(key)

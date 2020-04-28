@@ -10,15 +10,15 @@ import shared.com.ortb.model.config.DomainPortModel
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.traits.{ CommonJsonParsingMechanism, JsonParserCreator }
 import shared.io.loggers.AppLogger
-import shared.io.redis.traits.RedisClientCoreProperties
+import shared.io.redis.traits.RedisClientCorePropertiesContracts
 
 import scala.concurrent.duration.Duration
 
 class RedisCommonJsonParsingMechanismImplementation @Inject()(
-  redisClientCore : RedisClientCoreProperties
+  redisClientCore : RedisClientCorePropertiesContracts
 )
   extends CommonJsonParsingMechanism
-    with RedisClientCoreProperties
+    with RedisClientCorePropertiesContracts
     with JsonParserCreator {
 
   override val redisClient : RedisClient =
