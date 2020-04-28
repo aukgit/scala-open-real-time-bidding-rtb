@@ -1,5 +1,6 @@
 package shared.com.ortb.adapters.traits.implementations
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
@@ -13,6 +14,8 @@ trait RepositoryOperationResultModelAdapterImplementation {
     databaseActionType : DatabaseActionType) = new RepositoryOperationResultModel[TRow, TKey](
     attributes = Some(GenericResponseAttributesModel(
       isSuccess = false,
+      id = AppConstants.EmptyStringOption,
+      ids = None,
       Some(databaseActionType),
       "Empty response."
     ))
@@ -23,6 +26,8 @@ trait RepositoryOperationResultModelAdapterImplementation {
       RepositoryOperationResultsModel[TRow, TKey](
         attributes = Some(GenericResponseAttributesModel(
           isSuccess = false,
+          id = AppConstants.EmptyStringOption,
+          ids = None,
           Some(databaseActionType),
           "Empty response."
         )),
@@ -30,9 +35,9 @@ trait RepositoryOperationResultModelAdapterImplementation {
       )
 
   def fromRepositoryOperationResultModelsToRepositoryOperationResultsModel[TRow, TKey](
-    inputModel         : Iterable[Future[RepositoryOperationResultModel[TRow, TKey]]],
+    inputModel : Iterable[Future[RepositoryOperationResultModel[TRow, TKey]]],
     databaseActionType : DatabaseActionType,
-    message            : String = "") :
+    message : String = "") :
   RepositoryOperationResultsModel[TRow, TKey] = {
     if (inputModel.isEmpty) {
       return getEmptyResultsResponse[TRow, TKey](databaseActionType)
@@ -43,8 +48,12 @@ trait RepositoryOperationResultModelAdapterImplementation {
       BasicAdapterHelper.entityWrapperAdapter.fromResultModelToEntityWrap(response)
     }).toList
 
+    val ids = items.map(w=> w.entityId.toString)
+
     val attributesModel = GenericResponseAttributesModel(
       items.nonEmpty,
+      id = Some(ids.head),
+      ids = Some(ids),
       Some(databaseActionType),
       message)
 

@@ -233,9 +233,8 @@ class DemandSidePlatformBiddingAgent(
       expectedusergender = None,
       publisherid = Some(publisher.get.publisherid))
 
-    val campaginCreated = campaignRepository.add(campaignRow)
-    val campaginCreated.attributes.get.id
-
+    val campaignCreated = campaignRepository.add(campaignRow)
+    campaignCreated.getIdAsInt
   }
 
   def getImpressionDealsFromBiddableImpressionInfoModels(

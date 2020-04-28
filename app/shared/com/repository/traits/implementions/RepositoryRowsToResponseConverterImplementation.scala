@@ -11,19 +11,23 @@ import shared.io.helpers.EmptyValidateHelper
 trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extends RepositoryRowsToResponseConverter[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
   def getRowsToResponse(
-    rows: Option[Iterable[TRow]] ,
+    rows : Option[Iterable[TRow]],
     dbAction : Option[DatabaseActionType] = None,
-    message : String = ""): RepositoryOperationResultsModel[TRow, TKey] = {
-    if(EmptyValidateHelper.isItemsEmpty(rows)){
+    message : String = "") : RepositoryOperationResultsModel[TRow, TKey] = {
+    if (EmptyValidateHelper.isItemsEmpty(rows)) {
       return null
     }
 
+    val rowsToEntityRows = rows.get.map(row => EntityWrapper(getEntityId(row), row))
+    val idsList = Some(rowsToEntityRows.map(w => w.entityId.toString).toList)
+
     val attributes = GenericResponseAttributesModel(
       isSuccess = true,
+      id = Some(idsList.get.head.toString),
+      ids = idsList,
       dbAction,
       message)
 
-    val rowsToEntityRows = rows.get.map(row => EntityWrapper(getEntityId(row), row))
 
     val repositoryResponse = RepositoryOperationResultsModel(
       Some(attributes),
@@ -34,23 +38,26 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
   }
 
   def getRowToResponse(
-    rowOption: Option[TRow] ,
+    rowOption : Option[TRow],
     dbAction : Option[DatabaseActionType],
-    message : String = ""): RepositoryOperationResultModel[TRow, TKey] = {
-    if(EmptyValidateHelper.isEmpty(rowOption)){
+    message : String = "") : RepositoryOperationResultModel[TRow, TKey] = {
+    if (EmptyValidateHelper.isEmpty(rowOption)) {
       return null
     }
 
+    val row = rowOption.get
+    val entity = Some(EntityWrapper(getEntityId(row), row))
+
     val attributes = GenericResponseAttributesModel(
       isSuccess = true,
+      id = Some(entity.get.entityId.toString),
+      ids = None,
       dbAction,
       message)
 
-    val row = rowOption.get
-
     val repositoryResponse = RepositoryOperationResultModel(
       Some(attributes),
-      Some(EntityWrapper(getEntityId(row), row))
+      entity
     )
 
     repositoryResponse

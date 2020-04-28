@@ -1,10 +1,8 @@
 package shared.io.helpers
 
-import java.security.spec.InvalidParameterSpecException
-import scala.reflect.runtime.universe._
-import com.sun.tools.javac.code.TypeTag
 import shared.io.loggers.AppLogger
 
+import scala.reflect.runtime.universe._
 import scala.reflect.runtime.{ universe => ru }
 
 object ReflectionHelper {
@@ -44,7 +42,7 @@ object ReflectionHelper {
     ""
   }
 
-  def isIntegerType[T: TypeTag] : Boolean = {
+  def isIntegerType[T]()(implicit T : ru.TypeTag[T]) : Boolean = {
     val typeOfKey = typeOf[T]
     typeOfKey match {
       case i if i =:= typeOf[Int] =>
@@ -54,7 +52,7 @@ object ReflectionHelper {
     false
   }
 
-  def isStringType[T: TypeTag] : Boolean = {
+  def isStringType[T]()(implicit T : TypeTag[T]) : Boolean = {
     val typeOfKey = typeOf[T]
     typeOfKey match {
       case i if i =:= typeOf[String] =>
@@ -64,14 +62,14 @@ object ReflectionHelper {
     false
   }
 
-  def isTypeOf[T: TypeTag, T2] : Boolean = {
-    val typeOfKey = typeOf[T]
-    typeOfKey match {
-      case i if i =:= typeOf[T2] =>
-        return true
-    }
-
-    false
-  }
+//  def isTypeOf[T, TCastingType](implicit T : ru.TypeTag[T], TCastingType: ru.TypeTag[T]) : Boolean = {
+//    val typeOfKey = typeOf[T]
+//    typeOfKey match {
+//      case i if i =:= typeOf[TCastingType] =>
+//        return true
+//    }
+//
+//    false
+//  }
 }
 
