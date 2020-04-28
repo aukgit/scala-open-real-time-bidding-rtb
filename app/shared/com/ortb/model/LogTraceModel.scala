@@ -1,9 +1,10 @@
 package shared.com.ortb.model
 
 case class LogTraceModel(
-  methodName : Option[String],
-  request : Option[String],
-  message : Option[String] = None,
-  entityData : Option[String],
+  methodName : String,
+  request : String = "",
+  message : String = "",
+  entityData : Option[Any] = None,
+  entitiesData : Option[Iterable[Any]] = None,
   databaseTransactionId : Option[Int] = None
 )

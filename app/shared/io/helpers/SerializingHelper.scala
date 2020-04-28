@@ -3,6 +3,8 @@ package shared.io.helpers
 import org.apache.commons.lang3.SerializationUtils
 import shared.io.loggers.AppLogger
 
+
+
 object SerializingHelper {
   def toBytesArray(value : Any) : Option[Array[Byte]] = {
     try {

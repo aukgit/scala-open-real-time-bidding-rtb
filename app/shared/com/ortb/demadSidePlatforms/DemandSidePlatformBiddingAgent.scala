@@ -136,7 +136,10 @@ class DemandSidePlatformBiddingAgent(
       Some(rows.toArray),
       impressionAttributes)
 
-//    coreProperties.databaseLogger.trace(LogTraceModel(methodName,this.getClass.getName,))
+    val logModel  = LogTraceModel(
+      methodName,
+      this.getClass.getName,Some(model.toString))
+    coreProperties.databaseLogger.trace()
 
     Some(model)
   }

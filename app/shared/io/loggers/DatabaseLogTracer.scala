@@ -9,9 +9,11 @@ import shared.com.ortb.persistent.repositories.LogTraceRepository
 import shared.com.ortb.persistent.schema.Tables._
 
 trait DatabaseLogTracer {
-  val appManager : AppManager
-  val className: String
-  lazy val logTraceRepository : LogTraceRepository = new LogTraceRepository(appManager)
+  protected val appManager : AppManager
+  protected val className: String
+  protected lazy val logTraceRepository : LogTraceRepository = new LogTraceRepository(appManager)
+
+  def getEntityString(item : Option[Any])
 
   def trace(
     log : LogTraceModel,
@@ -19,15 +21,17 @@ trait DatabaseLogTracer {
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
     val timeInMilliseconds = DateTime.now(DateTimeZone.UTC).getMillis
     new DateTime(timeInMilliseconds)
-    val requestString = log.request.getOrElse("")
+    val requestString = log.request
+
+
 
     val row = LogtraceRow(
       -1,
-      log.methodName,
+      Some(log.methodName),
       Some(className),
       Some(requestString),
-      log.message,
-      log.entityData,
+      Some(log.message),
+      Some(log.entityData),
       log.databaseTransactionId,
       Some(timeInMilliseconds.asInstanceOf[Double]))
 
