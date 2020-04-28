@@ -265,6 +265,7 @@ class DemandSidePlatformBiddingAgent(
 //      0,
 //      isvideo = 0,
 //      impressioncount = 0)
+    throw new NotImplementedError()
   }
 
   def getImpressionDealsFromBiddableImpressionInfoModels(

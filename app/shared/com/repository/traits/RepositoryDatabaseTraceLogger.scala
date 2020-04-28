@@ -11,7 +11,7 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] {
   val databaseLogger : DatabaseLogTracerImplementation
   protected val headerMessage : String
 
-  def trace(
+  def tracePrePost(
     isLogQueries : Boolean,
     methodName : String,
     preRow : Option[TRow],
