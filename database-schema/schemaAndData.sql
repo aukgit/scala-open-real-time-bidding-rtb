@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 29/04/2020 00:56:19
+ Date: 29/04/2020 01:04:57
 */
 
 PRAGMA foreign_keys = false;
@@ -31,7 +31,7 @@ CREATE TABLE "Advertise" (
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
   "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
   "Height" integer NOT NULL DEFAULT 0,
-  "Weight" integer NOT NULL DEFAULT 0,
+  "Width" integer NOT NULL DEFAULT 0,
   "MinHeight" integer NOT NULL DEFAULT 0,
   "MinWidth" integer NOT NULL DEFAULT 0,
   "MaxHeight" integer NOT NULL DEFAULT 0,
