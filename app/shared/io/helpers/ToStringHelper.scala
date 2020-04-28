@@ -16,7 +16,7 @@ object ToStringHelper {
         AppLogger.error(e, "Failed at [toStringOf]")
         AppLogger.logNonFutureNullable("Failed to make toString of :", value)
     }
-    
+
     None
   }
 

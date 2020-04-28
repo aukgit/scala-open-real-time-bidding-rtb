@@ -40,4 +40,8 @@ object AppConstants {
   lazy val NoContent = "No content, no operation performed."
 
   lazy val NoContentInRequest = "No content in request"
+
+  lazy val EmptyString : String = ""
+
+  lazy val EmptyStringOption : Option[String] = Some("")
 }
