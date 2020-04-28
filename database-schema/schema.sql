@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 28/04/2020 04:30:34
+ Date: 28/04/2020 23:14:20
 */
 
 PRAGMA foreign_keys = false;
@@ -343,6 +343,11 @@ CREATE TABLE "sqlite_sequence" (
 -- ----------------------------
 -- Auto increment value for Auction
 -- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BannerAdvertiseType
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
 -- Auto increment value for BidRequest

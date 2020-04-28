@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 28/04/2020 04:30:40
+ Date: 28/04/2020 23:14:14
 */
 
 PRAGMA foreign_keys = false;
@@ -69,6 +69,14 @@ CREATE TABLE "BannerAdvertiseType" (
   "BannerAdvertiseTypeId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "TypeName" TEXT NOT NULL
 );
+
+-- ----------------------------
+-- Records of BannerAdvertiseType
+-- ----------------------------
+INSERT INTO "BannerAdvertiseType" VALUES (1, 'XHTML Text Ad');
+INSERT INTO "BannerAdvertiseType" VALUES (2, 'XHTML Banner Ad. (Usually movile)');
+INSERT INTO "BannerAdvertiseType" VALUES (3, 'Javascript Ad; must be valid XHTML');
+INSERT INTO "BannerAdvertiseType" VALUES (4, 'iframe');
 
 -- ----------------------------
 -- Table structure for BidRequest
@@ -439,6 +447,7 @@ INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
 
 -- ----------------------------
 -- Auto increment value for Advertise
@@ -447,6 +456,11 @@ INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 -- ----------------------------
 -- Auto increment value for Auction
 -- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BannerAdvertiseType
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
 -- Auto increment value for BidRequest
