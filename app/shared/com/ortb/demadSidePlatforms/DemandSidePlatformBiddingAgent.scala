@@ -5,6 +5,7 @@ import shared.com.ortb.demadSidePlatforms.traits.logics.{ DemandSidePlatformBidd
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.importedModels.biddingRequests._
+import shared.com.ortb.importedModels.campaign.SimpleBanner
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model._
@@ -15,7 +16,7 @@ import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.traits.FutureToRegular
-import shared.io.helpers.EmptyValidateHelper
+import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
@@ -66,27 +67,27 @@ class DemandSidePlatformBiddingAgent(
   ) : Query[Tables.Advertise, Tables.AdvertiseRow, Seq] = {
     var advertisesQuery = advertisesQueryIn
     if (EmptyValidateHelper.isDefined(banner.wmax)) {
-      val maxWidth = banner.wmax.get.toDouble
+      val maxWidth = banner.wmax.get
       advertisesQuery = advertisesQuery.filter(ad => ad.maxwidth <= maxWidth)
     }
 
     if (EmptyValidateHelper.isDefined(banner.wmin)) {
-      val minWidth = banner.wmin.get.toDouble
+      val minWidth = banner.wmin.get
       advertisesQuery = advertisesQuery.filter(ad => ad.minwidth >= minWidth)
     }
 
     if (EmptyValidateHelper.isDefined(banner.hmax)) {
-      val maxHeight = banner.hmax.get.toDouble
+      val maxHeight = banner.hmax.get
       advertisesQuery = advertisesQuery.filter(ad => ad.maxheight <= maxHeight)
     }
 
     if (EmptyValidateHelper.isDefined(banner.hmin)) {
-      val minHeight = banner.hmin.get.toDouble
+      val minHeight = banner.hmin.get
       advertisesQuery = advertisesQuery.filter(ad => ad.minheight >= minHeight)
     }
 
     if (EmptyValidateHelper.isDefined(banner.hmax)) {
-      val maxHeight = banner.hmax.get.toDouble
+      val maxHeight = banner.hmax.get
       advertisesQuery = advertisesQuery.filter(ad => ad.maxheight <= maxHeight)
     }
 
@@ -219,12 +220,19 @@ class DemandSidePlatformBiddingAgent(
       None
     }
 
-    def getAsDouble(d : Option[Double]) : Double = {
-      if (d.isEmpty) {
-        return 0
+    def getSimpleBanner(d : BannerModel) : SimpleBanner = {
+      if (d == null) {
+        return null
       }
 
-      d.get
+      SimpleBanner(
+        d.id,
+        wmin = NumberHelper.getAsInt(d.wmin),
+        wmax = NumberHelper.getAsInt(d.wmax),
+        w = NumberHelper.getAsInt(d.w),
+        hmin = NumberHelper.getAsInt(d.hmin),
+        hmax = NumberHelper.getAsInt(d.hmax),
+        h = NumberHelper.getAsInt(d.h))
     }
 
     val publisher = publishersRepository
@@ -232,6 +240,7 @@ class DemandSidePlatformBiddingAgent(
 
     // create campaign
     val bannerString = impressionModel.banner.get.toString
+    val simpleBanner = getSimpleBanner(impressionModel.banner.get)
     val budget : Double = 1500
     val publisherId = publisher.get.publisherid
     val campaignRow = CampaignRow(
@@ -254,18 +263,27 @@ class DemandSidePlatformBiddingAgent(
     val campaignId = campaignCreated.getIdAsInt
     val contextTextId = 5
 
-//    val advertise = AdvertiseRow(
-//      -1,
-//      campaignId.get,
-//      1,
-//      s"Generated Banner Advertise($bannerString)",
-//      Some(contextTextId),
-//      s"BidUrl for $bannerString",
-//      Some(s"IFrame for $bannerString"),
-//      0,
-//      isvideo = 0,
-//      impressioncount = 0)
-    throw new NotImplementedError()
+    val advertise = AdvertiseRow(
+      -1,
+      campaignId.get,
+      1,
+      s"Generated Banner Advertise($bannerString)",
+      Some(contextTextId),
+      s"BidUrl for $bannerString",
+      Some(s"IFrame for $bannerString"),
+      0,
+      isvideo = 0,
+      impressioncount = 0,
+      height = simpleBanner.h,
+      simpleBanner.w,
+      simpleBanner.hmin,
+      simpleBanner.wmin,
+      simpleBanner.hmax,
+      simpleBanner.wmax,
+      0,
+      Some(0),
+      Some(0), Some(0))
+    //    throw new NotImplementedError()
   }
 
   def getImpressionDealsFromBiddableImpressionInfoModels(

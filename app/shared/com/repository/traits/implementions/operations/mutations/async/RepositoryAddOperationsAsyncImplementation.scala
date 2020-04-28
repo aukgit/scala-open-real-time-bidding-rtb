@@ -21,6 +21,12 @@ trait RepositoryAddOperationsAsyncImplementation[TTable, TRow, TKey]
         dbAction = action,
         DatabaseActionType.Create)
 
+      traceFutureResult(
+        isLogQueries,
+        "addAsync",
+        Some(result),
+        actionType)
+
       return result
     } catch {
       case e : Exception =>

@@ -20,11 +20,19 @@ trait RepositoryDeleteOperationsAsyncImplementation[TTable, TRow, TKey]
     try {
       val deleteAction = getDeleteAction(entityId)
 
-      return this.saveAsync(
+      val result = this.saveAsync(
         entity = entity,
         dbAction = deleteAction,
         actionType
       )
+
+      traceFutureResult(
+        isLogQueries,
+        "deleteAsync",
+        Some(result),
+        actionType)
+
+      return result
     } catch {
       case e : Exception =>
         AppLogger.error(

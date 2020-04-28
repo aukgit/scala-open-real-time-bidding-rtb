@@ -3,11 +3,14 @@ package shared.com.repository.traits
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
+import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.LogTraceModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.io.loggers.DatabaseLogTracerImplementation
 
-trait RepositoryDatabaseTraceLogger[TRow, TKey] {
+import scala.concurrent.Future
+
+trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContextManager{
   val databaseLogger : DatabaseLogTracerImplementation
   protected val headerMessage : String
 
@@ -44,7 +47,7 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] {
     val logModel = LogTraceModel(
       methodName,
       resultModel,
-      s"[$headerMessage] [${ databaseActionType.toString }]",
+      resultModel.get.attributes.get.message,
       entity = resultModel.get.data)
 
     databaseLogger.trace(logModel, logLevelType = logLevelType)
@@ -63,10 +66,46 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] {
     val logModel = LogTraceModel(
       methodName,
       Some(resultsModel),
-      s"[$headerMessage] [${ databaseActionType.toString }]",
+      resultsModel.get.attributes.get.message,
       entity = None,
       entities = Some(resultsModel.get.data))
 
     databaseLogger.trace(logModel, logLevelType = logLevelType)
+  }
+
+  def traceFutureResult(
+    isLogQueries : Boolean,
+    methodName : String,
+    resultModel : Option[Future[RepositoryOperationResultModel[TRow, TKey]]],
+    databaseActionType : DatabaseActionType,
+    logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
+    if(resultModel.isEmpty){
+      return
+    }
+
+    resultModel.get.onComplete(w =>
+      trace(
+        isLogQueries,
+        methodName,
+        Some(w.get),
+        databaseActionType, logLevelType))
+  }
+
+  def traceFutureResults(
+    isLogQueries : Boolean,
+    methodName : String,
+    resultsModel : Option[Future[RepositoryOperationResultsModel[TRow, TKey]]],
+    databaseActionType : DatabaseActionType,
+    logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
+    if(resultsModel.isEmpty){
+      return
+    }
+
+    resultsModel.get.onComplete(w =>
+      traceResults(
+        isLogQueries,
+        methodName,
+        Some(w.get),
+        databaseActionType, logLevelType))
   }
 }

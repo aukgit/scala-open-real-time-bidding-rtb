@@ -32,11 +32,19 @@ trait RepositoryUpdateOperationsAsyncImplementation[TTable, TRow, TKey]
       if (entityId != getEntityIdFromOptionRow(Some(entity))) {
         val entity2 = setEntityIdFromOptionRow(Some(entityId), Some(entity))
 
-        return this.saveAsync(
+        val result = this.saveAsync(
           entity = entity2,
           dbAction = getQueryById(entityId).update(entity2.get),
           DatabaseActionType.Update
         )
+
+        traceFutureResult(
+          isLogQueries,
+          "updateAsync",
+          Some(result),
+          actionType)
+
+        return result
       }
 
       return this.saveAsync(

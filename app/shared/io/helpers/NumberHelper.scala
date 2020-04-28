@@ -22,4 +22,28 @@ object NumberHelper {
 
   def isFloat(aString : String) : ResultWithBooleanModel[Float] =
     TryHelper.TryResult[Float](aString.toFloat)
+
+  def getAs[T](d : Option[T], default: T) : T = {
+    if (d.isEmpty) {
+      return default
+    }
+
+    d.get
+  }
+
+  def getAsInt(d : Option[Int]) : Int = {
+    if (d.isEmpty) {
+      return 0
+    }
+
+    d.get
+  }
+
+  def getAsDouble(d : Option[Double]) : Double = {
+    if (d.isEmpty) {
+      return 0
+    }
+
+    d.get
+  }
 }

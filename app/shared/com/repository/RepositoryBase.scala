@@ -17,8 +17,8 @@ import shared.io.loggers.DatabaseLogTracerImplementation
 
 import scala.concurrent.duration._
 
-
-abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(val appManager : AppManager)
+abstract class RepositoryBase[TTable, TRow, TKey] @Inject()
+(val appManager : AppManager)
   extends DatabaseSchema(appManager)
     with SingleRepositoryBaseImplementation[TTable, TRow, TKey]
     with EntityResponseCreatorImplementation[TTable, TRow, TKey]
