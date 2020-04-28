@@ -10,6 +10,7 @@ import shared.com.ortb.persistent.schema.Tables._
 
 trait DatabaseLogTracer {
   val appManager : AppManager
+  val className: String
   lazy val logTraceRepository : LogTraceRepository = new LogTraceRepository(appManager)
 
   def trace(
@@ -23,7 +24,7 @@ trait DatabaseLogTracer {
     val row = LogtraceRow(
       -1,
       log.methodName,
-      log.className,
+      Some(className),
       Some(requestString),
       log.message,
       log.entityData,

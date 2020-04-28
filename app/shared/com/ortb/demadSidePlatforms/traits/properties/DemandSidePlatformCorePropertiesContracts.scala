@@ -8,12 +8,16 @@ import shared.com.ortb.persistent.schema.Tables
 import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
 
 trait DemandSidePlatformCorePropertiesContracts
-  extends ServiceControllerCorePropertiesContracts with BiddingDefaultProperties with DemandSidePlatformBiddingProperties {
+  extends ServiceControllerCorePropertiesContracts
+    with BiddingDefaultProperties
+    with DemandSidePlatformBiddingProperties {
   val demandSideId : Int
 
-  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(appManager)
-  val repositories : Repositories
+  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(
+    appManager,
+    this.getClass.getName)
 
+  val repositories : Repositories
   lazy override val currentServiceModel : ServiceModel =
     services.demandSidePlatForms(demandSideId - 1)
 

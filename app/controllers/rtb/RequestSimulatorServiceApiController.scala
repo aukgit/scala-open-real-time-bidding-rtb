@@ -45,5 +45,7 @@ class RequestSimulatorServiceApiController @Inject()(
     }
   }
 
-  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(appManager)
+  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(
+    appManager,
+    this.getClass.getName)
 }

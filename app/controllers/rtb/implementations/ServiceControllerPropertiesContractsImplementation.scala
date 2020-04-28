@@ -20,5 +20,7 @@ class ServiceControllerPropertiesContractsImplementation
   lazy override val selfProperties : ServiceControllerCorePropertiesContracts = this
   lazy override val currentServiceModel : ServiceModel = serviceModelInstance
   lazy override val logger : Logger = serviceBaseApiController.logger
-  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(appManager)
+  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(
+    appManager,
+    this.getClass.getName)
 }

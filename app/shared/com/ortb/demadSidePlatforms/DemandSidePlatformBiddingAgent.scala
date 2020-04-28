@@ -35,7 +35,6 @@ class DemandSidePlatformBiddingAgent(
 
   lazy val defaultLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultGenericLimit
   lazy val defaultAdvertiseLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultAdvertiseLimit
-
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
       DemandSidePlatformStaticBidResponseLogicImplementation(coreProperties)
 
@@ -102,6 +101,7 @@ class DemandSidePlatformBiddingAgent(
     advertiseRepository : AdvertiseRepository,
     impression : ImpressionModel,
     limit : Int = defaultAdvertiseLimit) : Option[ImpressionBiddableInfoModel] = {
+    val methodName = "getImpressionBiddableInfoModel"
     if (EmptyValidateHelper.isEmpty(impression.banner)) {
       val model = ImpressionBiddableInfoModel(
         impression,
@@ -135,6 +135,8 @@ class DemandSidePlatformBiddingAgent(
       impression,
       Some(rows.toArray),
       impressionAttributes)
+
+//    coreProperties.databaseLogger.trace(LogTraceModel(methodName,this.getClass.getName,))
 
     Some(model)
   }
