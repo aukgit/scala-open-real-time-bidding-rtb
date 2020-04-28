@@ -6,6 +6,7 @@ import scala.concurrent.ExecutionContext
 
 trait DefaultExecutionContextManager {
   val appManager : AppManager
+  //noinspection ScalaDeprecation
   lazy implicit val executionContext : ExecutionContext =
     appManager.executionContextManager
       .createDefault()

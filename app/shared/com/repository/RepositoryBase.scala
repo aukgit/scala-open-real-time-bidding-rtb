@@ -2,21 +2,21 @@ package shared.com.repository
 
 import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
+import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.schema.DatabaseSchema
-import shared.com.repository.traits.implementions.adapters.{ RepositoryJsonAdapterImplementation,
-  RepositoryWrapperAdapterImplementation }
+import shared.com.repository.traits.implementions.adapters.{ RepositoryJsonAdapterImplementation, RepositoryWrapperAdapterImplementation }
 import shared.com.repository.traits.implementions.operations.mutations.RepositoryOperationsImplementation
 import shared.com.repository.traits.implementions.operations.mutations.async.RepositoryOperationsAsyncImplementation
 import shared.com.repository.traits.implementions.operations.queries.SingleRepositoryBaseImplementation
-import shared.com.repository.traits.implementions.{ EntityResponseCreatorImplementation,
-  RepositoryRowsToResponseConverterImplementation }
+import shared.com.repository.traits.implementions.{ EntityResponseCreatorImplementation, RepositoryRowsToResponseConverterImplementation }
 import shared.com.repository.traits.{ FutureToRegular, _ }
 import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import shared.io.jsonParse.traits.CirceJsonSupport
+import shared.io.loggers.DatabaseLogTracerImplementation
 
-import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
+
 
 abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager : AppManager)
   extends DatabaseSchema(appManager)
@@ -28,16 +28,14 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()(appManager : AppMana
     with RepositoryOperationsImplementation[TTable, TRow, TKey]
     with RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     with RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey]
+    with RepositoryDatabaseTraceLogger[TRow, TKey]
     with CirceJsonSupport
-    with FutureToRegular {
+    with FutureToRegular
+    with DefaultExecutionContextManager {
 
   lazy val appManagerInstance : AppManager = appManager
-
-  //noinspection ScalaDeprecation
-  lazy protected implicit val executionContext : ExecutionContext =
-    appManager.executionContextManager
-              .createDefault()
-              .prepare()
+  lazy val databaseLogger : DatabaseLogTracerImplementation =
+    new DatabaseLogTracerImplementation(appManager, this.getClass.getName)
 
   /**
    * default timeout from config, if < 0 then infinite

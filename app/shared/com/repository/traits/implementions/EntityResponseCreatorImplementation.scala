@@ -51,7 +51,10 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     isSuccess : Boolean = true
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val message2 : String =
-      getMessageForEntity(affectedRowsCount, actionType, message)
+      getMessageForEntity(
+        affectedRowsCount,
+        actionType,
+        message)
 
     if (affectedEntity != null) {
       AppLogger.logEntityNonFuture(

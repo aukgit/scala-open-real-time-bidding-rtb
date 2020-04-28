@@ -17,8 +17,11 @@ trait RepositoryAddOperationsAsyncImplementation[TTable, TRow, TKey]
 
     try {
       val action = getAddAction(entity)
+      val result = this.saveAsync(
+        dbAction = action,
+        DatabaseActionType.Create)
 
-      return this.saveAsync(dbAction = action, DatabaseActionType.Create)
+      return result
     } catch {
       case e : Exception =>
         AppLogger.error(e, s"${headerMessage} Add failed on [entity: $entity]")
