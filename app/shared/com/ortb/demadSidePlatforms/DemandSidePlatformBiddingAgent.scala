@@ -194,7 +194,7 @@ class DemandSidePlatformBiddingAgent(
       .take(1)
       .result
 
-    val x = impressionBiddableInfoModel.impression
+    val impressionModel = impressionBiddableInfoModel.impression
     val bidReq = request.bidRequest
     val site = bidReq.site
 
@@ -210,17 +210,34 @@ class DemandSidePlatformBiddingAgent(
       None
     }
 
+    def getCategoryId(site : Option[SiteModel]) : Option[String] = {
+      val categories = getCategories(site)
+      if (EmptyValidateHelper.hasAnyItem(categories)) {
+        return Some(categories.get.head)
+      }
+
+      None
+    }
+
+    def getAsDouble(d : Option[Double]) : Double = {
+      if (d.isEmpty) {
+        return 0
+      }
+
+      d.get
+    }
+
     val publisher = publishersRepository
       .getFirstOrDefaultFromQuery(publisherByDspQuery)
 
     // create campaign
-    val banner = x.banner.get.toString
-    val categories = getCategories(site)
-    val budget: Double = 1500
+    val bannerString = impressionModel.banner.get.toString
+    val budget : Double = 1500
+    val publisherId = publisher.get.publisherid
     val campaignRow = CampaignRow(
       -1,
-      s"Generated: Campaign - Banner($banner)",
-      AppConstants.EmptyStringOption,
+      s"Generated: Campaign - Banner($bannerString)",
+      getCategoryId(site),
       budget,
       0,
       budget,
@@ -231,10 +248,23 @@ class DemandSidePlatformBiddingAgent(
       1,
       isretricttousergender = 0,
       expectedusergender = None,
-      publisherid = Some(publisher.get.publisherid))
+      publisherid = Some(publisherId))
 
     val campaignCreated = campaignRepository.add(campaignRow)
-    campaignCreated.getIdAsInt
+    val campaignId = campaignCreated.getIdAsInt
+    val contextTextId = 5
+
+//    val advertise = AdvertiseRow(
+//      -1,
+//      campaignId.get,
+//      1,
+//      s"Generated Banner Advertise($bannerString)",
+//      Some(contextTextId),
+//      s"BidUrl for $bannerString",
+//      Some(s"IFrame for $bannerString"),
+//      0,
+//      isvideo = 0,
+//      impressioncount = 0)
   }
 
   def getImpressionDealsFromBiddableImpressionInfoModels(
