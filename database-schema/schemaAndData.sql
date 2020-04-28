@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 28/04/2020 23:14:14
+ Date: 29/04/2020 00:56:19
 */
 
 PRAGMA foreign_keys = false;
@@ -30,12 +30,12 @@ CREATE TABLE "Advertise" (
   "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
   "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
-  "Height" REAL NOT NULL DEFAULT 0,
-  "Weight" REAL NOT NULL DEFAULT 0,
-  "MinHeight" REAL NOT NULL DEFAULT 0,
-  "MinWidth" REAL NOT NULL DEFAULT 0,
-  "MaxHeight" REAL NOT NULL DEFAULT 0,
-  "MaxWidth" REAL NOT NULL DEFAULT 0,
+  "Height" integer NOT NULL DEFAULT 0,
+  "Weight" integer NOT NULL DEFAULT 0,
+  "MinHeight" integer NOT NULL DEFAULT 0,
+  "MinWidth" integer NOT NULL DEFAULT 0,
+  "MaxHeight" integer NOT NULL DEFAULT 0,
+  "MaxWidth" integer NOT NULL DEFAULT 0,
   "HasAgeRestriction" INTEGER(1) NOT NULL,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
@@ -444,10 +444,10 @@ INSERT INTO "sqlite_sequence" VALUES ('Auction', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
