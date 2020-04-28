@@ -9,7 +9,7 @@ trait PrintStacks {
 
   def printStacks(
     isPrintStack : Boolean = false,
-    logLevelType: LogLevelType = LogLevelType.INFO) : Unit = {
+    logLevelType : LogLevelType = LogLevelType.INFO) : Unit = {
     if (!isPrintStack) {
       return
     }

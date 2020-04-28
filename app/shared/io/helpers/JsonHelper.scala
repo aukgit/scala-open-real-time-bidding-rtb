@@ -8,7 +8,7 @@ import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.AppLogger
 
 object JsonHelper extends CirceJsonSupport {
-  def toJson[T](item : T)(implicit encoder: Encoder[T]) : Option[Json] = {
+  def toJson[T](item : T)(implicit encoder : Encoder[T]) : Option[Json] = {
     try {
       return Some(item.asJson(encoder))
     } catch {
@@ -21,7 +21,7 @@ object JsonHelper extends CirceJsonSupport {
 
   def toObjectUsingParser[T](
     jsonContents : String
-  ) (implicit decoder:  Decoder[T]): Option[T] = {
+  )(implicit decoder : Decoder[T]) : Option[T] = {
     try {
       val convertedEitherItem = decode[T](jsonContents)(decoder)
 
@@ -34,24 +34,23 @@ object JsonHelper extends CirceJsonSupport {
     None
   }
 
-  private def getObjectFromJson[T](
-    jsonContents                               : String,
-    convertedEitherItem                        : Either[Error, T]) : Option[T] = {
-    val result = convertedEitherItem.getOrElse(null)
+  def toObjectFromJSONPath[Type](
+    path : String,
+    converter : (String) => Either[Error, Type]
+  ) : Option[Type] = {
+    try {
+      val jsonContents = FileHelper.getContents(path)
+      if (jsonContents.isEmpty) {
+        return None
+      }
 
-    if (result != null) {
-      return Some(result.asInstanceOf[T])
+      return toObject(jsonContents, converter)
+    } catch {
+      case e : Exception =>
+        AppLogger.error(e)
     }
 
-    val errorContext = convertedEitherItem.left.getOrElse(null).toString
-    val fileErrorModel = FileErrorModel(
-      title = s"Json Parsing Failed for : $jsonContents",
-      cause = errorContext,
-      filePath = "",
-      content = jsonContents)
-
-    val errorMessage = AppLogger.getFileErrorMessage(fileErrorModel)
-    throw new Exception(errorMessage)
+    None
   }
 
   def toObject[Type](
@@ -70,22 +69,23 @@ object JsonHelper extends CirceJsonSupport {
     None
   }
 
-  def toObjectFromJSONPath[Type](
-    path      : String,
-    converter : (String) => Either[Error, Type]
-  ) : Option[Type] = {
-    try {
-      val jsonContents = FileHelper.getContents(path)
-      if (jsonContents.isEmpty) {
-        return None
-      }
+  private def getObjectFromJson[T](
+    jsonContents : String,
+    convertedEitherItem : Either[Error, T]) : Option[T] = {
+    val result = convertedEitherItem.getOrElse(null)
 
-      return toObject(jsonContents, converter)
-    } catch {
-      case e : Exception =>
-        AppLogger.error(e)
+    if (result != null) {
+      return Some(result.asInstanceOf[T])
     }
 
-    None
+    val errorContext = convertedEitherItem.left.getOrElse(null).toString
+    val fileErrorModel = FileErrorModel(
+      title = s"Json Parsing Failed for : $jsonContents",
+      cause = errorContext,
+      filePath = "",
+      content = jsonContents)
+
+    val errorMessage = AppLogger.getFileErrorMessage(fileErrorModel)
+    throw new Exception(errorMessage)
   }
 }

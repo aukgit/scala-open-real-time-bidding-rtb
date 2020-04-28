@@ -1,8 +1,12 @@
 package shared.com.ortb.demadSidePlatforms
 
+import com.google.inject.Inject
+import org.joda.time.{ DateTime, DateTimeZone }
 import shared.com.ortb.demadSidePlatforms.traits.logics.{ DemandSidePlatformBiddingLogic, DemandSidePlatformStaticBidResponseLogic }
-import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCoreProperties }
+import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
+import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.importedModels.biddingRequests._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
@@ -22,31 +26,8 @@ import slick.sql.FixedSqlStreamingAction
 
 import scala.concurrent.Future
 
-case class LogTraceModel(
-  methodName : Option[String],
-  className : Option[String],
-  request : Option[String],
-  message : Option[String] = None,
-  entityData : Option[String],
-  databaseTransactionId : Option[Int] = None
-)
-
-trait DatabaseLogTrace {
-  val logTraceRepository: LogTraceRepository
-  def trace(log: LogTraceModel) = {
-    val row = LogtraceRow(
-      -1,
-      log.methodName,
-      log.className,
-      log.request.getOrElse(""),
-      log.message,
-
-    log.entityData,log.databaseTransactionId,)
-  }
-}
-
 class DemandSidePlatformBiddingAgent(
-  coreProperties : DemandSidePlatformCoreProperties,
+  coreProperties : DemandSidePlatformCorePropertiesContracts,
   algorithmType : DemandSidePlatformBiddingAlgorithmType)
   extends DemandSidePlatformBiddingLogic
     with DemandSidePlatformBiddingProperties

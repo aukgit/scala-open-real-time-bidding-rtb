@@ -1,9 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
-import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
-
-import scala.concurrent.ExecutionContext
 
 trait DemandSidePlatformBiddingProperties {
   val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel

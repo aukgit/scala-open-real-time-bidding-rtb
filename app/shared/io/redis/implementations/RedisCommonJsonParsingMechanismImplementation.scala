@@ -21,6 +21,11 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
     with RedisClientCoreProperties
     with JsonParserCreator {
 
+  override val redisClient : RedisClient =
+    redisClientCore.redisClient
+  override val redisServerConfigurationInfo : DomainPortModel =
+    redisClientCore.redisServerConfigurationInfo
+
   override def setObjectAsJson[T](
     key : String,
     value : Option[T],
@@ -106,9 +111,4 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
 
     None
   }
-
-  override val redisClient : RedisClient =
-    redisClientCore.redisClient
-  override val redisServerConfigurationInfo : DomainPortModel =
-    redisClientCore.redisServerConfigurationInfo
 }

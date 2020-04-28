@@ -24,26 +24,26 @@ trait EntitiesLogger {
   }
 
   def logEntityNonFuture[T](
-    isExecute         : Boolean,
+    isExecute : Boolean,
     entity : Option[T],
     additionalMessage : String = "",
     logLevelType : LogLevelType = LogLevelType.DEBUG,
-    isPrintStack      : Boolean = false) : Unit = {
+    isPrintStack : Boolean = false) : Unit = {
     if (!isExecute) {
       return
     }
 
-    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${additionalMessage}"
+    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }"
 
     if (entity == null || entity.isEmpty) {
-      warn(s"Empty -> No entity found. ${additional}")
+      warn(s"Empty -> No entity found. ${ additional }")
       return
     }
 
     val typeName = getTypeName(entity)
 
     additionalLogging(
-      message = s"Entity($typeName): ${entity.get.toString}, $additional",
+      message = s"Entity($typeName): ${ entity.get.toString }, $additional",
       logLevelType = logLevelType,
       stackIndex = defaultStackIndex,
       isPrintStack = isPrintStack
@@ -52,9 +52,9 @@ trait EntitiesLogger {
 
   def logEntities[T](
     isExecute : Boolean,
-    entitiesInFuture  : Future[Iterable[T]],
+    entitiesInFuture : Future[Iterable[T]],
     additionalMessage : String = "",
-    logLevelType      : LogLevelType = LogLevelType.DEBUG,
+    logLevelType : LogLevelType = LogLevelType.DEBUG,
     isPrintStack : Boolean = false) : Unit = {
     if (!isExecute) {
       return
@@ -71,16 +71,16 @@ trait EntitiesLogger {
   }
 
   def logEntitiesNonFuture[T](
-    isExecute         : Boolean,
-    entities          : Iterable[T],
+    isExecute : Boolean,
+    entities : Iterable[T],
     additionalMessage : String = "",
-    logLevelType      : LogLevelType = LogLevelType.DEBUG,
-    isPrintStack      : Boolean = false) : Unit = {
+    logLevelType : LogLevelType = LogLevelType.DEBUG,
+    isPrintStack : Boolean = false) : Unit = {
     if (!isExecute) {
       return
     }
 
-    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${additionalMessage}"
+    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }"
 
     if (entities.isEmpty) {
       println(s"Empty -> No item present in the entities for logging. $additional")

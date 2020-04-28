@@ -8,6 +8,6 @@ trait MultipleStackTracesInfoDisplayGetter extends
     val stacks = Thread.currentThread().getStackTrace
 
     stacks.map(stack => getStackTraceInfo(stack))
-          .mkString(AppConstants.HyphenRightAngel)
+      .mkString(AppConstants.HyphenRightAngel)
   }
 }

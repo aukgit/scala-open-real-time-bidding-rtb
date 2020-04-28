@@ -7,7 +7,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
 import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.{ FileHelper, JsonHelper }
-import shared.io.loggers.AppLogger
+import shared.io.loggers._
 
 class RequestSimulatorServiceApiController @Inject()(
   repositories : Repositories,
@@ -44,4 +44,6 @@ class RequestSimulatorServiceApiController @Inject()(
         BadRequest
     }
   }
+
+  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(appManager)
 }

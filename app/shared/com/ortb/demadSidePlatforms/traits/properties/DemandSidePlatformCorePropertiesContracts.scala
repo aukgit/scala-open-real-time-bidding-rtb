@@ -1,14 +1,17 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
-import controllers.rtb.traits.properties.ServiceControllerCoreProperties
+import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
 import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, ServiceModel }
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository
 import shared.com.ortb.persistent.schema.Tables
+import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
 
-trait DemandSidePlatformCoreProperties
-  extends ServiceControllerCoreProperties with BiddingDefaultProperties with DemandSidePlatformBiddingProperties {
+trait DemandSidePlatformCorePropertiesContracts
+  extends ServiceControllerCorePropertiesContracts with BiddingDefaultProperties with DemandSidePlatformBiddingProperties {
   val demandSideId : Int
+
+  lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(appManager)
   val repositories : Repositories
 
   lazy override val currentServiceModel : ServiceModel =

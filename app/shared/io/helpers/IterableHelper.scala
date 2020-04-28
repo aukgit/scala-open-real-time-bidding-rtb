@@ -13,7 +13,7 @@ object IterableHelper extends IterableHelperBase {
     Some(items)
   }
 
-  def toSeqStrings[T](iterable     : Option[Iterable[T]]) : Option[Seq[String]] = {
+  def toSeqStrings[T](iterable : Option[Iterable[T]]) : Option[Seq[String]] = {
     if (EmptyValidateHelper.isItemsEmpty(iterable)) {
       return None
     }

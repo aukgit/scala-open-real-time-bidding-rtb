@@ -1,7 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
-import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCoreProperties }
+import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
 import shared.com.ortb.model
 import shared.com.ortb.model._
@@ -11,7 +11,7 @@ import shared.com.ortb.model.results.DspBidderRequestModel
 import scala.collection.mutable.ArrayBuffer
 
 class DemandSidePlatformStaticBidResponseLogicImplementation
-(demandSidePlatformCoreProperties : DemandSidePlatformCoreProperties)
+(demandSidePlatformCoreProperties : DemandSidePlatformCorePropertiesContracts)
   extends DemandSidePlatformStaticBidResponseLogic with DemandSidePlatformBiddingProperties {
 
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =

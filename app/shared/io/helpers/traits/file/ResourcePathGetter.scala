@@ -9,18 +9,6 @@ import shared.com.ortb.model.error.FileErrorModel
 import shared.io.loggers.AppLogger
 
 trait ResourcePathGetter {
-  private def getResourcePathUsingPlayFramework : URL = {
-    val simpleEnv = play.api.Environment.simple()
-    val resourceUrl = simpleEnv.resource(AppConstants.Dot).get
-    resourceUrl
-  }
-
-  private def getResourcePathClassDirectory : URL = {
-    val resourceUrl =this.getClass.getResource("")
-    val packages = this.getClass.getPackage.toString.split("\\.")
-    urlReduceByParent(Some(resourceUrl), packages.length)
-  }
-
   //noinspection ScalaDeprecation
   def urlReduceByParent(givenUrl : Option[URL], level : Int) : URL = {
     if (level <= 0 || givenUrl.isEmpty) {
@@ -38,7 +26,7 @@ trait ResourcePathGetter {
       case e : Exception => AppLogger.fileError(
         FileErrorModel(
           title = s"urlReduceByParent(Level $level -> @$level2)",
-          filePath = s"Given : ${givenUrl.toString}",
+          filePath = s"Given : ${ givenUrl.toString }",
           cause = s"Failed at converting to parent folder for level $level -> $level2",
           content = ""))
     }
@@ -76,5 +64,17 @@ trait ResourcePathGetter {
     }
 
     ""
+  }
+
+  private def getResourcePathUsingPlayFramework : URL = {
+    val simpleEnv = play.api.Environment.simple()
+    val resourceUrl = simpleEnv.resource(AppConstants.Dot).get
+    resourceUrl
+  }
+
+  private def getResourcePathClassDirectory : URL = {
+    val resourceUrl = this.getClass.getResource("")
+    val packages = this.getClass.getPackage.toString.split("\\.")
+    urlReduceByParent(Some(resourceUrl), packages.length)
   }
 }

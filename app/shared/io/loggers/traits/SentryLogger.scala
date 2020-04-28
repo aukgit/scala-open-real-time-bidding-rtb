@@ -7,6 +7,7 @@ import shared.io.loggers.AppLogger
 trait SentryLogger {
   this : AppLogger.type =>
   private val level = "level"
+
   def logToSentry(message : String, logLevelType : LogLevelType) : Unit = {
     if (!isUseSentry) {
       return
@@ -17,8 +18,8 @@ trait SentryLogger {
   }
 
   def exceptionLogToSentry(
-    message      : String,
-    exception    : Option[Exception],
+    message : String,
+    exception : Option[Exception],
     logLevelType : LogLevelType) : Unit = {
     if (!isUseSentry) {
       return

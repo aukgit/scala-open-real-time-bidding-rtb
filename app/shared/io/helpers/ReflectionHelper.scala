@@ -2,7 +2,7 @@ package shared.io.helpers
 
 import shared.io.loggers.AppLogger
 
-import scala.reflect.runtime.{universe => ru}
+import scala.reflect.runtime.{ universe => ru }
 
 object ReflectionHelper {
   def getTypeTag[T : ru.TypeTag] : ru.TypeTag[T] =

@@ -5,7 +5,7 @@ import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.{ Decoder, Encoder }
 import shapeless.Lazy
-import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
+import shared.io.jsonParse.traits.BasicJsonEncoder
 
 class BasicJsonEncoderImplementation[T]
 (

@@ -9,7 +9,7 @@ import scala.concurrent.Future
 import scala.util.Try
 
 trait NullableLogger {
-  this: AppLogger.type =>
+  this : AppLogger.type =>
 
   def logFutureNullable[T](
     message : String,
@@ -33,7 +33,7 @@ trait NullableLogger {
     stackIndex : Int = defaultSecondStackIndex + 1,
     isPrintStack : Boolean = false) : Unit = {
     val methodNameDisplay = getMethodNameHeader(stackIndex)
-    val finalMessage = s"Nullable Logger - [${logLevelType}] : ${methodNameDisplay} - $message"
+    val finalMessage = s"Nullable Logger - [${ logLevelType }] : ${ methodNameDisplay } - $message"
     if (nullableObject.isEmpty) {
       additionalLogging(
         message = s"""$finalMessage : null.""",
@@ -46,7 +46,7 @@ trait NullableLogger {
 
     try {
       additionalLogging(
-        message = s"${finalMessage} : ${nullableObject.get.toString}.",
+        message = s"${ finalMessage } : ${ nullableObject.get.toString }.",
         logLevelType = logLevelType,
         stackIndex = stackIndex,
         isPrintStack = isPrintStack)

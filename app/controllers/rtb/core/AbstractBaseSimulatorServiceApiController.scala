@@ -1,7 +1,7 @@
 package controllers.rtb.core
 
-import controllers.rtb.implementations.{ RestWebApiOkJsonImplementation, ServiceControllerPropertiesImplementation }
-import controllers.rtb.traits.properties.ServiceControllerCoreProperties
+import controllers.rtb.implementations.{ RestWebApiOkJsonImplementation, ServiceControllerPropertiesContractsImplementation }
+import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
 import javax.inject.Inject
 import play.api.Logger
 import play.api.mvc._
@@ -16,13 +16,13 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   appManager   : AppManager,
   components   : ControllerComponents)
   extends ServiceBaseApiController(repositories, appManager, components)
-    with ServiceControllerCoreProperties {
+    with ServiceControllerCorePropertiesContracts {
 
   lazy override val restWebApiOkJson : RestWebApiOkJsonImplementation = selfProperties.restWebApiOkJson
   lazy override val serviceTitle : String = currentServiceModel.title
   lazy val config : ConfigModel = appManager.config
   lazy val services : ServicesModel = config.server.services
-  lazy val selfProperties : ServiceControllerCoreProperties = new ServiceControllerPropertiesImplementation(
+  lazy val selfProperties : ServiceControllerCorePropertiesContracts = new ServiceControllerPropertiesContractsImplementation(
     this,
     currentServiceModel)
   val currentServiceModel : ServiceModel

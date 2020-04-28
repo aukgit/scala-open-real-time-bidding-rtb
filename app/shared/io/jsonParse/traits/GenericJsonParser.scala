@@ -2,8 +2,6 @@ package shared.io.jsonParse.traits
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.circe.Json
-import shared.io.helpers.EmptyValidateHelper
-import shared.io.loggers.AppLogger
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -28,6 +26,15 @@ trait GenericJsonParser[T] {
 
   def toJsonObject(model : Option[T]) : Option[Json]
 
+  def toJsonObjects(models : Option[Iterable[T]]) : Option[Iterable[Json]]
+
+  /**
+   * Usages 2 space json String format.
+   * @param models
+   * @return
+   */
+  def toJsonStringPrettyFormat(models : Option[Iterable[T]]) : Option[String]
+
   def toJsonString(model : Option[T]) : Option[String]
 
   def toJsonObjectDirect(model : T) : Json
@@ -38,11 +45,25 @@ trait GenericJsonParser[T] {
 
   def fromJsonToJsonString(model : Option[Json]) : Option[String]
 
+  /**
+   *
+   * @param models
+   * @param additionalAnnotationForItems
+   * @param isPrettyFormat if true then 2 space json format.
+   * @return
+   */
   def fromJsonsToJsonString(
     models : Option[Iterable[Json]],
-    additionalAnnotationForItems : String = null) : Option[String]
+    additionalAnnotationForItems : String = null,
+    isPrettyFormat:Boolean = false) : Option[String]
 
   def toJsonString(
     entities : Iterable[T],
     additionalAnnotationForItems : String = null) : String
+
+  def toLogStringForEntities(
+    entities : Option[Iterable[T]]) : String
+
+  def toLogStringForEntity(
+    entity : Option[T]) : String
 }

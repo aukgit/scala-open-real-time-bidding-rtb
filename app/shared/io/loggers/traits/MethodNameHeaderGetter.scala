@@ -1,12 +1,29 @@
 package shared.io.loggers.traits
 
 import shared.com.ortb.constants.AppConstants
-import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 
 trait MethodNameHeaderGetter extends
   StackTraceInfoDisplayGetter {
   this : AppLogger.type =>
+
+  def getMethodNameDisplayWrapper(
+    stackIndex : Int
+  ) : String = {
+    val methodNameHeaders = getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)
+    getMethodNameForDisplay(methodNameHeaders)
+  }
+
+  private def getMethodNameHeaderForIndexes(
+    indexes : Int*
+  ) : String = {
+    if (isPrintMethodName) {
+      return indexes.map(index => getMethodNameHeader(index))
+        .mkString(AppConstants.HyphenRightAngel)
+    }
+
+    ""
+  }
 
   def getMethodNameHeader(stackIndex : Int) : String = {
     val stacks = Thread.currentThread().getStackTrace
@@ -22,24 +39,6 @@ trait MethodNameHeaderGetter extends
     }
 
     ""
-  }
-
-  private def getMethodNameHeaderForIndexes(
-    indexes : Int*
-  ) : String = {
-    if (isPrintMethodName) {
-      return indexes.map(index => getMethodNameHeader(index))
-                    .mkString(AppConstants.HyphenRightAngel)
-    }
-
-    ""
-  }
-
-  def getMethodNameDisplayWrapper(
-    stackIndex : Int
-  ) : String = {
-    val methodNameHeaders = getMethodNameHeaderForIndexes(stackIndex, stackIndex + 1)
-    getMethodNameForDisplay(methodNameHeaders)
   }
 
   private def getMethodNameForDisplay(

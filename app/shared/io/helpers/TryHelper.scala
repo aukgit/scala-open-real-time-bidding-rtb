@@ -8,7 +8,7 @@ object TryHelper {
   def TryResult[T](r : => T) : ResultWithBooleanModel[T] = {
     val action = Try(r)
 
-    if(action.isSuccess){
+    if (action.isSuccess) {
       val result = action.get
       return ResultWithBooleanModel[T](Some(result), action.isSuccess)
     }

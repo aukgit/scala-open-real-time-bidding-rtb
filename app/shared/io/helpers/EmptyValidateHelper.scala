@@ -4,22 +4,8 @@ import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
-  def isDefinedAny(
-    item    : Any,
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
-    val hasItem = item != null && !isEmptyAny(item, None)
-    //noinspection DuplicatedCode
-    val hasMessage = isOptionStringDefinedWithoutMessage(message)
-
-    if (!hasItem && hasMessage) {
-      AppLogger.debug(message.get)
-    }
-
-    hasItem
-  }
-
   def throwOnNullOrNone(
-    item    : Any,
+    item : Any,
     message : Option[String] = None) : Unit = {
     val isEmpty = item == null || isEmptyAny(item, None)
 
@@ -33,7 +19,7 @@ object EmptyValidateHelper {
   }
 
   def isEmptyAny(
-    item    : Any,
+    item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     item match {
       case someString : Option[String] => EmptyValidateHelper.isEmptyOptionString(someString, message)
@@ -46,13 +32,13 @@ object EmptyValidateHelper {
   }
 
   def isRightEmptyOnEither[A, B](
-    item    : Either[A, B],
+    item : Either[A, B],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isRightDefinedOnEither(item, message)
   }
 
   def isRightDefinedOnEither[A, B](
-    item    : Either[A, B],
+    item : Either[A, B],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val hasItem = item != null && item.getOrElse(null) != null
 
@@ -66,66 +52,9 @@ object EmptyValidateHelper {
     hasItem
   }
 
-  /**
-   * Returns true if only all are defined or else returns false.
-   * @param items
-   * @tparam A
-   * @return
-   */
-  def isAllDefinedFromMultiple[A](
-    items    : Option[A]*): Boolean = {
-    if(isItemsEmpty(Some(items))){
-      return false
-    }
-
-    items.forall(item => isDefined(item))
-  }
-
-  /**
-   * Returns true if only all are empty or else returns false.
-   * @param items
-   * @tparam A
-   * @return
-   */
-  def isAllEmptyFromMultiple[A](
-    items    : Option[A]*): Boolean = {
-    if(isItemsEmpty(Some(items))){
-      return true
-    }
-
-    items.forall(item => isEmpty(item))
-  }
-
-  def isDefined[A](
-    item    : Option[A],
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
-    val hasItem = item != null &&
-      item.isDefined &&
-      item.get != null &&
-      item.get != None
-
-    //noinspection DuplicatedCode
-    val hasMessage = isOptionStringDefinedWithoutMessage(message)
-
-    if (!hasItem && hasMessage) {
-      AppLogger.debug(message.get)
-    }
-
-    hasItem
-  }
-
-  def isOptionsDefined(
-    items : Option[Any]*) : Boolean = {
-    val hasItems = items != null &&
-      items.nonEmpty &&
-      items.forall(item => isDefinedAny(item))
-
-    hasItems
-  }
-
   //noinspection DuplicatedCode
   def isEmpty[A](
-    item    : Option[A],
+    item : Option[A],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isDefined(item, message)
   }
@@ -140,26 +69,8 @@ object EmptyValidateHelper {
    */
   def isEmptyOptionString(
     givenString : Option[String],
-    message     : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isOptionStringDefined(givenString, message)
-  }
-
-  /**
-   * Returns true of the has at least a valid character expect empty(" ")
-   *
-   * @param givenString
-   * @param message
-   *
-   * @return
-   */
-  def isOptionStringDefinedWithoutMessage(
-    givenString : Option[String]) : Boolean = {
-    val hasItem = givenString != null &&
-      givenString.isDefined &&
-      givenString.nonEmpty &&
-      !givenString.get.isBlank;
-
-    hasItem
   }
 
   /**
@@ -173,33 +84,8 @@ object EmptyValidateHelper {
    */
   def isOptionStringDefined(
     givenString : Option[String],
-    message     : Option[String] = None) : Boolean = {
+    message : Option[String] = None) : Boolean = {
     val hasItem = isOptionStringDefinedWithoutMessage(givenString)
-
-    //noinspection DuplicatedCode
-    val hasMessage = isOptionStringDefinedWithoutMessage(message)
-
-    if (!hasItem && hasMessage) {
-      AppLogger.debug(message.get)
-    }
-
-    hasItem
-  }
-
-  /**
-   * Returns true of the has at least a valid character expect empty(" ")
-   *
-   * @param givenString
-   * @param message
-   *
-   * @return
-   */
-  def isStringDefined(
-    givenString : String,
-    message     : Option[String] = None) : Boolean = {
-    val hasItem = givenString != null &&
-      givenString.nonEmpty &&
-      !givenString.isBlank
 
     //noinspection DuplicatedCode
     val hasMessage = isOptionStringDefinedWithoutMessage(message)
@@ -222,28 +108,121 @@ object EmptyValidateHelper {
    */
   def isEmptyString(
     givenString : String,
-    message     : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     !isStringDefined(givenString, message)
+  }
+
+  /**
+   * Returns true of the has at least a valid character expect empty(" ")
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
+  def isStringDefined(
+    givenString : String,
+    message : Option[String] = None) : Boolean = {
+    val hasItem = givenString != null &&
+      givenString.nonEmpty &&
+      !givenString.isBlank
+
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
+
+    if (!hasItem && hasMessage) {
+      AppLogger.debug(message.get)
+    }
+
+    hasItem
+  }
+
+  /**
+   * Returns true if only all are defined or else returns false.
+   *
+   * @param items
+   * @tparam A
+   *
+   * @return
+   */
+  def isAllDefinedFromMultiple[A](
+    items : Option[A]*) : Boolean = {
+    if (isItemsEmpty(Some(items))) {
+      return false
+    }
+
+    items.forall(item => isDefined(item))
+  }
+
+  def isDefined[A](
+    item : Option[A],
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    val hasItem = item != null &&
+      item.isDefined &&
+      item.get != null &&
+      item.get != None
+
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
+
+    if (!hasItem && hasMessage) {
+      AppLogger.debug(message.get)
+    }
+
+    hasItem
   }
 
   //noinspection DuplicatedCode
   def isItemsEmpty[A](
-    items   : Option[Iterable[A]],
+    items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
     !hasAnyItem(items, message)
   }
 
-  def isItemsEmptyDirect[A](
-    items   : Iterable[A],
-    message : Option[String] = None) : Boolean = {
-    !hasAnyItem(Some(items), message)
+  /**
+   * Returns true if only all are empty or else returns false.
+   *
+   * @param items
+   * @tparam A
+   *
+   * @return
+   */
+  def isAllEmptyFromMultiple[A](
+    items : Option[A]*) : Boolean = {
+    if (isItemsEmpty(Some(items))) {
+      return true
+    }
+
+    items.forall(item => isEmpty(item))
   }
 
+  def isOptionsDefined(
+    items : Option[Any]*) : Boolean = {
+    val hasItems = items != null &&
+      items.nonEmpty &&
+      items.forall(item => isDefinedAny(item))
 
-  def isItemsDefined[A](
-    items   : Option[Iterable[A]],
+    hasItems
+  }
+
+  def isDefinedAny(
+    item : Any,
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    val hasItem = item != null && !isEmptyAny(item, None)
+    //noinspection DuplicatedCode
+    val hasMessage = isOptionStringDefinedWithoutMessage(message)
+
+    if (!hasItem && hasMessage) {
+      AppLogger.debug(message.get)
+    }
+
+    hasItem
+  }
+
+  def isItemsEmptyDirect[A](
+    items : Iterable[A],
     message : Option[String] = None) : Boolean = {
-    hasAnyItem(items, message)
+    !hasAnyItem(Some(items), message)
   }
 
   def hasAnyItem[A](
@@ -261,5 +240,29 @@ object EmptyValidateHelper {
     }
 
     hasItem
+  }
+
+  /**
+   * Returns true of the has at least a valid character expect empty(" ")
+   *
+   * @param givenString
+   * @param message
+   *
+   * @return
+   */
+  def isOptionStringDefinedWithoutMessage(
+    givenString : Option[String]) : Boolean = {
+    val hasItem = givenString != null &&
+      givenString.isDefined &&
+      givenString.nonEmpty &&
+      !givenString.get.isBlank;
+
+    hasItem
+  }
+
+  def isItemsDefined[A](
+    items : Option[Iterable[A]],
+    message : Option[String] = None) : Boolean = {
+    hasAnyItem(items, message)
   }
 }

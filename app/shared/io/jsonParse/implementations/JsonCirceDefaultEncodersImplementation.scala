@@ -8,9 +8,7 @@ import io.circe.{ Decoder, _ }
 import play.api.libs.json
 import play.api.libs.json.JsValue
 import shapeless.Lazy
-import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.traits.JsonCirceDefaultEncoders
-import shared.io.loggers.AppLogger
 
 import scala.reflect.ClassTag
 
@@ -28,11 +26,7 @@ class JsonCirceDefaultEncodersImplementation[T](
   def defaultListCodec : Codec.AsObject[List[T]] =
     deriveCodec[List[T]](decodeListCodec)
 
-  def defaultDecoder : Decoder[T] = deriveDecoder[T]
-
   def defaultListDecoder : Decoder[List[T]] = deriveDecoder[List[T]]
-
-  def defaultEncoder : Encoder[T] = deriveEncoder[T]
 
   def defaultListEncoder : Encoder[List[T]] = deriveEncoder[List[T]]
 
@@ -52,5 +46,9 @@ class JsonCirceDefaultEncodersImplementation[T](
 
   override def getEncoder : Encoder[T] = defaultEncoder
 
+  def defaultEncoder : Encoder[T] = deriveEncoder[T]
+
   override def getDecoder : Decoder[T] = defaultDecoder
+
+  def defaultDecoder : Decoder[T] = deriveDecoder[T]
 }

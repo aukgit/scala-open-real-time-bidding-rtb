@@ -3,10 +3,10 @@ package shared.io.helpers
 import java.nio.file._
 import java.util
 
-import shared.io.loggers.AppLogger
 import shared.io.helpers.traits.file.ExecuteInputOutputAction
+import shared.io.loggers.AppLogger
 
-import scala.io.{BufferedSource, Source}
+import scala.io.{ BufferedSource, Source }
 
 object FileHelper extends ExecuteInputOutputAction {
   /**
@@ -44,25 +44,6 @@ object FileHelper extends ExecuteInputOutputAction {
     executeInputOutputAction(givenPath, action, "")
   }
 
-  override def executeInputOutputAction[ReturnType](
-    path : Path,
-    performingAction : () => ReturnType,
-    emptyResult : ReturnType
-  ) : ReturnType = {
-    try {
-      if (Files.exists(path)) {
-        return performingAction()
-      }
-    }
-    catch {
-      case e : Exception =>
-        AppLogger.error(e)
-    }
-
-    AppLogger.debug(s"${path} doesn't exist or cannot (something went wrong) read from file system.")
-    emptyResult
-  }
-
   /**
    * (In memory operation) Input relative path from resource and get the lines list of the file.
    *
@@ -89,6 +70,25 @@ object FileHelper extends ExecuteInputOutputAction {
     def action() = Files.readAllLines(givenPath)
 
     executeInputOutputAction(givenPath, action, null)
+  }
+
+  override def executeInputOutputAction[ReturnType](
+    path : Path,
+    performingAction : () => ReturnType,
+    emptyResult : ReturnType
+  ) : ReturnType = {
+    try {
+      if (Files.exists(path)) {
+        return performingAction()
+      }
+    }
+    catch {
+      case e : Exception =>
+        AppLogger.error(e)
+    }
+
+    AppLogger.debug(s"${ path } doesn't exist or cannot (something went wrong) read from file system.")
+    emptyResult
   }
 
   /**
