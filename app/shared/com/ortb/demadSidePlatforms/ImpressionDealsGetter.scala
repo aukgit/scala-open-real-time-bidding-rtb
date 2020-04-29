@@ -6,6 +6,7 @@ import shared.io.helpers.EmptyValidateHelper
 import scala.concurrent.Future
 
 trait ImpressionDealsGetter {
+  this : DemandSidePlatformBiddingAgent =>
 
   def getImpressionDealsFromBiddableImpressionInfoModels(
     request : DspBidderRequestModel,

@@ -5,7 +5,7 @@ import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.com.ortb.model.{ CallStackModel, DemandSidePlatformBidResponseModel }
 
 trait DefaultActualNoContentResponse {
-  this : DemandSidePlatformBiddingProperties =>
+  this : DemandSidePlatformBiddingAgent =>
 
   def getBidActualNoContent(
     request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {

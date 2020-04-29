@@ -1,8 +1,12 @@
 package shared.com.ortb.demadSidePlatforms
+
 import shared.com.ortb.importedModels.biddingRequests.BannerModel
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
+import shared.com.ortb.persistent.schema.Tables._
+import slick.jdbc.SQLiteProfile.api._
 
 trait ExactHeightWidthQueryRowsGetter {
+  this : DemandSidePlatformBiddingAgent =>
 
   def getExactHeightWidthQueryRows(
     advertiseRepository : AdvertiseRepository,
