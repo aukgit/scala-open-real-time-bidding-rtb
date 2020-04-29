@@ -1,6 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
-import shared.com.ortb.model.{ ImpressionBiddableInfoModel, ImpressionDealModel }
+
 import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.{ BidFailedInfoModel, ImpressionBiddableInfoModel, ImpressionDealModel }
 import shared.io.helpers.EmptyValidateHelper
 
 import scala.concurrent.Future
@@ -8,7 +9,29 @@ import scala.concurrent.Future
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
 
-  def getImpressionDealsFromBiddableImpressionInfoModels(
+  def getImpressionInfoModelFromImpressionBiddableInfoModel(
+    bidFailedReasonsModel: BidFailedInfoModel,
+    impressionBiddableInfoModel : ImpressionBiddableInfoModel) : ImpressionDealModel = {
+    if (impressionBiddableInfoModel == null ||
+      !impressionBiddableInfoModel.attributes.isBiddable) {
+      return null
+    }
+
+    val banner = impressionBiddableInfoModel.impression.banner.get
+    val lastFailed = bidFailedReasonsModel.lostBids.av
+
+    if (EmptyValidateHelper.hasAnyItem(impressionBiddableInfoModel.exactHeightWidthAdvertises)) {
+      // more price
+      return ImpressionDealModel(impressionBiddableInfoModel.impression, )
+
+    }
+
+    // val items = exactAdvertises.toList
+
+    ???
+  }
+
+  def getImpressionInfoModelsFromImpressionBiddableInfoModels(
     request : DspBidderRequestModel,
     biddableImpressionInfoModels : Seq[ImpressionBiddableInfoModel]) :
   Option[List[ImpressionDealModel]] = {
@@ -25,27 +48,9 @@ trait ImpressionDealsGetter {
           isEmpty,
           b)
       }
-    }).toList
 
-    // create deals
-    biddableImpressionInfoModels.map(w => {
-      if (!w.attributes.isBiddable) {
-        return None
-      }
-      val banner = w.impression.banner.get
-      var advs = w.advertises.get.to(LazyList)
-
-      if (banner.h.isDefined) {
-        advs = advs.filter(r => banner.h.get == r.height)
-      }
-
-      if (banner.w.isDefined) {
-        advs = advs.filter(r => banner.w.get == r.width)
-      }
-
-      val items = advs.toList
-
-    })
+      getImpressionInfoModelFromImpressionBiddableInfoModel(b)
+    }).filter(w => w != null).toList
 
     Some(list)
     throw new NotImplementedError()

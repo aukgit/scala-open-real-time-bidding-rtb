@@ -23,8 +23,8 @@ trait ExactHeightWidthQueryRowsGetter {
       query = query.filter(w => w.width === simpleBanner.w)
     }
 
-    val results = query.result
+    val results = advertiseRepository.run(query.result)
 
-    Some(advertiseRepository.run(results))
+    Some(results)
   }
 }

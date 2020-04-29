@@ -7,7 +7,7 @@ import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger
 import slick.jdbc.SQLiteProfile.api._
 
-trait addNewAdvertiseOnNotFound {
+trait AddNewAdvertiseOnNotFound {
   this : DemandSidePlatformBiddingAgent =>
 
   def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(

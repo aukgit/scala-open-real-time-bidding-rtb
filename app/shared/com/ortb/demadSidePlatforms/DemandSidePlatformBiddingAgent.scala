@@ -16,7 +16,7 @@ class DemandSidePlatformBiddingAgent(
   extends DemandSidePlatformBiddingLogic
     with DemandSidePlatformBiddingProperties
     with DefaultExecutionContextManager
-    with addNewAdvertiseOnNotFound
+    with AddNewAdvertiseOnNotFound
     with BiddableInfoModelsGetter
     with AdvertiseQueryAppendLogic
     with FailedBidsGetter with ImpressionDealsGetter with ExactHeightWidthQueryRowsGetter with DefaultActualNoContentResponse {
@@ -48,7 +48,7 @@ class DemandSidePlatformBiddingAgent(
       request : DspBidderRequestModel)
 
     val impressionDeals =
-      getImpressionDealsFromBiddableImpressionInfoModels(
+      getImpressionInfoModelsFromImpressionBiddableInfoModels(
         request, biddableImpressionInfoModels)
 
     if (EmptyValidateHelper.isItemsEmpty(impressionDeals)) {
