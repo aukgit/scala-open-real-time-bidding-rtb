@@ -5,7 +5,7 @@ import shared.com.ortb.model.results.{ RepositoryOperationResultModel, Repositor
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOrUpdateOperations
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 
 trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
@@ -32,7 +32,7 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
         addOrUpdateAsync(entityWrapper.entityId, entityWrapper.entity)
     )
 
-    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    AdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responsesEntityWrappers,
       databaseActionType = DatabaseActionType.AddOrUpdate
     )

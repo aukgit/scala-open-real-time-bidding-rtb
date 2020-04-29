@@ -5,7 +5,7 @@ import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.repository.traits.FutureToRegular
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 
 import scala.concurrent.Future
 
@@ -45,7 +45,7 @@ trait RepositoryOperationResultModelAdapterImplementation {
 
     val items = inputModel.map(w => {
       val response : RepositoryOperationResultModel[TRow, TKey] = FutureToRegular.toRegular(w)
-      BasicAdapterHelper.entityWrapperAdapter.fromResultModelToEntityWrap(response)
+      AdapterHelper.entityWrapperAdapter.fromResultModelToEntityWrap(response)
     }).toList
 
     val ids = items.map(w=> w.entityId.toString)

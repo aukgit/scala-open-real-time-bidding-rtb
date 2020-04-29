@@ -13,12 +13,15 @@ import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.com.ortb.persistent
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
+import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 import slick.dbio.Effect
+import slick.jdbc
+import slick.jdbc.SQLiteProfile
 import slick.jdbc.SQLiteProfile.api._
 import slick.sql.FixedSqlStreamingAction
 
@@ -101,6 +104,12 @@ class DemandSidePlatformBiddingAgent(
     advertisesQuery
   }
 
+  def getExactHeightWidthQueryRows(
+    advertisesQuery : Query[Advertise, AdvertiseRow, Seq],
+    banner : BannerModel): Seq[AdvertiseRow] = {
+    
+  }
+
   def getImpressionBiddableInfoModel(
     advertisesTable : TableQuery[Tables.Advertise],
     advertiseRepository : AdvertiseRepository,
@@ -127,6 +136,7 @@ class DemandSidePlatformBiddingAgent(
     val advertisesQuery = appendQueryForBanner(advertisesQueryIn, banner)
     val countQuery = advertisesQuery.length.result
     val query = advertisesQuery.take(limit).result
+    val exactQueryRows = getExactHeightWidthQueryRows(advertisesQuery, banner)
 
     val totalCount = advertiseRepository.count(countQuery)
     val rows = advertiseRepository.run(query)
@@ -140,6 +150,7 @@ class DemandSidePlatformBiddingAgent(
     val model = ImpressionBiddableInfoModel(
       impression,
       Some(rows.toArray),
+
       impressionAttributes)
 
     val logModel = LogTraceModel(
@@ -174,6 +185,7 @@ class DemandSidePlatformBiddingAgent(
     futureTasks.map(futureTask => FutureToRegular.toRegular(futureTask))
   }
 
+
   def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
     request : DspBidderRequestModel,
     isEmpty : Boolean,
@@ -184,7 +196,7 @@ class DemandSidePlatformBiddingAgent(
 
     // create DSP -> campaign -> Advertise
     val methodName = "addNewAdvertiseIfNoAdvertiseInTheGivenCriteria"
-    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${request.bidRequest.toString}")
+    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${ request.bidRequest.toString }")
 
     val demandSideId = coreProperties.demandSideId
     val repositories = coreProperties.repositories
@@ -201,43 +213,6 @@ class DemandSidePlatformBiddingAgent(
     val impressionModel = impressionBiddableInfoModel.impression
     val bidReq = request.bidRequest
     val site = bidReq.site
-
-    def getCategories(site : Option[SiteModel]) : Option[List[String]] = {
-      if (site.isEmpty) {
-        return None
-      }
-
-      if (site.get.cat.isDefined) {
-        return site.get.cat
-      }
-
-      None
-    }
-
-    def getCategoryId(site : Option[SiteModel]) : Option[String] = {
-      val categories = getCategories(site)
-      if (EmptyValidateHelper.hasAnyItem(categories)) {
-        return Some(categories.get.head)
-      }
-
-      None
-    }
-
-    def getSimpleBanner(d : BannerModel) : SimpleBanner = {
-      if (d == null) {
-        return null
-      }
-
-      SimpleBanner(
-        d.id,
-        wmin = NumberHelper.getAsInt(d.wmin),
-        wmax = NumberHelper.getAsInt(d.wmax),
-        w = NumberHelper.getAsInt(d.w),
-        hmin = NumberHelper.getAsInt(d.hmin),
-        hmax = NumberHelper.getAsInt(d.hmax),
-        h = NumberHelper.getAsInt(d.h))
-    }
-
     val publisher = publishersRepository
       .getFirstOrDefaultFromQuery(publisherByDspQuery)
 
@@ -312,18 +287,17 @@ class DemandSidePlatformBiddingAgent(
 
     // create deals
     biddableImpressionInfoModels.map(w => {
-      if(!w.attributes.isBiddable){
+      if (!w.attributes.isBiddable) {
         return None
       }
       val banner = w.impression.banner.get
+      var advs = w.advertises.get.to(LazyList)
 
-      var advs = w.advertises.get
-
-      if(banner.h.isDefined){
+      if (banner.h.isDefined) {
         advs = advs.filter(r => banner.h.get == r.height)
       }
 
-      if(banner.w.isDefined){
+      if (banner.w.isDefined) {
         advs = advs.filter(r => banner.w.get == r.width)
       }
 
@@ -340,12 +314,12 @@ class DemandSidePlatformBiddingAgent(
 
     val impressionDeals = getImpressionDealsFromBiddableImpressionInfoModels(request, biddableImpressionInfoModels)
 
-    if(EmptyValidateHelper.isItemsEmpty(impressionDeals)){
+    if (EmptyValidateHelper.isItemsEmpty(impressionDeals)) {
       return getBidActualNoContent(request)
     }
 
     // has something
-    val has = impressionDeals.get.map(w => w.)
+//    val has = impressionDeals.get.map(w => w.)
 
 
     throw new NotImplementedError()

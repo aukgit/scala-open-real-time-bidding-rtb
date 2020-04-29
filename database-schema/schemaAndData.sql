@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 29/04/2020 01:04:57
+ Date: 29/04/2020 15:29:21
 */
 
 PRAGMA foreign_keys = false;
@@ -28,6 +28,7 @@ CREATE TABLE "Advertise" (
   "BidUrl" TEXT NOT NULL,
   "IFrameHtml" TEXT,
   "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsBanner" integer(1) DEFAULT 0,
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
   "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
   "Height" integer NOT NULL DEFAULT 0,

@@ -5,7 +5,7 @@ import shared.com.ortb.model.results.{ RepositoryOperationResultModel, Repositor
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryUpdateOperations
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 
 trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
@@ -33,7 +33,7 @@ trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
         )
       });
 
-    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    AdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responseEntityWrappers,
       databaseActionType = DatabaseActionType.Update
     )

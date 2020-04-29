@@ -5,7 +5,7 @@ import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 
 import scala.concurrent.Future

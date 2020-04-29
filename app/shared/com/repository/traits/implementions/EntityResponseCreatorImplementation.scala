@@ -6,7 +6,7 @@ import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapper
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.EntityResponseCreator
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 
 import scala.concurrent.Future
@@ -77,7 +77,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
   def getEmptyResponseFor(actionType : DatabaseActionType)
   : RepositoryOperationResultModel[TRow, TKey] =
-    BasicAdapterHelper.repositoryAdapter.getEmptyResponse[TRow, TKey](
+    AdapterHelper.repositoryAdapter.getEmptyResponse[TRow, TKey](
       actionType)
 
   protected def createResponseFor(

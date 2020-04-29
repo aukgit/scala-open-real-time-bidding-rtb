@@ -1,9 +1,10 @@
 package shared.com.ortb.adapters.traits.implementations
 
+import shared.com.ortb.adapters.traits.EntityWrapperAdapter
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.{ EntityWrapper, EntityWrapperWithOptions }
 
-trait EntityWrapperAdapterImplementation {
+trait EntityWrapperAdapterImplementation extends EntityWrapperAdapter{
   def fromResultsModelToEntityWrap[TRow, TKey](
     inputModel : RepositoryOperationResultsModel[TRow, TKey]) : List[EntityWrapper[TRow, TKey]] =
     inputModel.data.map(r => EntityWrapper(r.entityId, r.entity)).toList

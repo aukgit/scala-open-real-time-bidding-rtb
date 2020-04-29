@@ -160,6 +160,7 @@ object EmptyValidateHelper {
     val hasItem = item != null &&
       item.isDefined &&
       item.get != null &&
+      item.get != Nil &&
       item.get != None
 
     //noinspection DuplicatedCode
@@ -229,6 +230,7 @@ object EmptyValidateHelper {
     items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
     val hasItem = items != null &&
+      items.get != Nil &&
       items.isDefined &&
       items.get != null &&
       items.get.nonEmpty
