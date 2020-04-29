@@ -43,7 +43,10 @@ trait BiddableInfoModelsGetter {
     val advertisesQuery = appendQueryForBanner(advertisesQueryIn, banner)
     val countQuery = advertisesQuery.length.result
     val query = advertisesQuery.take(limit).result
-    val exactQueryRows = getExactHeightWidthQueryRows(advertisesQuery, banner)
+    val exactQueryRows = getExactHeightWidthQueryRows(
+      advertiseRepository,
+      advertisesQuery,
+      banner)
 
     val totalCount = advertiseRepository.count(countQuery)
     val rows = advertiseRepository.run(query)
