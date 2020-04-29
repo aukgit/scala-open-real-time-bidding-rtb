@@ -3,12 +3,9 @@ package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.ImpressionBiddableInfoModel
 import shared.com.ortb.model.results.DspBidderRequestModel
-import shared.com.ortb.persistent
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger
-import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
-import slick.sql.FixedSqlStreamingAction
 
 trait addNewAdvertiseOnNotFound {
   this : DemandSidePlatformBiddingAgent =>
@@ -31,7 +28,7 @@ trait addNewAdvertiseOnNotFound {
     val campaignRepository = repositories.campaignRepository
     val advertiseRepository = repositories.advertiseRepository
 
-    val publisherByDspQuery : FixedSqlStreamingAction[Seq[persistent.schema.Tables.PublisherRow], persistent.schema.Tables.PublisherRow, Effect.Read] = publishersRepository
+    val publisherByDspQuery = publishersRepository
       .getAllQuery
       .filter(w => w.demandsideplatformid === coreProperties.demandSideId)
       .take(1)

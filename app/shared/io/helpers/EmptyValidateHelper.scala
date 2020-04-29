@@ -21,13 +21,13 @@ object EmptyValidateHelper {
   def isEmptyAny(
     item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
-    item match {
-      case someString : Option[String] => EmptyValidateHelper.isEmptyOptionString(someString, message)
-      case someIterable : Option[Iterable[_]] => EmptyValidateHelper.isItemsEmpty(someIterable, message)
-      case asString : String => EmptyValidateHelper.isEmptyString(asString, message)
-      case asSome : Option[_] => EmptyValidateHelper.isEmpty(asSome, message)
-      case asEither : Either[_, _] => EmptyValidateHelper.isRightEmptyOnEither(asEither, message)
-      case asAny => EmptyValidateHelper.isEmpty(Some(asAny), message)
+    return item match {
+      case someString : Option[String] => return EmptyValidateHelper.isEmptyOptionString(someString, message)
+      case someIterable : Option[Iterable[_]] => return EmptyValidateHelper.isItemsEmpty(someIterable, message)
+      case asString : String => return EmptyValidateHelper.isEmptyString(asString, message)
+      case asSome : Option[_] => return EmptyValidateHelper.isEmpty(asSome, message)
+      case asEither : Either[_, _] => return EmptyValidateHelper.isRightEmptyOnEither(asEither, message)
+      case asAny => return EmptyValidateHelper.isEmpty(Some(asAny), message)
     }
   }
 
