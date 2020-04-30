@@ -1,6 +1,6 @@
 package shared.com.ortb.importedModels.campaign
 
-case class SimpleBanner(
+case class SimpleBannerModel(
   id: Option[String],
   wmin : Int,
   wmax : Int,

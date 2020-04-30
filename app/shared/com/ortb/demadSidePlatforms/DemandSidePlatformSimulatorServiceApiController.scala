@@ -5,7 +5,7 @@ import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
-import shared.com.ortb.importedModels.biddingRequests.BidRequest
+import shared.com.ortb.importedModels.biddingRequests.BidRequestModel
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.JsonHelper
@@ -26,7 +26,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       val bodyRaw = request.body.asText.get
       logger.debug(bodyRaw)
 
-      val bidRequest = JsonHelper.toObjectUsingParser[BidRequest](bodyRaw)
+      val bidRequest = JsonHelper.toObjectUsingParser[BidRequestModel](bodyRaw)
       val bidRequestToString = bidRequest.get.toString
       val entityJson = demandSidePlatformJson.get
       val response = s"$bidRequestToString \n $entityJson"

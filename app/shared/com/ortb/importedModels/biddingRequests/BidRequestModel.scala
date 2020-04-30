@@ -1,8 +1,8 @@
 package shared.com.ortb.importedModels.biddingRequests
 
-case class BidRequest(
+case class BidRequestModel(
   id : String,
   imp : Option[List[ImpressionModel]],
   site : Option[SiteModel],
-  user : Option[User],
-  device : Option[Device])
+  user : Option[UserModel],
+  device : Option[DeviceModel])

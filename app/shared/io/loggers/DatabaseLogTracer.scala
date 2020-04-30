@@ -35,7 +35,7 @@ trait DatabaseLogTracer {
       if (EmptyValidateHelper.hasAnyItem(log.entities)) {
         val prevString = entityString.get
         val entitiesString = ToStringHelper.toStringOfItems(log.entities).get
-        entityString = Some(prevString + entitiesString)
+        entityString = Some(prevString  + "\n"+ entitiesString)
       }
     }
     catch {

@@ -16,6 +16,7 @@ trait FailedBidsGetter {
   def getLastFailedDealsAsBidFailedInfoWithRowsModel(
     request : DspBidderRequestModel,
     limit : Int = defaultLimit) : BidFailedInfoWithRowsModel = {
+    val methodName = "getLastFailedDealsAsBidFailedInfoWithRowsModel"
 
     val repositories = coreProperties.repositories
     val lostBids = repositories.lostBids
@@ -30,17 +31,19 @@ trait FailedBidsGetter {
       repositories,
       lostBidResults)
 
-    val logTraceModel = LogTraceModel(
-      "getLastFailedDeals",
-      Some(request),
-      entities = Some(lostBidResults))
-
-    coreProperties.databaseLogger.trace(logTraceModel)
-
-    BidFailedInfoWithRowsModel(
+    val bidFailedInfoWithRowsModel = BidFailedInfoWithRowsModel(
       attributes = bidFailedInfoModel,
       data = lostBidResults
     )
+
+    val logTraceModel = LogTraceModel(
+      methodName,
+      Some(request),
+      entity = Some(bidFailedInfoWithRowsModel))
+
+    coreProperties.databaseLogger.trace(logTraceModel)
+
+    bidFailedInfoWithRowsModel
   }
 
   private def getBidFailedInfoModel(
@@ -99,6 +102,7 @@ trait FailedBidsGetter {
 
     val lostBidResults = repositories.lostBidRepository
       .run(lostBidsSqlProfileAction)
+
     lostBidResults
   }
 
@@ -114,6 +118,7 @@ trait FailedBidsGetter {
     val bidResponseResults = repositories
       .bidResponseRepository
       .run(bidResponsesQuery)
+
     bidResponseResults
   }
 }
