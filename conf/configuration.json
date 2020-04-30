@@ -11,7 +11,11 @@
       "defaultGenericLimit": 5,
       "isStaticSimulate": true,
       "isAddNewAdvertiseOnNotFound": true,
-      "isRedisCacheEnabled": true
+      "isRedisCacheEnabled": true,
+      "randomNumberIncrementerGuessRange": {
+        "start" : 0.012,
+        "end" : 0.015
+      }
     },
     "services": {
       "root": {

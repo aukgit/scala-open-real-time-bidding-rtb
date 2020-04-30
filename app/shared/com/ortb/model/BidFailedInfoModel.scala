@@ -2,8 +2,11 @@ package shared.com.ortb.model
 import shared.com.ortb.persistent.schema.Tables._
 
 case class BidFailedInfoModel(
-  lostBids: Seq[LostbidRow],
   lastLostBid: LostbidRow,
+  lastWinningBid : BidresponseRow,
+
+  lastLosingPrice : Double,
+  lastWiningPrice : Double,
 
   /**
    * By Config Limit
@@ -14,6 +17,10 @@ case class BidFailedInfoModel(
    * By Config Limit
    */
   averageOfWiningPrices: Double,
+
+  guessOfAdditionalPrices : Seq[Double],
+  absoluteDifferenceOfAverageLosingAndWinningPrice: Double,
+  absoluteDifferenceOfLosingAndWinningPrice: Double,
 )
 
 

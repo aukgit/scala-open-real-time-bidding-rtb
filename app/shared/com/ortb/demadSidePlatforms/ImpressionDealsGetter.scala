@@ -1,34 +1,53 @@
 package shared.com.ortb.demadSidePlatforms
 
+import shared.com.ortb.model._
+import shared.com.ortb.model.config.RangeModel
 import shared.com.ortb.model.results.DspBidderRequestModel
-import shared.com.ortb.model.{ BidFailedInfoModel, ImpressionBiddableInfoModel, ImpressionDealModel }
 import shared.io.helpers.EmptyValidateHelper
 
 import scala.concurrent.Future
+import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
+  lazy val randomNumberIncrementerGuessRange : RangeModel = coreProperties.randomNumberIncrementerGuessRange
 
   def getImpressionInfoModelFromImpressionBiddableInfoModel(
-    bidFailedReasonsModel: BidFailedInfoModel,
+    bidFailedReasonsModel : BidFailedInfoModel,
     impressionBiddableInfoModel : ImpressionBiddableInfoModel) : ImpressionDealModel = {
-    if (impressionBiddableInfoModel == null ||
-      !impressionBiddableInfoModel.attributes.isBiddable) {
+    val isNonBiddable = bidFailedReasonsModel == null ||
+      impressionBiddableInfoModel == null ||
+      !impressionBiddableInfoModel.attributes.isBiddable
+
+    if (isNonBiddable) {
       return null
     }
 
     val banner = impressionBiddableInfoModel.impression.banner.get
-    val lastFailed = bidFailedReasonsModel.lostBids.av
+    val hasExactHeightsWidths = EmptyValidateHelper.hasAnyItem(
+      impressionBiddableInfoModel.exactHeightWidthAdvertises)
 
-    if (EmptyValidateHelper.hasAnyItem(impressionBiddableInfoModel.exactHeightWidthAdvertises)) {
+
+    if (hasExactHeightsWidths) {
       // more price
-      return ImpressionDealModel(impressionBiddableInfoModel.impression, )
+      val length = bidFailedReasonsModel.guessOfAdditionalPrices.length
+      val randomIndex = Random.between(0, length)
+      val randomIncrements = bidFailedReasonsModel.guessOfAdditionalPrices(randomIndex)
+      val deal =
+        bidFailedReasonsModel.absoluteDifferenceOfAverageLosingAndWinningPrice +
+          bidFailedReasonsModel.averageOfWiningPrices +
+          randomIncrements +
+          coreProperties.defaultIncrementNumber
 
+      return ImpressionDealModel(impressionBiddableInfoModel.impression, deal)
     }
 
-    // val items = exactAdvertises.toList
+    val deal =
+      coreProperties.defaultStaticDeal +
+      bidFailedReasonsModel.absoluteDifferenceOfAverageLosingAndWinningPrice +
+        coreProperties.defaultIncrementNumber
 
-    ???
+    ImpressionDealModel(impressionBiddableInfoModel.impression, deal)
   }
 
   def getImpressionInfoModelsFromImpressionBiddableInfoModels(
@@ -38,6 +57,9 @@ trait ImpressionDealsGetter {
     if (EmptyValidateHelper.isItemsEmpty(Some(biddableImpressionInfoModels))) {
       return None
     }
+
+    val bidFailedInfoWithRowsModel = getLastFailedDealsAsBidFailedInfoWithRowsModel(
+      request)
 
     val list = biddableImpressionInfoModels.map(b => {
       val attr = b.attributes
@@ -49,10 +71,11 @@ trait ImpressionDealsGetter {
           b)
       }
 
-      getImpressionInfoModelFromImpressionBiddableInfoModel(b)
+      getImpressionInfoModelFromImpressionBiddableInfoModel(
+        bidFailedInfoWithRowsModel.attributes,
+        b)
     }).filter(w => w != null).toList
 
     Some(list)
-    throw new NotImplementedError()
   }
 }

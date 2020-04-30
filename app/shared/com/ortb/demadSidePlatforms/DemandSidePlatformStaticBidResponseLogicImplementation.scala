@@ -27,7 +27,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     for (impression <- impressions) {
       if (impression.bidFloor.isDefined) {
         val deal : Double = impression.bidFloor.get + defaultIncrementNumber
-        val impressionDealModel = model.ImpressionDealModel(impression, Some(deal))
+        val impressionDealModel = model.ImpressionDealModel(impression, deal)
         deals.addOne(impressionDealModel)
 
         val callStackModel = CallStackModel(
@@ -39,7 +39,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
         callStacks.addOne(callStackModel)
       } else {
-        deals.addOne(model.ImpressionDealModel(impression, Some(defaultStaticDeal)))
+        deals.addOne(model.ImpressionDealModel(impression, defaultStaticDeal))
 
         val callStackModel = CallStackModel(
           deal = defaultStaticDeal,

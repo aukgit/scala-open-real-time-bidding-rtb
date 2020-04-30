@@ -7,5 +7,6 @@ case class DemandSidePlatformConfigurationModel(
   defaultAdvertiseLimit: Int,
   defaultGenericLimit: Int,
   isAddNewAdvertiseOnNotFound : Boolean,
-  isRedisCacheEnabled : Boolean
+  isRedisCacheEnabled : Boolean,
+  randomNumberIncrementerGuessRange: RangeModel
 )

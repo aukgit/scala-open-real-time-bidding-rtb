@@ -1,11 +1,13 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
 import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
-import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, ServiceModel }
+import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, RangeModel, ServiceModel }
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
+
+import scala.util.Random
 
 trait DemandSidePlatformCorePropertiesContracts
   extends ServiceControllerCorePropertiesContracts
@@ -30,4 +32,6 @@ trait DemandSidePlatformCorePropertiesContracts
 
   lazy val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     config.server.demandSidePlatformConfiguration
+
+  lazy val randomNumberIncrementerGuessRange : RangeModel = demandSidePlatformConfiguration.randomNumberIncrementerGuessRange
 }

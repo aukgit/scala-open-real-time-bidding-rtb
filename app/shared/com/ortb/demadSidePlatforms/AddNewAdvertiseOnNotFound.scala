@@ -67,8 +67,8 @@ trait AddNewAdvertiseOnNotFound {
     val contextTextId = 5
 
     val advertise = AdvertiseRow(
-      -1,
-      campaignId.get,
+      advertiseid = -1,
+      campaignid=campaignId.get,
       1,
       s"Generated Banner Advertise($bannerString)",
       Some(contextTextId),
@@ -78,15 +78,16 @@ trait AddNewAdvertiseOnNotFound {
       isvideo = 0,
       impressioncount = 0,
       height = simpleBanner.h,
-      simpleBanner.w,
-      simpleBanner.hmin,
-      simpleBanner.wmin,
-      simpleBanner.hmax,
-      simpleBanner.wmax,
-      0,
-      Some(0),
-      Some(0),
-      Some(0))
+      isbanner = Some(1),
+      width = simpleBanner.w,
+      minheight = simpleBanner.hmin,
+      minwidth = simpleBanner.wmin,
+      maxheight = simpleBanner.hmax,
+      maxwidth = simpleBanner.wmax,
+      hasagerestriction = 0,
+      minage = Some(0),
+      maxage = Some(0),
+      createddate = Some(0))
 
     advertiseRepository.add(advertise)
     AppLogger.debug("Advertise added")
