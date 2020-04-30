@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 29/04/2020 15:29:27
+ Date: 01/05/2020 03:01:07
 */
 
 PRAGMA foreign_keys = false;
@@ -103,9 +103,7 @@ CREATE TABLE "BidRequest" (
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "Price1" real DEFAULT 0,
-  "Price2" real DEFAULT 0,
-  "Price3" real DEFAULT 0,
+  "BiddingPriceDeal" real DEFAULT 0,
   "ActualSelectedPrice" REAL NOT NULL,
   "Currency" TEXT NOT NULL,
   "Adm" text,
@@ -234,9 +232,12 @@ CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER NOT NULL,
   "BidRequestId" INTEGER NOT NULL,
-  "Price" REAL NOT NULL,
+  "BiddingPrice" REAL NOT NULL,
+  "WinningBidPrice" real,
   "Currency" TEXT NOT NULL,
+  "IsImpressionServedOrWonByAuction" integer(1),
   "CreatedDate" real NOT NULL,
+  "SelectedByAuctionDate" real,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
