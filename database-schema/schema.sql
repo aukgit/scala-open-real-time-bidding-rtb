@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 01/05/2020 03:01:07
+ Date: 01/05/2020 03:06:40
 */
 
 PRAGMA foreign_keys = false;
@@ -230,6 +230,7 @@ CREATE TABLE "GeoMapping" (
 DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "RawImpressionJson" TEXT,
   "AdvertiseId" INTEGER NOT NULL,
   "BidRequestId" INTEGER NOT NULL,
   "BiddingPrice" REAL NOT NULL,
