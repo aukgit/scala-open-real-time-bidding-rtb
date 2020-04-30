@@ -1,5 +1,5 @@
 package shared.com.ortb.demadSidePlatforms
-import shared.com.ortb.importedModels.biddingRequests.BannerModel
+import shared.com.ortb.importedModels.biddingRequests.BannerImpressionModel
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.EmptyValidateHelper
 import slick.lifted.Query
@@ -9,7 +9,7 @@ trait AdvertiseQueryAppendLogic {
 
   def appendQueryForBanner(
     advertisesQueryIn : Query[Tables.Advertise, Tables.AdvertiseRow, Seq],
-    banner : BannerModel
+    banner : BannerImpressionModel
   ) : Query[Tables.Advertise, Tables.AdvertiseRow, Seq] = {
     var advertisesQuery = advertisesQueryIn
     if (EmptyValidateHelper.isDefined(banner.wmax)) {

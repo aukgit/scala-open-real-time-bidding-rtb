@@ -1,11 +1,11 @@
 package shared.com.ortb.adapters.traits
 
-import shared.com.ortb.importedModels.biddingRequests.BannerModel
+import shared.com.ortb.importedModels.biddingRequests.BannerImpressionModel
 import shared.com.ortb.importedModels.campaign.SimpleBannerModel
 import shared.io.helpers.NumberHelper
 
 class BannerModelAdapterConcreteImplementation extends BannerModelAdapter {
-  def getSimpleBanner(bannerModel : BannerModel) : SimpleBannerModel = {
+  def getSimpleBanner(bannerModel : BannerImpressionModel) : SimpleBannerModel = {
     if (bannerModel == null) {
       return null
     }

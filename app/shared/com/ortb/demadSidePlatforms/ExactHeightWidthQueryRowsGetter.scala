@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.importedModels.biddingRequests.BannerModel
+import shared.com.ortb.importedModels.biddingRequests.BannerImpressionModel
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema.Tables._
 import slick.jdbc.SQLiteProfile.api._
@@ -11,7 +11,7 @@ trait ExactHeightWidthQueryRowsGetter {
   def getExactHeightWidthQueryRows(
     advertiseRepository : AdvertiseRepository,
     advertisesQuery : Query[Advertise, AdvertiseRow, Seq],
-    banner : BannerModel) : Option[Seq[AdvertiseRow]] = {
+    banner : BannerImpressionModel) : Option[Seq[AdvertiseRow]] = {
     var query = advertisesQuery
     val simpleBanner = bannerModelAdapter.getSimpleBanner(banner)
 
