@@ -10,7 +10,7 @@ trait DefaultActualNoContentResponse {
   def getBidActualNoContent(
     request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val dspBidderResultModel =
-      DemandSidePlatformBidResponseModel(request, request.bidRequest, isNoContent = true)
+      DemandSidePlatformBidResponseModel(request, request.bidRequestModel, isNoContent = true,bidResponseWrapper = null)
 
     val callStackModel = CallStackModel(
       deal = coreProperties.noDealPrice,

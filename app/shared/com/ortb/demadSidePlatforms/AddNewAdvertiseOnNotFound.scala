@@ -20,7 +20,7 @@ trait AddNewAdvertiseOnNotFound {
 
     // create DSP -> campaign -> Advertise
     val methodName = "addNewAdvertiseIfNoAdvertiseInTheGivenCriteria"
-    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${ request.bidRequest.toString }")
+    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${ request.bidRequestModel.toString }")
 
     val demandSideId = coreProperties.demandSideId
     val repositories = coreProperties.repositories
@@ -35,7 +35,7 @@ trait AddNewAdvertiseOnNotFound {
       .result
 
     val impressionModel = impressionBiddableInfoModel.impression
-    val bidReq = request.bidRequest
+    val bidReq = request.bidRequestModel
     val site = bidReq.site
     val publisher = publishersRepository
       .getFirstOrDefaultFromQuery(publisherByDspQuery)

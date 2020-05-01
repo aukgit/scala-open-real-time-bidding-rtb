@@ -79,7 +79,7 @@ trait BiddableInfoModelsGetter {
     val repositories = coreProperties.repositories
     val advertiseRepository = repositories.advertiseRepository
     val advertises : TableQuery[Tables.Advertise] = repositories.advertises
-    val impressions = request.bidRequest.imp.get
+    val impressions = request.bidRequestModel.imp.get
 
     val futureTasks : Seq[Future[ImpressionBiddableInfoModel]] =
       impressions.map(impression => {

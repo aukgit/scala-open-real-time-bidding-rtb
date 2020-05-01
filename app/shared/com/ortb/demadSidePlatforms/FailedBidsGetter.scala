@@ -59,7 +59,7 @@ trait FailedBidsGetter {
     val bidResponseResults = getBidResponses(limit, repositories, bidResponses)
 
     val bidResponseResultsLength = bidResponseResults.length
-    val averageOfWiningPrices = bidResponseResults.map(w => w.actualselectedprice).sum / bidResponseResultsLength
+    val averageOfWiningPrices = bidResponseResults.map(w => NumberHelper.getAsDouble(w.actualselectedprice)).sum / bidResponseResultsLength
     val lastWiningPrice = NumberHelper.getAsDouble(lostBidResults.head.losingprice)
 
     val absoluteDifferenceOfAverageLosingAndWinningPrice =
