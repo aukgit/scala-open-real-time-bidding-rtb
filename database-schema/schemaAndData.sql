@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 02/05/2020 00:06:58
+ Date: 02/05/2020 00:25:50
 */
 
 PRAGMA foreign_keys = false;
@@ -111,7 +111,7 @@ CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BiddingPriceDeal" real DEFAULT 0,
   "ActualSelectedPrice" REAL DEFAULT NULL,
-  "Currency" TEXT NOT NULL DEFAULT USD,
+  "Currency" TEXT NOT NULL DEFAULT "USD",
   "Adm" text DEFAULT NULL,
   "NUrl" text DEFAULT NULL,
   "IUrl" TEXT DEFAULT NULL,
@@ -445,11 +445,11 @@ INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('GeoMapping', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
