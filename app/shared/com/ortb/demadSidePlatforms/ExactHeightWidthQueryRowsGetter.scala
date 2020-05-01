@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.importedModels.biddingRequests.BannerImpressionModel
+import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema.Tables._
 import slick.jdbc.SQLiteProfile.api._

@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.bidresponses
 
 /**
  * BidResponse -> seatbid[] -> seatbid -> bid[] -> single BidModel is this one.

@@ -1,9 +1,9 @@
 package shared.com.ortb.adapters.traits
 
 import shared.com.ortb.enumeration.NoBidResponseType.NoBidResponseType
-import shared.com.ortb.importedModels.BidResponseModelWrapper
-import shared.com.ortb.importedModels.biddingRequests.{ BannerImpressionModel, BidResponseModel }
-import shared.com.ortb.importedModels.campaign.SimpleBannerModel
+import shared.com.ortb.model.auctionbid.biddingRequests.SimpleBannerModel
+import shared.com.ortb.model.auctionbid.biddingRequests.banners.{ BannerImpressionModel, SimpleBannerModel }
+import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
 import shared.io.helpers.NumberHelper
 
 class BidResponseModelAdapterConcreteImplementation extends BidResponseModelAdapter {

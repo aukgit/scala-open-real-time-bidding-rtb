@@ -5,7 +5,7 @@ import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
-import shared.com.ortb.importedModels.biddingRequests.BidRequestModel
+import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.JsonHelper

@@ -1,6 +1,6 @@
 package shared.com.ortb.model
 
-import shared.com.ortb.importedModels.biddingRequests.BidRequestModel
+import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 
 case class DspBidderPrintResultModel(
   request: String,

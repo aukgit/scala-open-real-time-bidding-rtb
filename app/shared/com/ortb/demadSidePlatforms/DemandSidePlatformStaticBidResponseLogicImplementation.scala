@@ -2,7 +2,7 @@ package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
-import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
+import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model
 import shared.com.ortb.model._
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel

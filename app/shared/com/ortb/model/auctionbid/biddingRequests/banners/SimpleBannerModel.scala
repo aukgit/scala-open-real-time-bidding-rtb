@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.campaign
+package shared.com.ortb.model.auctionbid.biddingRequests.banners
 
 case class SimpleBannerModel(
   id: Option[String],

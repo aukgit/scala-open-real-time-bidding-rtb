@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.biddingRequests
 
 /**
  * Video Request(for Bid) Details inside the BidRequest -> Impression[] -> Impression -> video

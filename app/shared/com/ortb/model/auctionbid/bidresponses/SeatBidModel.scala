@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.bidresponses
 
 import shared.com.ortb.constants.AppConstants
 

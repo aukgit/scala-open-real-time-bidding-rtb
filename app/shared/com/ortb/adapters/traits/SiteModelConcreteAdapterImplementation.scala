@@ -1,6 +1,6 @@
 package shared.com.ortb.adapters.traits
 
-import shared.com.ortb.importedModels.biddingRequests.SiteModel
+import shared.com.ortb.model.auctionbid.biddingRequests.SiteModel
 import shared.io.helpers.EmptyValidateHelper
 
 class SiteModelConcreteAdapterImplementation extends SiteModelAdapter{

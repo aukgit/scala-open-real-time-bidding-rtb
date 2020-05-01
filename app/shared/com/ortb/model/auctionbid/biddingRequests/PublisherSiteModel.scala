@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.biddingRequests
 
 case class PublisherSiteModel(
   id : Int,

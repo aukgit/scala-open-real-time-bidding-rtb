@@ -1,6 +1,4 @@
-package shared.com.ortb.importedModels
-
-import shared.com.ortb.importedModels.biddingRequests.BidResponseModel
+package shared.com.ortb.model.auctionbid.bidresponses
 
 case class BidResponseModelWrapper(
   bidResponse : Option[BidResponseModel] = None,

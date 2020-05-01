@@ -1,3 +1,3 @@
-package shared.com.ortb.importedModels.campaign
+package shared.com.ortb.model.auctionbid.campaign
 
 case class TargetingModel(cities : List[String], targetedSiteIds : Array[String])

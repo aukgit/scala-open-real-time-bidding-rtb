@@ -1,4 +1,6 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.biddingRequests
+
+import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
 
 /**
  *

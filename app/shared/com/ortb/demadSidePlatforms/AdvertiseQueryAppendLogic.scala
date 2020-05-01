@@ -1,5 +1,5 @@
 package shared.com.ortb.demadSidePlatforms
-import shared.com.ortb.importedModels.biddingRequests.BannerImpressionModel
+import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.EmptyValidateHelper
 import slick.lifted.Query

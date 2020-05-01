@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.bidresponses
 
 case class BidResponseModel(
   id : String,

@@ -1,4 +1,4 @@
-package shared.com.ortb.importedModels.biddingRequests
+package shared.com.ortb.model.auctionbid.biddingRequests.banners
 
 /**
  * Banner Details inside the BidRequest -> Impression[] -> Impression -> banner

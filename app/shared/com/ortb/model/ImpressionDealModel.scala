@@ -1,6 +1,6 @@
 package shared.com.ortb.model
 
-import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
+import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 
 case class ImpressionDealModel (
   impression: ImpressionModel,
