@@ -23,5 +23,4 @@ case class BidResponseModel(
    * Reason for not bidding.
    */
   nbr : Option[Int]
-
 )

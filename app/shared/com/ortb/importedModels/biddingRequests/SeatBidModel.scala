@@ -1,34 +1,33 @@
 package shared.com.ortb.importedModels.biddingRequests
 
+import shared.com.ortb.constants.AppConstants
+
+/**
+ * BidResponse -> seatbid[] -> Single SeatBid object.
+ *
+ * @param bid : Array of 1+ Bid objects (Section 4.2.3) each related to an impression.
+ *            * Multiple bids can relate to the same impression.
+ * @param seat  : ID of the bidder seat on whose behalf this bid is made.
+ * @param group : 0 = impressions can be won individually;
+ *              * 1 = impressions must be won or lost as a group.
+ *              * 1 = Meaning all the items in the seatbid needs to won as a group (My guess, no R&D yet).
+ */
 case class SeatBidModel (
-  bid: List[BidModel]
-)
-
-case class BidModel(
-  id: String,
+  /**
+   * Array of 1+ Bid objects (Section 4.2.3) each related to an impression.
+   * Multiple bids can relate to the same impression.
+   */
+  bid: List[BidModel],
 
   /**
-   * ID of the Imp (Impression) object in the related bid request.
+   * ID of the bidder seat on whose behalf this bid is made.
    */
-  impid : String,
+  seat : Option[String],
 
   /**
-   * Bid price expressed as CPM although the
-   * actual transaction is for a unit impression only.
-   * Note that while the type indicates float,
-   * integer math is highly recommended
-   * when handling currencies (e.g., BigDecimal in Java).
+   * 0 = impressions can be won individually;
+   * 1 = impressions must be won or lost as a group.
+   * 1 = Meaning all the items in the seatbid needs to won as a group (My guess, no R&D yet).
    */
-  price: Double,
-
-  /**
-   * ID of a preloaded ad to be served if the bid wins.
-   */
-  adid: Option[String],
-
-
-  /**
-   * Win notice URL called by the exchange if the bid wins; optional means of serving ad markup.
-   */
-  nurl: Option[String],
+  group : Option[Int] = AppConstants.EmptyIntegerOption
 )

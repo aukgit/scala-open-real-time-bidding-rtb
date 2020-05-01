@@ -1,6 +1,6 @@
 package shared.com.ortb.model
 
-import shared.com.ortb.importedModels.biddingRequests.BidRequestModel
+import shared.com.ortb.importedModels.biddingRequests.{ BidRequestModel, BidResponseModel }
 import shared.com.ortb.model.results.DspBidderRequestModel
 import shared.io.helpers.IterableHelper
 
@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 case class DemandSidePlatformBidResponseModel(
   request : DspBidderRequestModel,
   bidRequest      : BidRequestModel,
-  bidResponseModel: BidResponse,
+  bidResponse : BidResponseModel,
   deals : Option[List[ImpressionDealModel]] = None,
   isNoContent     : Boolean = false
 ) {
