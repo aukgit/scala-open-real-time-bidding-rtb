@@ -44,7 +44,7 @@ class AuctionRepository @Inject()(appManager: AppManager)
     getQueryById(entityId).delete
 
   override def getQueryById(id: Int): Query[Auction, AuctionRow, Seq] =
-    table.filter(c => c.advertiseid === id)
+    table.filter(c => c.auctionid === id)
 
   override def table = this.auctions
 
