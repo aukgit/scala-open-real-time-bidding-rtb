@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 01/05/2020 03:09:45
+ Date: 02/05/2020 00:06:58
 */
 
 PRAGMA foreign_keys = false;
@@ -52,14 +52,12 @@ CREATE TABLE "Advertise" (
 DROP TABLE IF EXISTS "Auction";
 CREATE TABLE "Auction" (
   "AuctionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "AdvertiseId" INTEGER NOT NULL,
-  "WinningBidderId" INTEGER,
+  "WinningBidRequestId" INTEGER DEFAULT NULL,
   "IsPrecachedAdvertiseServed" integer(1) NOT NULL DEFAULT 0,
   "WinningPrice" REAL NOT NULL DEFAULT -1,
-  "Currency" TEXT NOT NULL DEFAULT USD,
+  "Currency" TEXT NOT NULL DEFAULT "USD",
   "CreatedDated" real NOT NULL,
-  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "WinningBidderIdFK" FOREIGN KEY ("WinningBidderId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
+  CONSTRAINT "WinningBidRequestIdFK" FOREIGN KEY ("WinningBidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
 );
 
 -- ----------------------------
@@ -86,20 +84,20 @@ DROP TABLE IF EXISTS "BidRequest";
 CREATE TABLE "BidRequest" (
   "BidRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "DemandSidePlatformId" INTEGER NOT NULL,
-  "AuctionId" INTEGER,
+  "AuctionId" INTEGER DEFAULT NULL,
   "IsBanner" integer(1) NOT NULL DEFAULT 0,
   "IsVideo" integer(1) NOT NULL DEFAULT 0,
-  "Height" integer,
-  "Width" integer,
-  "Countries" TEXT,
-  "Cities" TEXT,
-  "TargetedSites" TEXT,
-  "TargetedCities" TEXT,
-  "RawBidRequest" TEXT,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "Countries" TEXT DEFAULT NULL,
+  "Cities" TEXT DEFAULT NULL,
+  "TargetedSites" TEXT DEFAULT NULL,
+  "TargetedCities" TEXT DEFAULT NULL,
+  "RawBidRequestJson" TEXT NOT NULL DEFAULT '',
   "Currency" TEXT(5) DEFAULT USD,
-  "ContentContextId" INTEGER,
+  "ContentContextId" INTEGER DEFAULT NULL,
   "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
-  "CreatedDate" real,
+  "CreatedDate" real DEFAULT 0,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -112,19 +110,19 @@ DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BiddingPriceDeal" real DEFAULT 0,
-  "ActualSelectedPrice" REAL NOT NULL,
-  "Currency" TEXT NOT NULL,
-  "Adm" text,
-  "NUrl" text NOT NULL,
-  "IUrl" TEXT,
-  "AdvertiseId" INTEGER NOT NULL,
-  "BidRequestId" INTEGER,
+  "ActualSelectedPrice" REAL DEFAULT NULL,
+  "Currency" TEXT NOT NULL DEFAULT USD,
+  "Adm" text DEFAULT NULL,
+  "NUrl" text DEFAULT NULL,
+  "IUrl" TEXT DEFAULT NULL,
+  "AdvertiseId" INTEGER DEFAULT NULL,
+  "BidRequestId" INTEGER DEFAULT NULL,
   "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
   "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
   "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
-  "NoBidResponseTypeId" INTEGER,
-  "CreatedDate" real,
+  "NoBidResponseTypeId" INTEGER DEFAULT NULL,
+  "CreatedDate" real DEFAULT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -137,7 +135,7 @@ DROP TABLE IF EXISTS "Campaign";
 CREATE TABLE "Campaign" (
   "CampaignId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignName" TEXT NOT NULL,
-  "ContentCategoryId" text,
+  "ContentCategoryId" text DEFAULT NULL,
   "TotalBudgetCPM" real NOT NULL DEFAULT 0,
   "SpendAlready" real NOT NULL DEFAULT 0,
   "RemainingAmount" real NOT NULL DEFAULT 0,
@@ -148,8 +146,8 @@ CREATE TABLE "Campaign" (
   "IsRunning" integer(1) NOT NULL DEFAULT 0,
   "Priority" integer(3) NOT NULL DEFAULT 999,
   "IsRetrictToUserGender" integer(1) NOT NULL DEFAULT 0,
-  "ExpectedUserGender" TEXT(2),
-  "PublisherId" INTEGER,
+  "ExpectedUserGender" TEXT(2) DEFAULT NULL,
+  "PublisherId" INTEGER DEFAULT NULL,
   "CreatedDate" REAL DEFAULT 0,
   "ModifiedDate" REAL DEFAULT 0,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE,
@@ -286,8 +284,8 @@ INSERT INTO "DemandSidePlatform" VALUES (3, 'Demand Side Platform 3');
 DROP TABLE IF EXISTS "GeoMapping";
 CREATE TABLE "GeoMapping" (
   "GeoMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "AdvertiseId" INTEGER NOT NULL,
-  "Country" TEXT NOT NULL,
+  "AdvertiseId" INTEGER DEFAULT NULL,
+  "Country" TEXT DEFAULT NULL,
   "HasCity" integer(1) NOT NULL DEFAULT 0,
   "City" TEXT DEFAULT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE
@@ -299,15 +297,15 @@ CREATE TABLE "GeoMapping" (
 DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "RawImpressionJson" TEXT,
-  "AdvertiseId" INTEGER,
-  "BidRequestId" INTEGER NOT NULL,
-  "BiddingPrice" REAL NOT NULL,
-  "WinningBidPrice" real,
-  "Currency" TEXT NOT NULL,
-  "IsImpressionServedOrWonByAuction" integer(1),
-  "CreatedDate" real NOT NULL,
-  "SelectedByAuctionDate" real,
+  "RawImpressionJson" TEXT NOT NULL DEFAULT "",
+  "AdvertiseId" INTEGER DEFAULT NULL,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "BiddingPrice" REAL NOT NULL DEFAULT 0,
+  "WinningBidPrice" real DEFAULT 0,
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
+  "CreatedDate" real NOT NULL DEFAULT 0,
+  "DisplayedDate" real DEFAULT 0,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -421,24 +419,6 @@ CREATE TABLE "Transaction" (
 );
 
 -- ----------------------------
--- Table structure for _Impression_old_20200501
--- ----------------------------
-DROP TABLE IF EXISTS "_Impression_old_20200501";
-CREATE TABLE "_Impression_old_20200501" (
-  "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "RawImpressionJson" TEXT,
-  "AdvertiseId" INTEGER NOT NULL,
-  "BidRequestId" INTEGER NOT NULL,
-  "BiddingPrice" REAL NOT NULL,
-  "WinningBidPrice" real,
-  "Currency" TEXT NOT NULL,
-  "IsImpressionServedOrWonByAuction" integer(1),
-  "CreatedDate" real NOT NULL,
-  "SelectedByAuctionDate" real,
-  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
-);
-
--- ----------------------------
 -- Table structure for sqlite_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS "sqlite_sequence";
@@ -461,23 +441,18 @@ INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Auction', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
-INSERT INTO "sqlite_sequence" VALUES ('_Impression_old_20200501', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
+INSERT INTO "sqlite_sequence" VALUES ('GeoMapping', 0);
 
 -- ----------------------------
 -- Auto increment value for Advertise
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for Auction
 -- ----------------------------
 
 -- ----------------------------
@@ -521,6 +496,10 @@ UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
 
 -- ----------------------------
+-- Auto increment value for GeoMapping
+-- ----------------------------
+
+-- ----------------------------
 -- Auto increment value for Impression
 -- ----------------------------
 
@@ -544,10 +523,6 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
 -- Auto increment value for Transaction
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for _Impression_old_20200501
 -- ----------------------------
 
 PRAGMA foreign_keys = true;
