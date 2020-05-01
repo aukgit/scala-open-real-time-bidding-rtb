@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 01/05/2020 03:06:33
+ Date: 01/05/2020 03:09:45
 */
 
 PRAGMA foreign_keys = false;
@@ -300,7 +300,7 @@ DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "RawImpressionJson" TEXT,
-  "AdvertiseId" INTEGER NOT NULL,
+  "AdvertiseId" INTEGER,
   "BidRequestId" INTEGER NOT NULL,
   "BiddingPrice" REAL NOT NULL,
   "WinningBidPrice" real,
@@ -308,6 +308,7 @@ CREATE TABLE "Impression" (
   "IsImpressionServedOrWonByAuction" integer(1),
   "CreatedDate" real NOT NULL,
   "SelectedByAuctionDate" real,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -420,6 +421,24 @@ CREATE TABLE "Transaction" (
 );
 
 -- ----------------------------
+-- Table structure for _Impression_old_20200501
+-- ----------------------------
+DROP TABLE IF EXISTS "_Impression_old_20200501";
+CREATE TABLE "_Impression_old_20200501" (
+  "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "RawImpressionJson" TEXT,
+  "AdvertiseId" INTEGER NOT NULL,
+  "BidRequestId" INTEGER NOT NULL,
+  "BiddingPrice" REAL NOT NULL,
+  "WinningBidPrice" real,
+  "Currency" TEXT NOT NULL,
+  "IsImpressionServedOrWonByAuction" integer(1),
+  "CreatedDate" real NOT NULL,
+  "SelectedByAuctionDate" real,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
 -- Table structure for sqlite_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS "sqlite_sequence";
@@ -450,6 +469,7 @@ INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_Impression_old_20200501', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 
 -- ----------------------------
@@ -524,6 +544,10 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
 -- Auto increment value for Transaction
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _Impression_old_20200501
 -- ----------------------------
 
 PRAGMA foreign_keys = true;
