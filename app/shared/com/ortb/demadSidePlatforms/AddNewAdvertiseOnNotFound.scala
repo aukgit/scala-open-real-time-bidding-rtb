@@ -2,7 +2,7 @@ package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.ImpressionBiddableInfoModel
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger
 import slick.jdbc.SQLiteProfile.api._
@@ -11,7 +11,7 @@ trait AddNewAdvertiseOnNotFound {
   this : DemandSidePlatformBiddingAgent =>
 
   def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
-    request : DspBidderRequestModel,
+    request : DemandSidePlatformBiddingRequestModel,
     isEmpty : Boolean,
     impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {
     if (!demandSidePlatformConfiguration.isAddNewAdvertiseOnNotFound || !isEmpty) {

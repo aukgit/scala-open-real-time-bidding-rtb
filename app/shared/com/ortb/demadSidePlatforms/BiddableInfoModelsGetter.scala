@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.model.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel, LogTraceModel }
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema
@@ -74,7 +74,7 @@ trait BiddableInfoModelsGetter {
   }
 
   def getBiddableImpressionInfoModels(
-    request : DspBidderRequestModel,
+    request : DemandSidePlatformBiddingRequestModel,
     limit : Int = defaultAdvertiseLimit) : Seq[ImpressionBiddableInfoModel] = {
     val repositories = coreProperties.repositories
     val advertiseRepository = repositories.advertiseRepository

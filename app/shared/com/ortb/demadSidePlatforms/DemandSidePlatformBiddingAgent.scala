@@ -7,7 +7,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model._
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.io.helpers.EmptyValidateHelper
 
 class DemandSidePlatformBiddingAgent(
@@ -26,7 +26,7 @@ class DemandSidePlatformBiddingAgent(
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
       DemandSidePlatformStaticBidResponseLogicImplementation(coreProperties)
 
-  override def getBidStatic(request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] =
+  override def getBidStatic(request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] =
     demandSidePlatformStaticBidResponseLogic.getBidStatic(request)
 
   override def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
@@ -34,18 +34,18 @@ class DemandSidePlatformBiddingAgent(
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     coreProperties.demandSidePlatformConfiguration
 
-  override def getBidStaticNoContent(request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] =
+  override def getBidStaticNoContent(request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] =
     demandSidePlatformStaticBidResponseLogic.getBidStaticNoContent(request)
 
   lazy override val appManager : AppManager = coreProperties.appManager
 
   override def getBidPrices(
-    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = ???
+    request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = ???
 
   override def getBidActual(
-    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
+    request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val biddableImpressionInfoModels = getBiddableImpressionInfoModels(
-      request : DspBidderRequestModel)
+      request : DemandSidePlatformBiddingRequestModel)
 
     val impressionDeals =
       getImpressionInfoModelsFromImpressionBiddableInfoModels(

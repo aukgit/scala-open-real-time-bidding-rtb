@@ -1,17 +1,17 @@
 package shared.com.ortb.demadSidePlatforms.traits.logics
 
 import shared.com.ortb.model.DemandSidePlatformBidResponseModel
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 
 trait DemandSidePlatformBiddingLogic
   extends DemandSidePlatformStaticBidResponseLogic
     with DemandSidePlatformActualBidResponseLogic{
   def isStatic : Boolean
 
-  def getBidPrices(request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel]
+  def getBidPrices(request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel]
 
   def getBid(
-    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
+    request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
 
     if (isStatic) {
       return getBidStatic(request)

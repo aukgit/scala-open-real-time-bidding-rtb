@@ -2,7 +2,7 @@ package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.model._
 import shared.com.ortb.model.config.RangeModel
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.io.helpers.EmptyValidateHelper
 
 import scala.concurrent.Future
@@ -51,7 +51,7 @@ trait ImpressionDealsGetter {
   }
 
   def getImpressionInfoModelsFromImpressionBiddableInfoModels(
-    request : DspBidderRequestModel,
+    request : DemandSidePlatformBiddingRequestModel,
     biddableImpressionInfoModels : Seq[ImpressionBiddableInfoModel]) :
   Option[List[ImpressionDealModel]] = {
     if (EmptyValidateHelper.isItemsEmpty(Some(biddableImpressionInfoModels))) {

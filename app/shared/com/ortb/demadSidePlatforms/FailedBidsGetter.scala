@@ -1,7 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.model._
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema._
@@ -14,7 +14,7 @@ trait FailedBidsGetter {
   this : DemandSidePlatformBiddingAgent =>
 
   def getLastFailedDealsAsBidFailedInfoWithRowsModel(
-    request : DspBidderRequestModel,
+    request : DemandSidePlatformBiddingRequestModel,
     limit : Int = defaultLimit) : BidFailedInfoWithRowsModel = {
     val methodName = "getLastFailedDealsAsBidFailedInfoWithRowsModel"
 

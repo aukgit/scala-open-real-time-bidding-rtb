@@ -1,17 +1,18 @@
 package shared.com.ortb.model
 
+import shared.com.ortb.importedModels.BidResponseModelWrapper
 import shared.com.ortb.importedModels.biddingRequests.{ BidRequestModel, BidResponseModel }
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.io.helpers.IterableHelper
 
 import scala.collection.mutable.ArrayBuffer
 
 case class DemandSidePlatformBidResponseModel(
-  request : DspBidderRequestModel,
-  bidRequest      : BidRequestModel,
-  bidResponse : BidResponseModel,
+  request : DemandSidePlatformBiddingRequestModel,
+  bidRequest : BidRequestModel,
+  bidResponseWrapper : BidResponseModelWrapper,
   deals : Option[List[ImpressionDealModel]] = None,
-  isNoContent     : Boolean = false
+  isNoContent : Boolean = false
 ) {
   private val callStacks : ArrayBuffer[CallStackModel] = new ArrayBuffer[CallStackModel](3)
 

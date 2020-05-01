@@ -6,7 +6,7 @@ import shared.com.ortb.importedModels.biddingRequests.ImpressionModel
 import shared.com.ortb.model
 import shared.com.ortb.model._
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
-import shared.com.ortb.model.results.DspBidderRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -18,7 +18,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     demandSidePlatformCoreProperties.demandSidePlatformConfiguration
 
   override def getBidStatic(
-    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
+    request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val impressions : Seq[ImpressionModel] = request.bidRequest.imp.get
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
@@ -60,7 +60,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
   }
 
   override def getBidStaticNoContent(
-    request : DspBidderRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
+    request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val dspBidderResultModel =
       model.DemandSidePlatformBidResponseModel(request, request.bidRequest, isNoContent = true)
 

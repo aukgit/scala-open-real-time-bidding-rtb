@@ -1,8 +1,17 @@
 package shared.com.ortb.adapters.traits
 
-import shared.com.ortb.importedModels.biddingRequests.BannerImpressionModel
+import shared.com.ortb.enumeration.NoBidResponseType.NoBidResponseType
+import shared.com.ortb.importedModels.BidResponseModelWrapper
+import shared.com.ortb.importedModels.biddingRequests.{ BannerImpressionModel, BidResponseModel }
 import shared.com.ortb.importedModels.campaign.SimpleBannerModel
 import shared.io.helpers.NumberHelper
+
+class BidResponseModelAdapterConcreteImplementation extends BidResponseModelAdapter {
+  override def noBidResponse(DemandSidePlatformRequest, noBidResponseType : NoBidResponseType) : BidResponseModelWrapper = {
+    BidResponseModel()
+  }
+}
+
 
 class BannerModelAdapterConcreteImplementation extends BannerModelAdapter {
   def getSimpleBanner(bannerModel : BannerImpressionModel) : SimpleBannerModel = {
