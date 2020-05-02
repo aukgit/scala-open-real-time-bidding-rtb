@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 02/05/2020 00:25:50
+ Date: 03/05/2020 00:18:09
 */
 
 PRAGMA foreign_keys = false;
@@ -78,6 +78,46 @@ INSERT INTO "BannerAdvertiseType" VALUES (3, 'Javascript Ad; must be valid XHTML
 INSERT INTO "BannerAdvertiseType" VALUES (4, 'iframe');
 
 -- ----------------------------
+-- Table structure for Bid
+-- ----------------------------
+DROP TABLE IF EXISTS "Bid";
+CREATE TABLE "Bid" (
+  "BidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRawJson" TEXT DEFAULT NULL,
+  "DealBiddingPrice" real DEFAULT 0,
+  "ActualWiningPrice" REAL DEFAULT 0,
+  "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
+  "SeatBidId" INTEGER NOT NULL,
+  "CampaignId" INTEGER DEFAULT NULL,
+  "ImpressionId" INTEGER DEFAULT NULL,
+  "AdvertiseId" INTEGER DEFAULT NULL,
+  "CreativeAttributeId" INTEGER DEFAULT NULL,
+  "Adm" text DEFAULT NULL,
+  "NUrl" text DEFAULT NULL,
+  "IUrl" TEXT DEFAULT NULL,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "SeatBidIdFK" FOREIGN KEY ("SeatBidId") REFERENCES "SeatBid" ("SeatBidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "CreativeAttributeIdFK" FOREIGN KEY ("CreativeAttributeId") REFERENCES "CreativeAttribute" ("CreativeAttributeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for BidContentCategoriesMapping
+-- ----------------------------
+DROP TABLE IF EXISTS "BidContentCategoriesMapping";
+CREATE TABLE "BidContentCategoriesMapping" (
+  "BidContentCategoriesMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidId" integer NOT NULL,
+  "ContentCategoryId" INTEGER NOT NULL,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
 -- Table structure for BidRequest
 -- ----------------------------
 DROP TABLE IF EXISTS "BidRequest";
@@ -109,21 +149,14 @@ CREATE TABLE "BidRequest" (
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BiddingPriceDeal" real DEFAULT 0,
-  "ActualSelectedPrice" REAL DEFAULT NULL,
   "Currency" TEXT NOT NULL DEFAULT "USD",
-  "Adm" text DEFAULT NULL,
-  "NUrl" text DEFAULT NULL,
-  "IUrl" TEXT DEFAULT NULL,
-  "AdvertiseId" INTEGER DEFAULT NULL,
   "BidRequestId" INTEGER DEFAULT NULL,
-  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
   "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
   "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
   "CreatedDate" real DEFAULT NULL,
-  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -263,6 +296,35 @@ INSERT INTO "ContentContext" VALUES (6, 'Other');
 INSERT INTO "ContentContext" VALUES (7, 'Unknown');
 
 -- ----------------------------
+-- Table structure for CreativeAttribute
+-- ----------------------------
+DROP TABLE IF EXISTS "CreativeAttribute";
+CREATE TABLE "CreativeAttribute" (
+  "CreativeAttributeId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CreativeAttributeDescription" TEXT
+);
+
+-- ----------------------------
+-- Records of CreativeAttribute
+-- ----------------------------
+INSERT INTO "CreativeAttribute" VALUES (1, 'Audio Ad (Auto-Play)');
+INSERT INTO "CreativeAttribute" VALUES (2, 'Audio Ad (User Initiated)');
+INSERT INTO "CreativeAttribute" VALUES (3, 'Expandable (Automatic)');
+INSERT INTO "CreativeAttribute" VALUES (4, 'Expandable (User Initiated - Click)');
+INSERT INTO "CreativeAttribute" VALUES (5, 'Expandable (User Initiated - Rollover)');
+INSERT INTO "CreativeAttribute" VALUES (6, 'In-Banner Video Ad (Auto-Play)');
+INSERT INTO "CreativeAttribute" VALUES (7, 'In-Banner Video Ad (User Initiated)');
+INSERT INTO "CreativeAttribute" VALUES (8, 'Pop (e.g., Over, Under, or Upon Exit)');
+INSERT INTO "CreativeAttribute" VALUES (9, 'Provocative or Suggestive Imagery');
+INSERT INTO "CreativeAttribute" VALUES (10, 'Shaky, Flashing, Flickering, Extreme Animation, Smileys');
+INSERT INTO "CreativeAttribute" VALUES (11, 'Surveys');
+INSERT INTO "CreativeAttribute" VALUES (12, 'Text Only');
+INSERT INTO "CreativeAttribute" VALUES (13, 'User Interactive (e.g., Embedded Games)');
+INSERT INTO "CreativeAttribute" VALUES (14, 'Windows Dialog or Alert Style');
+INSERT INTO "CreativeAttribute" VALUES (15, 'Has Audio On/Off Button');
+INSERT INTO "CreativeAttribute" VALUES (16, 'Ad Can be Skipped (e.g., Skip Button on Pre-Roll Video)');
+
+-- ----------------------------
 -- Table structure for DemandSidePlatform
 -- ----------------------------
 DROP TABLE IF EXISTS "DemandSidePlatform";
@@ -277,6 +339,27 @@ CREATE TABLE "DemandSidePlatform" (
 INSERT INTO "DemandSidePlatform" VALUES (1, 'Demand Side Platform 1');
 INSERT INTO "DemandSidePlatform" VALUES (2, 'Demand Side Platform 2');
 INSERT INTO "DemandSidePlatform" VALUES (3, 'Demand Side Platform 3');
+
+-- ----------------------------
+-- Table structure for DeviceType
+-- ----------------------------
+DROP TABLE IF EXISTS "DeviceType";
+CREATE TABLE "DeviceType" (
+  "DeviceTypeId" INTEGER NOT NULL,
+  "Device TypeDescription" TEXT NOT NULL,
+  PRIMARY KEY ("DeviceTypeId")
+);
+
+-- ----------------------------
+-- Records of DeviceType
+-- ----------------------------
+INSERT INTO "DeviceType" VALUES (1, 'Mobile/Tablet');
+INSERT INTO "DeviceType" VALUES (2, 'Personal Computer');
+INSERT INTO "DeviceType" VALUES (3, 'Connected TV');
+INSERT INTO "DeviceType" VALUES (4, 'Phone');
+INSERT INTO "DeviceType" VALUES (5, 'Tablet');
+INSERT INTO "DeviceType" VALUES (6, 'Connected Device');
+INSERT INTO "DeviceType" VALUES (7, 'Set Top Box');
 
 -- ----------------------------
 -- Table structure for GeoMapping
@@ -299,14 +382,14 @@ CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "RawImpressionJson" TEXT NOT NULL DEFAULT "",
   "AdvertiseId" INTEGER DEFAULT NULL,
-  "BidRequestId" INTEGER DEFAULT NULL,
-  "BiddingPrice" REAL NOT NULL DEFAULT 0,
-  "WinningBidPrice" real DEFAULT 0,
-  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "BidId" INTEGER DEFAULT NULL,
   "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
-  "CreatedDate" real NOT NULL DEFAULT 0,
+  "Bidfloor" real DEFAULT 0,
+  "BidfloorCur" TEXT DEFAULT "USD",
+  "Hash" TEXT DEFAULT NULL,
   "DisplayedDate" real DEFAULT 0,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  "CreatedDate" real NOT NULL DEFAULT 0,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -352,12 +435,12 @@ CREATE TABLE "LogTrace" (
 DROP TABLE IF EXISTS "LostBid";
 CREATE TABLE "LostBid" (
   "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BidRequestId" INTEGER NOT NULL,
+  "BidId" INTEGER,
   "Reason" TEXT,
   "LosingPrice" real,
   "CreatedDate" real,
   "DemandSidePlatformId" integer NOT NULL,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -384,6 +467,18 @@ INSERT INTO "NoBidResponseType" VALUES (7, 'Blocked Publisher or Site');
 INSERT INTO "NoBidResponseType" VALUES (8, 'Unmatched User');
 
 -- ----------------------------
+-- Table structure for PrivateMarketPlaceDeal
+-- ----------------------------
+DROP TABLE IF EXISTS "PrivateMarketPlaceDeal";
+CREATE TABLE "PrivateMarketPlaceDeal" (
+  "PrivateMarketPlaceDealId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "ImpressionId" INTEGER DEFAULT NULL,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "BidFloor" real DEFAULT 0,
+  "BidFloorCurrency" TEXT(3) DEFAULT "USD"
+);
+
+-- ----------------------------
 -- Table structure for Publisher
 -- ----------------------------
 DROP TABLE IF EXISTS "Publisher";
@@ -404,6 +499,25 @@ INSERT INTO "Publisher" VALUES (2, 'Alim Advertise Server 2', 'alim2.com', 'alim
 INSERT INTO "Publisher" VALUES (3, 'Alim Advertise Server 3', 'alim3.com', 'alim 3 address', 3);
 
 -- ----------------------------
+-- Table structure for SeatBid
+-- ----------------------------
+DROP TABLE IF EXISTS "SeatBid";
+CREATE TABLE "SeatBid" (
+  "SeatBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "BidResponseId" INTEGER DEFAULT NULL,
+  "AuctionId" INTEGER DEFAULT NULL,
+  "DemandSidePlatformId" INTEGER DEFAULT NULL,
+  "IsGroupBid" integer(1) DEFAULT 0,
+  "SeatBidRawJson" TEXT DEFAULT NULL,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
 -- Table structure for Transaction
 -- ----------------------------
 DROP TABLE IF EXISTS "Transaction";
@@ -417,6 +531,57 @@ CREATE TABLE "Transaction" (
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
+
+-- ----------------------------
+-- Table structure for UserClassification
+-- ----------------------------
+DROP TABLE IF EXISTS "UserClassification";
+CREATE TABLE "UserClassification" (
+  "UserClassificationId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "UserKeywordsContains" TEXT DEFAULT NULL,
+  "InternetProtocol" TEXT DEFAULT NULL,
+  "Country" TEXT DEFAULT NULL,
+  "lat" real DEFAULT NULL,
+  "lon" real DEFAULT NULL,
+  "IsWhiteList" integer(1) DEFAULT 0,
+  "IsBlackList" integer(1) DEFAULT 0
+);
+
+-- ----------------------------
+-- Table structure for VideoPlaybackMethod
+-- ----------------------------
+DROP TABLE IF EXISTS "VideoPlaybackMethod";
+CREATE TABLE "VideoPlaybackMethod" (
+  "VideoPlaybackMethodId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "VideoPlaybackMethodDescription" TEXT NOT NULL
+);
+
+-- ----------------------------
+-- Records of VideoPlaybackMethod
+-- ----------------------------
+INSERT INTO "VideoPlaybackMethod" VALUES (1, 'Auto-Play Sound On');
+INSERT INTO "VideoPlaybackMethod" VALUES (2, 'Auto-Play Sound Off');
+INSERT INTO "VideoPlaybackMethod" VALUES (3, 'Click-to-Play');
+INSERT INTO "VideoPlaybackMethod" VALUES (4, 'Mouse-Over');
+
+-- ----------------------------
+-- Table structure for VideoResponseProtocol
+-- ----------------------------
+DROP TABLE IF EXISTS "VideoResponseProtocol";
+CREATE TABLE "VideoResponseProtocol" (
+  "VideoResponseProtocolId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "VideoResponseProtocolDescription" TEXT NOT NULL
+);
+
+-- ----------------------------
+-- Records of VideoResponseProtocol
+-- ----------------------------
+INSERT INTO "VideoResponseProtocol" VALUES (1, 'VAST 1.0');
+INSERT INTO "VideoResponseProtocol" VALUES (2, 'VAST 2.0');
+INSERT INTO "VideoResponseProtocol" VALUES (3, 'VAST 3.0');
+INSERT INTO "VideoResponseProtocol" VALUES (4, 'VAST 1.0 Wrapper');
+INSERT INTO "VideoResponseProtocol" VALUES (5, 'VAST 2.0 Wrapper');
+INSERT INTO "VideoResponseProtocol" VALUES (6, 'VAST 3.0 Wrapper');
 
 -- ----------------------------
 -- Table structure for sqlite_sequence
@@ -441,15 +606,117 @@ INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
-INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
-INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('GeoMapping', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('SeatBid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
+INSERT INTO "sqlite_sequence" VALUES ('CreativeAttribute', 16);
+INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
+INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
+INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Bid', 0);
+
+-- ----------------------------
+-- View structure for BidRelatedIdsView
+-- ----------------------------
+DROP VIEW IF EXISTS "BidRelatedIdsView";
+CREATE VIEW "BidRelatedIdsView" AS SELECT
+	Bid.BidId, 
+	Impression.ImpressionId, 
+	Impression.AdvertiseId, 
+	Bid.SeatBidId, 
+	Bid.CampaignId, 
+	Bid.ImpressionId, 
+	Auction.AuctionId, 
+	SeatBid.BidRequestId, 
+	SeatBid.BidResponseId, 	
+	Bid.AdvertiseId, 
+	SeatBid.DemandSidePlatformId	
+FROM
+	Impression
+	INNER JOIN
+	Bid
+	ON 
+		Impression.BidId = Bid.BidId AND
+		Impression.ImpressionId = Bid.ImpressionId
+	INNER JOIN
+	SeatBid
+	ON 
+		Bid.SeatBidId = SeatBid.SeatBidId
+	INNER JOIN
+	Auction
+	ON 
+		SeatBid.AuctionId = Auction.AuctionId;
+
+-- ----------------------------
+-- View structure for KeywordAdvertiseMappingIdsView
+-- ----------------------------
+DROP VIEW IF EXISTS "KeywordAdvertiseMappingIdsView";
+CREATE VIEW "KeywordAdvertiseMappingIdsView" AS SELECT
+	Keyword.KeywordId, 
+	Keyword.Keyword, 
+	KeywordAdvertiseMapping.KeywordAdvertiseMappingId, 
+	Advertise.AdvertiseId, 
+	Advertise.CampaignId, 
+	Advertise.BannerAdvertiseTypeId, 
+	Advertise.IsVideo, 
+	Advertise.IsBanner, 
+	Advertise.ContentContextId
+FROM
+	Advertise
+	INNER JOIN
+	KeywordAdvertiseMapping
+	ON 
+		Advertise.AdvertiseId = KeywordAdvertiseMapping.AdvertiseId
+	INNER JOIN
+	Keyword
+	ON 
+		KeywordAdvertiseMapping.KeywordId = Keyword.KeywordId;
+
+-- ----------------------------
+-- View structure for WinningPriceInfoView
+-- ----------------------------
+DROP VIEW IF EXISTS "WinningPriceInfoView";
+CREATE VIEW "WinningPriceInfoView" AS SELECT
+	Bid.BidId, 
+	Impression.ImpressionId, 
+	Impression.AdvertiseId, 
+	Bid.SeatBidId, 
+	Bid.CampaignId, 
+	Bid.ImpressionId, 
+	Auction.AuctionId, 
+	SeatBid.BidRequestId, 
+	SeatBid.BidResponseId, 	
+	Bid.AdvertiseId, 
+	SeatBid.DemandSidePlatformId,
+	Auction.WinningPrice as AuctionWinningPrice, 	
+	Bid.DealBiddingPrice, 
+	Bid.ActualWiningPrice, 
+	Auction.CreatedDated AS AuctionCreatedDate, 
+	Bid.CreatedDate AS BiddingCreatedDate, 
+	Impression.CreatedDate AS ImpressionCreatedDate, 
+	Bid.IsImpressionServedOrWonByAuction AS IsWon, 
+	SeatBid.IsGroupBid	
+FROM
+	Impression
+	INNER JOIN
+	Bid
+	ON 
+		Impression.BidId = Bid.BidId AND
+		Impression.ImpressionId = Bid.ImpressionId
+	INNER JOIN
+	SeatBid
+	ON 
+		Bid.SeatBidId = SeatBid.SeatBidId
+	INNER JOIN
+	Auction
+	ON 
+		SeatBid.AuctionId = Auction.AuctionId;
 
 -- ----------------------------
 -- Auto increment value for Advertise
@@ -459,6 +726,10 @@ INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 -- Auto increment value for BannerAdvertiseType
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
+
+-- ----------------------------
+-- Auto increment value for Bid
+-- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for BidRequest
@@ -489,6 +760,11 @@ UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
 -- Auto increment value for ContentContext
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
+
+-- ----------------------------
+-- Auto increment value for CreativeAttribute
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 
 -- ----------------------------
 -- Auto increment value for DemandSidePlatform
@@ -522,7 +798,21 @@ UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
+-- Auto increment value for SeatBid
+-- ----------------------------
+
+-- ----------------------------
 -- Auto increment value for Transaction
 -- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for VideoPlaybackMethod
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'VideoPlaybackMethod';
+
+-- ----------------------------
+-- Auto increment value for VideoResponseProtocol
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 6 WHERE name = 'VideoResponseProtocol';
 
 PRAGMA foreign_keys = true;
