@@ -3,7 +3,7 @@ import shared.com.ortb.persistent.schema.Tables._
 
 case class BidFailedInfoModel(
   lastLostBid: LostbidRow,
-  lastWinningBid : BidresponseRow,
+  lastWinningBid : WinningpriceinfoviewRow,
 
   lastLosingPrice : Double,
   lastWiningPrice : Double,

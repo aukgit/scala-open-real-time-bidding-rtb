@@ -9,6 +9,7 @@ import shared.io.helpers.NumberHelper
 import slick.jdbc.SQLiteProfile.api._
 
 import scala.util.Random
+import shared.com.ortb.persistent.schema.Tables._
 
 trait FailedBidsGetter {
   this : DemandSidePlatformBiddingAgent =>
@@ -50,17 +51,15 @@ trait FailedBidsGetter {
     limit : Int,
     repositories : Repositories,
     lostBidResults : Seq[persistent.schema.Tables.LostbidRow]) = {
-    val bidResponses = repositories.bidResponses
     val length = lostBidResults.length
 
     val averageOfLosingPrice = lostBidResults.map(w => NumberHelper.getAsDouble(w.losingprice)).sum / length
     val lastLosingPrice = NumberHelper.getAsDouble(lostBidResults.head.losingprice)
 
-    val bidResponseResults = getBidResponses(limit, repositories, bidResponses)
+    val winningPriceModel = getWinningPricesModel(limit, repositories)
 
-    val bidResponseResultsLength = bidResponseResults.length
-    val averageOfWiningPrices = bidResponseResults.map(w => NumberHelper.getAsDouble(w.actualselectedprice)).sum / bidResponseResultsLength
-    val lastWiningPrice = NumberHelper.getAsDouble(lostBidResults.head.losingprice)
+    val averageOfWiningPrices = winningPriceModel.averageOfWiningPrices
+    val lastWiningPrice = winningPriceModel.lastWinningPrice
 
     val absoluteDifferenceOfAverageLosingAndWinningPrice =
       Math.abs(averageOfWiningPrices - averageOfLosingPrice)
@@ -73,7 +72,7 @@ trait FailedBidsGetter {
 
     val bidFailedInfoModel = BidFailedInfoModel(
       lastLostBid = lostBidResults.head,
-      lastWinningBid = bidResponseResults.head,
+      lastWinningBid = winningPriceModel.lastWinningBidRow,
       lastLosingPrice = lastLosingPrice,
       lastWiningPrice = lastWiningPrice,
       averageOfLosingPrices = averageOfLosingPrice,
@@ -106,19 +105,27 @@ trait FailedBidsGetter {
     lostBidResults
   }
 
-  def getBidResponses(
+  def getWinningPricesModel(
     limit : Int,
-    repositories : Repositories,
-    bidResponses : TableQuery[Tables.Bidresponse]) : Seq[Tables.BidresponseRow] = {
-    val bidResponsesQuery = bidResponses.filter(r => r.iswontheauction === 0)
-      .sortBy(_.actualselectedprice.desc)
-      .sortBy(_.createddate.desc)
-      .take(limit)
+    repositories : Repositories) : WinningPricesModel = {
 
-    val bidResponseResults = repositories
-      .bidResponseRepository
-      .run(bidResponsesQuery)
-
-    bidResponseResults
+//    val bidResponses = repositories.bidResponses
+//    val bidResponsesQuery = bidResponses.filter(r => r.iswontheauction === 0)
+//      .sortBy(_.actualselectedprice.desc)
+//      .sortBy(_.createddate.desc)
+//      .take(limit)
+//
+//    val bidResponseResults = repositories
+//      .bidResponseRepository
+//      .run(bidResponsesQuery)
+//
+//    bidResponseResults
+    throw new NotImplementedError()
   }
 }
+
+case class WinningPricesModel (
+  averageOfWiningPrices: Double,
+  lastWinningPrice: Double,
+  lastWinningBidRow : WinningpriceinfoviewRow
+)
