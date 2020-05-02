@@ -2,7 +2,7 @@ package shared.com.ortb.model
 
 import shared.io.helpers.EmptyValidateHelper
 
-case class EntityWithJoinedTableRows[TBase, TChildRowsType](
+case class EntityWithJoinedTableRowsModel[TBase, TChildRowsType](
   row : Option[TBase],
   innerRows : Option[Seq[TChildRowsType]]
 ) {
