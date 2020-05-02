@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 03/05/2020 00:18:09
+ Date: 03/05/2020 02:11:58
 */
 
 PRAGMA foreign_keys = false;
@@ -112,7 +112,7 @@ DROP TABLE IF EXISTS "BidContentCategoriesMapping";
 CREATE TABLE "BidContentCategoriesMapping" (
   "BidContentCategoriesMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BidId" integer NOT NULL,
-  "ContentCategoryId" INTEGER NOT NULL,
+  "ContentCategoryId" text NOT NULL,
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -381,7 +381,6 @@ DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "RawImpressionJson" TEXT NOT NULL DEFAULT "",
-  "AdvertiseId" INTEGER DEFAULT NULL,
   "BidId" INTEGER DEFAULT NULL,
   "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
   "Bidfloor" real DEFAULT 0,
@@ -389,8 +388,7 @@ CREATE TABLE "Impression" (
   "Hash" TEXT DEFAULT NULL,
   "DisplayedDate" real DEFAULT 0,
   "CreatedDate" real NOT NULL DEFAULT 0,
-  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -614,12 +612,13 @@ INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
 INSERT INTO "sqlite_sequence" VALUES ('GeoMapping', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('SeatBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('CreativeAttribute', 16);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Bid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidContentCategoriesMapping', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 
 -- ----------------------------
 -- View structure for BidRelatedIdsView
@@ -628,10 +627,8 @@ DROP VIEW IF EXISTS "BidRelatedIdsView";
 CREATE VIEW "BidRelatedIdsView" AS SELECT
 	Bid.BidId, 
 	Impression.ImpressionId, 
-	Impression.AdvertiseId, 
 	Bid.SeatBidId, 
-	Bid.CampaignId, 
-	Bid.ImpressionId, 
+	Bid.CampaignId, 	
 	Auction.AuctionId, 
 	SeatBid.BidRequestId, 
 	SeatBid.BidResponseId, 	
@@ -684,11 +681,9 @@ FROM
 DROP VIEW IF EXISTS "WinningPriceInfoView";
 CREATE VIEW "WinningPriceInfoView" AS SELECT
 	Bid.BidId, 
-	Impression.ImpressionId, 
-	Impression.AdvertiseId, 
+	Impression.ImpressionId, 	
 	Bid.SeatBidId, 
-	Bid.CampaignId, 
-	Bid.ImpressionId, 
+	Bid.CampaignId, 	
 	Auction.AuctionId, 
 	SeatBid.BidRequestId, 
 	SeatBid.BidResponseId, 	
@@ -729,6 +724,10 @@ UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
 -- Auto increment value for Bid
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BidContentCategoriesMapping
 -- ----------------------------
 
 -- ----------------------------
