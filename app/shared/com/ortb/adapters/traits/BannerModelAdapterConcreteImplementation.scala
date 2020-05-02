@@ -67,18 +67,18 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
 
 
 class BannerModelAdapterConcreteImplementation extends BannerModelAdapter {
-  def getSimpleBanner(bannerModel : BannerImpressionModel) : SimpleBannerModel = {
-    if (bannerModel == null) {
+  def getSimpleBanner(bannerImpressionModel : BannerImpressionModel) : SimpleBannerModel = {
+    if (bannerImpressionModel == null) {
       return null
     }
 
     SimpleBannerModel(
-      bannerModel.id,
-      wmin = NumberHelper.getAsInt(bannerModel.wmin),
-      wmax = NumberHelper.getAsInt(bannerModel.wmax),
-      w = NumberHelper.getAsInt(bannerModel.w),
-      hmin = NumberHelper.getAsInt(bannerModel.hmin),
-      hmax = NumberHelper.getAsInt(bannerModel.hmax),
-      h = NumberHelper.getAsInt(bannerModel.h))
+      bannerImpressionModel.id,
+      wmin = NumberHelper.getAsInt(bannerImpressionModel.wmin),
+      wmax = NumberHelper.getAsInt(bannerImpressionModel.wmax),
+      w = NumberHelper.getAsInt(bannerImpressionModel.w),
+      hmin = NumberHelper.getAsInt(bannerImpressionModel.hmin),
+      hmax = NumberHelper.getAsInt(bannerImpressionModel.hmax),
+      h = NumberHelper.getAsInt(bannerImpressionModel.h))
   }
 }
