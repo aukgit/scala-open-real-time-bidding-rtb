@@ -24,7 +24,9 @@
 - Variance : https://medium.com/@wiemzin/variances-in-scala-9c7d17af9dc4
 - Scala Generic with Shapeless: https://meta.plasm.us/posts/2015/11/08/type-classes-and-generic-derivation/
 - Reflection : https://bit.ly/350JYx7 | https://bit.ly/3bwnjem | https://bit.ly/2VBq60l | https://bit.ly/2x4GHA8
-- Bytes to object and object to Bytes https://bit.ly/2SaE9I7 (Serializing)
+- Bytes to object and object to Bytes : https://bit.ly/2SaE9I7 (Serializing)
+- Slick Big Table Generate : https://bit.ly/35nyELq
+- Slick Generate Table and View Both : https://bit.ly/35qj8Pd
 
 
 ```scala
