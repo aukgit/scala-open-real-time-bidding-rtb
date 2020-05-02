@@ -17,23 +17,23 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
   def getConvertBidResponseRowToBidResponse(
     dspId : Int,
     bidResponseRow : BidresponseRow) : BidResponseModel = {
-    val isNoBidResponse = PrimitiveTypeHelper
-      .IntEnhancement(bidResponseRow.issendnobidresponse).toBoolean
-
-    if (isNoBidResponse) {
-      // no response bid
-      val nbr = bidResponseRow.nobidresponsetypeid
-
-      return BidResponseModel(
-        bidResponseRow.bidresponseid.toString,
-        None,
-        Some(bidResponseRow.bidrequestid.toString),
-        nbr = nbr)
-    }
-
-          val seatBid =SeatBidModel()
-    return
-
+//    val isNoBidResponse = PrimitiveTypeHelper
+//      .IntEnhancement(bidResponseRow.issendnobidresponse).toBoolean
+//
+//    if (isNoBidResponse) {
+//      // no response bid
+//      val nbr = bidResponseRow.nobidresponsetypeid
+//
+//      return BidResponseModel(
+//        bidResponseRow.bidresponseid.toString,
+//        None,
+//        Some(bidResponseRow.bidrequestid.toString),
+//        nbr = nbr)
+//    }
+//
+//          val seatBid =SeatBidModel()
+//    return
+    throw new NotImplementedError()
   }
 
   /**
