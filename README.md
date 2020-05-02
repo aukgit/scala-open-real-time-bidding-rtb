@@ -1,5 +1,10 @@
+![aukgit simulation of Scala OpenRTB 2.3 Specs Logo](https://github.com/aukgit/scala-open-real-time-bidding-rtb/blob/2f1573bdb8fc7ef0623102b4e535f390afaa14c8/logos/OpenRTB%20Logo.png?raw=true)
+
 # Scala OpenRTB (Open RealTime Bidding) Simulation Specs 2.3
  Scala real time bidding system simulation using openRTB
+
+# Tech Stacks
+- https://stackshare.io/aukgit/scala-open-real-time-bidding-rtb#stack
 
 # Documents Links
 
