@@ -32,18 +32,10 @@ object DatabaseEngineCodeGenerator extends App with DefaultExecutionContextManag
   val model = db.run(dbio)
   val future : Future[SourceCodeGenerator] = model.map(model => new SourceCodeGenerator(model))
   val codegen : SourceCodeGenerator = Await.result(future, Duration.Inf)
-  codegen.writeToFile(databaseProfile, outputDir, compilingPackage, "Tables", "Tables.scala")
-  //  slick.codegen.SourceCodeGenerator.run(
-  //    profile = ,
-  //    jdbcDriver =
-  //    url = , //
-  //
-  //    outputDir = databaseGenerateConfig.compiledOutputDir, //
-  //
-  //    pkg = databaseGenerateConfig.pkg,
-  //    user = None,
-  //    password = None,
-  //    ignoreInvalidDefaults = true,
-  //    outputToMultipleFiles = false
-  //    )
+  codegen.writeToFile(
+    databaseProfile,
+    outputDir,
+    compilingPackage,
+    "Tables",
+    "Tables.scala")
 }
