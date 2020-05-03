@@ -1,7 +1,7 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.auctionbid
 
-import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.persistent.schema.Tables._
+import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 
 case class ImpressionBiddableInfoModel(
   impression: ImpressionModel,

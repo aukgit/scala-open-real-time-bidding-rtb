@@ -43,6 +43,8 @@ object AppConstants {
 
   lazy val EmptyString : String = ""
 
+  lazy val CurrencyUsd: String = "USD"
+
   lazy val EmptyStringOption : Option[String] = Some("")
 
   lazy val EmptyDoubleOption : Option[Double] = Some(0)

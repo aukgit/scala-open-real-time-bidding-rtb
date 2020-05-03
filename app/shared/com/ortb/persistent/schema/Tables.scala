@@ -1,11 +1,9 @@
 package shared.com.ortb.persistent.schema
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
-trait Profile {
+object Tables extends {
   val profile = slick.jdbc.SQLiteProfile
-}
-
-object Tables extends Profile with Tables
+} with Tables
 
 /** Slick data model trait for extension, choice of backend or usage in the cake pattern. (Make sure to initialize this late.) */
 trait Tables {
@@ -16,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Demandsideplatform.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Logtrace.schema, Lostbid.schema, Nobidresponsetype.schema, Publisher.schema, Transaction.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bid.schema, Bidcontentcategoriesmapping.schema, Bidrelatedidsview.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Creativeattribute.schema, Demandsideplatform.schema, Devicetype.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Keywordadvertisemappingidsview.schema, Logtrace.schema, Lostbid.schema, Nobidresponsetype.schema, Privatemarketplacedeal.schema, Publisher.schema, Seatbid.schema, Transaction.schema, Userclassification.schema, Videoplaybackmethod.schema, Videoresponseprotocol.schema, Winningpriceinfoview.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -168,6 +166,155 @@ trait Tables {
   /** Collection-like TableQuery object for table Banneradvertisetype */
   lazy val Banneradvertisetype = new TableQuery(tag => new Banneradvertisetype(tag))
 
+  /** Entity class storing rows of table Bid
+   *  @param bidid Database column BidId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param bidrawjson Database column BidRawJson SqlType(TEXT), Default(None)
+   *  @param dealbiddingprice Database column DealBiddingPrice SqlType(REAL), Default(Some(0.0))
+   *  @param actualwiningprice Database column ActualWiningPrice SqlType(REAL), Default(Some(0.0))
+   *  @param isimpressionservedorwonbyauction Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false), Default(Some(0))
+   *  @param seatbidid Database column SeatBidId SqlType(INTEGER)
+   *  @param campaignid Database column CampaignId SqlType(INTEGER), Default(None)
+   *  @param impressionid Database column ImpressionId SqlType(INTEGER), Default(None)
+   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER), Default(None)
+   *  @param creativeattributeid Database column CreativeAttributeId SqlType(INTEGER), Default(None)
+   *  @param adm Database column Adm SqlType(TEXT), Default(None)
+   *  @param nurl Database column NUrl SqlType(TEXT), Default(None)
+   *  @param iurl Database column IUrl SqlType(TEXT), Default(None)
+   *  @param height Database column Height SqlType(INTEGER), Default(None)
+   *  @param width Database column Width SqlType(INTEGER), Default(None)
+   *  @param createddate Database column CreatedDate SqlType(REAL), Default(Some(0.0)) */
+  case class BidRow(bidid: Int, bidrawjson: Option[String] = None, dealbiddingprice: Option[Double] = Some(0.0), actualwiningprice: Option[Double] = Some(0.0), isimpressionservedorwonbyauction: Option[Int] = Some(0), seatbidid: Int, campaignid: Option[Int] = None, impressionid: Option[Int] = None, advertiseid: Option[Int] = None, creativeattributeid: Option[Int] = None, adm: Option[String] = None, nurl: Option[String] = None, iurl: Option[String] = None, height: Option[Int] = None, width: Option[Int] = None, createddate: Option[Double] = Some(0.0))
+  /** GetResult implicit for fetching BidRow objects using plain SQL queries */
+  implicit def GetResultBidRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Double]], e3: GR[Option[Int]]): GR[BidRow] = GR{
+    prs => import prs._
+    BidRow.tupled((<<[Int], <<?[String], <<?[Double], <<?[Double], <<?[Int], <<[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Double]))
+  }
+  /** Table description of table Bid. Objects of this class serve as prototypes for rows in queries. */
+  class Bid(_tableTag: Tag) extends profile.api.Table[BidRow](_tableTag, "Bid") {
+    def * = (bidid, bidrawjson, dealbiddingprice, actualwiningprice, isimpressionservedorwonbyauction, seatbidid, campaignid, impressionid, advertiseid, creativeattributeid, adm, nurl, iurl, height, width, createddate) <> (BidRow.tupled, BidRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(bidid), bidrawjson, dealbiddingprice, actualwiningprice, isimpressionservedorwonbyauction, Rep.Some(seatbidid), campaignid, impressionid, advertiseid, creativeattributeid, adm, nurl, iurl, height, width, createddate)).shaped.<>({r=>import r._; _1.map(_=> BidRow.tupled((_1.get, _2, _3, _4, _5, _6.get, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column BidId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val bidid: Rep[Int] = column[Int]("BidId", O.AutoInc, O.PrimaryKey)
+    /** Database column BidRawJson SqlType(TEXT), Default(None) */
+    val bidrawjson: Rep[Option[String]] = column[Option[String]]("BidRawJson", O.Default(None))
+    /** Database column DealBiddingPrice SqlType(REAL), Default(Some(0.0)) */
+    val dealbiddingprice: Rep[Option[Double]] = column[Option[Double]]("DealBiddingPrice", O.Default(Some(0.0)))
+    /** Database column ActualWiningPrice SqlType(REAL), Default(Some(0.0)) */
+    val actualwiningprice: Rep[Option[Double]] = column[Option[Double]]("ActualWiningPrice", O.Default(Some(0.0)))
+    /** Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false), Default(Some(0)) */
+    val isimpressionservedorwonbyauction: Rep[Option[Int]] = column[Option[Int]]("IsImpressionServedOrWonByAuction", O.Length(1,varying=false), O.Default(Some(0)))
+    /** Database column SeatBidId SqlType(INTEGER) */
+    val seatbidid: Rep[Int] = column[Int]("SeatBidId")
+    /** Database column CampaignId SqlType(INTEGER), Default(None) */
+    val campaignid: Rep[Option[Int]] = column[Option[Int]]("CampaignId", O.Default(None))
+    /** Database column ImpressionId SqlType(INTEGER), Default(None) */
+    val impressionid: Rep[Option[Int]] = column[Option[Int]]("ImpressionId", O.Default(None))
+    /** Database column AdvertiseId SqlType(INTEGER), Default(None) */
+    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId", O.Default(None))
+    /** Database column CreativeAttributeId SqlType(INTEGER), Default(None) */
+    val creativeattributeid: Rep[Option[Int]] = column[Option[Int]]("CreativeAttributeId", O.Default(None))
+    /** Database column Adm SqlType(TEXT), Default(None) */
+    val adm: Rep[Option[String]] = column[Option[String]]("Adm", O.Default(None))
+    /** Database column NUrl SqlType(TEXT), Default(None) */
+    val nurl: Rep[Option[String]] = column[Option[String]]("NUrl", O.Default(None))
+    /** Database column IUrl SqlType(TEXT), Default(None) */
+    val iurl: Rep[Option[String]] = column[Option[String]]("IUrl", O.Default(None))
+    /** Database column Height SqlType(INTEGER), Default(None) */
+    val height: Rep[Option[Int]] = column[Option[Int]]("Height", O.Default(None))
+    /** Database column Width SqlType(INTEGER), Default(None) */
+    val width: Rep[Option[Int]] = column[Option[Int]]("Width", O.Default(None))
+    /** Database column CreatedDate SqlType(REAL), Default(Some(0.0)) */
+    val createddate: Rep[Option[Double]] = column[Option[Double]]("CreatedDate", O.Default(Some(0.0)))
+
+    /** Foreign key referencing Advertise (database name Advertise_FK_1) */
+    lazy val advertiseFk = foreignKey("Advertise_FK_1", advertiseid, Advertise)(r => Rep.Some(r.advertiseid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Campaign (database name Campaign_FK_2) */
+    lazy val campaignFk = foreignKey("Campaign_FK_2", campaignid, Campaign)(r => Rep.Some(r.campaignid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Creativeattribute (database name CreativeAttribute_FK_3) */
+    lazy val creativeattributeFk = foreignKey("CreativeAttribute_FK_3", creativeattributeid, Creativeattribute)(r => Rep.Some(r.creativeattributeid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Impression (database name Impression_FK_4) */
+    lazy val impressionFk = foreignKey("Impression_FK_4", impressionid, Impression)(r => Rep.Some(r.impressionid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Seatbid (database name SeatBid_FK_5) */
+    lazy val seatbidFk = foreignKey("SeatBid_FK_5", seatbidid, Seatbid)(r => r.seatbidid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table Bid */
+  lazy val Bid = new TableQuery(tag => new Bid(tag))
+
+  /** Entity class storing rows of table Bidcontentcategoriesmapping
+   *  @param bidcontentcategoriesmappingid Database column BidContentCategoriesMappingId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param bidid Database column BidId SqlType(INTEGER)
+   *  @param contentcategoryid Database column ContentCategoryId SqlType(TEXT) */
+  case class BidcontentcategoriesmappingRow(bidcontentcategoriesmappingid: Int, bidid: Int, contentcategoryid: String)
+  /** GetResult implicit for fetching BidcontentcategoriesmappingRow objects using plain SQL queries */
+  implicit def GetResultBidcontentcategoriesmappingRow(implicit e0: GR[Int], e1: GR[String]): GR[BidcontentcategoriesmappingRow] = GR{
+    prs => import prs._
+    BidcontentcategoriesmappingRow.tupled((<<[Int], <<[Int], <<[String]))
+  }
+  /** Table description of table BidContentCategoriesMapping. Objects of this class serve as prototypes for rows in queries. */
+  class Bidcontentcategoriesmapping(_tableTag: Tag) extends profile.api.Table[BidcontentcategoriesmappingRow](_tableTag, "BidContentCategoriesMapping") {
+    def * = (bidcontentcategoriesmappingid, bidid, contentcategoryid) <> (BidcontentcategoriesmappingRow.tupled, BidcontentcategoriesmappingRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(bidcontentcategoriesmappingid), Rep.Some(bidid), Rep.Some(contentcategoryid))).shaped.<>({r=>import r._; _1.map(_=> BidcontentcategoriesmappingRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column BidContentCategoriesMappingId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val bidcontentcategoriesmappingid: Rep[Int] = column[Int]("BidContentCategoriesMappingId", O.AutoInc, O.PrimaryKey)
+    /** Database column BidId SqlType(INTEGER) */
+    val bidid: Rep[Int] = column[Int]("BidId")
+    /** Database column ContentCategoryId SqlType(TEXT) */
+    val contentcategoryid: Rep[String] = column[String]("ContentCategoryId")
+
+    /** Foreign key referencing Bid (database name Bid_FK_1) */
+    lazy val bidFk = foreignKey("Bid_FK_1", bidid, Bid)(r => r.bidid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Contentcategory (database name ContentCategory_FK_2) */
+    lazy val contentcategoryFk = foreignKey("ContentCategory_FK_2", contentcategoryid, Contentcategory)(r => r.contentcategoryid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table Bidcontentcategoriesmapping */
+  lazy val Bidcontentcategoriesmapping = new TableQuery(tag => new Bidcontentcategoriesmapping(tag))
+
+  /** Entity class storing rows of table Bidrelatedidsview
+   *  @param bidid Database column BidId SqlType(INTEGER)
+   *  @param impressionid Database column ImpressionId SqlType(INTEGER)
+   *  @param seatbidid Database column SeatBidId SqlType(INTEGER)
+   *  @param campaignid Database column CampaignId SqlType(INTEGER)
+   *  @param auctionid Database column AuctionId SqlType(INTEGER)
+   *  @param bidrequestid Database column BidRequestId SqlType(INTEGER)
+   *  @param bidresponseid Database column BidResponseId SqlType(INTEGER)
+   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER)
+   *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER) */
+  case class BidrelatedidsviewRow(bidid: Option[Int], impressionid: Option[Int], seatbidid: Option[Int], campaignid: Option[Int], auctionid: Option[Int], bidrequestid: Option[Int], bidresponseid: Option[Int], advertiseid: Option[Int], demandsideplatformid: Option[Int])
+  /** GetResult implicit for fetching BidrelatedidsviewRow objects using plain SQL queries */
+  implicit def GetResultBidrelatedidsviewRow(implicit e0: GR[Option[Int]]): GR[BidrelatedidsviewRow] = GR{
+    prs => import prs._
+    BidrelatedidsviewRow.tupled((<<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
+  }
+  /** Table description of table BidRelatedIdsView. Objects of this class serve as prototypes for rows in queries. */
+  class Bidrelatedidsview(_tableTag: Tag) extends profile.api.Table[BidrelatedidsviewRow](_tableTag, "BidRelatedIdsView") {
+    def * = (bidid, impressionid, seatbidid, campaignid, auctionid, bidrequestid, bidresponseid, advertiseid, demandsideplatformid) <> (BidrelatedidsviewRow.tupled, BidrelatedidsviewRow.unapply)
+
+    /** Database column BidId SqlType(INTEGER) */
+    val bidid: Rep[Option[Int]] = column[Option[Int]]("BidId")
+    /** Database column ImpressionId SqlType(INTEGER) */
+    val impressionid: Rep[Option[Int]] = column[Option[Int]]("ImpressionId")
+    /** Database column SeatBidId SqlType(INTEGER) */
+    val seatbidid: Rep[Option[Int]] = column[Option[Int]]("SeatBidId")
+    /** Database column CampaignId SqlType(INTEGER) */
+    val campaignid: Rep[Option[Int]] = column[Option[Int]]("CampaignId")
+    /** Database column AuctionId SqlType(INTEGER) */
+    val auctionid: Rep[Option[Int]] = column[Option[Int]]("AuctionId")
+    /** Database column BidRequestId SqlType(INTEGER) */
+    val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId")
+    /** Database column BidResponseId SqlType(INTEGER) */
+    val bidresponseid: Rep[Option[Int]] = column[Option[Int]]("BidResponseId")
+    /** Database column AdvertiseId SqlType(INTEGER) */
+    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId")
+    /** Database column DemandSidePlatformId SqlType(INTEGER) */
+    val demandsideplatformid: Rep[Option[Int]] = column[Option[Int]]("DemandSidePlatformId")
+  }
+  /** Collection-like TableQuery object for table Bidrelatedidsview */
+  lazy val Bidrelatedidsview = new TableQuery(tag => new Bidrelatedidsview(tag))
+
   /** Entity class storing rows of table Bidrequest
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), AutoInc, PrimaryKey
    *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER)
@@ -242,52 +389,34 @@ trait Tables {
 
   /** Entity class storing rows of table Bidresponse
    *  @param bidresponseid Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey
-   *  @param biddingpricedeal Database column BiddingPriceDeal SqlType(REAL), Default(Some(0.0))
-   *  @param actualselectedprice Database column ActualSelectedPrice SqlType(REAL), Default(None)
    *  @param currency Database column Currency SqlType(TEXT)
-   *  @param adm Database column Adm SqlType(TEXT), Default(None)
-   *  @param nurl Database column NUrl SqlType(TEXT), Default(None)
-   *  @param iurl Database column IUrl SqlType(TEXT), Default(None)
-   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER), Default(None)
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
-   *  @param iswontheauction Database column IsWonTheAuction SqlType(INTEGER), Length(1,false), Default(0)
+   *  @param isanybidwontheauction Database column IsAnyBidWonTheAuction SqlType(INTEGER), Length(1,false), Default(0)
    *  @param isauctionoccured Database column IsAuctionOccured SqlType(INTEGER), Length(1,false), Default(0)
    *  @param isprecachedbidserved Database column IsPreCachedBidServed SqlType(INTEGER), Length(1,false), Default(0)
    *  @param issendnobidresponse Database column IsSendNoBidResponse SqlType(INTEGER), Length(1,false), Default(0)
    *  @param nobidresponsetypeid Database column NoBidResponseTypeId SqlType(INTEGER), Default(None)
    *  @param createddate Database column CreatedDate SqlType(REAL), Default(None) */
-  case class BidresponseRow(bidresponseid: Int, biddingpricedeal: Option[Double] = Some(0.0), actualselectedprice: Option[Double] = None, currency: String, adm: Option[String] = None, nurl: Option[String] = None, iurl: Option[String] = None, advertiseid: Option[Int] = None, bidrequestid: Option[Int] = None, iswontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddate: Option[Double] = None)
+  case class BidresponseRow(bidresponseid: Int, currency: String, bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddate: Option[Double] = None)
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
-  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[Double]], e2: GR[String], e3: GR[Option[String]], e4: GR[Option[Int]]): GR[BidresponseRow] = GR{
+  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[Double]]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<?[Double], <<?[Double], <<[String], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[Double]))
+    BidresponseRow.tupled((<<[Int], <<[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[Double]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
-    def * = (bidresponseid, biddingpricedeal, actualselectedprice, currency, adm, nurl, iurl, advertiseid, bidrequestid, iswontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddate) <> (BidresponseRow.tupled, BidresponseRow.unapply)
+    def * = (bidresponseid, currency, bidrequestid, isanybidwontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddate) <> (BidresponseRow.tupled, BidresponseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(bidresponseid), biddingpricedeal, actualselectedprice, Rep.Some(currency), adm, nurl, iurl, advertiseid, bidrequestid, Rep.Some(iswontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, createddate)).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4.get, _5, _6, _7, _8, _9, _10.get, _11.get, _12.get, _13.get, _14, _15)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(bidresponseid), Rep.Some(currency), bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, createddate)).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6.get, _7.get, _8, _9)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val bidresponseid: Rep[Int] = column[Int]("BidResponseId", O.AutoInc, O.PrimaryKey)
-    /** Database column BiddingPriceDeal SqlType(REAL), Default(Some(0.0)) */
-    val biddingpricedeal: Rep[Option[Double]] = column[Option[Double]]("BiddingPriceDeal", O.Default(Some(0.0)))
-    /** Database column ActualSelectedPrice SqlType(REAL), Default(None) */
-    val actualselectedprice: Rep[Option[Double]] = column[Option[Double]]("ActualSelectedPrice", O.Default(None))
     /** Database column Currency SqlType(TEXT) */
     val currency: Rep[String] = column[String]("Currency")
-    /** Database column Adm SqlType(TEXT), Default(None) */
-    val adm: Rep[Option[String]] = column[Option[String]]("Adm", O.Default(None))
-    /** Database column NUrl SqlType(TEXT), Default(None) */
-    val nurl: Rep[Option[String]] = column[Option[String]]("NUrl", O.Default(None))
-    /** Database column IUrl SqlType(TEXT), Default(None) */
-    val iurl: Rep[Option[String]] = column[Option[String]]("IUrl", O.Default(None))
-    /** Database column AdvertiseId SqlType(INTEGER), Default(None) */
-    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId", O.Default(None))
     /** Database column BidRequestId SqlType(INTEGER), Default(None) */
     val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
-    /** Database column IsWonTheAuction SqlType(INTEGER), Length(1,false), Default(0) */
-    val iswontheauction: Rep[Int] = column[Int]("IsWonTheAuction", O.Length(1,varying=false), O.Default(0))
+    /** Database column IsAnyBidWonTheAuction SqlType(INTEGER), Length(1,false), Default(0) */
+    val isanybidwontheauction: Rep[Int] = column[Int]("IsAnyBidWonTheAuction", O.Length(1,varying=false), O.Default(0))
     /** Database column IsAuctionOccured SqlType(INTEGER), Length(1,false), Default(0) */
     val isauctionoccured: Rep[Int] = column[Int]("IsAuctionOccured", O.Length(1,varying=false), O.Default(0))
     /** Database column IsPreCachedBidServed SqlType(INTEGER), Length(1,false), Default(0) */
@@ -299,12 +428,10 @@ trait Tables {
     /** Database column CreatedDate SqlType(REAL), Default(None) */
     val createddate: Rep[Option[Double]] = column[Option[Double]]("CreatedDate", O.Default(None))
 
-    /** Foreign key referencing Advertise (database name Advertise_FK_1) */
-    lazy val advertiseFk = foreignKey("Advertise_FK_1", advertiseid, Advertise)(r => Rep.Some(r.advertiseid), onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
-    /** Foreign key referencing Bidrequest (database name BidRequest_FK_2) */
-    lazy val bidrequestFk = foreignKey("BidRequest_FK_2", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-    /** Foreign key referencing Nobidresponsetype (database name NoBidResponseType_FK_3) */
-    lazy val nobidresponsetypeFk = foreignKey("NoBidResponseType_FK_3", nobidresponsetypeid, Nobidresponsetype)(r => Rep.Some(r.nobidresponsetypeid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Bidrequest (database name BidRequest_FK_1) */
+    lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Nobidresponsetype (database name NoBidResponseType_FK_2) */
+    lazy val nobidresponsetypeFk = foreignKey("NoBidResponseType_FK_2", nobidresponsetypeid, Nobidresponsetype)(r => Rep.Some(r.nobidresponsetypeid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Bidresponse */
   lazy val Bidresponse = new TableQuery(tag => new Bidresponse(tag))
@@ -517,6 +644,29 @@ trait Tables {
   /** Collection-like TableQuery object for table Contentcontext */
   lazy val Contentcontext = new TableQuery(tag => new Contentcontext(tag))
 
+  /** Entity class storing rows of table Creativeattribute
+   *  @param creativeattributeid Database column CreativeAttributeId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param creativeattributedescription Database column CreativeAttributeDescription SqlType(TEXT) */
+  case class CreativeattributeRow(creativeattributeid: Int, creativeattributedescription: Option[String])
+  /** GetResult implicit for fetching CreativeattributeRow objects using plain SQL queries */
+  implicit def GetResultCreativeattributeRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[CreativeattributeRow] = GR{
+    prs => import prs._
+    CreativeattributeRow.tupled((<<[Int], <<?[String]))
+  }
+  /** Table description of table CreativeAttribute. Objects of this class serve as prototypes for rows in queries. */
+  class Creativeattribute(_tableTag: Tag) extends profile.api.Table[CreativeattributeRow](_tableTag, "CreativeAttribute") {
+    def * = (creativeattributeid, creativeattributedescription) <> (CreativeattributeRow.tupled, CreativeattributeRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(creativeattributeid), creativeattributedescription)).shaped.<>({r=>import r._; _1.map(_=> CreativeattributeRow.tupled((_1.get, _2)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column CreativeAttributeId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val creativeattributeid: Rep[Int] = column[Int]("CreativeAttributeId", O.AutoInc, O.PrimaryKey)
+    /** Database column CreativeAttributeDescription SqlType(TEXT) */
+    val creativeattributedescription: Rep[Option[String]] = column[Option[String]]("CreativeAttributeDescription")
+  }
+  /** Collection-like TableQuery object for table Creativeattribute */
+  lazy val Creativeattribute = new TableQuery(tag => new Creativeattribute(tag))
+
   /** Entity class storing rows of table Demandsideplatform
    *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER), AutoInc, PrimaryKey
    *  @param demandsideplatformname Database column DemandSidePlatformName SqlType(TEXT) */
@@ -539,6 +689,29 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Demandsideplatform */
   lazy val Demandsideplatform = new TableQuery(tag => new Demandsideplatform(tag))
+
+  /** Entity class storing rows of table Devicetype
+   *  @param devicetypeid Database column DeviceTypeId SqlType(INTEGER), PrimaryKey
+   *  @param `device typedescription` Database column Device TypeDescription SqlType(TEXT) */
+  case class DevicetypeRow(devicetypeid: Int, `device typedescription`: String)
+  /** GetResult implicit for fetching DevicetypeRow objects using plain SQL queries */
+  implicit def GetResultDevicetypeRow(implicit e0: GR[Int], e1: GR[String]): GR[DevicetypeRow] = GR{
+    prs => import prs._
+    DevicetypeRow.tupled((<<[Int], <<[String]))
+  }
+  /** Table description of table DeviceType. Objects of this class serve as prototypes for rows in queries. */
+  class Devicetype(_tableTag: Tag) extends profile.api.Table[DevicetypeRow](_tableTag, "DeviceType") {
+    def * = (devicetypeid, `device typedescription`) <> (DevicetypeRow.tupled, DevicetypeRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(devicetypeid), Rep.Some(`device typedescription`))).shaped.<>({r=>import r._; _1.map(_=> DevicetypeRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column DeviceTypeId SqlType(INTEGER), PrimaryKey */
+    val devicetypeid: Rep[Int] = column[Int]("DeviceTypeId", O.PrimaryKey)
+    /** Database column Device TypeDescription SqlType(TEXT) */
+    val `device typedescription`: Rep[String] = column[String]("Device TypeDescription")
+  }
+  /** Collection-like TableQuery object for table Devicetype */
+  lazy val Devicetype = new TableQuery(tag => new Devicetype(tag))
 
   /** Entity class storing rows of table Geomapping
    *  @param geomappingid Database column GeoMappingId SqlType(INTEGER), AutoInc, PrimaryKey
@@ -578,51 +751,46 @@ trait Tables {
   /** Entity class storing rows of table Impression
    *  @param impressionid Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey
    *  @param rawimpressionjson Database column RawImpressionJson SqlType(TEXT)
-   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER), Default(None)
-   *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
-   *  @param biddingprice Database column BiddingPrice SqlType(REAL), Default(0.0)
-   *  @param winningbidprice Database column WinningBidPrice SqlType(REAL), Default(Some(0.0))
-   *  @param currency Database column Currency SqlType(TEXT), Default(USD)
+   *  @param bidid Database column BidId SqlType(INTEGER), Default(None)
    *  @param isimpressionservedorwonbyauction Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false), Default(Some(0))
-   *  @param createddate Database column CreatedDate SqlType(REAL), Default(0.0)
-   *  @param displayeddate Database column DisplayedDate SqlType(REAL), Default(Some(0.0)) */
-  case class ImpressionRow(impressionid: Int, rawimpressionjson: String, advertiseid: Option[Int] = None, bidrequestid: Option[Int] = None, biddingprice: Double = 0.0, winningbidprice: Option[Double] = Some(0.0), currency: String = "USD", isimpressionservedorwonbyauction: Option[Int] = Some(0), createddate: Double = 0.0, displayeddate: Option[Double] = Some(0.0))
+   *  @param bidfloor Database column Bidfloor SqlType(REAL), Default(Some(0.0))
+   *  @param bidfloorcur Database column BidfloorCur SqlType(TEXT)
+   *  @param hash Database column Hash SqlType(TEXT), Default(None)
+   *  @param displayeddate Database column DisplayedDate SqlType(REAL), Default(Some(0.0))
+   *  @param createddate Database column CreatedDate SqlType(REAL), Default(0.0) */
+  case class ImpressionRow(impressionid: Int, rawimpressionjson: String, bidid: Option[Int] = None, isimpressionservedorwonbyauction: Option[Int] = Some(0), bidfloor: Option[Double] = Some(0.0), bidfloorcur: Option[String], hash: Option[String] = None, displayeddate: Option[Double] = Some(0.0), createddate: Double = 0.0)
   /** GetResult implicit for fetching ImpressionRow objects using plain SQL queries */
-  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Double], e4: GR[Option[Double]]): GR[ImpressionRow] = GR{
+  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[Double]], e4: GR[Option[String]], e5: GR[Double]): GR[ImpressionRow] = GR{
     prs => import prs._
-    ImpressionRow.tupled((<<[Int], <<[String], <<?[Int], <<?[Int], <<[Double], <<?[Double], <<[String], <<?[Int], <<[Double], <<?[Double]))
+    ImpressionRow.tupled((<<[Int], <<[String], <<?[Int], <<?[Int], <<?[Double], <<?[String], <<?[String], <<?[Double], <<[Double]))
   }
   /** Table description of table Impression. Objects of this class serve as prototypes for rows in queries. */
   class Impression(_tableTag: Tag) extends profile.api.Table[ImpressionRow](_tableTag, "Impression") {
-    def * = (impressionid, rawimpressionjson, advertiseid, bidrequestid, biddingprice, winningbidprice, currency, isimpressionservedorwonbyauction, createddate, displayeddate) <> (ImpressionRow.tupled, ImpressionRow.unapply)
+    def * = (impressionid, rawimpressionjson, bidid, isimpressionservedorwonbyauction, bidfloor, bidfloorcur, hash, displayeddate, createddate) <> (ImpressionRow.tupled, ImpressionRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(impressionid), Rep.Some(rawimpressionjson), advertiseid, bidrequestid, Rep.Some(biddingprice), winningbidprice, Rep.Some(currency), isimpressionservedorwonbyauction, Rep.Some(createddate), displayeddate)).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2.get, _3, _4, _5.get, _6, _7.get, _8, _9.get, _10)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(impressionid), Rep.Some(rawimpressionjson), bidid, isimpressionservedorwonbyauction, bidfloor, bidfloorcur, hash, displayeddate, Rep.Some(createddate))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2.get, _3, _4, _5, _6, _7, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey */
     val impressionid: Rep[Int] = column[Int]("ImpressionId", O.AutoInc, O.PrimaryKey)
     /** Database column RawImpressionJson SqlType(TEXT) */
     val rawimpressionjson: Rep[String] = column[String]("RawImpressionJson")
-    /** Database column AdvertiseId SqlType(INTEGER), Default(None) */
-    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId", O.Default(None))
-    /** Database column BidRequestId SqlType(INTEGER), Default(None) */
-    val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
-    /** Database column BiddingPrice SqlType(REAL), Default(0.0) */
-    val biddingprice: Rep[Double] = column[Double]("BiddingPrice", O.Default(0.0))
-    /** Database column WinningBidPrice SqlType(REAL), Default(Some(0.0)) */
-    val winningbidprice: Rep[Option[Double]] = column[Option[Double]]("WinningBidPrice", O.Default(Some(0.0)))
-    /** Database column Currency SqlType(TEXT), Default(USD) */
-    val currency: Rep[String] = column[String]("Currency", O.Default("USD"))
+    /** Database column BidId SqlType(INTEGER), Default(None) */
+    val bidid: Rep[Option[Int]] = column[Option[Int]]("BidId", O.Default(None))
     /** Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false), Default(Some(0)) */
     val isimpressionservedorwonbyauction: Rep[Option[Int]] = column[Option[Int]]("IsImpressionServedOrWonByAuction", O.Length(1,varying=false), O.Default(Some(0)))
-    /** Database column CreatedDate SqlType(REAL), Default(0.0) */
-    val createddate: Rep[Double] = column[Double]("CreatedDate", O.Default(0.0))
+    /** Database column Bidfloor SqlType(REAL), Default(Some(0.0)) */
+    val bidfloor: Rep[Option[Double]] = column[Option[Double]]("Bidfloor", O.Default(Some(0.0)))
+    /** Database column BidfloorCur SqlType(TEXT) */
+    val bidfloorcur: Rep[Option[String]] = column[Option[String]]("BidfloorCur")
+    /** Database column Hash SqlType(TEXT), Default(None) */
+    val hash: Rep[Option[String]] = column[Option[String]]("Hash", O.Default(None))
     /** Database column DisplayedDate SqlType(REAL), Default(Some(0.0)) */
     val displayeddate: Rep[Option[Double]] = column[Option[Double]]("DisplayedDate", O.Default(Some(0.0)))
+    /** Database column CreatedDate SqlType(REAL), Default(0.0) */
+    val createddate: Rep[Double] = column[Double]("CreatedDate", O.Default(0.0))
 
-    /** Foreign key referencing Advertise (database name Advertise_FK_1) */
-    lazy val advertiseFk = foreignKey("Advertise_FK_1", advertiseid, Advertise)(r => Rep.Some(r.advertiseid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-    /** Foreign key referencing Bidrequest (database name BidRequest_FK_2) */
-    lazy val bidrequestFk = foreignKey("BidRequest_FK_2", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Bid (database name Bid_FK_1) */
+    lazy val bidFk = foreignKey("Bid_FK_1", bidid, Bid)(r => Rep.Some(r.bidid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Impression */
   lazy val Impression = new TableQuery(tag => new Impression(tag))
@@ -681,6 +849,48 @@ trait Tables {
   /** Collection-like TableQuery object for table Keywordadvertisemapping */
   lazy val Keywordadvertisemapping = new TableQuery(tag => new Keywordadvertisemapping(tag))
 
+  /** Entity class storing rows of table Keywordadvertisemappingidsview
+   *  @param keywordid Database column KeywordId SqlType(INTEGER)
+   *  @param keyword Database column Keyword SqlType(TEXT)
+   *  @param keywordadvertisemappingid Database column KeywordAdvertiseMappingId SqlType(INTEGER)
+   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER)
+   *  @param campaignid Database column CampaignId SqlType(INTEGER)
+   *  @param banneradvertisetypeid Database column BannerAdvertiseTypeId SqlType(INTEGER)
+   *  @param isvideo Database column IsVideo SqlType(INTEGER), Length(1,false)
+   *  @param isbanner Database column IsBanner SqlType(INTEGER), Length(1,false)
+   *  @param contentcontextid Database column ContentContextId SqlType(INTEGER) */
+  case class KeywordadvertisemappingidsviewRow(keywordid: Option[Int], keyword: Option[String], keywordadvertisemappingid: Option[Int], advertiseid: Option[Int], campaignid: Option[Int], banneradvertisetypeid: Option[Int], isvideo: Option[Int], isbanner: Option[Int], contentcontextid: Option[Int])
+  /** GetResult implicit for fetching KeywordadvertisemappingidsviewRow objects using plain SQL queries */
+  implicit def GetResultKeywordadvertisemappingidsviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[String]]): GR[KeywordadvertisemappingidsviewRow] = GR{
+    prs => import prs._
+    KeywordadvertisemappingidsviewRow.tupled((<<?[Int], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
+  }
+  /** Table description of table KeywordAdvertiseMappingIdsView. Objects of this class serve as prototypes for rows in queries. */
+  class Keywordadvertisemappingidsview(_tableTag: Tag) extends profile.api.Table[KeywordadvertisemappingidsviewRow](_tableTag, "KeywordAdvertiseMappingIdsView") {
+    def * = (keywordid, keyword, keywordadvertisemappingid, advertiseid, campaignid, banneradvertisetypeid, isvideo, isbanner, contentcontextid) <> (KeywordadvertisemappingidsviewRow.tupled, KeywordadvertisemappingidsviewRow.unapply)
+
+    /** Database column KeywordId SqlType(INTEGER) */
+    val keywordid: Rep[Option[Int]] = column[Option[Int]]("KeywordId")
+    /** Database column Keyword SqlType(TEXT) */
+    val keyword: Rep[Option[String]] = column[Option[String]]("Keyword")
+    /** Database column KeywordAdvertiseMappingId SqlType(INTEGER) */
+    val keywordadvertisemappingid: Rep[Option[Int]] = column[Option[Int]]("KeywordAdvertiseMappingId")
+    /** Database column AdvertiseId SqlType(INTEGER) */
+    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId")
+    /** Database column CampaignId SqlType(INTEGER) */
+    val campaignid: Rep[Option[Int]] = column[Option[Int]]("CampaignId")
+    /** Database column BannerAdvertiseTypeId SqlType(INTEGER) */
+    val banneradvertisetypeid: Rep[Option[Int]] = column[Option[Int]]("BannerAdvertiseTypeId")
+    /** Database column IsVideo SqlType(INTEGER), Length(1,false) */
+    val isvideo: Rep[Option[Int]] = column[Option[Int]]("IsVideo", O.Length(1,varying=false))
+    /** Database column IsBanner SqlType(INTEGER), Length(1,false) */
+    val isbanner: Rep[Option[Int]] = column[Option[Int]]("IsBanner", O.Length(1,varying=false))
+    /** Database column ContentContextId SqlType(INTEGER) */
+    val contentcontextid: Rep[Option[Int]] = column[Option[Int]]("ContentContextId")
+  }
+  /** Collection-like TableQuery object for table Keywordadvertisemappingidsview */
+  lazy val Keywordadvertisemappingidsview = new TableQuery(tag => new Keywordadvertisemappingidsview(tag))
+
   /** Entity class storing rows of table Logtrace
    *  @param logtraceid Database column LogTraceId SqlType(INTEGER), AutoInc, PrimaryKey
    *  @param methodname Database column MethodName SqlType(TEXT)
@@ -724,27 +934,27 @@ trait Tables {
 
   /** Entity class storing rows of table Lostbid
    *  @param lostbidid Database column LostBidId SqlType(INTEGER), AutoInc, PrimaryKey
-   *  @param bidrequestid Database column BidRequestId SqlType(INTEGER)
+   *  @param bidid Database column BidId SqlType(INTEGER)
    *  @param reason Database column Reason SqlType(TEXT)
    *  @param losingprice Database column LosingPrice SqlType(REAL)
    *  @param createddate Database column CreatedDate SqlType(REAL)
    *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER) */
-  case class LostbidRow(lostbidid: Int, bidrequestid: Int, reason: Option[String], losingprice: Option[Double], createddate: Option[Double], demandsideplatformid: Int)
+  case class LostbidRow(lostbidid: Int, bidid: Option[Int], reason: Option[String], losingprice: Option[Double], createddate: Option[Double], demandsideplatformid: Int)
   /** GetResult implicit for fetching LostbidRow objects using plain SQL queries */
-  implicit def GetResultLostbidRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Double]]): GR[LostbidRow] = GR{
+  implicit def GetResultLostbidRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[Double]]): GR[LostbidRow] = GR{
     prs => import prs._
-    LostbidRow.tupled((<<[Int], <<[Int], <<?[String], <<?[Double], <<?[Double], <<[Int]))
+    LostbidRow.tupled((<<[Int], <<?[Int], <<?[String], <<?[Double], <<?[Double], <<[Int]))
   }
   /** Table description of table LostBid. Objects of this class serve as prototypes for rows in queries. */
   class Lostbid(_tableTag: Tag) extends profile.api.Table[LostbidRow](_tableTag, "LostBid") {
-    def * = (lostbidid, bidrequestid, reason, losingprice, createddate, demandsideplatformid) <> (LostbidRow.tupled, LostbidRow.unapply)
+    def * = (lostbidid, bidid, reason, losingprice, createddate, demandsideplatformid) <> (LostbidRow.tupled, LostbidRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(lostbidid), Rep.Some(bidrequestid), reason, losingprice, createddate, Rep.Some(demandsideplatformid))).shaped.<>({r=>import r._; _1.map(_=> LostbidRow.tupled((_1.get, _2.get, _3, _4, _5, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(lostbidid), bidid, reason, losingprice, createddate, Rep.Some(demandsideplatformid))).shaped.<>({r=>import r._; _1.map(_=> LostbidRow.tupled((_1.get, _2, _3, _4, _5, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column LostBidId SqlType(INTEGER), AutoInc, PrimaryKey */
     val lostbidid: Rep[Int] = column[Int]("LostBidId", O.AutoInc, O.PrimaryKey)
-    /** Database column BidRequestId SqlType(INTEGER) */
-    val bidrequestid: Rep[Int] = column[Int]("BidRequestId")
+    /** Database column BidId SqlType(INTEGER) */
+    val bidid: Rep[Option[Int]] = column[Option[Int]]("BidId")
     /** Database column Reason SqlType(TEXT) */
     val reason: Rep[Option[String]] = column[Option[String]]("Reason")
     /** Database column LosingPrice SqlType(REAL) */
@@ -754,8 +964,8 @@ trait Tables {
     /** Database column DemandSidePlatformId SqlType(INTEGER) */
     val demandsideplatformid: Rep[Int] = column[Int]("DemandSidePlatformId")
 
-    /** Foreign key referencing Bidrequest (database name BidRequest_FK_1) */
-    lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => r.bidrequestid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Bid (database name Bid_FK_1) */
+    lazy val bidFk = foreignKey("Bid_FK_1", bidid, Bid)(r => Rep.Some(r.bidid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Demandsideplatform (database name DemandSidePlatform_FK_2) */
     lazy val demandsideplatformFk = foreignKey("DemandSidePlatform_FK_2", demandsideplatformid, Demandsideplatform)(r => r.demandsideplatformid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
@@ -784,6 +994,38 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Nobidresponsetype */
   lazy val Nobidresponsetype = new TableQuery(tag => new Nobidresponsetype(tag))
+
+  /** Entity class storing rows of table Privatemarketplacedeal
+   *  @param privatemarketplacedealid Database column PrivateMarketPlaceDealId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param impressionid Database column ImpressionId SqlType(INTEGER), Default(None)
+   *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
+   *  @param bidfloor Database column BidFloor SqlType(REAL), Default(Some(0.0))
+   *  @param bidfloorcurrency Database column BidFloorCurrency SqlType(TEXT), Length(3,false) */
+  case class PrivatemarketplacedealRow(privatemarketplacedealid: Int, impressionid: Option[Int] = None, bidrequestid: Option[Int] = None, bidfloor: Option[Double] = Some(0.0), bidfloorcurrency: Option[String])
+  /** GetResult implicit for fetching PrivatemarketplacedealRow objects using plain SQL queries */
+  implicit def GetResultPrivatemarketplacedealRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[Double]], e3: GR[Option[String]]): GR[PrivatemarketplacedealRow] = GR{
+    prs => import prs._
+    PrivatemarketplacedealRow.tupled((<<[Int], <<?[Int], <<?[Int], <<?[Double], <<?[String]))
+  }
+  /** Table description of table PrivateMarketPlaceDeal. Objects of this class serve as prototypes for rows in queries. */
+  class Privatemarketplacedeal(_tableTag: Tag) extends profile.api.Table[PrivatemarketplacedealRow](_tableTag, "PrivateMarketPlaceDeal") {
+    def * = (privatemarketplacedealid, impressionid, bidrequestid, bidfloor, bidfloorcurrency) <> (PrivatemarketplacedealRow.tupled, PrivatemarketplacedealRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(privatemarketplacedealid), impressionid, bidrequestid, bidfloor, bidfloorcurrency)).shaped.<>({r=>import r._; _1.map(_=> PrivatemarketplacedealRow.tupled((_1.get, _2, _3, _4, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column PrivateMarketPlaceDealId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val privatemarketplacedealid: Rep[Int] = column[Int]("PrivateMarketPlaceDealId", O.AutoInc, O.PrimaryKey)
+    /** Database column ImpressionId SqlType(INTEGER), Default(None) */
+    val impressionid: Rep[Option[Int]] = column[Option[Int]]("ImpressionId", O.Default(None))
+    /** Database column BidRequestId SqlType(INTEGER), Default(None) */
+    val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
+    /** Database column BidFloor SqlType(REAL), Default(Some(0.0)) */
+    val bidfloor: Rep[Option[Double]] = column[Option[Double]]("BidFloor", O.Default(Some(0.0)))
+    /** Database column BidFloorCurrency SqlType(TEXT), Length(3,false) */
+    val bidfloorcurrency: Rep[Option[String]] = column[Option[String]]("BidFloorCurrency", O.Length(3,varying=false))
+  }
+  /** Collection-like TableQuery object for table Privatemarketplacedeal */
+  lazy val Privatemarketplacedeal = new TableQuery(tag => new Privatemarketplacedeal(tag))
 
   /** Entity class storing rows of table Publisher
    *  @param publisherid Database column PublisherId SqlType(INTEGER), AutoInc, PrimaryKey
@@ -819,6 +1061,56 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Publisher */
   lazy val Publisher = new TableQuery(tag => new Publisher(tag))
+
+  /** Entity class storing rows of table Seatbid
+   *  @param seatbidid Database column SeatBidId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
+   *  @param bidresponseid Database column BidResponseId SqlType(INTEGER), Default(None)
+   *  @param auctionid Database column AuctionId SqlType(INTEGER), Default(None)
+   *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER), Default(None)
+   *  @param isgroupbid Database column IsGroupBid SqlType(INTEGER), Length(1,false), Default(Some(0))
+   *  @param seatbidrawjson Database column SeatBidRawJson SqlType(TEXT), Default(None)
+   *  @param createddate Database column CreatedDate SqlType(REAL), Default(Some(0.0)) */
+  case class SeatbidRow(seatbidid: Int, bidrequestid: Option[Int] = None, bidresponseid: Option[Int] = None, auctionid: Option[Int] = None, demandsideplatformid: Option[Int] = None, isgroupbid: Option[Int] = Some(0), seatbidrawjson: Option[String] = None, createddate: Option[Double] = Some(0.0))
+  /** GetResult implicit for fetching SeatbidRow objects using plain SQL queries */
+  implicit def GetResultSeatbidRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[Double]]): GR[SeatbidRow] = GR{
+    prs => import prs._
+    SeatbidRow.tupled((<<[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[String], <<?[Double]))
+  }
+  /** Table description of table SeatBid. Objects of this class serve as prototypes for rows in queries. */
+  class Seatbid(_tableTag: Tag) extends profile.api.Table[SeatbidRow](_tableTag, "SeatBid") {
+    def * = (seatbidid, bidrequestid, bidresponseid, auctionid, demandsideplatformid, isgroupbid, seatbidrawjson, createddate) <> (SeatbidRow.tupled, SeatbidRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(seatbidid), bidrequestid, bidresponseid, auctionid, demandsideplatformid, isgroupbid, seatbidrawjson, createddate)).shaped.<>({r=>import r._; _1.map(_=> SeatbidRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column SeatBidId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val seatbidid: Rep[Int] = column[Int]("SeatBidId", O.AutoInc, O.PrimaryKey)
+    /** Database column BidRequestId SqlType(INTEGER), Default(None) */
+    val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
+    /** Database column BidResponseId SqlType(INTEGER), Default(None) */
+    val bidresponseid: Rep[Option[Int]] = column[Option[Int]]("BidResponseId", O.Default(None))
+    /** Database column AuctionId SqlType(INTEGER), Default(None) */
+    val auctionid: Rep[Option[Int]] = column[Option[Int]]("AuctionId", O.Default(None))
+    /** Database column DemandSidePlatformId SqlType(INTEGER), Default(None) */
+    val demandsideplatformid: Rep[Option[Int]] = column[Option[Int]]("DemandSidePlatformId", O.Default(None))
+    /** Database column IsGroupBid SqlType(INTEGER), Length(1,false), Default(Some(0)) */
+    val isgroupbid: Rep[Option[Int]] = column[Option[Int]]("IsGroupBid", O.Length(1,varying=false), O.Default(Some(0)))
+    /** Database column SeatBidRawJson SqlType(TEXT), Default(None) */
+    val seatbidrawjson: Rep[Option[String]] = column[Option[String]]("SeatBidRawJson", O.Default(None))
+    /** Database column CreatedDate SqlType(REAL), Default(Some(0.0)) */
+    val createddate: Rep[Option[Double]] = column[Option[Double]]("CreatedDate", O.Default(Some(0.0)))
+
+    /** Foreign key referencing Auction (database name Auction_FK_1) */
+    lazy val auctionFk = foreignKey("Auction_FK_1", auctionid, Auction)(r => Rep.Some(r.auctionid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Bidrequest (database name BidRequest_FK_2) */
+    lazy val bidrequestFk = foreignKey("BidRequest_FK_2", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Bidresponse (database name BidResponse_FK_3) */
+    lazy val bidresponseFk = foreignKey("BidResponse_FK_3", bidresponseid, Bidresponse)(r => Rep.Some(r.bidresponseid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Demandsideplatform (database name DemandSidePlatform_FK_4) */
+    lazy val demandsideplatformFk = foreignKey("DemandSidePlatform_FK_4", demandsideplatformid, Demandsideplatform)(r => Rep.Some(r.demandsideplatformid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table Seatbid */
+  lazy val Seatbid = new TableQuery(tag => new Seatbid(tag))
 
   /** Entity class storing rows of table Transaction
    *  @param transactionid Database column TransactionId SqlType(INTEGER), AutoInc, PrimaryKey
@@ -859,4 +1151,157 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Transaction */
   lazy val Transaction = new TableQuery(tag => new Transaction(tag))
+
+  /** Entity class storing rows of table Userclassification
+   *  @param userclassificationid Database column UserClassificationId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param userkeywordscontains Database column UserKeywordsContains SqlType(TEXT), Default(None)
+   *  @param internetprotocol Database column InternetProtocol SqlType(TEXT), Default(None)
+   *  @param country Database column Country SqlType(TEXT), Default(None)
+   *  @param lat Database column lat SqlType(REAL), Default(None)
+   *  @param lon Database column lon SqlType(REAL), Default(None)
+   *  @param iswhitelist Database column IsWhiteList SqlType(INTEGER), Length(1,false), Default(Some(0))
+   *  @param isblacklist Database column IsBlackList SqlType(INTEGER), Length(1,false), Default(Some(0)) */
+  case class UserclassificationRow(userclassificationid: Int, userkeywordscontains: Option[String] = None, internetprotocol: Option[String] = None, country: Option[String] = None, lat: Option[Double] = None, lon: Option[Double] = None, iswhitelist: Option[Int] = Some(0), isblacklist: Option[Int] = Some(0))
+  /** GetResult implicit for fetching UserclassificationRow objects using plain SQL queries */
+  implicit def GetResultUserclassificationRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Double]], e3: GR[Option[Int]]): GR[UserclassificationRow] = GR{
+    prs => import prs._
+    UserclassificationRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[Double], <<?[Double], <<?[Int], <<?[Int]))
+  }
+  /** Table description of table UserClassification. Objects of this class serve as prototypes for rows in queries. */
+  class Userclassification(_tableTag: Tag) extends profile.api.Table[UserclassificationRow](_tableTag, "UserClassification") {
+    def * = (userclassificationid, userkeywordscontains, internetprotocol, country, lat, lon, iswhitelist, isblacklist) <> (UserclassificationRow.tupled, UserclassificationRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(userclassificationid), userkeywordscontains, internetprotocol, country, lat, lon, iswhitelist, isblacklist)).shaped.<>({r=>import r._; _1.map(_=> UserclassificationRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column UserClassificationId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val userclassificationid: Rep[Int] = column[Int]("UserClassificationId", O.AutoInc, O.PrimaryKey)
+    /** Database column UserKeywordsContains SqlType(TEXT), Default(None) */
+    val userkeywordscontains: Rep[Option[String]] = column[Option[String]]("UserKeywordsContains", O.Default(None))
+    /** Database column InternetProtocol SqlType(TEXT), Default(None) */
+    val internetprotocol: Rep[Option[String]] = column[Option[String]]("InternetProtocol", O.Default(None))
+    /** Database column Country SqlType(TEXT), Default(None) */
+    val country: Rep[Option[String]] = column[Option[String]]("Country", O.Default(None))
+    /** Database column lat SqlType(REAL), Default(None) */
+    val lat: Rep[Option[Double]] = column[Option[Double]]("lat", O.Default(None))
+    /** Database column lon SqlType(REAL), Default(None) */
+    val lon: Rep[Option[Double]] = column[Option[Double]]("lon", O.Default(None))
+    /** Database column IsWhiteList SqlType(INTEGER), Length(1,false), Default(Some(0)) */
+    val iswhitelist: Rep[Option[Int]] = column[Option[Int]]("IsWhiteList", O.Length(1,varying=false), O.Default(Some(0)))
+    /** Database column IsBlackList SqlType(INTEGER), Length(1,false), Default(Some(0)) */
+    val isblacklist: Rep[Option[Int]] = column[Option[Int]]("IsBlackList", O.Length(1,varying=false), O.Default(Some(0)))
+  }
+  /** Collection-like TableQuery object for table Userclassification */
+  lazy val Userclassification = new TableQuery(tag => new Userclassification(tag))
+
+  /** Entity class storing rows of table Videoplaybackmethod
+   *  @param videoplaybackmethodid Database column VideoPlaybackMethodId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param videoplaybackmethoddescription Database column VideoPlaybackMethodDescription SqlType(TEXT) */
+  case class VideoplaybackmethodRow(videoplaybackmethodid: Int, videoplaybackmethoddescription: String)
+  /** GetResult implicit for fetching VideoplaybackmethodRow objects using plain SQL queries */
+  implicit def GetResultVideoplaybackmethodRow(implicit e0: GR[Int], e1: GR[String]): GR[VideoplaybackmethodRow] = GR{
+    prs => import prs._
+    VideoplaybackmethodRow.tupled((<<[Int], <<[String]))
+  }
+  /** Table description of table VideoPlaybackMethod. Objects of this class serve as prototypes for rows in queries. */
+  class Videoplaybackmethod(_tableTag: Tag) extends profile.api.Table[VideoplaybackmethodRow](_tableTag, "VideoPlaybackMethod") {
+    def * = (videoplaybackmethodid, videoplaybackmethoddescription) <> (VideoplaybackmethodRow.tupled, VideoplaybackmethodRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(videoplaybackmethodid), Rep.Some(videoplaybackmethoddescription))).shaped.<>({r=>import r._; _1.map(_=> VideoplaybackmethodRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column VideoPlaybackMethodId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val videoplaybackmethodid: Rep[Int] = column[Int]("VideoPlaybackMethodId", O.AutoInc, O.PrimaryKey)
+    /** Database column VideoPlaybackMethodDescription SqlType(TEXT) */
+    val videoplaybackmethoddescription: Rep[String] = column[String]("VideoPlaybackMethodDescription")
+  }
+  /** Collection-like TableQuery object for table Videoplaybackmethod */
+  lazy val Videoplaybackmethod = new TableQuery(tag => new Videoplaybackmethod(tag))
+
+  /** Entity class storing rows of table Videoresponseprotocol
+   *  @param videoresponseprotocolid Database column VideoResponseProtocolId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param videoresponseprotocoldescription Database column VideoResponseProtocolDescription SqlType(TEXT) */
+  case class VideoresponseprotocolRow(videoresponseprotocolid: Int, videoresponseprotocoldescription: String)
+  /** GetResult implicit for fetching VideoresponseprotocolRow objects using plain SQL queries */
+  implicit def GetResultVideoresponseprotocolRow(implicit e0: GR[Int], e1: GR[String]): GR[VideoresponseprotocolRow] = GR{
+    prs => import prs._
+    VideoresponseprotocolRow.tupled((<<[Int], <<[String]))
+  }
+  /** Table description of table VideoResponseProtocol. Objects of this class serve as prototypes for rows in queries. */
+  class Videoresponseprotocol(_tableTag: Tag) extends profile.api.Table[VideoresponseprotocolRow](_tableTag, "VideoResponseProtocol") {
+    def * = (videoresponseprotocolid, videoresponseprotocoldescription) <> (VideoresponseprotocolRow.tupled, VideoresponseprotocolRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(videoresponseprotocolid), Rep.Some(videoresponseprotocoldescription))).shaped.<>({r=>import r._; _1.map(_=> VideoresponseprotocolRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column VideoResponseProtocolId SqlType(INTEGER), AutoInc, PrimaryKey */
+    val videoresponseprotocolid: Rep[Int] = column[Int]("VideoResponseProtocolId", O.AutoInc, O.PrimaryKey)
+    /** Database column VideoResponseProtocolDescription SqlType(TEXT) */
+    val videoresponseprotocoldescription: Rep[String] = column[String]("VideoResponseProtocolDescription")
+  }
+  /** Collection-like TableQuery object for table Videoresponseprotocol */
+  lazy val Videoresponseprotocol = new TableQuery(tag => new Videoresponseprotocol(tag))
+
+  /** Entity class storing rows of table Winningpriceinfoview
+   *  @param bidid Database column BidId SqlType(INTEGER)
+   *  @param impressionid Database column ImpressionId SqlType(INTEGER)
+   *  @param seatbidid Database column SeatBidId SqlType(INTEGER)
+   *  @param campaignid Database column CampaignId SqlType(INTEGER)
+   *  @param auctionid Database column AuctionId SqlType(INTEGER)
+   *  @param bidrequestid Database column BidRequestId SqlType(INTEGER)
+   *  @param bidresponseid Database column BidResponseId SqlType(INTEGER)
+   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER)
+   *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER)
+   *  @param auctionwinningprice Database column AuctionWinningPrice SqlType(REAL)
+   *  @param dealbiddingprice Database column DealBiddingPrice SqlType(REAL)
+   *  @param actualwiningprice Database column ActualWiningPrice SqlType(REAL)
+   *  @param auctioncreateddate Database column AuctionCreatedDate SqlType(REAL)
+   *  @param biddingcreateddate Database column BiddingCreatedDate SqlType(REAL)
+   *  @param impressioncreateddate Database column ImpressionCreatedDate SqlType(REAL)
+   *  @param iswon Database column IsWon SqlType(INTEGER), Length(1,false)
+   *  @param isgroupbid Database column IsGroupBid SqlType(INTEGER), Length(1,false) */
+  case class WinningpriceinfoviewRow(bidid: Option[Int], impressionid: Option[Int], seatbidid: Option[Int], campaignid: Option[Int], auctionid: Option[Int], bidrequestid: Option[Int], bidresponseid: Option[Int], advertiseid: Option[Int], demandsideplatformid: Option[Int], auctionwinningprice: Option[Double], dealbiddingprice: Option[Double], actualwiningprice: Option[Double], auctioncreateddate: Option[Double], biddingcreateddate: Option[Double], impressioncreateddate: Option[Double], iswon: Option[Int], isgroupbid: Option[Int])
+  /** GetResult implicit for fetching WinningpriceinfoviewRow objects using plain SQL queries */
+  implicit def GetResultWinningpriceinfoviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[Double]]): GR[WinningpriceinfoviewRow] = GR{
+    prs => import prs._
+    WinningpriceinfoviewRow.tupled((<<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Double], <<?[Double], <<?[Double], <<?[Double], <<?[Double], <<?[Double], <<?[Int], <<?[Int]))
+  }
+  /** Table description of table WinningPriceInfoView. Objects of this class serve as prototypes for rows in queries. */
+  class Winningpriceinfoview(_tableTag: Tag) extends profile.api.Table[WinningpriceinfoviewRow](_tableTag, "WinningPriceInfoView") {
+    def * = (bidid, impressionid, seatbidid, campaignid, auctionid, bidrequestid, bidresponseid, advertiseid, demandsideplatformid, auctionwinningprice, dealbiddingprice, actualwiningprice, auctioncreateddate, biddingcreateddate, impressioncreateddate, iswon, isgroupbid) <> (WinningpriceinfoviewRow.tupled, WinningpriceinfoviewRow.unapply)
+
+    /** Database column BidId SqlType(INTEGER) */
+    val bidid: Rep[Option[Int]] = column[Option[Int]]("BidId")
+    /** Database column ImpressionId SqlType(INTEGER) */
+    val impressionid: Rep[Option[Int]] = column[Option[Int]]("ImpressionId")
+    /** Database column SeatBidId SqlType(INTEGER) */
+    val seatbidid: Rep[Option[Int]] = column[Option[Int]]("SeatBidId")
+    /** Database column CampaignId SqlType(INTEGER) */
+    val campaignid: Rep[Option[Int]] = column[Option[Int]]("CampaignId")
+    /** Database column AuctionId SqlType(INTEGER) */
+    val auctionid: Rep[Option[Int]] = column[Option[Int]]("AuctionId")
+    /** Database column BidRequestId SqlType(INTEGER) */
+    val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId")
+    /** Database column BidResponseId SqlType(INTEGER) */
+    val bidresponseid: Rep[Option[Int]] = column[Option[Int]]("BidResponseId")
+    /** Database column AdvertiseId SqlType(INTEGER) */
+    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId")
+    /** Database column DemandSidePlatformId SqlType(INTEGER) */
+    val demandsideplatformid: Rep[Option[Int]] = column[Option[Int]]("DemandSidePlatformId")
+    /** Database column AuctionWinningPrice SqlType(REAL) */
+    val auctionwinningprice: Rep[Option[Double]] = column[Option[Double]]("AuctionWinningPrice")
+    /** Database column DealBiddingPrice SqlType(REAL) */
+    val dealbiddingprice: Rep[Option[Double]] = column[Option[Double]]("DealBiddingPrice")
+    /** Database column ActualWiningPrice SqlType(REAL) */
+    val actualwiningprice: Rep[Option[Double]] = column[Option[Double]]("ActualWiningPrice")
+    /** Database column AuctionCreatedDate SqlType(REAL) */
+    val auctioncreateddate: Rep[Option[Double]] = column[Option[Double]]("AuctionCreatedDate")
+    /** Database column BiddingCreatedDate SqlType(REAL) */
+    val biddingcreateddate: Rep[Option[Double]] = column[Option[Double]]("BiddingCreatedDate")
+    /** Database column ImpressionCreatedDate SqlType(REAL) */
+    val impressioncreateddate: Rep[Option[Double]] = column[Option[Double]]("ImpressionCreatedDate")
+    /** Database column IsWon SqlType(INTEGER), Length(1,false) */
+    val iswon: Rep[Option[Int]] = column[Option[Int]]("IsWon", O.Length(1,varying=false))
+    /** Database column IsGroupBid SqlType(INTEGER), Length(1,false) */
+    val isgroupbid: Rep[Option[Int]] = column[Option[Int]]("IsGroupBid", O.Length(1,varying=false))
+  }
+  /** Collection-like TableQuery object for table Winningpriceinfoview */
+  lazy val Winningpriceinfoview = new TableQuery(tag => new Winningpriceinfoview(tag))
 }

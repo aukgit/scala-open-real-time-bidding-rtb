@@ -6,6 +6,7 @@ import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.Demand
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model._
+import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.io.helpers.EmptyValidateHelper
@@ -19,8 +20,10 @@ class DemandSidePlatformBiddingAgent(
     with AddNewAdvertiseOnNotFound
     with BiddableInfoModelsGetter
     with AdvertiseQueryAppendLogic
-    with FailedBidsGetter with ImpressionDealsGetter with ExactHeightWidthQueryRowsGetter with DefaultActualNoContentResponse {
-
+    with FailedBidsGetter
+    with ImpressionDealsGetter
+    with ExactHeightWidthQueryRowsGetter
+    with DefaultActualNoContentResponse {
   lazy val defaultLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultGenericLimit
   lazy val defaultAdvertiseLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultAdvertiseLimit
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
@@ -36,8 +39,6 @@ class DemandSidePlatformBiddingAgent(
 
   override def getBidStaticNoContent(request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] =
     demandSidePlatformStaticBidResponseLogic.getBidStaticNoContent(request)
-
-  lazy override val appManager : AppManager = coreProperties.appManager
 
   override def getBidPrices(
     request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = ???

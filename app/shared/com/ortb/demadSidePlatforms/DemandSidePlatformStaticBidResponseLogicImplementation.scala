@@ -4,7 +4,9 @@ import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStatic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model
-import shared.com.ortb.model._
+import shared.com.ortb.model.{ auctionbid, _ }
+import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
+import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 
@@ -19,7 +21,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
   override def getBidStatic(
     request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val impressions : Seq[ImpressionModel] = request.bidRequest.imp.get
+    val impressions : Seq[ImpressionModel] = request.bidRequestModel.imp.get
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
     val callStacks = new ArrayBuffer[CallStackModel](length)
@@ -27,7 +29,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     for (impression <- impressions) {
       if (impression.bidfloor.isDefined) {
         val deal : Double = impression.bidfloor.get + defaultIncrementNumber
-        val impressionDealModel = model.ImpressionDealModel(impression, deal)
+        val impressionDealModel = ImpressionDealModel(impression, deal)
         deals.addOne(impressionDealModel)
 
         val callStackModel = CallStackModel(
@@ -39,7 +41,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
         callStacks.addOne(callStackModel)
       } else {
-        deals.addOne(model.ImpressionDealModel(impression, defaultStaticDeal))
+        deals.addOne(auctionbid.ImpressionDealModel(impression, defaultStaticDeal))
 
         val callStackModel = CallStackModel(
           deal = defaultStaticDeal,
@@ -53,7 +55,11 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     }
 
     val dspBidderResultModel =
-      model.DemandSidePlatformBidResponseModel(request, request.bidRequest, Some(deals.toList))
+      DemandSidePlatformBidResponseModel(
+        request,
+        request.bidRequestModel,
+        bidResponseWrapper = null,
+        Some(deals.toList))
     dspBidderResultModel.addCallStacks(callStacks)
 
     Some(dspBidderResultModel)
@@ -61,17 +67,23 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
   override def getBidStaticNoContent(
     request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val dspBidderResultModel =
-      model.DemandSidePlatformBidResponseModel(request, request.bidRequest, isNoContent = true)
+//    val dspBidderResultModel =
+//      model.DemandSidePlatformBidResponseModel(
+//        request,
+//        request.bidRequest,
+//        isNoContent = true,
+//        BidResponseModelWrapper = null)
+//
+//    val callStackModel = CallStackModel(
+//      deal = demandSidePlatformCoreProperties.noDealPrice,
+//      performingAction = s"[getBidStaticNoContent] -> No deals.",
+//      isServedAnyDeal = false
+//    )
+//
+//    dspBidderResultModel.addCallStack(callStackModel)
+//
+//    Some(dspBidderResultModel)
+    throw new NotImplementedError()
 
-    val callStackModel = CallStackModel(
-      deal = demandSidePlatformCoreProperties.noDealPrice,
-      performingAction = s"[getBidStaticNoContent] -> No deals.",
-      isServedAnyDeal = false
-    )
-
-    dspBidderResultModel.addCallStack(callStackModel)
-
-    Some(dspBidderResultModel)
   }
 }

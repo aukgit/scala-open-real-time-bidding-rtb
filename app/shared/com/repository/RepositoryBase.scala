@@ -1,6 +1,7 @@
 package shared.com.repository
 
 import com.google.inject.Inject
+import shared.com.ortb.exceptions.NotSupportException
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.config.ConfigModel
@@ -14,6 +15,9 @@ import shared.com.repository.traits.{ FutureToRegular, _ }
 import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
 import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.DatabaseLogTracerImplementation
+import slick.dbio.{ Effect, NoStream }
+import slick.lifted.Query
+import slick.sql.FixedSqlAction
 
 import scala.concurrent.duration._
 

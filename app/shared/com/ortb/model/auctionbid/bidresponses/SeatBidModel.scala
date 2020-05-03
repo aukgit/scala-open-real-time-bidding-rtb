@@ -29,5 +29,5 @@ case class SeatBidModel (
    * 1 = impressions must be won or lost as a group.
    * 1 = Meaning all the items in the seatbid needs to won as a group (My guess, no R&D yet).
    */
-  group : Option[Int] = AppConstants.EmptyIntegerOption
+  group : Option[Int] = None
 )

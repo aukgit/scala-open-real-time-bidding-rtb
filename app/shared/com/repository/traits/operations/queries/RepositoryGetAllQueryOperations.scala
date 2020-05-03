@@ -1,7 +1,7 @@
 package shared.com.repository.traits.operations.queries
 
 import shared.com.repository.traits.operations.mutations.RepositoryOperationsBase
-import slick.lifted.{Query, TableQuery}
+import slick.lifted.Query
 
 import scala.concurrent.Future
 

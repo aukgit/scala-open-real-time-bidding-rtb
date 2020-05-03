@@ -1,7 +1,8 @@
 package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
-import shared.com.ortb.model.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel, LogTraceModel }
+import shared.com.ortb.model.{ LogTraceModel, auctionbid }
+import shared.com.ortb.model.auctionbid.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel }
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
@@ -24,7 +25,7 @@ trait BiddableInfoModelsGetter {
 
     if (EmptyValidateHelper.isEmpty(impression.banner)) {
       // no banner
-      val model = ImpressionBiddableInfoModel(
+      val model = auctionbid.ImpressionBiddableInfoModel(
         impression,
         None,
         None,
@@ -57,7 +58,7 @@ trait BiddableInfoModelsGetter {
       hasBanner = true,
       totalCount.get)
 
-    val model = ImpressionBiddableInfoModel(
+    val model = auctionbid.ImpressionBiddableInfoModel(
       impression,
       Some(rows.toArray),
       exactQueryRows,
@@ -79,7 +80,7 @@ trait BiddableInfoModelsGetter {
     val repositories = coreProperties.repositories
     val advertiseRepository = repositories.advertiseRepository
     val advertises : TableQuery[Tables.Advertise] = repositories.advertises
-    val impressions = request.bidRequest.imp.get
+    val impressions = request.bidRequestModel.imp.get
 
     val futureTasks : Seq[Future[ImpressionBiddableInfoModel]] =
       impressions.map(impression => {

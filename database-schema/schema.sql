@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 02/05/2020 00:07:04
+ Date: 03/05/2020 02:14:29
 */
 
 PRAGMA foreign_keys = false;
@@ -70,6 +70,46 @@ CREATE TABLE "BannerAdvertiseType" (
 );
 
 -- ----------------------------
+-- Table structure for Bid
+-- ----------------------------
+DROP TABLE IF EXISTS "Bid";
+CREATE TABLE "Bid" (
+  "BidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRawJson" TEXT DEFAULT NULL,
+  "DealBiddingPrice" real DEFAULT 0,
+  "ActualWiningPrice" REAL DEFAULT 0,
+  "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
+  "SeatBidId" INTEGER NOT NULL,
+  "CampaignId" INTEGER DEFAULT NULL,
+  "ImpressionId" INTEGER DEFAULT NULL,
+  "AdvertiseId" INTEGER DEFAULT NULL,
+  "CreativeAttributeId" INTEGER DEFAULT NULL,
+  "Adm" text DEFAULT NULL,
+  "NUrl" text DEFAULT NULL,
+  "IUrl" TEXT DEFAULT NULL,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "SeatBidIdFK" FOREIGN KEY ("SeatBidId") REFERENCES "SeatBid" ("SeatBidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "CreativeAttributeIdFK" FOREIGN KEY ("CreativeAttributeId") REFERENCES "CreativeAttribute" ("CreativeAttributeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for BidContentCategoriesMapping
+-- ----------------------------
+DROP TABLE IF EXISTS "BidContentCategoriesMapping";
+CREATE TABLE "BidContentCategoriesMapping" (
+  "BidContentCategoriesMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidId" integer NOT NULL,
+  "ContentCategoryId" text NOT NULL,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
 -- Table structure for BidRequest
 -- ----------------------------
 DROP TABLE IF EXISTS "BidRequest";
@@ -101,21 +141,14 @@ CREATE TABLE "BidRequest" (
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BiddingPriceDeal" real DEFAULT 0,
-  "ActualSelectedPrice" REAL DEFAULT NULL,
-  "Currency" TEXT NOT NULL DEFAULT USD,
-  "Adm" text DEFAULT NULL,
-  "NUrl" text DEFAULT NULL,
-  "IUrl" TEXT DEFAULT NULL,
-  "AdvertiseId" INTEGER DEFAULT NULL,
+  "Currency" TEXT NOT NULL DEFAULT "USD",
   "BidRequestId" INTEGER DEFAULT NULL,
-  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
   "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
   "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
   "CreatedDate" real DEFAULT NULL,
-  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -201,12 +234,31 @@ CREATE TABLE "ContentContext" (
 );
 
 -- ----------------------------
+-- Table structure for CreativeAttribute
+-- ----------------------------
+DROP TABLE IF EXISTS "CreativeAttribute";
+CREATE TABLE "CreativeAttribute" (
+  "CreativeAttributeId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CreativeAttributeDescription" TEXT
+);
+
+-- ----------------------------
 -- Table structure for DemandSidePlatform
 -- ----------------------------
 DROP TABLE IF EXISTS "DemandSidePlatform";
 CREATE TABLE "DemandSidePlatform" (
   "DemandSidePlatformId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "DemandSidePlatformName" TEXT NOT NULL
+);
+
+-- ----------------------------
+-- Table structure for DeviceType
+-- ----------------------------
+DROP TABLE IF EXISTS "DeviceType";
+CREATE TABLE "DeviceType" (
+  "DeviceTypeId" INTEGER NOT NULL,
+  "Device TypeDescription" TEXT NOT NULL,
+  PRIMARY KEY ("DeviceTypeId")
 );
 
 -- ----------------------------
@@ -229,16 +281,14 @@ DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "RawImpressionJson" TEXT NOT NULL DEFAULT "",
-  "AdvertiseId" INTEGER DEFAULT NULL,
-  "BidRequestId" INTEGER DEFAULT NULL,
-  "BiddingPrice" REAL NOT NULL DEFAULT 0,
-  "WinningBidPrice" real DEFAULT 0,
-  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "BidId" INTEGER DEFAULT NULL,
   "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
-  "CreatedDate" real NOT NULL DEFAULT 0,
+  "Bidfloor" real DEFAULT 0,
+  "BidfloorCur" TEXT DEFAULT "USD",
+  "Hash" TEXT DEFAULT NULL,
   "DisplayedDate" real DEFAULT 0,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  "CreatedDate" real NOT NULL DEFAULT 0,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -283,12 +333,12 @@ CREATE TABLE "LogTrace" (
 DROP TABLE IF EXISTS "LostBid";
 CREATE TABLE "LostBid" (
   "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BidRequestId" INTEGER NOT NULL,
+  "BidId" INTEGER,
   "Reason" TEXT,
   "LosingPrice" real,
   "CreatedDate" real,
   "DemandSidePlatformId" integer NOT NULL,
-  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -302,6 +352,18 @@ CREATE TABLE "NoBidResponseType" (
 );
 
 -- ----------------------------
+-- Table structure for PrivateMarketPlaceDeal
+-- ----------------------------
+DROP TABLE IF EXISTS "PrivateMarketPlaceDeal";
+CREATE TABLE "PrivateMarketPlaceDeal" (
+  "PrivateMarketPlaceDealId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "ImpressionId" INTEGER DEFAULT NULL,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "BidFloor" real DEFAULT 0,
+  "BidFloorCurrency" TEXT(3) DEFAULT "USD"
+);
+
+-- ----------------------------
 -- Table structure for Publisher
 -- ----------------------------
 DROP TABLE IF EXISTS "Publisher";
@@ -312,6 +374,25 @@ CREATE TABLE "Publisher" (
   "PublisherAddress" TEXT NOT NULL,
   "DemandSidePlatformId" INTEGER NOT NULL,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Table structure for SeatBid
+-- ----------------------------
+DROP TABLE IF EXISTS "SeatBid";
+CREATE TABLE "SeatBid" (
+  "SeatBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "BidResponseId" INTEGER DEFAULT NULL,
+  "AuctionId" INTEGER DEFAULT NULL,
+  "DemandSidePlatformId" INTEGER DEFAULT NULL,
+  "IsGroupBid" integer(1) DEFAULT 0,
+  "SeatBidRawJson" TEXT DEFAULT NULL,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -330,6 +411,39 @@ CREATE TABLE "Transaction" (
 );
 
 -- ----------------------------
+-- Table structure for UserClassification
+-- ----------------------------
+DROP TABLE IF EXISTS "UserClassification";
+CREATE TABLE "UserClassification" (
+  "UserClassificationId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "UserKeywordsContains" TEXT DEFAULT NULL,
+  "InternetProtocol" TEXT DEFAULT NULL,
+  "Country" TEXT DEFAULT NULL,
+  "lat" real DEFAULT NULL,
+  "lon" real DEFAULT NULL,
+  "IsWhiteList" integer(1) DEFAULT 0,
+  "IsBlackList" integer(1) DEFAULT 0
+);
+
+-- ----------------------------
+-- Table structure for VideoPlaybackMethod
+-- ----------------------------
+DROP TABLE IF EXISTS "VideoPlaybackMethod";
+CREATE TABLE "VideoPlaybackMethod" (
+  "VideoPlaybackMethodId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "VideoPlaybackMethodDescription" TEXT NOT NULL
+);
+
+-- ----------------------------
+-- Table structure for VideoResponseProtocol
+-- ----------------------------
+DROP TABLE IF EXISTS "VideoResponseProtocol";
+CREATE TABLE "VideoResponseProtocol" (
+  "VideoResponseProtocolId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "VideoResponseProtocolDescription" TEXT NOT NULL
+);
+
+-- ----------------------------
 -- Table structure for sqlite_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS "sqlite_sequence";
@@ -339,6 +453,99 @@ CREATE TABLE "sqlite_sequence" (
 );
 
 -- ----------------------------
+-- View structure for BidRelatedIdsView
+-- ----------------------------
+DROP VIEW IF EXISTS "BidRelatedIdsView";
+CREATE VIEW "BidRelatedIdsView" AS SELECT
+	Bid.BidId, 
+	Impression.ImpressionId, 
+	Bid.SeatBidId, 
+	Bid.CampaignId, 	
+	Auction.AuctionId, 
+	SeatBid.BidRequestId, 
+	SeatBid.BidResponseId, 	
+	Bid.AdvertiseId, 
+	SeatBid.DemandSidePlatformId	
+FROM
+	Impression
+	INNER JOIN
+	Bid
+	ON 
+		Impression.BidId = Bid.BidId AND
+		Impression.ImpressionId = Bid.ImpressionId
+	INNER JOIN
+	SeatBid
+	ON 
+		Bid.SeatBidId = SeatBid.SeatBidId
+	INNER JOIN
+	Auction
+	ON 
+		SeatBid.AuctionId = Auction.AuctionId;
+
+-- ----------------------------
+-- View structure for KeywordAdvertiseMappingIdsView
+-- ----------------------------
+DROP VIEW IF EXISTS "KeywordAdvertiseMappingIdsView";
+CREATE VIEW "KeywordAdvertiseMappingIdsView" AS SELECT
+	Keyword.KeywordId, 
+	Keyword.Keyword, 
+	KeywordAdvertiseMapping.KeywordAdvertiseMappingId, 
+	Advertise.AdvertiseId, 
+	Advertise.CampaignId, 
+	Advertise.BannerAdvertiseTypeId, 
+	Advertise.IsVideo, 
+	Advertise.IsBanner, 
+	Advertise.ContentContextId
+FROM
+	Advertise
+	INNER JOIN
+	KeywordAdvertiseMapping
+	ON 
+		Advertise.AdvertiseId = KeywordAdvertiseMapping.AdvertiseId
+	INNER JOIN
+	Keyword
+	ON 
+		KeywordAdvertiseMapping.KeywordId = Keyword.KeywordId;
+
+-- ----------------------------
+-- View structure for WinningPriceInfoView
+-- ----------------------------
+DROP VIEW IF EXISTS "WinningPriceInfoView";
+CREATE VIEW "WinningPriceInfoView" AS SELECT
+	Bid.BidId, 
+	Impression.ImpressionId, 	
+	Bid.SeatBidId, 
+	Bid.CampaignId, 	
+	Auction.AuctionId, 
+	SeatBid.BidRequestId, 
+	SeatBid.BidResponseId, 	
+	Bid.AdvertiseId, 
+	SeatBid.DemandSidePlatformId,
+	Auction.WinningPrice as AuctionWinningPrice, 	
+	Bid.DealBiddingPrice, 
+	Bid.ActualWiningPrice, 
+	Auction.CreatedDated AS AuctionCreatedDate, 
+	Bid.CreatedDate AS BiddingCreatedDate, 
+	Impression.CreatedDate AS ImpressionCreatedDate, 
+	Bid.IsImpressionServedOrWonByAuction AS IsWon, 
+	SeatBid.IsGroupBid	
+FROM
+	Impression
+	INNER JOIN
+	Bid
+	ON 
+		Impression.BidId = Bid.BidId AND
+		Impression.ImpressionId = Bid.ImpressionId
+	INNER JOIN
+	SeatBid
+	ON 
+		Bid.SeatBidId = SeatBid.SeatBidId
+	INNER JOIN
+	Auction
+	ON 
+		SeatBid.AuctionId = Auction.AuctionId;
+
+-- ----------------------------
 -- Auto increment value for Advertise
 -- ----------------------------
 
@@ -346,6 +553,14 @@ CREATE TABLE "sqlite_sequence" (
 -- Auto increment value for BannerAdvertiseType
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
+
+-- ----------------------------
+-- Auto increment value for Bid
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BidContentCategoriesMapping
+-- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for BidRequest
@@ -376,6 +591,11 @@ UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
 -- Auto increment value for ContentContext
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
+
+-- ----------------------------
+-- Auto increment value for CreativeAttribute
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 
 -- ----------------------------
 -- Auto increment value for DemandSidePlatform
@@ -409,7 +629,21 @@ UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
 
 -- ----------------------------
+-- Auto increment value for SeatBid
+-- ----------------------------
+
+-- ----------------------------
 -- Auto increment value for Transaction
 -- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for VideoPlaybackMethod
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'VideoPlaybackMethod';
+
+-- ----------------------------
+-- Auto increment value for VideoResponseProtocol
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 6 WHERE name = 'VideoResponseProtocol';
 
 PRAGMA foreign_keys = true;
