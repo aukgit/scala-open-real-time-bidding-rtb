@@ -8,6 +8,7 @@ import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperMode
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
+import slick.jdbc.SQLiteProfile.api._
 
 trait FailedBidsGetter {
   this : DemandSidePlatformBiddingAgent =>

@@ -9,6 +9,7 @@ import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.EmptyValidateHelper
+import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.TableQuery
 
 import scala.concurrent.Future
