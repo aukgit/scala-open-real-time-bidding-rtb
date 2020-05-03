@@ -1,4 +1,4 @@
-package shared.com.ortb.demadSidePlatforms.traits
+package shared.com.ortb.demadSidePlatforms.traits.getters
 
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid._

@@ -1,13 +1,13 @@
-package shared.com.ortb.demadSidePlatforms
+package shared.com.ortb.demadSidePlatforms.traits.getters
 
+import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid
 import shared.com.ortb.model.auctionbid._
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.Repositories
-import shared.com.ortb.persistent.schema._
+import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
-import slick.jdbc.SQLiteProfile.api._
 
 trait FailedBidsGetter {
   this : DemandSidePlatformBiddingAgent =>
@@ -128,4 +128,3 @@ trait FailedBidsGetter {
     )
   }
 }
-
