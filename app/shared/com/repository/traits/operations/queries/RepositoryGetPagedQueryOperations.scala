@@ -11,7 +11,20 @@ trait RepositoryGetPagedQueryOperations[TRow]
   def take[TRow2](
     query : FixedSqlStreamingAction[Seq[TRow2], TRow2, Effect.Read]) : Seq[TRow2]
 
-  def currentTableLimit(
+  /**
+   *
+   * @param query
+   * @param limit : -1 take all no limit
+   * @tparam TTable2
+   * @tparam TRow2
+   *
+   * @return
+   */
+  def takeFromAnyQuery[TTable2, TRow2](
+    query : Query[TTable2, TRow2, Seq],
+    limit : Int = 100) : Seq[TRow2]
+
+  def takeCurrentTableRows(
     limit : Int) : Seq[TRow]
 
   def getCurrentTablePaged(

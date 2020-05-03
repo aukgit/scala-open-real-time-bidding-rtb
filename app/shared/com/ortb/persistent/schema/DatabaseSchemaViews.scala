@@ -8,13 +8,13 @@ class DatabaseSchemaViews {
   lazy val keywordAdvertiseMappingIdsViewName = "KeywordAdvertiseMappingIdsView"
   lazy val winningPriceInfoViewName = "WinningPriceInfoView"
 
-  lazy val BidRelatedIdsView = TableQuery[Bidrelatedidsview]
-  lazy val KeywordAdvertiseMappingIdsView = TableQuery[Keywordadvertisemappingidsview]
+  lazy val bidRelatedIdsView = TableQuery[Bidrelatedidsview]
+  lazy val keywordAdvertiseMappingIdsView = TableQuery[Keywordadvertisemappingidsview]
   lazy val winningPriceInfoView = TableQuery[Winningpriceinfoview]
 
   lazy val views = Map(
-    bidRelatedIdsViewName -> BidRelatedIdsView,
-    keywordAdvertiseMappingIdsViewName -> KeywordAdvertiseMappingIdsView,
+    bidRelatedIdsViewName -> bidRelatedIdsView,
+    keywordAdvertiseMappingIdsViewName -> keywordAdvertiseMappingIdsView,
     winningPriceInfoViewName -> winningPriceInfoView
   )
 
