@@ -16,7 +16,7 @@ import slick.sql.FixedSqlAction
 class CreativeAttributeRepository @Inject()(appManager: AppManager)
     extends RepositoryBase[Creativeattribute, CreativeattributeRow, Int](appManager) {
 
-  override def tableName: String = this.bidTableName
+  override def tableName: String = this.creativeAttributeTableName
 
   override def getEntityIdFromOptionRow(entity : Option[Tables.CreativeattributeRow]): Int =
     if (entity.isDefined) entity.get.creativeattributeid
