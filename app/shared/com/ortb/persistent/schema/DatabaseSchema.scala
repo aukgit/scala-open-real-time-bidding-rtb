@@ -1,10 +1,13 @@
 package shared.com.ortb.persistent.schema
 
+import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.persistent.schema.Tables.{profile, _}
+import shared.com.ortb.persistent.schema.Tables.{ profile, _ }
 import slick.lifted.TableQuery
 
-class DatabaseSchema(appManager : AppManager) {
+
+
+class DatabaseSchema @Inject()(appManager : AppManager) {
   /**
    * Determinate weather to log queries or not.
    */
@@ -30,6 +33,8 @@ class DatabaseSchema(appManager : AppManager) {
    */
   lazy val bannerAdvertiseTypes = TableQuery[Banneradvertisetype]
   lazy val bids = TableQuery[Bid]
+
+  lazy val bidContentCategoriesMappings = TableQuery[Bidcontentcategoriesmapping]
 
   /**
    * All the Bid Requests in the system.
@@ -107,6 +112,7 @@ class DatabaseSchema(appManager : AppManager) {
     auctionTableName -> auctions,
     bannerAdvertiseTypeTableName -> bannerAdvertiseTypes,
     bidTableName -> bids,
+    bidContentCategoriesMappingTableName -> bidContentCategoriesMappings,
     bidRequestTableName -> bidRequests,
     bidResponseTableName -> bidResponses,
     campaignTableName -> campaigns,
@@ -138,6 +144,7 @@ class DatabaseSchema(appManager : AppManager) {
   lazy val auctionTableName = "Auction"
   lazy val bannerAdvertiseTypeTableName = "BannerAdvertiseType"
   lazy val bidTableName = "Bid"
+  lazy val bidContentCategoriesMappingTableName = "BidContentCategoriesMapping"
   lazy val bidRequestTableName = "BidRequest"
   lazy val bidResponseTableName = "BidResponse"
   lazy val campaignTableName = "Campaign"
@@ -169,6 +176,7 @@ class DatabaseSchema(appManager : AppManager) {
     auctionTableName,
     bannerAdvertiseTypeTableName,
     bidTableName,
+    bidContentCategoriesMappings,
     bidRequestTableName,
     bidResponseTableName,
     campaignTableName,
