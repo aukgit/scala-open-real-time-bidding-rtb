@@ -1,14 +1,23 @@
 package shared.com.ortb.manager.traits
 
-import shared.com.ortb.manager.AppManager
-
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ ExecutionContext, ExecutionContextExecutor }
 
 trait DefaultExecutionContextManager {
-  val appManager : AppManager
+  lazy val defaultParallelProcessing : Int = 8
+
+  def createDefaultContext() : ExecutionContext = createDefault().prepare()
+
   //noinspection ScalaDeprecation
   lazy implicit val executionContext : ExecutionContext =
-    appManager.executionContextManager
-      .createDefault()
+    createDefault()
       .prepare()
+
+  def createDefault(initialParallelism : Int = defaultParallelProcessing) : ExecutionContextExecutor = createNew(
+    initialParallelism)
+
+  def createNew(initialParallelism : Int) : ExecutionContextExecutor = {
+    ExecutionContext.fromExecutor(
+      new java.util.concurrent.ForkJoinPool(initialParallelism : Int)
+    )
+  }
 }

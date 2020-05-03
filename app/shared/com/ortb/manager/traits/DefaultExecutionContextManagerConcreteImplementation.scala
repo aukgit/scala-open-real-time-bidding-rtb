@@ -1,0 +1,3 @@
+package shared.com.ortb.manager.traits
+
+class DefaultExecutionContextManagerConcreteImplementation extends DefaultExecutionContextManager
