@@ -29,6 +29,7 @@ class DatabaseSchema(appManager : AppManager) {
    * Banner Advertise Types
    */
   lazy val bannerAdvertiseTypes = TableQuery[Banneradvertisetype]
+  lazy val bids = TableQuery[Bid]
 
   /**
    * All the Bid Requests in the system.
@@ -44,6 +45,9 @@ class DatabaseSchema(appManager : AppManager) {
    * Content types
    */
   lazy val contentCategories = TableQuery[Contentcategory]
+
+  lazy val creativeAttributes = TableQuery[Creativeattribute]
+
   /**
    * Where the video will be displayed as
    */
@@ -52,6 +56,9 @@ class DatabaseSchema(appManager : AppManager) {
    * Simulation of demand side platforms
    */
   lazy val demandSidePlatforms = TableQuery[Demandsideplatform]
+
+  lazy val deviceTypes = TableQuery[Devicetype]
+
   /**
    * Relationship with geo and advertise
    */
@@ -68,6 +75,8 @@ class DatabaseSchema(appManager : AppManager) {
    * Relationship with Keywords and Advertises
    */
   lazy val keywordAdvertiseMappings = TableQuery[Keywordadvertisemapping]
+  lazy val logTraces = TableQuery[Logtrace]
+
   /**
    * Lost bid info
    */
@@ -76,21 +85,28 @@ class DatabaseSchema(appManager : AppManager) {
    * types for no bid responses
    */
   lazy val noBidResponseTypes = TableQuery[Nobidresponsetype]
+
+  lazy val privateMarketPlaceDeals = TableQuery[Privatemarketplacedeal]
+
   /**
    * publisher who (content owner of the advertise)
    */
   lazy val publishers = TableQuery[Publisher]
+
+  lazy val seatBids = TableQuery[Seatbid]
   /**
    * accounting for how much spend
    */
   lazy val transactions = TableQuery[Transaction]
-
-  lazy val logTraces = TableQuery[Logtrace]
+  lazy val userClassifications = TableQuery[Userclassification]
+  lazy val videoPlaybackMethods = TableQuery[Videoplaybackmethod]
+  lazy val videoResponseProtocols = TableQuery[Videoresponseprotocol]
 
   lazy val tables = Map(
     advertiseTableName -> advertises,
     auctionTableName -> auctions,
     bannerAdvertiseTypeTableName -> bannerAdvertiseTypes,
+    bidTableName -> bids,
     bidRequestTableName -> bidRequests,
     bidResponseTableName -> bidResponses,
     campaignTableName -> campaigns,
@@ -99,22 +115,29 @@ class DatabaseSchema(appManager : AppManager) {
     campaignTargetSiteTableName -> campaignTargetSites,
     contentCategoryTableName -> contentCategories,
     contentContextTableName -> contentContexts,
+    creativeAttributeTableName -> creativeAttributes,
     demandSidePlatformTableName -> demandSidePlatforms,
+    deviceTypeTableName -> deviceTypes,
     geoMappingTableName -> geoMappings,
     impressionTableName -> impressions,
     keywordTableName -> keywords,
     keywordAdvertiseMappingTableName -> keywordAdvertiseMappings,
+    logTraceTableName -> logTraces,
     lostBidTableName -> lostBids,
     noBidResponseTypeTableName -> noBidResponseTypes,
+    privateMarketPlaceDealTypeTableName -> privateMarketPlaceDeals,
     publisherTableName -> publishers,
-    transactionTableName -> transactions,
-    logTraceTableName -> logTraces
+    seatBidTableName -> seatBids,
+    userClassificationTableName -> userClassifications,
+    videoPlaybackMethodTableName -> videoPlaybackMethods,
+    videoResponseProtocolTableName -> videoResponseProtocols
   )
 
   lazy val allSchema : profile.SchemaDescription = Tables.schema
   lazy val advertiseTableName = "Advertise"
   lazy val auctionTableName = "Auction"
   lazy val bannerAdvertiseTypeTableName = "BannerAdvertiseType"
+  lazy val bidTableName = "Bid"
   lazy val bidRequestTableName = "BidRequest"
   lazy val bidResponseTableName = "BidResponse"
   lazy val campaignTableName = "Campaign"
@@ -123,20 +146,29 @@ class DatabaseSchema(appManager : AppManager) {
   lazy val campaignTargetSiteTableName = "CampaignTargetSite"
   lazy val contentCategoryTableName = "ContentCategory"
   lazy val contentContextTableName = "ContentContext"
+  lazy val creativeAttributeTableName = "CreativeAttribute"
   lazy val demandSidePlatformTableName = "DemandSidePlatform"
+  lazy val deviceTypeTableName = "DeviceType"
   lazy val geoMappingTableName = "GeoMapping"
   lazy val impressionTableName = "Impression"
   lazy val keywordTableName = "Keyword"
   lazy val keywordAdvertiseMappingTableName = "KeywordAdvertiseMapping"
+  lazy val logTraceTableName = "LogTrace"
   lazy val lostBidTableName = "LostBid"
   lazy val noBidResponseTypeTableName = "NoBidResponseType"
+  lazy val privateMarketPlaceDealTypeTableName = "PrivateMarketPlaceDeal"
   lazy val publisherTableName = "Publisher"
+  lazy val seatBidTableName = "SeatBid"
   lazy val transactionTableName = "Transaction"
-  lazy val logTraceTableName = "Logtrace"
+  lazy val userClassificationTableName = "UserClassification"
+  lazy val videoPlaybackMethodTableName = "VideoPlaybackMethod"
+  lazy val videoResponseProtocolTableName = "VideoResponseProtocol"
+
   lazy val TableNames = List(
     advertiseTableName,
     auctionTableName,
     bannerAdvertiseTypeTableName,
+    bidTableName,
     bidRequestTableName,
     bidResponseTableName,
     campaignTableName,
@@ -145,17 +177,24 @@ class DatabaseSchema(appManager : AppManager) {
     campaignTargetOperatingSystemTableName,
     contentCategoryTableName,
     contentContextTableName,
+    creativeAttributeTableName,
     demandSidePlatformTableName,
+    deviceTypeTableName,
     geoMappingTableName,
     impressionTableName,
     keywordTableName,
     keywordAdvertiseMappingTableName,
+    logTraceTableName,
     lostBidTableName,
     noBidResponseTypeTableName,
+    privateMarketPlaceDealTypeTableName,
     publisherTableName,
+    seatBidTableName,
     transactionTableName,
-    logTraceTableName
+    userClassificationTableName,
+    videoPlaybackMethodTableName,
+    videoResponseProtocolTableName
   )
 
-  def db = appManager.getDb
+  lazy val db = appManager.getDb
 }
