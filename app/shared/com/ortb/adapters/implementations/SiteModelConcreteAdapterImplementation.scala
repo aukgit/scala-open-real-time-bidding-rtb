@@ -1,5 +1,6 @@
-package shared.com.ortb.adapters.traits
+package shared.com.ortb.adapters.implementations
 
+import shared.com.ortb.adapters.traits.SiteModelAdapter
 import shared.com.ortb.model.auctionbid.biddingRequests.SiteModel
 import shared.io.helpers.EmptyValidateHelper
 

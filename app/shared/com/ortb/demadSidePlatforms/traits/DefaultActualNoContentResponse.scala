@@ -1,10 +1,10 @@
-package shared.com.ortb.demadSidePlatforms
+package shared.com.ortb.demadSidePlatforms.traits
 
-import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformBiddingProperties
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid
 import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 import shared.com.ortb.model.logging.CallStackModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 
 trait DefaultActualNoContentResponse {
   this : DemandSidePlatformBiddingAgent =>

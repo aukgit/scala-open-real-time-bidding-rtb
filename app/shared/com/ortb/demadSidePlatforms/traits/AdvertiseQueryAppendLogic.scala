@@ -1,9 +1,9 @@
-package shared.com.ortb.demadSidePlatforms
+package shared.com.ortb.demadSidePlatforms.traits
+
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.EmptyValidateHelper
 import slick.lifted.Query
-import slick.jdbc.SQLiteProfile.api._
 
 trait AdvertiseQueryAppendLogic {
 

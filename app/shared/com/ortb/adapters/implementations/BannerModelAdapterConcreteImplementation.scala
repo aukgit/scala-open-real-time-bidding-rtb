@@ -1,14 +1,15 @@
-package shared.com.ortb.adapters.traits
+package shared.com.ortb.adapters.implementations
 
 import com.google.inject.Inject
+import shared.com.ortb.adapters.traits.{ BannerModelAdapter, BidResponseModelAdapter }
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
 import shared.com.ortb.enumeration.NoBidResponseType.NoBidResponseType
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.{ BannerImpressionModel, SimpleBannerModel }
-import shared.com.ortb.model.auctionbid.bidresponses.{ BidResponseModel, BidResponseModelWrapper, SeatBidModel }
+import shared.com.ortb.model.auctionbid.bidresponses.{ BidResponseModel, BidResponseModelWrapper }
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent.schema.Tables._
-import shared.io.helpers.{ NumberHelper, PrimitiveTypeHelper }
+import shared.io.helpers.NumberHelper
 
 class BidResponseModelAdapterConcreteImplementation @Inject()(
   demandSidePlatformCorePropertiesContracts : DemandSidePlatformCorePropertiesContracts)

@@ -1,11 +1,10 @@
-package shared.com.ortb.demadSidePlatforms
+package shared.com.ortb.demadSidePlatforms.traits
 
 import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.ImpressionBiddableInfoModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
-import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger
-import slick.jdbc.SQLiteProfile.api._
 
 trait AddNewAdvertiseOnNotFound {
   this : DemandSidePlatformBiddingAgent =>

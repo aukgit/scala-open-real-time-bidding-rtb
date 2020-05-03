@@ -1,16 +1,16 @@
-package shared.com.ortb.demadSidePlatforms
-import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+package shared.com.ortb.demadSidePlatforms.traits
+
+import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid
+import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.auctionbid.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel }
 import shared.com.ortb.model.logging.LogTraceModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
-import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.EmptyValidateHelper
 import slick.lifted.TableQuery
-import slick.jdbc.SQLiteProfile.api._
 
 import scala.concurrent.Future
 

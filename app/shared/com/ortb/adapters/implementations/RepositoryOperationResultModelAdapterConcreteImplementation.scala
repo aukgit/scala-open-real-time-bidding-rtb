@@ -1,4 +1,4 @@
-package shared.com.ortb.adapters
+package shared.com.ortb.adapters.implementations
 
 import shared.com.ortb.adapters.traits.implementations.RepositoryOperationResultModelAdapterImplementation
 
