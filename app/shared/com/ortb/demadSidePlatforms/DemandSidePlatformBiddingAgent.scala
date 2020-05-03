@@ -19,8 +19,10 @@ class DemandSidePlatformBiddingAgent(
     with AddNewAdvertiseOnNotFound
     with BiddableInfoModelsGetter
     with AdvertiseQueryAppendLogic
-    with FailedBidsGetter with ImpressionDealsGetter with ExactHeightWidthQueryRowsGetter with DefaultActualNoContentResponse {
-
+    with FailedBidsGetter
+    with ImpressionDealsGetter
+    with ExactHeightWidthQueryRowsGetter
+    with DefaultActualNoContentResponse {
   lazy val defaultLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultGenericLimit
   lazy val defaultAdvertiseLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultAdvertiseLimit
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
@@ -36,8 +38,6 @@ class DemandSidePlatformBiddingAgent(
 
   override def getBidStaticNoContent(request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] =
     demandSidePlatformStaticBidResponseLogic.getBidStaticNoContent(request)
-
-  lazy override val appManager : AppManager = coreProperties.appManager
 
   override def getBidPrices(
     request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = ???
