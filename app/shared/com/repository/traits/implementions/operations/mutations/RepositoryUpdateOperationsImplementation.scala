@@ -2,7 +2,7 @@ package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryUpdateOperations
 import shared.io.helpers.AdapterHelper
@@ -17,7 +17,7 @@ trait RepositoryUpdateOperationsImplementation[TTable, TRow, TKey]
     toRegular(updateAsync(entityId, entity), defaultTimeout)
 
   def updateEntities(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
+    entityWrappers : Iterable[EntityWrapperModel[TRow, TKey]]
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
       AppLogger.info(s"${ headerMessage } No items passed for multiple updates.")

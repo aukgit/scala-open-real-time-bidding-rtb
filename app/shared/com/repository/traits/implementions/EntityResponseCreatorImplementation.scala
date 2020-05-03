@@ -3,7 +3,7 @@ package shared.com.repository.traits.implementions
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.RepositoryOperationResultModel
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.EntityResponseCreator
 import shared.io.helpers.AdapterHelper
@@ -97,7 +97,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
     RepositoryOperationResultModel(
       Some(attributesModel),
-      Some(EntityWrapper(entityId.get, entity.get))
+      Some(EntityWrapperModel(entityId.get, entity.get))
     )
   }
 

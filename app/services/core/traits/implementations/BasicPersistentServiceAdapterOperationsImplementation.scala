@@ -6,17 +6,17 @@ import shared.com.ortb.model.wrappers.persistent._
 trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
   extends BasicPersistentServiceAdapterOperations[TTable, TRow, TKey] {
   override def toEntityWrapper(
-    item : Option[TRow]) : Option[EntityWrapper[TRow, TKey]] =
+    item : Option[TRow]) : Option[EntityWrapperModel[TRow, TKey]] =
     repository.toEntityWrapper(item)
 
   override def fromEntityWrapperToEntityWrapperWithOptions(
-    item : Option[EntityWrapper[TRow, TKey]])
+    item : Option[EntityWrapperModel[TRow, TKey]])
   : Option[EntityWrapperWithOptions[TRow, TKey]] =
     repository.fromEntityWrapperToEntityWrapperWithOptions(item)
 
   override def fromEntityWrapperWithOptionsToEntityWrapper(
     item : Option[EntityWrapperWithOptions[TRow, TKey]])
-  : Option[EntityWrapper[TRow, TKey]] =
+  : Option[EntityWrapperModel[TRow, TKey]] =
     repository.fromEntityWrapperWithOptionsToEntityWrapper(item)
 
   override def toEntityWrapperWithOptions(
@@ -24,7 +24,7 @@ trait BasicPersistentServiceAdapterOperationsImplementation[TTable, TRow, TKey]
     repository.toEntityWrapperWithOptions(item)
 
   override def toEntitiesWrapper(items : Option[Iterable[TRow]])
-  : Option[Iterable[EntityWrapper[TRow, TKey]]] =
+  : Option[Iterable[EntityWrapperModel[TRow, TKey]]] =
     repository.toEntitiesWrapper(items)
 
   override def toEntitiesWrapperWithOptions(items : Option[Iterable[TRow]])

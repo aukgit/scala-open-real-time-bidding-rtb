@@ -3,7 +3,7 @@ package shared.com.repository.traits.implementions
 import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.RepositoryRowsToResponseConverter
 import shared.io.helpers.EmptyValidateHelper
@@ -18,7 +18,7 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
       return null
     }
 
-    val rowsToEntityRows = rows.get.map(row => EntityWrapper(getEntityId(row), row))
+    val rowsToEntityRows = rows.get.map(row => EntityWrapperModel(getEntityId(row), row))
     val idsList = Some(rowsToEntityRows.map(w => w.entityId.toString).toList)
 
     val attributes = GenericResponseAttributesModel(
@@ -46,7 +46,7 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
     }
 
     val row = rowOption.get
-    val entity = Some(EntityWrapper(getEntityId(row), row))
+    val entity = Some(EntityWrapperModel(getEntityId(row), row))
 
     val attributes = GenericResponseAttributesModel(
       isSuccess = true,

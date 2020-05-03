@@ -2,7 +2,7 @@ package shared.com.ortb.model.results
 
 import com.sun.tools.javac.code.TypeTag
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.io.helpers.ReflectionHelper
 
 import scala.reflect.runtime.universe._
@@ -10,7 +10,7 @@ import scala.reflect.runtime.{ universe => ru }
 
 case class RepositoryOperationResultModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
-  data : Option[EntityWrapper[TRow, TKey]] = None) {
+  data : Option[EntityWrapperModel[TRow, TKey]] = None) {
   def getIdAs[T](implicit T : ru.TypeTag[T]) : Option[T] = {
     if (attributes.isEmpty) {
       return None

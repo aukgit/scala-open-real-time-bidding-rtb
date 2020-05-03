@@ -2,7 +2,7 @@ package services.core.traits.implementations
 
 import services.core.traits.MultiplePersistentServiceOperation
 import shared.com.ortb.model.results.RepositoryOperationResultsModel
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 
 trait MultiplePersistentServiceOperationImplementation[TTable, TRow, TKey]
   extends MultiplePersistentServiceOperation[TTable, TRow, TKey] {
@@ -17,12 +17,12 @@ trait MultiplePersistentServiceOperationImplementation[TTable, TRow, TKey]
     repository.addEntities(entities)
 
   override def addOrUpdateEntities(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]) :
+    entityWrappers : Iterable[EntityWrapperModel[TRow, TKey]]) :
   RepositoryOperationResultsModel[TRow, TKey] =
     repository.addOrUpdateEntities(entityWrappers)
 
   override def updateEntities(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]) :
+    entityWrappers : Iterable[EntityWrapperModel[TRow, TKey]]) :
   RepositoryOperationResultsModel[TRow, TKey] =
     repository.updateEntities(entityWrappers)
 

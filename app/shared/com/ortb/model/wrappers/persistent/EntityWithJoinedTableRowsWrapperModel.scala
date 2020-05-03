@@ -1,8 +1,8 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.wrappers.persistent
 
 import shared.io.helpers.EmptyValidateHelper
 
-case class EntityWithJoinedTableRowsModel[TBase, TChildRowsType](
+case class EntityWithJoinedTableRowsWrapperModel[TBase, TChildRowsType](
   row : Option[TBase],
   innerRows : Option[Seq[TChildRowsType]]
 ) {
