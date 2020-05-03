@@ -1,8 +1,9 @@
 package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
-import shared.com.ortb.model.{ LogTraceModel, auctionbid }
+import shared.com.ortb.model.auctionbid
 import shared.com.ortb.model.auctionbid.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel }
+import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables

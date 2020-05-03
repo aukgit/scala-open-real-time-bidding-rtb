@@ -1,8 +1,8 @@
 package shared.com.ortb.model.auctionbid
 
-import shared.com.ortb.model.CallStackModel
 import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
+import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.io.helpers.IterableHelper
 

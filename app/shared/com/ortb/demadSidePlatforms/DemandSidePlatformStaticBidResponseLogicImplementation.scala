@@ -8,6 +8,7 @@ import shared.com.ortb.model.{ auctionbid, _ }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
+import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 
 import scala.collection.mutable.ArrayBuffer

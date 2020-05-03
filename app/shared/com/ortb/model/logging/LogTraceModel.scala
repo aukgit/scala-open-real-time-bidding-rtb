@@ -1,4 +1,4 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.logging
 
 case class LogTraceModel(
   methodName : String,

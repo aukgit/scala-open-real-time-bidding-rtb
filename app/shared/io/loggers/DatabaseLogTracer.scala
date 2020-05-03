@@ -6,7 +6,7 @@ import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.model.LogTraceModel
+import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.persistent.repositories.LogTraceRepository
 import shared.io.helpers.{ EmptyValidateHelper, ToStringHelper }
 

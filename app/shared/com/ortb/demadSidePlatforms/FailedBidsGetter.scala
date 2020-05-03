@@ -2,6 +2,7 @@ package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.model.{ auctionbid, _ }
 import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, BidFailedInfoWithRowsModel }
+import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent
 import shared.com.ortb.persistent.Repositories

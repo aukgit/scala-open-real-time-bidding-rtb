@@ -4,7 +4,7 @@ import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
-import shared.com.ortb.model.LogTraceModel
+import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.io.loggers.DatabaseLogTracerImplementation
 
