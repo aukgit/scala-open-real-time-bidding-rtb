@@ -1,4 +1,4 @@
-package controllers.controllerRoutes.routerGeneric
+package controllers.controllerRoutes.router
 
 import com.google.inject.Inject
 import play.api.routing.Router.Routes
