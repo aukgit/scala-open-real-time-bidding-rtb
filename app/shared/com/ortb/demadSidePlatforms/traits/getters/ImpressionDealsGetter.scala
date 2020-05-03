@@ -1,7 +1,7 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
-import shared.com.ortb.model.auctionbid._
+import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, ImpressionBiddableInfoModel, ImpressionDealModel }
 import shared.com.ortb.model.config.RangeModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }

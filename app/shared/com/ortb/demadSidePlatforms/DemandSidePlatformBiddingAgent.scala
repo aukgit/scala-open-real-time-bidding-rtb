@@ -1,13 +1,11 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.demadSidePlatforms.traits.getters.{ BiddableInfoModelsGetter, ExactHeightWidthQueryRowsGetter, FailedBidsGetter, ImpressionDealsGetter }
-import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse }
-import shared.com.ortb.demadSidePlatforms.traits.logics.{ AdvertiseQueryAppendLogic, DemandSidePlatformBiddingLogic, DemandSidePlatformStaticBidResponseLogic }
+import shared.com.ortb.demadSidePlatforms.traits.getters._
+import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
+import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
-import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
-import shared.com.ortb.model._
 import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel

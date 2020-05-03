@@ -1,8 +1,7 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
-import shared.com.ortb.model.auctionbid
-import shared.com.ortb.model.auctionbid._
+import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, BidFailedInfoWithRowsModel, WinningPricesModel }
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.Repositories
@@ -61,7 +60,7 @@ trait FailedBidsGetter {
     val absoluteDifferenceOfLosingAndWinningPrice =
       Math.abs(lastWiningPrice - lastLosingPrice)
 
-    val bidFailedInfoModel = auctionbid.BidFailedInfoModel(
+    val bidFailedInfoModel = BidFailedInfoModel(
       lastLostBid = lostBidResults.head,
       lastWinningBid = winningPriceModel.lastWinningBidRow,
       lastLosingPrice = lastLosingPrice,

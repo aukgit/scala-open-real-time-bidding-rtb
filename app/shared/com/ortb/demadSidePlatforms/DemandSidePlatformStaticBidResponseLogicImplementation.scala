@@ -3,10 +3,7 @@ package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
-import shared.com.ortb.model
-import shared.com.ortb.model.{ auctionbid, _ }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
-import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
@@ -42,7 +39,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
         callStacks.addOne(callStackModel)
       } else {
-        deals.addOne(auctionbid.ImpressionDealModel(impression, defaultStaticDeal))
+        deals.addOne(ImpressionDealModel(impression, defaultStaticDeal))
 
         val callStackModel = CallStackModel(
           deal = defaultStaticDeal,
@@ -68,22 +65,22 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
   override def getBidStaticNoContent(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-//    val dspBidderResultModel =
-//      model.DemandSidePlatformBidResponseModel(
-//        request,
-//        request.bidRequest,
-//        isNoContent = true,
-//        BidResponseModelWrapper = null)
-//
-//    val callStackModel = CallStackModel(
-//      deal = demandSidePlatformCoreProperties.noDealPrice,
-//      performingAction = s"[getBidStaticNoContent] -> No deals.",
-//      isServedAnyDeal = false
-//    )
-//
-//    dspBidderResultModel.addCallStack(callStackModel)
-//
-//    Some(dspBidderResultModel)
+    //    val dspBidderResultModel =
+    //      model.DemandSidePlatformBidResponseModel(
+    //        request,
+    //        request.bidRequest,
+    //        isNoContent = true,
+    //        BidResponseModelWrapper = null)
+    //
+    //    val callStackModel = CallStackModel(
+    //      deal = demandSidePlatformCoreProperties.noDealPrice,
+    //      performingAction = s"[getBidStaticNoContent] -> No deals.",
+    //      isServedAnyDeal = false
+    //    )
+    //
+    //    dspBidderResultModel.addCallStack(callStackModel)
+    //
+    //    Some(dspBidderResultModel)
     throw new NotImplementedError()
 
   }

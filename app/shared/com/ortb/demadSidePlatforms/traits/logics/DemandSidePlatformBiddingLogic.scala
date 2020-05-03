@@ -5,7 +5,7 @@ import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperMode
 
 trait DemandSidePlatformBiddingLogic
   extends DemandSidePlatformStaticBidResponseLogic
-    with DemandSidePlatformActualBidResponseLogic{
+    with DemandSidePlatformActualBidResponseLogic {
   def isStatic : Boolean
 
   def getBidPrices(request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel]
