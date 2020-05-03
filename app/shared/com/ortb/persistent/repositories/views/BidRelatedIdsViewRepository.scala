@@ -16,7 +16,7 @@ import slick.sql.FixedSqlAction
 class BidRelatedIdsViewRepository @Inject()(appManager: AppManager)
     extends RepositoryViewsCore[Bidrelatedidsview, BidrelatedidsviewRow](appManager) {
 
-  override def tableName: String = this.bidTableName
+  override def tableName: String = this.views.bidRelatedIdsViewName
 
   override def table =
     this.views.bidRelatedIdsView
