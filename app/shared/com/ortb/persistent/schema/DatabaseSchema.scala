@@ -5,8 +5,6 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables.{ profile, _ }
 import slick.lifted.TableQuery
 
-
-
 class DatabaseSchema @Inject()(appManager : AppManager) {
   /**
    * Determinate weather to log queries or not.
@@ -205,4 +203,5 @@ class DatabaseSchema @Inject()(appManager : AppManager) {
   )
 
   lazy val db = appManager.getDb
+  lazy val views = new DatabaseSchemaViews
 }
