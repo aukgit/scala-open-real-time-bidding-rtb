@@ -1,4 +1,4 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.auctionbid
 import shared.com.ortb.persistent.schema.Tables._
 
 case class BidFailedInfoModel(
@@ -22,5 +22,3 @@ case class BidFailedInfoModel(
   absoluteDifferenceOfAverageLosingAndWinningPrice: Double,
   absoluteDifferenceOfLosingAndWinningPrice: Double,
 )
-
-

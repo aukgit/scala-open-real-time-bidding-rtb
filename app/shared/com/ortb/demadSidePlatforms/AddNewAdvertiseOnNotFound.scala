@@ -1,7 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.ImpressionBiddableInfoModel
+import shared.com.ortb.model.auctionbid.ImpressionBiddableInfoModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.loggers.AppLogger

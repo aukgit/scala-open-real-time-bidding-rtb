@@ -1,5 +1,6 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.auctionbid
 
+import shared.com.ortb.model.CallStackModel
 import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel

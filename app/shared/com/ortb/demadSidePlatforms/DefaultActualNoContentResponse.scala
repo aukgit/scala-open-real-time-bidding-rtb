@@ -2,7 +2,8 @@ package shared.com.ortb.demadSidePlatforms
 
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformBiddingProperties
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
-import shared.com.ortb.model.{ CallStackModel, DemandSidePlatformBidResponseModel }
+import shared.com.ortb.model.{ CallStackModel, auctionbid }
+import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 
 trait DefaultActualNoContentResponse {
   this : DemandSidePlatformBiddingAgent =>
@@ -10,7 +11,7 @@ trait DefaultActualNoContentResponse {
   def getBidActualNoContent(
     request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
     val dspBidderResultModel =
-      DemandSidePlatformBidResponseModel(request, request.bidRequestModel, isNoContent = true,bidResponseWrapper = null)
+      auctionbid.DemandSidePlatformBidResponseModel(request, request.bidRequestModel, isNoContent = true,bidResponseWrapper = null)
 
     val callStackModel = CallStackModel(
       deal = coreProperties.noDealPrice,

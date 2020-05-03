@@ -1,6 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.model._
+import shared.com.ortb.model.{ auctionbid, _ }
+import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, BidFailedInfoWithRowsModel }
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.com.ortb.persistent
 import shared.com.ortb.persistent.Repositories
@@ -70,7 +71,7 @@ trait FailedBidsGetter {
       randomNumberIncrementerGuessRange.start,
       randomNumberIncrementerGuessRange.end)
 
-    val bidFailedInfoModel = BidFailedInfoModel(
+    val bidFailedInfoModel = auctionbid.BidFailedInfoModel(
       lastLostBid = lostBidResults.head,
       lastWinningBid = winningPriceModel.lastWinningBidRow,
       lastLosingPrice = lastLosingPrice,

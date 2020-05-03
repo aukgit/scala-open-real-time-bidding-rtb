@@ -1,4 +1,4 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.auctionbid
 
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 

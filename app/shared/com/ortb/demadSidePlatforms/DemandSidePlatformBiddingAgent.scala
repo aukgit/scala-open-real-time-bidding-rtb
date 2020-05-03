@@ -6,6 +6,7 @@ import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.Demand
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model._
+import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
 import shared.io.helpers.EmptyValidateHelper
