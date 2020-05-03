@@ -1,23 +1,19 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.model.{ auctionbid, _ }
-import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, BidFailedInfoWithRowsModel }
+import shared.com.ortb.model.auctionbid
+import shared.com.ortb.model.auctionbid._
 import shared.com.ortb.model.logging.LogTraceModel
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
-import shared.com.ortb.persistent
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema._
-import shared.io.helpers.NumberHelper
+import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import slick.jdbc.SQLiteProfile.api._
-
-import scala.util.Random
-import shared.com.ortb.persistent.schema.Tables._
 
 trait FailedBidsGetter {
   this : DemandSidePlatformBiddingAgent =>
 
   def getLastFailedDealsAsBidFailedInfoWithRowsModel(
-    request : DemandSidePlatformBiddingRequestModel,
+    request : DemandSidePlatformBiddingRequestWrapperModel,
     limit : Int = defaultLimit) : BidFailedInfoWithRowsModel = {
     val methodName = "getLastFailedDealsAsBidFailedInfoWithRowsModel"
 
@@ -49,14 +45,13 @@ trait FailedBidsGetter {
 
   private def getBidFailedInfoModel(
     limit : Int,
-    lostBidResults : Seq[persistent.schema.Tables.LostbidRow]) = {
+    lostBidResults : Seq[Tables.LostbidRow]) = {
     val length = lostBidResults.length
     val repositories = coreProperties.repositories
     val averageOfLosingPrice = lostBidResults.map(w => NumberHelper.getAsDouble(w.losingprice)).sum / length
     val lastLosingPrice = NumberHelper.getAsDouble(lostBidResults.head.losingprice)
 
     val winningPriceModel = getWinningPricesModel(limit, repositories)
-
     val averageOfWiningPrices = winningPriceModel.averageOfWiningPrices
     val lastWiningPrice = winningPriceModel.lastWinningPrice
 
@@ -65,10 +60,6 @@ trait FailedBidsGetter {
     val absoluteDifferenceOfLosingAndWinningPrice =
       Math.abs(lastWiningPrice - lastLosingPrice)
 
-    val randomInGuessRange : Seq[Double] = for (i <- 1 to 10) yield Random.between(
-      randomNumberIncrementerGuessRange.start,
-      randomNumberIncrementerGuessRange.end)
-
     val bidFailedInfoModel = auctionbid.BidFailedInfoModel(
       lastLostBid = lostBidResults.head,
       lastWinningBid = winningPriceModel.lastWinningBidRow,
@@ -76,9 +67,9 @@ trait FailedBidsGetter {
       lastWiningPrice = lastWiningPrice,
       averageOfLosingPrices = averageOfLosingPrice,
       averageOfWiningPrices = averageOfWiningPrices,
-      guessOfAdditionalPrices = randomInGuessRange,
       absoluteDifferenceOfAverageLosingAndWinningPrice = absoluteDifferenceOfAverageLosingAndWinningPrice,
-      absoluteDifferenceOfLosingAndWinningPrice = absoluteDifferenceOfLosingAndWinningPrice
+      absoluteDifferenceOfLosingAndWinningPrice = absoluteDifferenceOfLosingAndWinningPrice,
+      staticIncrement = coreProperties.defaultIncrementNumber
     )
 
     bidFailedInfoModel
@@ -109,32 +100,32 @@ trait FailedBidsGetter {
     repositories : Repositories) : WinningPricesModel = {
     val winningPriceInfoViewRepository = repositories.viewsRepositories
       .winningPriceInfoViewRepository
-    val query  = winningPriceInfoViewRepository
+    val query = winningPriceInfoViewRepository
       .getAllQuery
       .filter(w => w.iswon === 1)
       .sortBy(_.impressioncreateddate.desc)
       .take(limit)
       .result
 
-    var results = winningPriceInfoViewRepository.getResults(query)
+    val results = winningPriceInfoViewRepository.getResults(query)
 
-//    val bidResponses = repositories.bidResponses
-//    val bidResponsesQuery = bidResponses.filter(r => r.iswontheauction === 0)
-//      .sortBy(_.actualselectedprice.desc)
-//      .sortBy(_.createddate.desc)
-//      .take(limit)
-//
-//    val bidResponseResults = repositories
-//      .bidResponseRepository
-//      .run(bidResponsesQuery)
-//
-//    bidResponseResults
-    throw new NotImplementedError()
+    if (EmptyValidateHelper.isItemsEmptyDirect(results)) {
+      return WinningPricesModel(
+        0,
+        0,
+        null
+      )
+    }
+
+    val resultsLength = results.length
+    val averageOfWiningPrices = results.map(w => NumberHelper.getAsDouble(w.actualwiningprice)).sum / resultsLength
+    val lastWiningPrice = NumberHelper.getAsDouble(results.head.actualwiningprice)
+
+    WinningPricesModel(
+      averageOfWiningPrices,
+      lastWiningPrice,
+      results.head
+    )
   }
 }
 
-case class WinningPricesModel (
-  averageOfWiningPrices: Double,
-  lastWinningPrice: Double,
-  lastWinningBidRow : WinningpriceinfoviewRow
-)

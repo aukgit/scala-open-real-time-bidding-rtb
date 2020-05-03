@@ -4,13 +4,13 @@ import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid
 import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 import shared.com.ortb.model.logging.CallStackModel
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 
 trait DefaultActualNoContentResponse {
   this : DemandSidePlatformBiddingAgent =>
 
   def getBidActualNoContent(
-    request : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel] = {
+    request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
     val dspBidderResultModel =
       auctionbid.DemandSidePlatformBidResponseModel(request, request.bidRequestModel, isNoContent = true,bidResponseWrapper = null)
 

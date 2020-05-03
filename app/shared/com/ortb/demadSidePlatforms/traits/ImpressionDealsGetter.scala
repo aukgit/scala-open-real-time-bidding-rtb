@@ -3,11 +3,10 @@ package shared.com.ortb.demadSidePlatforms.traits
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid._
 import shared.com.ortb.model.config.RangeModel
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
-import shared.io.helpers.EmptyValidateHelper
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
+import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 
 import scala.concurrent.Future
-import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
@@ -24,18 +23,19 @@ trait ImpressionDealsGetter {
       return null
     }
 
-    val banner = impressionBiddableInfoModel.impression.banner.get
+    val randomIncrements = randomNumberIncrementerGuessRange.guessRandomInBetween
     val hasExactHeightsWidths = EmptyValidateHelper.hasAnyItem(
       impressionBiddableInfoModel.exactHeightWidthAdvertises)
-
+    val bidFloor = NumberHelper.getAsDouble(impressionBiddableInfoModel.impression.bidfloor)
 
     if (hasExactHeightsWidths) {
       // more price
-      val length = bidFailedReasonsModel.guessOfAdditionalPrices.length
-      val randomIndex = Random.between(0, length)
-      val randomIncrements = bidFailedReasonsModel.guessOfAdditionalPrices(randomIndex)
+      val randomInBetweenAvgWinAndLoss = bidFailedReasonsModel
+        .randomNumberBetweenAverageLosingAndWinningPriceOrStaticIncrementIfNoDifference
+
       val deal =
-        bidFailedReasonsModel.absoluteDifferenceOfAverageLosingAndWinningPrice +
+        bidFloor +
+          randomInBetweenAvgWinAndLoss +
           bidFailedReasonsModel.averageOfWiningPrices +
           randomIncrements +
           coreProperties.defaultIncrementNumber
@@ -43,16 +43,24 @@ trait ImpressionDealsGetter {
       return ImpressionDealModel(impressionBiddableInfoModel.impression, deal)
     }
 
-    val deal =
-      coreProperties.defaultStaticDeal +
+    var threshold : Double = 0
+
+    if (bidFloor <= 0) {
+      threshold = coreProperties.defaultStaticDeal
+    } else {
+      threshold = bidFloor
+    }
+
+    val deal = threshold +
+      randomIncrements +
       bidFailedReasonsModel.absoluteDifferenceOfAverageLosingAndWinningPrice +
-        coreProperties.defaultIncrementNumber
+      coreProperties.defaultIncrementNumber
 
     ImpressionDealModel(impressionBiddableInfoModel.impression, deal)
   }
 
   def getImpressionInfoModelsFromImpressionBiddableInfoModels(
-    request : DemandSidePlatformBiddingRequestModel,
+    request : DemandSidePlatformBiddingRequestWrapperModel,
     biddableImpressionInfoModels : Seq[ImpressionBiddableInfoModel]) :
   Option[List[ImpressionDealModel]] = {
     if (EmptyValidateHelper.isItemsEmpty(Some(biddableImpressionInfoModels))) {

@@ -1,12 +1,12 @@
 package shared.com.ortb.demadSidePlatforms.traits.logics
 
 import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 
 trait DemandSidePlatformStaticBidResponseLogic {
   def getBidStatic(
-    request    : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel]
+    request    : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel]
 
   def getBidStaticNoContent(
-    request    : DemandSidePlatformBiddingRequestModel) : Option[DemandSidePlatformBidResponseModel]
+    request    : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel]
 }

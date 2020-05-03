@@ -7,7 +7,7 @@ import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCo
 import shared.com.ortb.enumeration.NoBidResponseType.NoBidResponseType
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.{ BannerImpressionModel, SimpleBannerModel }
 import shared.com.ortb.model.auctionbid.bidresponses.{ BidResponseModel, BidResponseModelWrapper }
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.NumberHelper
 
@@ -46,7 +46,7 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
    * @return
    */
   override def noBidResponse(
-    request : DemandSidePlatformBiddingRequestModel,
+    request : DemandSidePlatformBiddingRequestWrapperModel,
     noBidResponseType : NoBidResponseType) : BidResponseModelWrapper = {
     // create a bid response.
     val repository =

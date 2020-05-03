@@ -1,19 +1,18 @@
 package shared.com.ortb.demadSidePlatforms.traits
 
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
-import shared.com.ortb.model.auctionbid
-import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.auctionbid.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel }
+import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.logging.LogTraceModel
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.repositories.AdvertiseRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.EmptyValidateHelper
+import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.TableQuery
 
 import scala.concurrent.Future
-import slick.jdbc.SQLiteProfile.api._
 
 trait BiddableInfoModelsGetter {
   this : DemandSidePlatformBiddingAgent =>
@@ -27,7 +26,7 @@ trait BiddableInfoModelsGetter {
 
     if (EmptyValidateHelper.isEmpty(impression.banner)) {
       // no banner
-      val model = auctionbid.ImpressionBiddableInfoModel(
+      val model = ImpressionBiddableInfoModel(
         impression,
         None,
         None,
@@ -60,7 +59,7 @@ trait BiddableInfoModelsGetter {
       hasBanner = true,
       totalCount.get)
 
-    val model = auctionbid.ImpressionBiddableInfoModel(
+    val model = ImpressionBiddableInfoModel(
       impression,
       Some(rows.toArray),
       exactQueryRows,
@@ -77,7 +76,7 @@ trait BiddableInfoModelsGetter {
   }
 
   def getBiddableImpressionInfoModels(
-    request : DemandSidePlatformBiddingRequestModel,
+    request : DemandSidePlatformBiddingRequestWrapperModel,
     limit : Int = defaultAdvertiseLimit) : Seq[ImpressionBiddableInfoModel] = {
     val repositories = coreProperties.repositories
     val advertiseRepository = repositories.advertiseRepository

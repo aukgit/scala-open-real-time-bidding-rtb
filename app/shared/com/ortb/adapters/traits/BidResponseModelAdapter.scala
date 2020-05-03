@@ -2,7 +2,7 @@ package shared.com.ortb.adapters.traits
 
 import shared.com.ortb.enumeration.NoBidResponseType.NoBidResponseType
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModelWrapper
-import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestModel
+import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 
 trait BidResponseModelAdapter {
   /**
@@ -13,6 +13,6 @@ trait BidResponseModelAdapter {
    * @return
    */
   def noBidResponse(
-    request : DemandSidePlatformBiddingRequestModel,
+    request : DemandSidePlatformBiddingRequestWrapperModel,
     noBidResponseType : NoBidResponseType) : BidResponseModelWrapper
 }
