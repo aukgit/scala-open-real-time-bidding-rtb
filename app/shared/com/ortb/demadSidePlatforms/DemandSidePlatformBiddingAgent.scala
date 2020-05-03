@@ -7,8 +7,10 @@ import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, De
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
+import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModel
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
+import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.EmptyValidateHelper
 
 class DemandSidePlatformBiddingAgent(
@@ -61,5 +63,31 @@ class DemandSidePlatformBiddingAgent(
 
 
     throw new NotImplementedError()
+  }
+
+
+  def getBidResponseRow(bidResponse : Option[BidResponseModel]) : BidresponseRow = ???
+
+  def addBidResponseAsync(response : Option[DemandSidePlatformBidResponseModel]) : Unit = {
+    if (EmptyValidateHelper.isEmpty(
+      response,
+      Some("addBidResponse, given response is empty. Nothing to save."))) {
+      return
+    }
+
+    val bidResponse = response.get.bidResponseWrapper.bidResponse
+    if (EmptyValidateHelper.isEmpty(
+      bidResponse,
+      Some("addBidResponse, given bidResponse is empty. Nothing to save."))) {
+      return
+    }
+
+    val bidResponseRepository = coreProperties
+      .repositories
+      .bidResponseRepository
+
+    val bidResponseRow = getBidResponseRow(bidResponse)
+
+    bidResponseRepository.addAsync(bidResponseRow)
   }
 }

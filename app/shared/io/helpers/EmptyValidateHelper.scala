@@ -232,6 +232,21 @@ object EmptyValidateHelper {
     !hasAnyItem(Some(items), message)
   }
 
+  def isDefinedDoublePlusPositive[A](
+    item : Option[Double]) : Boolean = {
+    item.isDefined && item.get > 0
+  }
+
+  def isDefinedIntPlusPositive[A](
+    item : Option[Int]) : Boolean = {
+    item.isDefined && item.get > 0
+  }
+
+  def isDefinedLongPlusPositive[A](
+    item : Option[Long]) : Boolean = {
+    item.isDefined && item.get > 0
+  }
+
   def hasAnyItem[A](
     items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {

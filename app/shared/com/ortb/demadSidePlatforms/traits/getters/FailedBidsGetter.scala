@@ -1,7 +1,7 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
-import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, BidFailedInfoWithRowsModel, WinningPricesModel }
+import shared.com.ortb.model.auctionbid._
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.Repositories
@@ -45,7 +45,21 @@ trait FailedBidsGetter {
 
   private def getBidFailedInfoModel(
     limit : Int,
-    lostBidResults : Seq[Tables.LostbidRow]) = {
+    lostBidResults : Seq[Tables.LostbidRow]) : BidFailedInfoModel = {
+    if (EmptyValidateHelper.isItemsEmptyDirect(lostBidResults)) {
+      return BidFailedInfoModel(
+        lastLostBid = null,
+        lastWinningBid = null,
+        lastLosingPrice = 0,
+        lastWiningPrice = 0,
+        averageOfLosingPrices = 0,
+        averageOfWiningPrices = 0,
+        absoluteDifferenceOfAverageLosingAndWinningPrice = 0,
+        absoluteDifferenceOfLosingAndWinningPrice = 0,
+        staticIncrement = coreProperties.defaultIncrementNumber
+      )
+    }
+
     val length = lostBidResults.length
     val repositories = coreProperties.repositories
     val averageOfLosingPrice = lostBidResults.map(w => NumberHelper.getAsDouble(w.losingprice)).sum / length

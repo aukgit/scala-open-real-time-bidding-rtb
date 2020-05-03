@@ -13,22 +13,22 @@ trait AdvertiseQueryAppendLogic {
     banner : BannerImpressionModel
   ) : Query[Tables.Advertise, Tables.AdvertiseRow, Seq] = {
     var advertisesQuery = advertisesQueryIn
-    if (EmptyValidateHelper.isDefined(banner.wmax)) {
+    if (EmptyValidateHelper.isDefinedIntPlusPositive(banner.wmax)) {
       val maxWidth = banner.wmax.get
       advertisesQuery = advertisesQuery.filter(ad => ad.maxwidth <= maxWidth)
     }
 
-    if (EmptyValidateHelper.isDefined(banner.wmin)) {
+    if (EmptyValidateHelper.isDefinedIntPlusPositive(banner.wmin)) {
       val minWidth = banner.wmin.get
       advertisesQuery = advertisesQuery.filter(ad => ad.minwidth >= minWidth)
     }
 
-    if (EmptyValidateHelper.isDefined(banner.hmax)) {
+    if (EmptyValidateHelper.isDefinedIntPlusPositive(banner.hmax)) {
       val maxHeight = banner.hmax.get
       advertisesQuery = advertisesQuery.filter(ad => ad.maxheight <= maxHeight)
     }
 
-    if (EmptyValidateHelper.isDefined(banner.hmin)) {
+    if (EmptyValidateHelper.isDefinedIntPlusPositive(banner.hmin)) {
       val minHeight = banner.hmin.get
       advertisesQuery = advertisesQuery.filter(ad => ad.minheight >= minHeight)
     }
