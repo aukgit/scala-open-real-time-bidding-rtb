@@ -1,8 +1,11 @@
 package shared.com.repository.traits.implementions.operations.queries
 
+import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.model.results.RepositoryOperationResultsModel
 import shared.com.ortb.model.wrappers.PaginationWrapperModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.queries.RepositoryGetPagedQueryOperations
+import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.AppLogger
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
@@ -10,15 +13,27 @@ import slick.lifted.Query
 import slick.sql.FixedSqlStreamingAction
 
 trait RepositoryGetPagedQueryOperationsImplementation[TTable, TRow, TKey]
-  extends RepositoryGetPagedQueryOperations[TRow] {
+  extends RepositoryGetPagedQueryOperations[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
+  /**
+   *
+   * @param query : to be executed and get the rows from.
+   * @param limit : -1 take all no limit
+   * @param message : message to be added with the response.
+   *
+   * @return
+   */
+  def takeFromAnyQueryAsResponse(
+    query : Query[TTable, TRow, Seq],
+    limit : Int = 100,
+    message : String = null) : RepositoryOperationResultsModel[TRow,TKey] = {
+    val results = takeFromAnyQuery(query, limit)
 
-  def take[TRow2](
-    queryResult : FixedSqlStreamingAction[Seq[TRow2], TRow2, Effect.Read]) : Seq[TRow2] = {
-    try {
-      return this.runAs(queryResult)
-    } catch {
-      case e : Exception => AppLogger.errorCaptureAndThrow(e)
+    if(EmptyValidateHelper.hasAnyItemDirect(results)){
+      return getRowsToResponse(
+        Some(results),
+        dbAction = Some(DatabaseActionType.Read),
+        message)
     }
 
     null
@@ -51,7 +66,7 @@ trait RepositoryGetPagedQueryOperationsImplementation[TTable, TRow, TKey]
 
   def takeCurrentTableRows(
     limit : Int) : Seq[TRow] =
-    take[TRow](getAllQuery.take(limit).result)
+    getResults[TRow](getAllQuery.take(limit).result)
 
   def getCurrentTablePaged(
     pageIndex : Int = 1,

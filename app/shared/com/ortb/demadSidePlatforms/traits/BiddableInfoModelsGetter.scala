@@ -13,6 +13,7 @@ import shared.io.helpers.EmptyValidateHelper
 import slick.lifted.TableQuery
 
 import scala.concurrent.Future
+import slick.jdbc.SQLiteProfile.api._
 
 trait BiddableInfoModelsGetter {
   this : DemandSidePlatformBiddingAgent =>

@@ -4,6 +4,7 @@ import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpression
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.EmptyValidateHelper
 import slick.lifted.Query
+import slick.jdbc.SQLiteProfile.api._
 
 trait AdvertiseQueryAppendLogic {
 

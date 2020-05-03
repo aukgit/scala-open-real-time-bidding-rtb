@@ -220,6 +220,12 @@ object EmptyValidateHelper {
     hasItem
   }
 
+  def hasAnyItemDirect[A](
+    items : Iterable[A],
+    message : Option[String] = None) : Boolean = {
+    hasAnyItem(Some(items), message)
+  }
+
   def isItemsEmptyDirect[A](
     items : Iterable[A],
     message : Option[String] = None) : Boolean = {

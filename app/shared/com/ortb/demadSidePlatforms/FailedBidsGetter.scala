@@ -26,12 +26,10 @@ trait FailedBidsGetter {
 
     val lostBidResults = getLostBids(
       limit,
-      repositories,
       lostBids)
 
     val bidFailedInfoModel : BidFailedInfoModel = getBidFailedInfoModel(
       limit,
-      repositories,
       lostBidResults)
 
     val bidFailedInfoWithRowsModel = BidFailedInfoWithRowsModel(
@@ -51,10 +49,9 @@ trait FailedBidsGetter {
 
   private def getBidFailedInfoModel(
     limit : Int,
-    repositories : Repositories,
     lostBidResults : Seq[persistent.schema.Tables.LostbidRow]) = {
     val length = lostBidResults.length
-
+    val repositories = coreProperties.repositories
     val averageOfLosingPrice = lostBidResults.map(w => NumberHelper.getAsDouble(w.losingprice)).sum / length
     val lastLosingPrice = NumberHelper.getAsDouble(lostBidResults.head.losingprice)
 
@@ -89,8 +86,8 @@ trait FailedBidsGetter {
 
   def getLostBids(
     limit : Int,
-    repositories : Repositories,
     lostBids : TableQuery[Tables.Lostbid]) : Seq[Tables.LostbidRow] = {
+    val repositories = coreProperties.repositories
     val demandSidePlatformId = coreProperties.demandSideId
     val lostBidsQuery = lostBids
       .filter(r => r.demandsideplatformid === demandSidePlatformId)
@@ -110,6 +107,16 @@ trait FailedBidsGetter {
   def getWinningPricesModel(
     limit : Int,
     repositories : Repositories) : WinningPricesModel = {
+    val winningPriceInfoViewRepository = repositories.viewsRepositories
+      .winningPriceInfoViewRepository
+    val query  = winningPriceInfoViewRepository
+      .getAllQuery
+      .filter(w => w.iswon === 1)
+      .sortBy(_.impressioncreateddate.desc)
+      .take(limit)
+      .result
+
+    var results = winningPriceInfoViewRepository.getResults(query)
 
 //    val bidResponses = repositories.bidResponses
 //    val bidResponsesQuery = bidResponses.filter(r => r.iswontheauction === 0)

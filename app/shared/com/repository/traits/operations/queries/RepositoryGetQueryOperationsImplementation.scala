@@ -2,8 +2,10 @@ package shared.com.repository.traits.operations.queries
 
 import shared.com.repository.RepositoryBase
 import shared.io.loggers.AppLogger
+import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.Query
+import slick.sql.FixedSqlStreamingAction
 
 trait RepositoryGetQueryOperationsImplementation[TTable, TRow, TKey]
   extends RepositoryGetQueryOperations[TTable, TRow, TKey] {
@@ -28,5 +30,22 @@ trait RepositoryGetQueryOperationsImplementation[TTable, TRow, TKey]
     }
 
     None
+  }
+
+  /**
+   * Get Results from queryResult
+   * @param queryResult : Pass query.Result
+   * @tparam TRow2 : Get the query rows
+   * @return
+   */
+  def getResults[TRow2](
+    queryResult : FixedSqlStreamingAction[Seq[TRow2], TRow2, Effect.Read]) : Seq[TRow2] = {
+    try {
+      return this.runAs(queryResult)
+    } catch {
+      case e : Exception => AppLogger.errorCaptureAndThrow(e)
+    }
+
+    null
   }
 }
