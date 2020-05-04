@@ -18,9 +18,7 @@ lazy val circeVersion = "0.12.3"
 
 // More details at https://github.com/tototoshi/slick-joda-mapper
 lazy val slickVersion = "3.3.2"
-lazy val slickJodaMapperVersion = "2.4"
-
-
+lazy val slickJodaMapperVersion = "2.4.2"
 
 lazy val allDependencies = Seq(
   ///////////////////////////////////////////////////
@@ -90,7 +88,6 @@ lazy val allDependencies = Seq(
   ///////////////////////////////////////////////////
 
   "org.scala-lang" % "scala-reflect" % scalaVersionF,
-  // "org.scala-lang" % "scala-reflect" % "2.10.0",
   "org.scala-lang" % "scala-compiler" % scalaVersionF,
   "org.scala-lang" % "scala-library" % scalaVersionF,
 
@@ -128,6 +125,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       "org.joda" % "joda-convert" % "2.2.1",
+      "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapperVersion,
+      "joda-time" % "joda-time" % "2.7",
       "net.logstash.logback" % "logstash-logback-encoder" % "6.2",
       "io.lemonlabs" %% "scala-uri" % "1.5.1",
       "net.codingwell" %% "scala-guice" % "4.2.6",
