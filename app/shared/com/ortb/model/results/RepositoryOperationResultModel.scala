@@ -1,12 +1,8 @@
 package shared.com.ortb.model.results
 
-import io.circe.generic.decoding.DerivedDecoder
-import io.circe.generic.encoding.DerivedAsObjectEncoder
-import shapeless.Lazy
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.io.helpers.ReflectionHelper
-import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
 
 import scala.reflect.runtime.universe._
 import scala.reflect.runtime.{ universe => ru }
