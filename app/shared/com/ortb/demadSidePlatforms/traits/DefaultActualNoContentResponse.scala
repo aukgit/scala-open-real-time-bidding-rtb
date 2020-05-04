@@ -22,7 +22,7 @@ trait DefaultActualNoContentResponse {
     )
 
     // save no bid response
-    addBidResponseAsync()
+    addBidResponseAsync(dspBidderResultModel)
 
     dspBidderResultModel.addCallStack(callStackModel)
 

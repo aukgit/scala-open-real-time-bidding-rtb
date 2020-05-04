@@ -69,17 +69,18 @@ class DemandSidePlatformBiddingAgent(
   def getBidResponseRow(bidResponse : Option[BidResponseModel]) : BidresponseRow = ???
 
   def createNoBidResponseToDbAsync() : Unit = {
-    val row = BidresponseRow(-1, AppConstants.CurrencyUsd, )
+//    val row = BidresponseRow(-1, AppConstants.CurrencyUsd, )
+
   }
 
-  def addBidResponseAsync(response : Option[DemandSidePlatformBidResponseModel]) : Unit = {
-    if (EmptyValidateHelper.isEmpty(
+  def addBidResponseAsync(response : DemandSidePlatformBidResponseModel) : Unit = {
+    if (EmptyValidateHelper.isEmptyDirect(
       response,
       Some("addBidResponse, given response is empty. Nothing to save."))) {
       return
     }
 
-    val bidResponse = response.get.bidResponseWrapper.bidResponse
+    val bidResponse = response.bidResponseWrapper.bidResponse
     if (EmptyValidateHelper.isEmpty(
       bidResponse,
       Some("addBidResponse, given bidResponse is empty. Nothing to save."))) {

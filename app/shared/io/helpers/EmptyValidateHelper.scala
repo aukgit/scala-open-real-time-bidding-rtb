@@ -59,6 +59,13 @@ object EmptyValidateHelper {
     !isDefined(item, message)
   }
 
+  //noinspection DuplicatedCode
+  def isEmptyDirect[A](
+    item : A,
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    !isDefined(Some(item), message)
+  }
+
   /**
    * Returns true of the string is None, null or "" or has emptySpaces("   ")
    *
