@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.getters._
 import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
@@ -65,8 +66,11 @@ class DemandSidePlatformBiddingAgent(
     throw new NotImplementedError()
   }
 
-
   def getBidResponseRow(bidResponse : Option[BidResponseModel]) : BidresponseRow = ???
+
+  def createNoBidResponseToDbAsync() : Unit = {
+    val row = BidresponseRow(-1, AppConstants.CurrencyUsd, )
+  }
 
   def addBidResponseAsync(response : Option[DemandSidePlatformBidResponseModel]) : Unit = {
     if (EmptyValidateHelper.isEmpty(
@@ -79,6 +83,8 @@ class DemandSidePlatformBiddingAgent(
     if (EmptyValidateHelper.isEmpty(
       bidResponse,
       Some("addBidResponse, given bidResponse is empty. Nothing to save."))) {
+      // create no bid response
+      createNoBidResponseToDbAsync()
       return
     }
 
