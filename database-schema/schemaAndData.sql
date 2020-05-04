@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 03/05/2020 02:11:58
+ Date: 04/05/2020 15:14:44
 */
 
 PRAGMA foreign_keys = false;
@@ -97,7 +97,7 @@ CREATE TABLE "Bid" (
   "IUrl" TEXT DEFAULT NULL,
   "Height" integer DEFAULT NULL,
   "Width" integer DEFAULT NULL,
-  "CreatedDate" real DEFAULT 0,
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc')),
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -134,10 +134,10 @@ CREATE TABLE "BidRequest" (
   "TargetedSites" TEXT DEFAULT NULL,
   "TargetedCities" TEXT DEFAULT NULL,
   "RawBidRequestJson" TEXT NOT NULL DEFAULT '',
-  "Currency" TEXT(5) DEFAULT USD,
+  "Currency" TEXT(5) DEFAULT 'USD',
   "ContentContextId" INTEGER DEFAULT NULL,
   "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
-  "CreatedDate" real DEFAULT 0,
+  "CreatedDate" NUMERIC NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -149,7 +149,7 @@ CREATE TABLE "BidRequest" (
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "Currency" TEXT NOT NULL DEFAULT "USD",
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
   "BidRequestId" INTEGER DEFAULT NULL,
   "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
   "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
@@ -181,8 +181,8 @@ CREATE TABLE "Campaign" (
   "IsRetrictToUserGender" integer(1) NOT NULL DEFAULT 0,
   "ExpectedUserGender" TEXT(2) DEFAULT NULL,
   "PublisherId" INTEGER DEFAULT NULL,
-  "CreatedDate" REAL DEFAULT 0,
-  "ModifiedDate" REAL DEFAULT 0,
+  "CreatedDate" NUMERIC NOT NULL DEFAULT (datetime('now','utc')),
+  "ModifiedDate" NUMERIC NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE SET NULL ON UPDATE SET NULL,
@@ -192,8 +192,8 @@ CREATE TABLE "Campaign" (
 -- ----------------------------
 -- Records of Campaign
 -- ----------------------------
-INSERT INTO "Campaign" VALUES (1, 'First Cricket Campaign', 'IAB17', 10.0, 0.0, 10.0, 0.0, 0.0, 0, 1, 1, 999, 0, '', 1, NULL, NULL);
-INSERT INTO "Campaign" VALUES (2, 'Business Campaing', 'IAB3', 5.0, 0.0, 5.0, 0.0, 0.0, 0, 2, 1, 999, 0, '', 2, NULL, NULL);
+INSERT INTO "Campaign" VALUES (1, 'First Cricket Campaign', 'IAB17', 10.0, 0.0, 10.0, 0.0, 0.0, 0, 1, 1, 999, 0, '', 1, '2020-05-04 03:03:46', '2020-05-04 03:03:46');
+INSERT INTO "Campaign" VALUES (2, 'Business Campaing', 'IAB3', 5.0, 0.0, 5.0, 0.0, 0.0, 0, 2, 1, 999, 0, '', 2, '2020-05-04 03:03:46', '2020-05-04 03:03:46');
 
 -- ----------------------------
 -- Table structure for CampaignTargetCity
@@ -424,8 +424,13 @@ CREATE TABLE "LogTrace" (
   "Message" TEXT,
   "EntityData" TEXT,
   "DatabaseTransactionTypeId" integer,
-  "CreatedDate" real
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc'))
 );
+
+-- ----------------------------
+-- Records of LogTrace
+-- ----------------------------
+INSERT INTO "LogTrace" VALUES (1, 'Sample Method', NULL, NULL, NULL, NULL, NULL, '2020-05-04 02:16:15');
 
 -- ----------------------------
 -- Table structure for LostBid
@@ -436,8 +441,9 @@ CREATE TABLE "LostBid" (
   "BidId" INTEGER,
   "Reason" TEXT,
   "LosingPrice" real,
-  "CreatedDate" real,
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
   "DemandSidePlatformId" integer NOT NULL,
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -508,7 +514,7 @@ CREATE TABLE "SeatBid" (
   "DemandSidePlatformId" INTEGER DEFAULT NULL,
   "IsGroupBid" integer(1) DEFAULT 0,
   "SeatBidRawJson" TEXT DEFAULT NULL,
-  "CreatedDate" real DEFAULT 0,
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -524,8 +530,8 @@ CREATE TABLE "Transaction" (
   "AdvertiseId" INTEGER NOT NULL,
   "Spend" real NOT NULL,
   "ImpressionId" INTEGER NOT NULL,
-  "Currency" TEXT NOT NULL,
-  "CreatedDate" real,
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "CreatedDate" NUMERIC NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -582,6 +588,308 @@ INSERT INTO "VideoResponseProtocol" VALUES (5, 'VAST 2.0 Wrapper');
 INSERT INTO "VideoResponseProtocol" VALUES (6, 'VAST 3.0 Wrapper');
 
 -- ----------------------------
+-- Table structure for _BidRequest_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidRequest_old_20200504";
+CREATE TABLE "_BidRequest_old_20200504" (
+  "BidRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "DemandSidePlatformId" INTEGER NOT NULL,
+  "AuctionId" INTEGER DEFAULT NULL,
+  "IsBanner" integer(1) NOT NULL DEFAULT 0,
+  "IsVideo" integer(1) NOT NULL DEFAULT 0,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "Countries" TEXT DEFAULT NULL,
+  "Cities" TEXT DEFAULT NULL,
+  "TargetedSites" TEXT DEFAULT NULL,
+  "TargetedCities" TEXT DEFAULT NULL,
+  "RawBidRequestJson" TEXT NOT NULL DEFAULT '',
+  "Currency" TEXT(5) DEFAULT USD,
+  "ContentContextId" INTEGER DEFAULT NULL,
+  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _BidRequest_old_20200504_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidRequest_old_20200504_1";
+CREATE TABLE "_BidRequest_old_20200504_1" (
+  "BidRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "DemandSidePlatformId" INTEGER NOT NULL,
+  "AuctionId" INTEGER DEFAULT NULL,
+  "IsBanner" integer(1) NOT NULL DEFAULT 0,
+  "IsVideo" integer(1) NOT NULL DEFAULT 0,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "Countries" TEXT DEFAULT NULL,
+  "Cities" TEXT DEFAULT NULL,
+  "TargetedSites" TEXT DEFAULT NULL,
+  "TargetedCities" TEXT DEFAULT NULL,
+  "RawBidRequestJson" TEXT NOT NULL DEFAULT '',
+  "Currency" TEXT(5) DEFAULT 'USD',
+  "ContentContextId" INTEGER DEFAULT NULL,
+  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _BidRequest_old_20200504_2
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidRequest_old_20200504_2";
+CREATE TABLE "_BidRequest_old_20200504_2" (
+  "BidRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "DemandSidePlatformId" INTEGER NOT NULL,
+  "AuctionId" INTEGER DEFAULT NULL,
+  "IsBanner" integer(1) NOT NULL DEFAULT 0,
+  "IsVideo" integer(1) NOT NULL DEFAULT 0,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "Countries" TEXT DEFAULT NULL,
+  "Cities" TEXT DEFAULT NULL,
+  "TargetedSites" TEXT DEFAULT NULL,
+  "TargetedCities" TEXT DEFAULT NULL,
+  "RawBidRequestJson" TEXT NOT NULL DEFAULT '',
+  "Currency" TEXT(5) DEFAULT 'USD',
+  "ContentContextId" INTEGER DEFAULT NULL,
+  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc')),
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _BidResponse_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidResponse_old_20200504";
+CREATE TABLE "_BidResponse_old_20200504" (
+  "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Currency" TEXT NOT NULL DEFAULT "USD",
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
+  "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
+  "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
+  "NoBidResponseTypeId" INTEGER DEFAULT NULL,
+  "CreatedDate" real DEFAULT NULL,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _BidResponse_old_20200504_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidResponse_old_20200504_1";
+CREATE TABLE "_BidResponse_old_20200504_1" (
+  "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Currency" TEXT NOT NULL DEFAULT USD,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
+  "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
+  "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
+  "NoBidResponseTypeId" INTEGER DEFAULT NULL,
+  "CreatedDate" real DEFAULT NULL,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _BidResponse_old_20200504_2
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidResponse_old_20200504_2";
+CREATE TABLE "_BidResponse_old_20200504_2" (
+  "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Currency" TEXT NOT NULL DEFAULT '',
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
+  "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
+  "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
+  "NoBidResponseTypeId" INTEGER DEFAULT NULL,
+  "CreatedDate" real DEFAULT NULL,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _BidResponse_old_20200504_3
+-- ----------------------------
+DROP TABLE IF EXISTS "_BidResponse_old_20200504_3";
+CREATE TABLE "_BidResponse_old_20200504_3" (
+  "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Currency" TEXT NOT NULL DEFAULT NULL,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
+  "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
+  "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
+  "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
+  "NoBidResponseTypeId" INTEGER DEFAULT NULL,
+  "CreatedDate" real DEFAULT NULL,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _Bid_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_Bid_old_20200504";
+CREATE TABLE "_Bid_old_20200504" (
+  "BidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRawJson" TEXT DEFAULT NULL,
+  "DealBiddingPrice" real DEFAULT 0,
+  "ActualWiningPrice" REAL DEFAULT 0,
+  "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
+  "SeatBidId" INTEGER NOT NULL,
+  "CampaignId" INTEGER DEFAULT NULL,
+  "ImpressionId" INTEGER DEFAULT NULL,
+  "AdvertiseId" INTEGER DEFAULT NULL,
+  "CreativeAttributeId" INTEGER DEFAULT NULL,
+  "Adm" text DEFAULT NULL,
+  "NUrl" text DEFAULT NULL,
+  "IUrl" TEXT DEFAULT NULL,
+  "Height" integer DEFAULT NULL,
+  "Width" integer DEFAULT NULL,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "SeatBidIdFK" FOREIGN KEY ("SeatBidId") REFERENCES "SeatBid" ("SeatBidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "CreativeAttributeIdFK" FOREIGN KEY ("CreativeAttributeId") REFERENCES "CreativeAttribute" ("CreativeAttributeId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _LogTrace_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_LogTrace_old_20200504";
+CREATE TABLE "_LogTrace_old_20200504" (
+  "LogTraceId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "MethodName" TEXT,
+  "ClassName" TEXT,
+  "Request" TEXT,
+  "Message" TEXT,
+  "EntityData" TEXT,
+  "DatabaseTransactionTypeId" integer,
+  "CreatedDate" real
+);
+
+-- ----------------------------
+-- Table structure for _LostBid_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_LostBid_old_20200504";
+CREATE TABLE "_LostBid_old_20200504" (
+  "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidId" INTEGER,
+  "Reason" TEXT,
+  "LosingPrice" real,
+  "CreatedDate" real,
+  "DemandSidePlatformId" integer NOT NULL,
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _LostBid_old_20200504_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_LostBid_old_20200504_1";
+CREATE TABLE "_LostBid_old_20200504_1" (
+  "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidId" INTEGER,
+  "Reason" TEXT,
+  "LosingPrice" real,
+  "DemandSidePlatformId" integer NOT NULL,
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc')),
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _SeatBid_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_SeatBid_old_20200504";
+CREATE TABLE "_SeatBid_old_20200504" (
+  "SeatBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "BidResponseId" INTEGER DEFAULT NULL,
+  "AuctionId" INTEGER DEFAULT NULL,
+  "DemandSidePlatformId" INTEGER DEFAULT NULL,
+  "IsGroupBid" integer(1) DEFAULT 0,
+  "SeatBidRawJson" TEXT DEFAULT NULL,
+  "CreatedDate" real DEFAULT 0,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _Transaction_old_20200504
+-- ----------------------------
+DROP TABLE IF EXISTS "_Transaction_old_20200504";
+CREATE TABLE "_Transaction_old_20200504" (
+  "TransactionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "AdvertiseId" INTEGER NOT NULL,
+  "Spend" real NOT NULL,
+  "ImpressionId" INTEGER NOT NULL,
+  "Currency" TEXT NOT NULL,
+  "CreatedDate" real,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _Transaction_old_20200504_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_Transaction_old_20200504_1";
+CREATE TABLE "_Transaction_old_20200504_1" (
+  "TransactionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "AdvertiseId" INTEGER NOT NULL,
+  "Spend" real NOT NULL,
+  "ImpressionId" INTEGER NOT NULL,
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "CreatedDate" real,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _Transaction_old_20200504_2
+-- ----------------------------
+DROP TABLE IF EXISTS "_Transaction_old_20200504_2";
+CREATE TABLE "_Transaction_old_20200504_2" (
+  "TransactionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "AdvertiseId" INTEGER NOT NULL,
+  "Spend" real NOT NULL,
+  "ImpressionId" INTEGER NOT NULL,
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "CreatedDate" NUMERIC,
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for _Transaction_old_20200504_3
+-- ----------------------------
+DROP TABLE IF EXISTS "_Transaction_old_20200504_3";
+CREATE TABLE "_Transaction_old_20200504_3" (
+  "TransactionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "AdvertiseId" INTEGER NOT NULL,
+  "Spend" real NOT NULL,
+  "ImpressionId" INTEGER NOT NULL,
+  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc')),
+  CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
 -- Table structure for sqlite_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS "sqlite_sequence";
@@ -603,22 +911,38 @@ INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetCity', 0);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
-INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_Transaction_old_20200504', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_LogTrace_old_20200504', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
+INSERT INTO "sqlite_sequence" VALUES ('_BidRequest_old_20200504', 0);
 INSERT INTO "sqlite_sequence" VALUES ('GeoMapping', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
-INSERT INTO "sqlite_sequence" VALUES ('SeatBid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_BidResponse_old_20200504', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_SeatBid_old_20200504', 0);
 INSERT INTO "sqlite_sequence" VALUES ('CreativeAttribute', 16);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
-INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Bid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_LostBid_old_20200504', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_Bid_old_20200504', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidContentCategoriesMapping', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_BidResponse_old_20200504_1', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_BidResponse_old_20200504_2', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_BidResponse_old_20200504_3', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_BidRequest_old_20200504_1', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_Transaction_old_20200504_1', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_Transaction_old_20200504_2', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_Transaction_old_20200504_3', 0);
+INSERT INTO "sqlite_sequence" VALUES ('SeatBid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('_LostBid_old_20200504_1', 0);
+INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 1);
+INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
+INSERT INTO "sqlite_sequence" VALUES ('_BidRequest_old_20200504_2', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Bid', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 
 -- ----------------------------
 -- View structure for BidRelatedIdsView
@@ -781,6 +1105,7 @@ UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
 -- ----------------------------
 -- Auto increment value for LogTrace
 -- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 1 WHERE name = 'LogTrace';
 
 -- ----------------------------
 -- Auto increment value for LostBid
@@ -813,5 +1138,69 @@ UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'VideoPlaybackMethod';
 -- Auto increment value for VideoResponseProtocol
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 6 WHERE name = 'VideoResponseProtocol';
+
+-- ----------------------------
+-- Auto increment value for _BidRequest_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _BidRequest_old_20200504_1
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _BidRequest_old_20200504_2
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _BidResponse_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _BidResponse_old_20200504_1
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _BidResponse_old_20200504_2
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _BidResponse_old_20200504_3
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _Bid_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _LogTrace_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _LostBid_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _LostBid_old_20200504_1
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _SeatBid_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _Transaction_old_20200504
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _Transaction_old_20200504_1
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _Transaction_old_20200504_2
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for _Transaction_old_20200504_3
+-- ----------------------------
 
 PRAGMA foreign_keys = true;
