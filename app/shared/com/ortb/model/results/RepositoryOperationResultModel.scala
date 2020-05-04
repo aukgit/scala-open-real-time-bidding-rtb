@@ -1,9 +1,12 @@
 package shared.com.ortb.model.results
 
-import com.sun.tools.javac.code.TypeTag
+import io.circe.generic.decoding.DerivedDecoder
+import io.circe.generic.encoding.DerivedAsObjectEncoder
+import shapeless.Lazy
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.io.helpers.ReflectionHelper
+import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
 
 import scala.reflect.runtime.universe._
 import scala.reflect.runtime.{ universe => ru }
@@ -20,7 +23,7 @@ case class RepositoryOperationResultModel[TRow, TKey](
       return Some(attributes.get.id.get.toInt.asInstanceOf[T])
     } else if (ReflectionHelper.isStringType[T]) {
       return Some(attributes.get.id.get.asInstanceOf[T])
-    }else {
+    } else {
       throw new NotImplementedError("Type can be either string or integer for T")
     }
   }
@@ -33,5 +36,13 @@ case class RepositoryOperationResultModel[TRow, TKey](
   def getIdAsString : Option[String] = {
     val tt : ru.TypeTag[String] = typeTag[String]
     getIdAs[String](tt)
+  }
+
+  def getAsJson() (
+    implicit decoder : Lazy[DerivedDecoder[RepositoryOperationResultModel[TRow, TKey]]],
+   encoder : Lazy[DerivedAsObjectEncoder[RepositoryOperationResultModel[TRow, TKey]]]
+  ): String = {
+    lazy val jsonEncoder = new BasicJsonEncoderImplementation[RepositoryOperationResultModel[TRow, TKey]]()(decoder, encoder)
+    jsonEncoder.getJsonGenericParser.toJsonStringDirect(this)
   }
 }
