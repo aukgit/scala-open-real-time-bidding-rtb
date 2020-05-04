@@ -12,10 +12,10 @@ trait DefaultExecutionContextManager {
     createDefault()
       .prepare()
 
-  def createDefault(initialParallelism : Int = defaultParallelProcessing) : ExecutionContextExecutor = createNew(
+  def createDefault(initialParallelism : Int = defaultParallelProcessing) : ExecutionContextExecutor = createNewExecutionContext(
     initialParallelism)
 
-  def createNew(initialParallelism : Int) : ExecutionContextExecutor = {
+  def createNewExecutionContext(initialParallelism : Int) : ExecutionContextExecutor = {
     ExecutionContext.fromExecutor(
       new java.util.concurrent.ForkJoinPool(initialParallelism : Int)
     )
