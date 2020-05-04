@@ -37,12 +37,4 @@ case class RepositoryOperationResultModel[TRow, TKey](
     val tt : ru.TypeTag[String] = typeTag[String]
     getIdAs[String](tt)
   }
-
-  def getAsJson() (
-    implicit decoder : Lazy[DerivedDecoder[RepositoryOperationResultModel[TRow, TKey]]],
-   encoder : Lazy[DerivedAsObjectEncoder[RepositoryOperationResultModel[TRow, TKey]]]
-  ): String = {
-    lazy val jsonEncoder = new BasicJsonEncoderImplementation[RepositoryOperationResultModel[TRow, TKey]]()(decoder, encoder)
-    jsonEncoder.getJsonGenericParser.toJsonStringDirect(this)
-  }
 }
