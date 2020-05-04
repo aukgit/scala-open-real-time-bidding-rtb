@@ -27,6 +27,7 @@
 - Bytes to object and object to Bytes : https://bit.ly/2SaE9I7 (Serializing)
 - Slick Big Table Generate : https://bit.ly/35nyELq
 - Slick Generate Table and View Both : https://bit.ly/35qj8Pd
+- Sqlite DateTime : https://bit.ly/3deC9GV | https://www.sqlite.org/lang_datefunc.html
 
 
 ```scala
