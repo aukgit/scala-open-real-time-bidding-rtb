@@ -69,11 +69,11 @@ class DemandSidePlatformBiddingAgent(
   def getBidResponseRow(bidResponse : Option[BidResponseModel]) : BidresponseRow = ???
 
   def createNoBidResponseToDbAsync() : Unit = {
-    val row = BidresponseRow(-1)
-    coreProperties
-      .repositories
-      .bidResponseRepository
-      .addAsync(row)
+//    val row = BidresponseRow(-1)
+//    coreProperties
+//      .repositories
+//      .bidResponseRepository
+//      .addAsync(row)
   }
 
   def addBidResponseAsync(response : DemandSidePlatformBidResponseModel) : Unit = {

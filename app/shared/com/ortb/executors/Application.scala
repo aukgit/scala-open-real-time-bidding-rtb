@@ -13,11 +13,11 @@ object Application {
 
     val repos = new Repositories(appManager)
 
-    val row = BidresponseRow(-1)
-    val response = repos
-      .bidResponseRepository
-      .add(row)
-    val json = response.getAsJson()()
-    AppLogger.debug(json)
+//    val row = BidresponseRow(-1)
+//    val response = repos
+//      .bidResponseRepository
+//      .add(row)
+//    val json = response.getAsJson()()
+//    AppLogger.debug(json)
   }
 }
