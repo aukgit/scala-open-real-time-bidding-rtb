@@ -4,10 +4,10 @@ import slick.codegen.SourceCodeGenerator
 import slick.{ model => m }
 
 class CustomSourceCodeGenerator(model : m.Model) extends SourceCodeGenerator(model) {
-  override def entityName : String => String =
-    dbTableName => dbTableName.toCamelCase
-  override def tableName : String => String =
-    dbTableName => dbTableName.toCamelCase
+//  override def entityName : String => String =
+//    dbTableName => dbTableName + "Row"
+//  override def tableName : String => String =
+//    dbTableName => dbTableName
 
   // add some custom imports
   // Example : https://scala-slick.org/doc/3.3.0/code-generation.html#customization
@@ -23,7 +23,8 @@ class CustomSourceCodeGenerator(model : m.Model) extends SourceCodeGenerator(mod
       // you can filter on model.name for the column name or model.tpe for the column type
       // your IDE won't like the String here but don't worry, the return type the compiler expects here is String
             override def rawType : String = model.tpe match {
-              case "java.sql.Timestamp"               => "DateTime" // kill j.s.Timestamp
+        // case "java.sql.Timestamp"               => "DateTime" // kill j.s.Timestamp
+        case "java.sql.Timestamp"               => "java.time.Instant" // kill j.s.Timestamp
               case _ => {
                 println(s"${model.table.table}#${model.name} tpe=${model.tpe} rawType=${super.rawType}")
                 super.rawType

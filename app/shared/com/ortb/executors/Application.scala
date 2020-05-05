@@ -33,8 +33,8 @@ object Application {
 
     val row = BidresponseRow(
       -1,
-      createddate = Some(dateToDob))
-//      cr2 = Some(new Timestamp(date)))
+      createddate = dateToDob,
+      cr2 = Some(JodaDateTimeHelper.nowUtc))
     val response = bidResponseRepository
       .add(row)
 

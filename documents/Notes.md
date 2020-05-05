@@ -31,6 +31,7 @@
 - DateTime Joda Circe Encoders : https://bit.ly/2SDSj4E | https://bit.ly/2WzQFm2
 - TimeStamp Encoder : https://bit.ly/2Wpq22W
 - Slick ORM example : https://scala-slick.org/doc/3.2.0/orm-to-slick.html
+- Slick DateTime Attr : https://scala-slick.org/doc/3.3.2/upgrade.html
 
 
 ```scala
