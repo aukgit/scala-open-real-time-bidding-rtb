@@ -23,18 +23,16 @@ object Application {
 
     val allRows = bidResponseRepository.getAll
     AppLogger.logEntitiesNonFuture(true, allRows, "all rows")
-//    val toAllDates = allRows.map(w => {
-//      val x =JodaDateTimeHelper.millisToUtcDateTime(w.createddate.get.toLong)
-//      val y = JodaDateTimeHelper.toStringWithPattern(x)
-//      y
-//    })
+    val toAllDates = allRows.map(w => {
+      w.cr2.get..toString
+    })
 
-   // AppLogger.logEntitiesNonFuture(true, toAllDates, "toAllDates")
+    AppLogger.logEntitiesNonFuture(true, toAllDates, "toAllDates")
 
     val row = BidresponseRow(
       -1,
       createddate = dateToDob,
-      cr2 = Some(JodaDateTimeHelper.nowUtc))
+      cr2 = Some(JodaDateTimeHelper.nowUtcJavaInstant))
     val response = bidResponseRepository
       .add(row)
 

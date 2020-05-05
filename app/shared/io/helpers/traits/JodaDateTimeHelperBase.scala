@@ -1,5 +1,6 @@
 package shared.io.helpers.traits
 
+import java.time.Instant
 import java.util.Date
 
 import org.joda.time.format.DateTimeFormat
@@ -13,6 +14,9 @@ trait JodaDateTimeHelperBase {
   lazy val defaultDateFormatPattern = "MM/dd/yyyy"
 
   implicit def nowUtc : DateTime = DateTime.now(DateTimeZone.UTC)
+
+  def nowUtcJavaInstant : Instant =
+    java.time.Instant.ofEpochMilli( nowUtcMillis ) ;
 
   def nowUtcAsString(pattern : String = defaultDateTimeFormatPattern) : String = {
     try {
