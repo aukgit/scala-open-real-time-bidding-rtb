@@ -9,8 +9,6 @@ object Tables extends {
 trait Tables {
   val profile: slick.jdbc.JdbcProfile
   import profile.api._
-  import com.github.tototoshi.slick.PostgresJodaSupport._
-  import org.joda.time.DateTime
   import slick.model.ForeignKeyAction
   // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
   import slick.jdbc.{GetResult => GR}
@@ -398,12 +396,12 @@ trait Tables {
    *  @param isprecachedbidserved Database column IsPreCachedBidServed SqlType(INTEGER), Length(1,false), Default(0)
    *  @param issendnobidresponse Database column IsSendNoBidResponse SqlType(INTEGER), Length(1,false), Default(0)
    *  @param nobidresponsetypeid Database column NoBidResponseTypeId SqlType(INTEGER), Default(None)
-   *  @param createddate Database column CreatedDate SqlType(TIMESTAMP) */
-  case class BidresponseRow(bidresponseid: Int, currency: String = "USD", bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddate: Option[java.sql.Timestamp])
+   *  @param createddate Database column CreatedDate SqlType(DATETIME) */
+  case class BidresponseRow(bidresponseid: Int, currency: String = "USD", bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddate: Option[String])
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
-  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[java.sql.Timestamp]]): GR[BidresponseRow] = GR{
+  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[String]]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[java.sql.Timestamp]))
+    BidresponseRow.tupled((<<[Int], <<[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[String]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
@@ -427,8 +425,8 @@ trait Tables {
     val issendnobidresponse: Rep[Int] = column[Int]("IsSendNoBidResponse", O.Length(1,varying=false), O.Default(0))
     /** Database column NoBidResponseTypeId SqlType(INTEGER), Default(None) */
     val nobidresponsetypeid: Rep[Option[Int]] = column[Option[Int]]("NoBidResponseTypeId", O.Default(None))
-    /** Database column CreatedDate SqlType(TIMESTAMP) */
-    val createddate: Rep[Option[java.sql.Timestamp]] = column[Option[java.sql.Timestamp]]("CreatedDate")
+    /** Database column CreatedDate SqlType(DATETIME) */
+    val createddate: Rep[Option[String]] = column[Option[String]]("CreatedDate")
 
     /** Foreign key referencing Bidrequest (database name BidRequest_FK_1) */
     lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
