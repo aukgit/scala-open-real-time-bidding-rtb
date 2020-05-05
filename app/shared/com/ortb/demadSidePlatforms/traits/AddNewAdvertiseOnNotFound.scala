@@ -57,11 +57,14 @@ trait AddNewAdvertiseOnNotFound {
       AppConstants.EmptyDoubleOption,
       AppConstants.EmptyDoubleOption,
       0,
+      publisherid = Some(publisherId),
       demandsideplatformid = demandSideId,
-      1,
-      isretricttousergender = 0,
-      expectedusergender = None,
-      publisherid = Some(publisherId))
+      0,
+      999,
+      0,
+      None,
+      None,
+      None)
 
     val campaignCreated = campaignRepository.add(campaignRow)
     val campaignId = campaignCreated.getIdAsInt

@@ -21,6 +21,11 @@ object EmptyValidateHelper {
   def isEmptyAny(
     item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    val isDirectEmpty = item == null || String.valueOf(item) == "None"
+    if(isDirectEmpty){
+      return true
+    }
+
     return item match {
       case someString : Option[String] => return EmptyValidateHelper.isEmptyOptionString(someString, message)
       case someIterable : Option[Iterable[_]] => return EmptyValidateHelper.isItemsEmpty(someIterable, message)
@@ -216,7 +221,10 @@ object EmptyValidateHelper {
   def isDefinedAny(
     item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
-    val hasItem = item != null && !isEmptyAny(item, None)
+    val hasItem = item != null &&
+      String.valueOf(item) != "None" &&
+      !isEmptyAny(item, None)
+    
     //noinspection DuplicatedCode
     val hasMessage = isOptionStringDefinedWithoutMessage(message)
 
