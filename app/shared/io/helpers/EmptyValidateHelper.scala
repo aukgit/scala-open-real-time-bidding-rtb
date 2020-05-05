@@ -224,7 +224,7 @@ object EmptyValidateHelper {
     val hasItem = item != null &&
       String.valueOf(item) != "None" &&
       !isEmptyAny(item, None)
-    
+
     //noinspection DuplicatedCode
     val hasMessage = isOptionStringDefinedWithoutMessage(message)
 

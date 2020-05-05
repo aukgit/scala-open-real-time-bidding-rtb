@@ -1,5 +1,6 @@
 package shared.com.ortb.executors
 
+import org.joda.time.{ DateTime, DateTimeZone }
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema.Tables._
@@ -13,8 +14,14 @@ object Application {
 
     val repos = new Repositories(appManager)
 
-    val row = BidresponseRow(-1)
+    val date = DateTime.now(DateTimeZone.UTC)
+
+    val row = BidresponseRow(-1,createddate = Some(date.toString))
     val response = repos
+      .bidResponseRepository
+      .add(row)
+
+    repos
       .bidResponseRepository
       .add(row)
 //    val json = response.getAsJson()()

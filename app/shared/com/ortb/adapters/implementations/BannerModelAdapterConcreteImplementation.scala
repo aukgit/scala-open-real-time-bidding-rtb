@@ -56,7 +56,7 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
       -1,
       issendnobidresponse = 1,
       bidrequestid = bidRequestId,
-      currency = AppConstants.CurrencyUsd)
+      currency = AppConstants.CurrencyUsd,createddate = None)
 
     val createdResponse = repository.add(row)
     createdResponse.getIdAsInt
