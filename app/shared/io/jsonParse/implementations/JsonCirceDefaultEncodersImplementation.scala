@@ -5,6 +5,7 @@ import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.semiauto.{ deriveDecoder, _ }
 import io.circe.{ Decoder, _ }
+import org.joda.time.DateTime
 import play.api.libs.json
 import play.api.libs.json.JsValue
 import shapeless.Lazy
@@ -20,6 +21,8 @@ class JsonCirceDefaultEncodersImplementation[T](
   val encoder : Lazy[DerivedAsObjectEncoder[T]],
   val decodeListCodec : DerivedAsObjectCodec[List[T]]
 ) extends JsonCirceDefaultEncoders[T] {
+  import io.circe.Decoder, io.circe.generic.semiauto.deriveDecoder
+  implicit val wx: Decoder[DateTime] = deriveDecoder[DateTime]
 
   def defaultCodec : Codec.AsObject[T] = deriveCodec[T](decodeCodec)
 

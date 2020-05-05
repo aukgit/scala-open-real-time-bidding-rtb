@@ -1,4 +1,4 @@
-package shared.com.ortb.executors
+package shared.com.ortb.executors.codegen
 
 import slick.codegen.SourceCodeGenerator
 import slick.{ model => m }

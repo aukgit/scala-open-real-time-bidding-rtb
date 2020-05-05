@@ -15,7 +15,7 @@
 - Multiple Project Sample in Play https://bit.ly/3crrTea
 - Sub Projects Example by Play : https://www.playframework.com/documentation/2.8.x/sbtSubProjects
 - Sample Shared Project Example: https://bit.ly/2xzhCxz
-- Play pot change : https://bit.ly/3clAq23 , sbt "run port"
+- Play port change : https://bit.ly/3clAq23 , sbt "run port"
 - Organizing Build https://www.scala-sbt.org/0.13/docs/Organizing-Build.html
 - Learning Generics: https://gist.github.com/jkpl/5279ee05cca8cc1ec452fc26ace5b68b
 - Reflection Programming : https://bit.ly/2XPJo3G
@@ -28,6 +28,9 @@
 - Slick Big Table Generate : https://bit.ly/35nyELq
 - Slick Generate Table and View Both : https://bit.ly/35qj8Pd
 - Sqlite DateTime : https://bit.ly/3deC9GV | https://www.sqlite.org/lang_datefunc.html
+- DateTime Joda Circe Encoders : https://bit.ly/2SDSj4E | https://bit.ly/2WzQFm2
+- TimeStamp Encoder : https://bit.ly/2Wpq22W
+- Slick ORM example : https://scala-slick.org/doc/3.2.0/orm-to-slick.html
 
 
 ```scala

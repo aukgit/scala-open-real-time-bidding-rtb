@@ -15,16 +15,16 @@ object Application {
     val repos = new Repositories(appManager)
 
     val date = DateTime.now(DateTimeZone.UTC)
-
-    val row = BidresponseRow(-1,createddate = Some(date.toString))
-    val response = repos
-      .bidResponseRepository
-      .add(row)
-
-    repos
-      .bidResponseRepository
-      .add(row)
+//
+//    val row = BidresponseRow(-1,createddate = Some(java.time.Instant.get))
+//    val response = repos
+//      .bidResponseRepository
+//      .add(row)
+//
+//    repos
+//      .bidResponseRepository
+//      .add(row)
 //    val json = response.getAsJson()()
-    AppLogger.debug(response.toString)
+//    AppLogger.debug(response.toString)
   }
 }

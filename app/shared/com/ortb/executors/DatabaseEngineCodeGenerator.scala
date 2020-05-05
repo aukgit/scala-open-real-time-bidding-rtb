@@ -7,6 +7,12 @@ import slick.jdbc.meta.MTable
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, Future }
+import java.sql.Timestamp
+
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone.UTC
+import shared.com.ortb.executors.codegen.CustomSourceCodeGenerator
+
 
 object DatabaseEngineCodeGenerator extends App with DefaultExecutionContextManager {
   lazy val appManager = new AppManager
@@ -30,7 +36,8 @@ object DatabaseEngineCodeGenerator extends App with DefaultExecutionContextManag
     Some(mTables))
 
   val model = db.run(dbio)
-  val eventualSourceCodeGenerator : Future[SourceCodeGenerator] = model.map(model => new CustomSourceCodeGenerator(model))
+  // val eventualSourceCodeGenerator : Future[SourceCodeGenerator] = model.map(model => new CustomSourceCodeGenerator(model))
+  val eventualSourceCodeGenerator : Future[SourceCodeGenerator] = model.map(model => new SourceCodeGenerator(model))
   val codegen : SourceCodeGenerator = Await.result(eventualSourceCodeGenerator, Duration.Inf)
 
   codegen.writeToFile(
