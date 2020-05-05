@@ -125,7 +125,8 @@
   <logger name="akka.stream.Log" level="NONE"/>
   <logger name="actors" level="ALL"/>
   <logger name="controllers" level="ALL"/>
-  <logger name="slick.jdbc" level="ERROR" />
+<!--  <logger name="slick.jdbc" level="ERROR" />-->
+  <logger name="slick" level="OFF" />
 
   <root level="ALL">
     <appender-ref ref="AllLogger"/>

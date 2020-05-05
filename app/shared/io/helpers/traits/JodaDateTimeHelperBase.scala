@@ -9,14 +9,27 @@ import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 
 trait JodaDateTimeHelperBase {
-  lazy val defaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss TT"
+  lazy val defaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
   lazy val defaultDateFormatPattern = "MM/dd/yyyy"
 
-  def nowUtc : DateTime = DateTime.now(DateTimeZone.UTC)
+  implicit def nowUtc : DateTime = DateTime.now(DateTimeZone.UTC)
 
   def nowUtcAsString(pattern : String = defaultDateTimeFormatPattern) : String = {
     try {
-      nowUtc.toString(pattern)
+      return nowUtc.toString(pattern)
+    } catch {
+      case e : Exception =>
+        AppLogger.errorCaptureAndThrow(
+          e,
+          s"Cannot convert pattern(${AppConstants.Quote}${ pattern }${AppConstants.Quote}) to String.")
+    }
+
+    null
+  }
+
+  def toStringWithPattern(dateTime: DateTime, pattern : String = defaultDateTimeFormatPattern) : String = {
+    try {
+      return dateTime.toString(pattern)
     } catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(
@@ -32,7 +45,7 @@ trait JodaDateTimeHelperBase {
     pattern : String = defaultDateTimeFormatPattern) : DateTime = {
     try {
       val dtf = DateTimeFormat.forPattern(pattern)
-      DateTime.parse(inputDateAsString, dtf)
+      return DateTime.parse(inputDateAsString, dtf)
     } catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(
@@ -50,6 +63,8 @@ trait JodaDateTimeHelperBase {
   def nowUtcMillis : Long = nowUtc.getMillis
 
   def millisToDateTime(millis : Long) : DateTime = new DateTime(millis)
+
+  def millisToUtcDateTime(millis : Long) : DateTime = new DateTime(millis, DateTimeZone.UTC)
 
   def getDifferenceBetween(earlier: DateTime ,later:DateTime ) : DateTime =
     later.minus( earlier.getMillis);

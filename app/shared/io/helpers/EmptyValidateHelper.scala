@@ -268,8 +268,8 @@ object EmptyValidateHelper {
     items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
     val hasItem = items != null &&
-      items.get != Nil &&
       items.isDefined &&
+      items.get != Nil &&
       items.get != null &&
       items.get.nonEmpty
 

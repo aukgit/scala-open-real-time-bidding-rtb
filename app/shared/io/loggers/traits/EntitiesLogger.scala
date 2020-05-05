@@ -82,7 +82,7 @@ trait EntitiesLogger {
 
     val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }"
 
-    if (entities.isEmpty) {
+    if (entities == null || entities.isEmpty) {
       println(s"Empty -> No item present in the entities for logging. $additional")
 
       return;
@@ -98,12 +98,24 @@ trait EntitiesLogger {
     )
 
     entities.foreach(i => {
+      if (i != null) {
+        additionalLogging(
+          message = i.toString,
+          logLevelType = logLevelType,
+          stackIndex = defaultStackIndex,
+          isPrintStack = isPrintStack
+        )
+
+        return
+      }
+
       additionalLogging(
-        message = i.toString,
+        message = "null",
         logLevelType = logLevelType,
         stackIndex = defaultStackIndex,
         isPrintStack = isPrintStack
       )
+
     })
   }
 }
