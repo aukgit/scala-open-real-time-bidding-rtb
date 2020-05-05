@@ -50,4 +50,6 @@ object AppConstants {
   lazy val EmptyDoubleOption : Option[Double] = Some(0)
 
   lazy val EmptyIntegerOption : Option[Int] = Some(0)
+
+  lazy val Quote = "\""
 }

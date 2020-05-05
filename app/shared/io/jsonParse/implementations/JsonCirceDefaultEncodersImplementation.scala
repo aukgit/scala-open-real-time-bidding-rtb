@@ -22,7 +22,6 @@ class JsonCirceDefaultEncodersImplementation[T](
   val decodeListCodec : DerivedAsObjectCodec[List[T]]
 ) extends JsonCirceDefaultEncoders[T] {
   import io.circe.Decoder, io.circe.generic.semiauto.deriveDecoder
-  implicit val wx: Decoder[DateTime] = deriveDecoder[DateTime]
 
   def defaultCodec : Codec.AsObject[T] = deriveCodec[T](decodeCodec)
 

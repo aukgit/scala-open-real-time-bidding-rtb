@@ -7,7 +7,9 @@ object EmptyValidateHelper {
   def throwOnNullOrNone(
     item : Any,
     message : Option[String] = None) : Unit = {
-    val isEmpty = item == null || isEmptyAny(item, None)
+    val isEmpty = item == null ||
+      String.valueOf(item) == "None" ||
+      isEmptyAny(item, None)
 
     if (isEmpty && isOptionStringDefinedWithoutMessage(message)) {
       throw new NullPointerException(message.get)

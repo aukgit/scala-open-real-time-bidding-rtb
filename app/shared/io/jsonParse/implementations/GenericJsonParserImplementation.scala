@@ -3,8 +3,9 @@ package shared.io.jsonParse.implementations
 import com.fasterxml.jackson.databind.JsonNode
 import io.circe.Json
 import io.circe.parser.decode
+import shared.com.ortb.constants.AppConstants
 import shared.io.helpers.ReflectionHelper.getTypeName
-import shared.io.helpers.{ CastingHelper, EmptyValidateHelper }
+import shared.io.helpers.{ CastingHelper, EmptyValidateHelper, JsonHelper }
 import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
 import shared.io.loggers.AppLogger
 
@@ -13,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   extends GenericJsonParser[T] {
-  val quote = "\""
+  lazy val quote : String = AppConstants.Quote
 
   override def fromJsonStringToModels(jsonString : Option[String]) : Option[Iterable[T]] = {
     val models = toModels(jsonString)
@@ -77,20 +78,8 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   }
 
   override def toJsonNode(
-    jsonString : Option[String]) : Option[JsonNode] = {
-    try {
-      if (EmptyValidateHelper.isDefined(jsonString)) {
-        val node = play.libs.Json.parse(jsonString.get)
-        return Some(node)
-      }
-    } catch {
-      case e : Exception =>
-        AppLogger.error(e)
-        AppLogger.logNonFutureNullable("Json parsing failed for ", jsonString)
-    }
-
-    None
-  }
+    jsonString : Option[String]) : Option[JsonNode] =
+    JsonHelper.toJsonNode(jsonString)
 
   override def fromModelsToJsonNodes(
     models : Option[Iterable[T]]) : Option[Iterable[JsonNode]] = {

@@ -4,6 +4,7 @@ import io.circe.generic.semiauto._
 import io.circe._
 import io.circe.generic.auto._
 import com.google.inject.Inject
+import org.joda.time.DateTime
 import slick.jdbc.SQLiteProfile.api._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema
@@ -11,6 +12,7 @@ import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.com.repository.RepositoryBase
 import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
+import shared.io.jsonParse.implementations.custom.models.DateTimeCodecImplementation
 import slick.dbio.Effect
 import slick.jdbc.SQLiteProfile
 import slick.sql.FixedSqlAction
@@ -58,5 +60,6 @@ class BidResponseRepository @Inject()(appManager: AppManager)
    *
    * @return
    */
-  override def encoders : JsonCirceDefaultEncodersImplementation[BidresponseRow] = new JsonCirceDefaultEncodersImplementation[BidresponseRow]()
+  override def encoders : JsonCirceDefaultEncodersImplementation[BidresponseRow] =
+    new JsonCirceDefaultEncodersImplementation[BidresponseRow]()
 }
