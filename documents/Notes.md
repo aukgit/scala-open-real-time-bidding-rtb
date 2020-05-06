@@ -129,6 +129,5 @@ object CirceSupport
     with AnyValCirceEncoding 
 ```
 
-
 # Important Issue Tracking
 - https://github.com/circe/circe/issues/1442
