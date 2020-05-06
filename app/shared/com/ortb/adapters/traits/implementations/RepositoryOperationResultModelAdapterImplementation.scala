@@ -1,7 +1,7 @@
 package shared.com.ortb.adapters.traits.implementations
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.repository.traits.FutureToRegular
