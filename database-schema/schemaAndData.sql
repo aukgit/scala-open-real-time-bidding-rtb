@@ -724,4 +724,106 @@ FROM
 	ON 
 		SeatBid.AuctionId = Auction.AuctionId;
 
+-- ----------------------------
+-- Auto increment value for Advertise
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BannerAdvertiseType
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
+
+-- ----------------------------
+-- Auto increment value for Bid
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BidContentCategoriesMapping
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BidRequest
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BidResponse
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for Campaign
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
+
+-- ----------------------------
+-- Auto increment value for CampaignTargetCity
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for CampaignTargetOperatingSystem
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for CampaignTargetSite
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for ContentContext
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
+
+-- ----------------------------
+-- Auto increment value for CreativeAttribute
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
+
+-- ----------------------------
+-- Auto increment value for DemandSidePlatform
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
+
+-- ----------------------------
+-- Auto increment value for GeoMapping
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for Impression
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for LogTrace
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 0 WHERE name = 'LogTrace';
+
+-- ----------------------------
+-- Auto increment value for LostBid
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for NoBidResponseType
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
+
+-- ----------------------------
+-- Auto increment value for Publisher
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
+
+-- ----------------------------
+-- Auto increment value for SeatBid
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for Transaction
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for VideoPlaybackMethod
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'VideoPlaybackMethod';
+
+-- ----------------------------
+-- Auto increment value for VideoResponseProtocol
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 6 WHERE name = 'VideoResponseProtocol';
+
 PRAGMA foreign_keys = true;
