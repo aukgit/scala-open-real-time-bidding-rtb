@@ -9,7 +9,7 @@ import shared.io.loggers.AppLogger
 case class RepositoryOperationResultsModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
   data : Iterable[EntityWrapperModel[TRow, TKey]]) {
-  lazy val hasItems : Boolean = EmptyValidateHelper.isItemsEmptyDirect(data)
+  lazy val hasItems : Boolean = EmptyValidateHelper.hasAnyItemDirect(data)
   def printResults(additionalMessage: String = ""): Unit = {
     if(!hasItems){
       AppLogger.info(AppConstants.NoContent)

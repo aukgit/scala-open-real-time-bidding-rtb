@@ -17,7 +17,10 @@ trait RepositoryGetAllQueryOperationsImplementation[TTable, TRow, TKey]
           .map(allSeqItems => allSeqItems.toList),
       defaultTimeout)
 
-  def getAll : Seq[TRow] = toRegular(this.runAsync(getAllQuery.result), defaultTimeout)
+  def getAll : Seq[TRow] = {
+    val eventualRequestResults = this.runAsync(getAllQuery.result)
+    toRegular(eventualRequestResults, defaultTimeout)
+  }
 
   def getAllAsResponse : RepositoryOperationResultsModel[TRow, TKey] = {
     val allRows = getAll

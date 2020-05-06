@@ -1,13 +1,15 @@
 package shared.io.loggers.traits
 
 import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.manager.traits.DefaultExecutionContextManagerConcreteImplementation
 
 trait LoggerProperties {
-  val header = "[Open RTB]"
-  val newLine : String = AppConstants.NewLineForSentry
-  val defaultStackIndex = 3
-  val defaultSecondStackIndex = 4
-  val isPrintln = false
-  val isPrintMethodName = false
-  val isUseSentry = false
+  lazy val header = "[Open RTB]"
+  lazy val newLine : String = AppConstants.NewLineForSentry
+  lazy val defaultStackIndex = 3
+  lazy val defaultSecondStackIndex = 4
+  lazy val isPrintln = false
+  lazy val isPrintMethodName = true
+  lazy val isUseSentry = false
+  lazy val executionContextManager = new DefaultExecutionContextManagerConcreteImplementation
 }

@@ -45,9 +45,9 @@ trait MethodNameHeaderGetter extends
     methodName : String = ""
   ) : String = {
     if (methodName == null || methodName.isBlank) {
-      return " - "
+      return " "
     }
 
-    s" ($methodName) - "
+    s" ($methodName)\n - "
   }
 }

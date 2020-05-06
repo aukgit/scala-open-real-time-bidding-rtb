@@ -28,7 +28,6 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
       dbAction,
       message)
 
-
     val repositoryResponse = RepositoryOperationResultsModel(
       Some(attributes),
       rowsToEntityRows

@@ -1,7 +1,5 @@
 package shared.com.ortb.executors
 
-import java.sql.Timestamp
-
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema.Tables._
@@ -14,22 +12,23 @@ object Application {
     println(appManager.config)
 
     val repos = new Repositories(appManager)
-    repos.campaignRepository.getAllAsResponse.printResults()
+    val campaignsResponse = repos.campaignRepository.getAllAsResponse
+    campaignsResponse.printResults()
 
     val bidResponseRepository = repos
       .bidResponseRepository
 
     val allRows = bidResponseRepository.getAll
     AppLogger.logEntitiesNonFuture(true, allRows, "all rows")
-//    val toAllDates = allRows.map(w => {
-//      w.cr2.get..toString
-//    })
+    //    val toAllDates = allRows.map(w => {
+    //      w.cr2.get..toString
+    //    })
 
-//    AppLogger.logEntitiesNonFuture(true, toAllDates, "toAllDates")
+    //    AppLogger.logEntitiesNonFuture(true, toAllDates, "toAllDates")
 
     val row = BidresponseRow(
       -1,
-      createddatetimestamp=JodaDateTimeHelper.nowUtcJavaInstant)
+      createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
     val response = bidResponseRepository
       .add(row)
 

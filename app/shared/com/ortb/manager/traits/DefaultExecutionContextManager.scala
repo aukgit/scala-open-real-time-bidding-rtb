@@ -8,9 +8,12 @@ trait DefaultExecutionContextManager {
   def createDefaultContext() : ExecutionContext = createDefault().prepare()
 
   //noinspection ScalaDeprecation
-  lazy implicit val executionContext : ExecutionContext =
+  lazy implicit val defaultExecutionContext : ExecutionContext =
     createDefault()
       .prepare()
+
+  def newExecutionContext : ExecutionContext = createDefault()
+    .prepare()
 
   def createDefault(initialParallelism : Int = defaultParallelProcessing) : ExecutionContextExecutor = createNewExecutionContext(
     initialParallelism)

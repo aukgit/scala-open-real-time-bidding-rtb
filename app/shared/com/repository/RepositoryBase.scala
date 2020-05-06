@@ -33,7 +33,6 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()
     with RepositoryOperationsAsyncImplementation[TTable, TRow, TKey]
     with RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey]
     with RepositoryDatabaseTraceLogger[TRow, TKey]
-    with CirceJsonSupport
     with FutureToRegular
     with DefaultExecutionContextManager {
 

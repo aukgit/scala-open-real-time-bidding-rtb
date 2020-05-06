@@ -2,6 +2,7 @@ package shared.io.loggers.traits
 
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
+import shared.com.ortb.manager.traits.{ DefaultExecutionContextManager, DefaultExecutionContextManagerConcreteImplementation }
 import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger
 
@@ -19,8 +20,9 @@ trait EntitiesLogger {
       return
     }
 
-    val result = Await.result(entityInFuture, Inf)
-    logEntityNonFuture(isExecute, Some(result), additionalMessage)
+    entityInFuture.onComplete(row => {
+      logEntityNonFuture(isExecute, Some(row.getOrElse(null)), additionalMessage)
+    })(executionContextManager.defaultExecutionContext)
   }
 
   def logEntityNonFuture[T](
@@ -43,7 +45,7 @@ trait EntitiesLogger {
     val typeName = getTypeName(entity)
 
     additionalLogging(
-      message = s"Entity($typeName): ${ entity.get.toString }, $additional",
+      message = s"[$logLevelType]: Entity($typeName): ${ entity.get.toString }, $additional",
       logLevelType = logLevelType,
       stackIndex = defaultStackIndex,
       isPrintStack = isPrintStack
@@ -60,14 +62,14 @@ trait EntitiesLogger {
       return
     }
 
-    val results = Await.result(entitiesInFuture, Inf)
-
-    logEntitiesNonFuture(
-      isExecute = isExecute,
-      entities = results,
-      additionalMessage = additionalMessage,
-      logLevelType = logLevelType,
-      isPrintStack = isPrintStack)
+    entitiesInFuture.onComplete(rows => {
+      logEntitiesNonFuture(
+        isExecute = isExecute,
+        entities = rows.getOrElse(null),
+        additionalMessage = additionalMessage,
+        logLevelType = logLevelType,
+        isPrintStack = isPrintStack)
+    })(executionContextManager.defaultExecutionContext)
   }
 
   def logEntitiesNonFuture[T](
@@ -91,31 +93,38 @@ trait EntitiesLogger {
     val typeName = getTypeName(Some(entities.head))
 
     additionalLogging(
-      message = s"Printing Entities ($typeName):",
+      message = s"[$logLevelType]: Printing Entities ($typeName):",
       logLevelType = logLevelType,
       stackIndex = defaultStackIndex,
       isPrintStack = isPrintStack
     )
 
+    var count = 0
     entities.foreach(i => {
+      count += 1
       if (i != null) {
         additionalLogging(
-          message = i.toString,
+          message = s"  ${count}. ${i.toString}",
           logLevelType = logLevelType,
           stackIndex = defaultStackIndex,
           isPrintStack = isPrintStack
         )
-
-        return
       }
-
-      additionalLogging(
-        message = "null",
-        logLevelType = logLevelType,
-        stackIndex = defaultStackIndex,
-        isPrintStack = isPrintStack
-      )
-
+      else {
+        additionalLogging(
+          message = s"  ${count}. null",
+          logLevelType = logLevelType,
+          stackIndex = defaultStackIndex,
+          isPrintStack = isPrintStack
+        )
+      }
     })
+
+    additionalLogging(
+      message = s"[Complete] Total entities printed : [${count}]",
+      logLevelType = logLevelType,
+      stackIndex = defaultStackIndex,
+      isPrintStack = isPrintStack
+    )
   }
 }
