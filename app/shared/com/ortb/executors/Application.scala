@@ -14,9 +14,7 @@ object Application {
     println(appManager.config)
 
     val repos = new Repositories(appManager)
-
-    val date = JodaDateTimeHelper.nowUtcMillis
-    val dateToDob = JodaDateTimeHelper.nowUtcMillis.toDouble
+    repos.campaignRepository.getAllAsResponse.printResults()
 
     val bidResponseRepository = repos
       .bidResponseRepository
