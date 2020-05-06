@@ -6,8 +6,9 @@ import io.circe.parser._
 import io.circe.generic.auto._
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.encoding._
-import io.circe.{ Decoder, Encoder }, io.circe.generic.semiauto._
-import io.circe.{Decoder, Encoder}
+import io.circe.{ Decoder, Encoder }
+import io.circe.generic.semiauto._
+import io.circe.{ Decoder, Encoder }
 import io.circe.generic.semiauto._
 import io.circe.syntax._
 import io.circe.Decoder.AccumulatingResult
@@ -21,6 +22,8 @@ import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.JodaDateTimeHelper
 import shared.io.loggers.AppLogger
 import enumeratum.values._
+import shared.io.redis.implementations.{ RedisClientAgentImplementation, RedisClientCorePropertiesContractsImplementation }
+import shared.io.redis.traits.RedisClientAgent
 sealed abstract class Judgement(val value: Int) extends IntEnumEntry with AllowAlias
 sealed abstract class LibraryItem(val value: Int, val name: String) extends IntEnumEntry
 sealed abstract class CirceLibraryItem(val value: Int, val name: String) extends IntEnumEntry
@@ -78,12 +81,29 @@ object Application {
     println(appManager.config)
 
     val x = Judgement.OK
-    println(x == Judgement.Meh)
-    print(MX(
+//    println(x == Judgement.Meh)
+    val mx = MX(
       Judgement.withValue(1),
       Judgement.withValue(2),
       LibraryItem.withValue(2),
-      CirceLibraryItem.Book).asJson)
+      CirceLibraryItem.Book)
+//    print(mx.asJson)
+
+    val redisCore = new RedisClientCorePropertiesContractsImplementation(appManager)
+    val redis = new RedisClientAgentImplementation(redisCore)
+
+    val someMx =Some(mx)
+
+//    val bytes = redis.setSerializedObjectToBytes("a", someMx)
+//    AppLogger.info(s"bytes : $bytes")
+
+    val savingInJson = redis.setObjectAsJson("aJson", someMx)
+    AppLogger.info(s"savingInJson : ${savingInJson.get.spaces2}")
+
+    val gettingFromJson = redis.getObjectFromJsonAs[MX]("aJson")
+    AppLogger.info(s"gettingFromJson : ${gettingFromJson.get.asJson.noSpaces}")
+//    val mxFromBytes = redis.getDeserializeObjectFromBytesAs[MX]("a")
+//    AppLogger.info(s"mxFromBytes : ${mxFromBytes.get.asJson.spaces2.toString}")
 
     val jsonString = """
       |{
@@ -103,11 +123,11 @@ object Application {
       |}
       |""".stripMargin
 
-    val mx2 = decode[MX](jsonString)
-    println(mx2.getOrElse(null))
+//    val mx2 = decode[MX](jsonString)
+//    println(mx2.getOrElse(null))
 
 
-    println(x == Judgement.OK)
+//    println(x == Judgement.OK)
 
     val repos = new Repositories(appManager)
     val campaignsResponse = repos.campaignRepository.getAllAsResponse

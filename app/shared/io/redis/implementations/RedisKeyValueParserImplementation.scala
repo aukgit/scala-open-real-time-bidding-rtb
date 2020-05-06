@@ -98,8 +98,9 @@ class RedisKeyValueParserImplementation @Inject()(
     None
   }
 
-  override def getDeserializeObjectAs[T](key : String) : Option[T] = {
+  override def getDeserializeObjectFromBytesAs[T](key : String) : Option[T] = {
     try {
+      //noinspection DuplicatedCode
       val item = redisClient.get[Array[Byte]](key)
       val onEmptyMessage = Some(s"Key : $key doesn't have any redis cache value as Array[Byte]")
       if (EmptyValidateHelper.isEmpty(item, onEmptyMessage)) {
@@ -147,20 +148,21 @@ class RedisKeyValueParserImplementation @Inject()(
     None
   }
 
-  override def setSerializedObjectToString(
+  override def setSerializedObjectToBytes(
     key : String,
     value : Option[Any],
     whenSet : StringApi.SetBehaviour,
-    expire : Duration) : Unit = {
+    expire : Duration) : Option[Array[Byte]] = {
     try {
       if (EmptyValidateHelper.isEmpty(value)) {
         redisClient.set(key, null, whenSet, expire)
 
-        return
+        return None
       }
 
       val bytes = SerializingHelper.toBytesArray(value.get)
       redisClient.set(key, bytes.get, whenSet, expire)
+      return bytes
     } catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(e, s"Having issue during setSerializedObjectToString key: $key")
@@ -169,20 +171,21 @@ class RedisKeyValueParserImplementation @Inject()(
     None
   }
 
-  override def setSerializedObjectsToString(
+  override def setSerializedObjectsToBytes(
     key : String,
     items : Option[List[Any]],
     whenSet : StringApi.SetBehaviour,
-    expire : Duration) : Unit = {
+    expire : Duration) : Option[Array[Byte]] = {
     try {
       if (EmptyValidateHelper.isEmpty(items)) {
         redisClient.set(key, None, whenSet, expire)
 
-        return
+        return None
       }
 
       val bytes = SerializingHelper.toBytesArray(items.get)
       redisClient.set(key, bytes.get, whenSet, expire)
+      return bytes
     } catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(e, s"Having issue during setSerializedObjectsToString key: $key")
