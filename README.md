@@ -22,6 +22,9 @@
 - Example of RTB from FullStack Academy : https://www.youtube.com/watch?v=0pAseiuSzYw
 - https://www.youtube.com/watch?v=-DiIsrJUsRU
 
+# Redis Download Links
+https://github.com/tporadowski/redis/releases/tag/v5.0.9
+
 # Demo 
 
 # Important Issue Tracking

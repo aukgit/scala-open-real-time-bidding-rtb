@@ -23,7 +23,7 @@ class JsonCirceDefaultEncodersImplementation[T](
  ) extends JsonCirceDefaultEncoders[T] {
 
   import io.circe.generic.semiauto.{ deriveDecoder, _ }
-  
+
   def defaultCodec : Codec.AsObject[T] = deriveCodec[T](decodeCodec)
 
   def defaultListCodec : Codec.AsObject[List[T]] =
