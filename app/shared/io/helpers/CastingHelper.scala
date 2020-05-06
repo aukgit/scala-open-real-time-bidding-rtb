@@ -9,6 +9,7 @@ object CastingHelper {
     if (isEmpty) {
       return None
     }
+
     try {
       //noinspection TypeCheckCanBeMatch
       if (item.isInstanceOf[T]) {

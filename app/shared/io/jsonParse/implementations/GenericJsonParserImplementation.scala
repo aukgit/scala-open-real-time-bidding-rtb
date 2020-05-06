@@ -5,7 +5,7 @@ import io.circe.Json
 import io.circe.parser.decode
 import shared.com.ortb.constants.AppConstants
 import shared.io.helpers.ReflectionHelper.getTypeName
-import shared.io.helpers.{ CastingHelper, EmptyValidateHelper, JsonHelper }
+import shared.io.helpers._
 import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
 import shared.io.loggers.AppLogger
 
@@ -55,19 +55,21 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   override def toJsonNodes(jsonString : Option[String]) : Option[ArrayBuffer[JsonNode]] = {
     try {
       val jsonNodeOption = toJsonNode(jsonString)
-      if (EmptyValidateHelper.isDefined(jsonNodeOption)) {
-        val jsonNode = jsonNodeOption.get
-        if (jsonNode.isArray) {
-          val results = new ArrayBuffer[JsonNode]
+      val isInvalidData = EmptyValidateHelper.isEmpty(jsonNodeOption) ||
+        !jsonNodeOption.get.isArray
 
-          jsonNode.elements().forEachRemaining(currentJsonNode => {
-            results += currentJsonNode
-          })
-
-          return Some(results)
-        }
-
+      if (isInvalidData) {
+        return None
       }
+
+      val jsonNode = jsonNodeOption.get
+      val results = new ArrayBuffer[JsonNode]
+
+      jsonNode.elements().forEachRemaining(currentJsonNode => {
+        results += currentJsonNode
+      })
+
+      return Some(results)
     } catch {
       case e : Exception =>
         AppLogger.error(e)
@@ -124,7 +126,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     try {
       val modelEither = decode[T](json)(basicJsonEncoder.getDecoder)
 
-      if (EmptyValidateHelper.isRightEmptyOnEither(modelEither)) {
+      if (EmptyValidateHelper.isRightDefinedOnEither(modelEither)) {
         val model = CastingHelper.safeCastAs[T](modelEither.getOrElse(null))
 
         return model
@@ -250,25 +252,25 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   }
 
   override def toLogStringForEntities(entities : Option[Iterable[T]]) : String = {
-    if(EmptyValidateHelper.isItemsEmpty(entities)){
+    if (EmptyValidateHelper.isItemsEmpty(entities)) {
       return "Given object is null for logging."
     }
 
     val jsonPrettyFormatString = toJsonStringPrettyFormat(entities)
     val typeName = getTypeName(Some(entities.get.head))
-    val objectStringMessage = s"$typeName :\n ${jsonPrettyFormatString}"
+    val objectStringMessage = s"$typeName :\n ${ jsonPrettyFormatString }"
 
     objectStringMessage
   }
 
   override def toLogStringForEntity(entity : Option[T]) : String = {
-    if(entity.isEmpty){
+    if (entity.isEmpty) {
       return "Given object is null for logging."
     }
 
     val jsonObject = toJsonObject(entity)
     val typeName = getTypeName(entity)
-    val objectStringMessage = s"$typeName :\n ${jsonObject.get.spaces2}"
+    val objectStringMessage = s"$typeName :\n ${ jsonObject.get.spaces2 }"
 
     objectStringMessage
   }
