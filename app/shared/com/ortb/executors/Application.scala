@@ -23,11 +23,11 @@ object Application {
 
     val allRows = bidResponseRepository.getAll
     AppLogger.logEntitiesNonFuture(true, allRows, "all rows")
-    val toAllDates = allRows.map(w => {
-      w.cr2.get..toString
-    })
+//    val toAllDates = allRows.map(w => {
+//      w.cr2.get..toString
+//    })
 
-    AppLogger.logEntitiesNonFuture(true, toAllDates, "toAllDates")
+//    AppLogger.logEntitiesNonFuture(true, toAllDates, "toAllDates")
 
     val row = BidresponseRow(
       -1,

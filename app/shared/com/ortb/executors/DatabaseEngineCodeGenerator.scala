@@ -31,6 +31,8 @@ object DatabaseEngineCodeGenerator extends App with DefaultExecutionContextManag
     Some(mTables))
 
   val model = db.run(dbio)
+  println(model)
+  
   val eventualSourceCodeGenerator : Future[SourceCodeGenerator] = model.map(model => new CustomSourceCodeGenerator(model))
   // val eventualSourceCodeGenerator : Future[SourceCodeGenerator] = model.map(model => new SourceCodeGenerator(model))
   val codegen : SourceCodeGenerator = Await.result(eventualSourceCodeGenerator, Duration.Inf)
@@ -41,4 +43,6 @@ object DatabaseEngineCodeGenerator extends App with DefaultExecutionContextManag
     compilingPackage,
     "Tables",
     "Tables.scala")
+
+  appManager.databaseEngine.closeDatabase()
 }
