@@ -129,9 +129,9 @@
 
   <root level="ALL">
     <appender-ref ref="AllLogger"/>
-<!--    <appender-ref ref="RollingWeeklyFileAppender"/>-->
+    <appender-ref ref="RollingWeeklyFileAppender"/>
     <appender-ref ref="ConsoleDefaultPrintAppender"/>
-<!--    <appender-ref ref="SecurityFileAppender"/>-->
+    <appender-ref ref="SecurityFileAppender"/>
   </root>
 
 <!--  <root level="INFO">-->

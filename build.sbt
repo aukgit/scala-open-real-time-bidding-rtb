@@ -15,6 +15,7 @@ lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
 lazy val akkaHttpVersion = "10.1.11"
 lazy val circeVersion = "0.13.0"
+lazy val enumeratumCirceVersion = "1.6.0"
 
 // More details at https://github.com/tototoshi/slick-joda-mapper
 lazy val slickVersion = "3.3.2"
@@ -46,6 +47,7 @@ lazy val allDependencies = Seq(
   "io.circe" %% "circe-optics" % circeVersion,
   "io.circe" %% "circe-derivation" % "0.13.0-M4",
   "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
+  "com.beachape" %% "enumeratum-circe" % enumeratumCirceVersion,
 
   ///////////////////////////////////////////////////
   // Serialization frameworks : AKKA Enhanced Serializing
@@ -110,8 +112,7 @@ lazy val allDependencies = Seq(
 
   "org.webjars" %% "webjars-play" % "2.8.0",
   "net.debasishg" %% "redisclient" % "3.20",
-  "org.apache.commons" % "commons-configuration2" % "2.7",
-  "com.beachape" %% "enumeratum-circe" % "1.6.0"
+  "org.apache.commons" % "commons-configuration2" % "2.7"
 )
 
 lazy val root = (project in file("."))
