@@ -40,7 +40,7 @@ CREATE TABLE "Advertise" (
   "HasAgeRestriction" INTEGER(1) NOT NULL,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
@@ -56,7 +56,7 @@ CREATE TABLE "Auction" (
   "IsPrecachedAdvertiseServed" INTEGER(1) NOT NULL DEFAULT 0,
   "WinningPrice" REAL NOT NULL DEFAULT -1,
   "Currency" TEXT NOT NULL DEFAULT "USD",
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "WinningBidRequestIdFK" FOREIGN KEY ("WinningBidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -97,7 +97,7 @@ CREATE TABLE "Bid" (
   "IUrl" TEXT DEFAULT NULL,
   "Height" INTEGER DEFAULT NULL,
   "Width" INTEGER DEFAULT NULL,
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -137,7 +137,7 @@ CREATE TABLE "BidRequest" (
   "Currency" TEXT(5) DEFAULT 'USD',
   "ContentContextId" INTEGER DEFAULT NULL,
   "IsWonTheAuction" INTEGER(1) NOT NULL DEFAULT 0,
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -156,7 +156,7 @@ CREATE TABLE "BidResponse" (
   "IsPreCachedBidServed" INTEGER(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" INTEGER(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -182,7 +182,7 @@ CREATE TABLE "Campaign" (
   "IsRetrictToUserGender" INTEGER(1) NOT NULL DEFAULT 0,
   "ExpectedUserGender" TEXT(2) DEFAULT NULL,
   "ModifiedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -387,7 +387,7 @@ CREATE TABLE "Impression" (
   "BidfloorCur" TEXT DEFAULT "USD",
   "Hash" TEXT DEFAULT NULL,
   "DisplayDate" TIMESTAMP DEFAULT (datetime('now','utc')),
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -424,7 +424,7 @@ CREATE TABLE "LogTrace" (
   "Message" TEXT,
   "EntityData" TEXT,
   "DatabaseTransactionTypeId" INTEGER,
-  "CreatedDate" NUMERIC DEFAULT (datetime('now','utc'))
+  "CreatedDateTimestamp" NUMERIC DEFAULT (datetime('now','utc'))
 );
 
 -- ----------------------------
@@ -438,7 +438,7 @@ CREATE TABLE "LostBid" (
   "LosingPrice" REAL,
   "Currency" TEXT NOT NULL DEFAULT 'USD',
   "DemandSidePlatformId" INTEGER NOT NULL,
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -509,7 +509,7 @@ CREATE TABLE "SeatBid" (
   "DemandSidePlatformId" INTEGER DEFAULT NULL,
   "IsGroupBid" INTEGER(1) DEFAULT 0,
   "SeatBidRawJson" TEXT DEFAULT NULL,
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -526,7 +526,7 @@ CREATE TABLE "Transaction" (
   "Spend" REAL NOT NULL,
   "ImpressionId" INTEGER NOT NULL,
   "Currency" TEXT NOT NULL DEFAULT 'USD',
-  "CreatedDate" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -704,8 +704,8 @@ CREATE VIEW "WinningPriceInfoView" AS SELECT
 	Bid.DealBiddingPrice, 
 	Bid.ActualWiningPrice, 
 	Auction.CreatedDated AS AuctionCreatedDate, 
-	Bid.CreatedDate AS BiddingCreatedDate, 
-	Impression.CreatedDate AS ImpressionCreatedDate, 
+	Bid.CreatedDateTimestamp AS BiddingCreatedDate, 
+	Impression.CreatedDateTimestamp AS ImpressionCreatedDate, 
 	Bid.IsImpressionServedOrWonByAuction AS IsWon, 
 	SeatBid.IsGroupBid	
 FROM
