@@ -1,6 +1,6 @@
 package shared.com.repository.traits.implementions
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel

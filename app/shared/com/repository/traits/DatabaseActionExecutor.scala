@@ -2,7 +2,7 @@ package shared.com.repository.traits
 
 import java.awt.dnd.InvalidDnDOperationException
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.implicits.implementations.ImplicitsImplementation.anyRefCaller
 import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase

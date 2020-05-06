@@ -1,6 +1,6 @@
 package shared.com.repository.traits
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
