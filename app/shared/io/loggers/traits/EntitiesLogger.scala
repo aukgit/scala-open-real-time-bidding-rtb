@@ -3,6 +3,7 @@ package shared.io.loggers.traits
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.{ DefaultExecutionContextManager, DefaultExecutionContextManagerConcreteImplementation }
+import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger
 
@@ -20,9 +21,10 @@ trait EntitiesLogger {
       return
     }
 
-    entityInFuture.onComplete(row => {
-      logEntityNonFuture(isExecute, Some(row.getOrElse(null)), additionalMessage)
-    })(executionContextManager.defaultExecutionContext)
+    Future {
+      val row = FutureToRegular.toRegular(entityInFuture)
+      logEntityNonFuture(isExecute, Some(row), additionalMessage)
+    }(executionContextManager.newExecutionContext)
   }
 
   def logEntityNonFuture[T](
@@ -62,14 +64,15 @@ trait EntitiesLogger {
       return
     }
 
-    entitiesInFuture.onComplete(rows => {
+    Future {
+      val rows = FutureToRegular.toRegular(entitiesInFuture)
       logEntitiesNonFuture(
         isExecute = isExecute,
-        entities = rows.getOrElse(null),
+        entities = rows,
         additionalMessage = additionalMessage,
         logLevelType = logLevelType,
         isPrintStack = isPrintStack)
-    })(executionContextManager.defaultExecutionContext)
+    }(executionContextManager.newExecutionContext)
   }
 
   def logEntitiesNonFuture[T](
@@ -93,7 +96,7 @@ trait EntitiesLogger {
     val typeName = getTypeName(Some(entities.head))
 
     additionalLogging(
-      message = s"[$logLevelType]: Printing Entities ($typeName):",
+      message = s"\n[$logLevelType]: Printing Entities ($typeName):",
       logLevelType = logLevelType,
       stackIndex = defaultStackIndex,
       isPrintStack = isPrintStack
@@ -121,7 +124,7 @@ trait EntitiesLogger {
     })
 
     additionalLogging(
-      message = s"[Complete] Total entities printed : [${count}]",
+      message = s"\n[Complete] Total entities printed : [${count}]",
       logLevelType = logLevelType,
       stackIndex = defaultStackIndex,
       isPrintStack = isPrintStack

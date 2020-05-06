@@ -24,7 +24,7 @@ trait NullableLogger {
         logLevelType = logLevelType,
         stackIndex = stackIndex,
         isPrintStack = isPrintStack)
-    })(executionContextManager.defaultExecutionContext)
+    })(getLoggerExecutionContext)
   }
 
   def logNonFutureNullable[T](
