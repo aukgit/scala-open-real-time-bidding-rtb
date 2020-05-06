@@ -5,6 +5,7 @@ import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.ImpressionBiddableInfoModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.schema.Tables._
+import shared.io.helpers.JodaDateTimeHelper
 import shared.io.loggers.AppLogger
 import slick.jdbc.SQLiteProfile.api._
 
@@ -63,8 +64,8 @@ trait AddNewAdvertiseOnNotFound {
       999,
       0,
       None,
-      None,
-      None)
+      JodaDateTimeHelper.nowUtcJavaInstant,
+      JodaDateTimeHelper.nowUtcJavaInstant)
 
     val campaignCreated = campaignRepository.add(campaignRow)
     val campaignId = campaignCreated.getIdAsInt
@@ -91,7 +92,7 @@ trait AddNewAdvertiseOnNotFound {
       hasagerestriction = 0,
       minage = Some(0),
       maxage = Some(0),
-      createddate = Some(0))
+      createddatetimestamp=JodaDateTimeHelper.nowUtcJavaInstant)
 
     advertiseRepository.add(advertise)
     AppLogger.debug("Advertise added")
