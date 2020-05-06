@@ -31,6 +31,8 @@
 - Slick DateTime Attr : https://scala-slick.org/doc/3.3.2/upgrade.html
 - Sqlite Mills as Date : https://bit.ly/2SGLBuI | `CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)` | `CAST(ROUND((julianday('now') - 2440587.5)*86400000) As INTEGER) `
 - Circe Enum Json : https://bit.ly/2Wt7jDE | https://bit.ly/3b8vqgh
+- Scala Dynamic Type : https://bit.ly/2W9gWID | 
+- Circe Optics : https://bit.ly/3b8O5Zh
 
 
 ```scala

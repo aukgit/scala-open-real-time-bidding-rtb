@@ -43,6 +43,7 @@ lazy val allDependencies = Seq(
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
+  "io.circe" %% "circe-optics" % circeVersion,
   "io.circe" %% "circe-derivation" % "0.13.0-M4",
   "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
 
