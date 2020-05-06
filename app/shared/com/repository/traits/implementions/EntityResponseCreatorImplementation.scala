@@ -25,7 +25,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     val hasAffected = affectedRow > 0
 
     if (hasAffected && entity.isDefined) {
-      AppLogger.logEntitiesNonFuture(isLogDatabaseQueryLogs, Seq(entity.get), message2)
+      AppLogger.logEntitiesWithCondition(isLogDatabaseQueryLogs, Seq(entity.get), message2)
     }
 
     if (hasAffected) {

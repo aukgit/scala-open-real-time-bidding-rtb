@@ -37,7 +37,7 @@ object ToStringHelper {
     catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logEntitiesNonFuture(isExecute = true, items)
+        AppLogger.logEntitiesWithCondition(isExecute = true, items)
     }
 
     None

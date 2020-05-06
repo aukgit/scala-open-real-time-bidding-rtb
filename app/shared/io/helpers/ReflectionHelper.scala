@@ -1,5 +1,6 @@
 package shared.io.helpers
 
+import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
 import scala.reflect.runtime.universe._
@@ -34,7 +35,8 @@ object ReflectionHelper {
     }
 
     try {
-      return item.get.getClass.getTypeName
+      val classEntity = item.get.getClass
+      return classEntity.getTypeName.replace("$",AppConstants.Dot)
     } catch {
       case e : Exception => AppLogger.error(e)
     }

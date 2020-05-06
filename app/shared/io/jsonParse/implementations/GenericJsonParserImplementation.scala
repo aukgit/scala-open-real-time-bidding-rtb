@@ -94,7 +94,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logEntitiesNonFuture(isExecute = true, models)
+        AppLogger.logEntitiesWithCondition(isExecute = true, models)
     }
 
     None

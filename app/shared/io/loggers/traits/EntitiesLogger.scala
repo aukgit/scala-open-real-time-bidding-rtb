@@ -1,17 +1,16 @@
 package shared.io.loggers.traits
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.com.ortb.manager.traits.{ DefaultExecutionContextManager, DefaultExecutionContextManagerConcreteImplementation }
-import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger
 
-import scala.concurrent.duration.Duration.Inf
-import scala.concurrent.{ Await, Future }
+import scala.concurrent.Future
 
 trait EntitiesLogger {
   this : AppLogger.type =>
+  lazy val defaultCharactersCapacity = 2500
 
   def logEntity[T](
     isExecute : Boolean,
@@ -21,10 +20,9 @@ trait EntitiesLogger {
       return
     }
 
-    Future {
-      val row = FutureToRegular.toRegular(entityInFuture)
-      logEntityNonFuture(isExecute, Some(row), additionalMessage)
-    }(executionContextManager.newExecutionContext)
+    entityInFuture.onComplete(row => {
+      logEntityNonFuture(isExecute, Some(row.getOrElse(null)), additionalMessage)
+    })
   }
 
   def logEntityNonFuture[T](
@@ -54,7 +52,7 @@ trait EntitiesLogger {
     )
   }
 
-  def logEntities[T](
+  def logEventualEntitiesWithCondition[T](
     isExecute : Boolean,
     entitiesInFuture : Future[Iterable[T]],
     additionalMessage : String = "",
@@ -64,18 +62,75 @@ trait EntitiesLogger {
       return
     }
 
-    Future {
-      val rows = FutureToRegular.toRegular(entitiesInFuture)
-      logEntitiesNonFuture(
+    entitiesInFuture.onComplete(rows => {
+      logEntitiesWithCondition(
         isExecute = isExecute,
-        entities = rows,
+        entities = rows.getOrElse(null),
         additionalMessage = additionalMessage,
         logLevelType = logLevelType,
         isPrintStack = isPrintStack)
-    }(executionContextManager.newExecutionContext)
+    })
   }
 
-  def logEntitiesNonFuture[T](
+  def getLogMessageForEntities[T](
+    isExecute : Boolean,
+    entities : Iterable[T],
+    additionalMessage : String = "",
+    logLevelType : LogLevelType = LogLevelType.DEBUG) : String = {
+    if (!isExecute) {
+      return ""
+    }
+
+    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }"
+
+    if (entities == null || entities.isEmpty) {
+      return s"Empty -> No item present in the entities for logging. $additional"
+    }
+
+    val typeName = getTypeName(Some(entities.head))
+    // TODO : Do research on StringBuilder vs ArrayBuffer as in C# List performs better than StringBuilder
+    //        for recreation of string builder is always costly.
+
+    val sb = new StringBuilder(defaultCharactersCapacity)
+    val header = s"\n[$logLevelType]: Printing Entities ($typeName):\n"
+    var count = 0
+
+    val items = entities.map(i => {
+      count += 1
+      if (i != null) {
+        s"  ${ count }. ${ i.toString }"
+      }
+      else {
+        s"  ${ count }. null"
+      }
+    }).mkString(AppConstants.NewLine)
+
+    val footer = s"\n[Complete] Total entities printed : [${ count }]"
+
+    sb.addAll(header)
+    sb.addAll(items)
+    sb.addAll(footer)
+    val returningResult = sb.toString
+    sb.clear()
+
+    returningResult
+  }
+
+  def logEntities[T](
+    entities : Iterable[T],
+    additionalMessage : String = "",
+    logLevelType : LogLevelType = LogLevelType.DEBUG,
+    isPrintStack : Boolean = false) : Unit = {
+
+    logEntitiesWithCondition(
+      isExecute = true,
+      entities,
+      additionalMessage,
+      logLevelType,
+      isPrintStack = isPrintStack)
+  }
+
+  def logEntitiesWithCondition[T](
     isExecute : Boolean,
     entities : Iterable[T],
     additionalMessage : String = "",
@@ -85,46 +140,14 @@ trait EntitiesLogger {
       return
     }
 
-    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }"
-
-    if (entities == null || entities.isEmpty) {
-      println(s"Empty -> No item present in the entities for logging. $additional")
-
-      return;
-    }
-
-    val typeName = getTypeName(Some(entities.head))
+    val message = getLogMessageForEntities(
+      isExecute,
+      entities,
+      additionalMessage,
+      logLevelType)
 
     additionalLogging(
-      message = s"\n[$logLevelType]: Printing Entities ($typeName):",
-      logLevelType = logLevelType,
-      stackIndex = defaultStackIndex,
-      isPrintStack = isPrintStack
-    )
-
-    var count = 0
-    entities.foreach(i => {
-      count += 1
-      if (i != null) {
-        additionalLogging(
-          message = s"  ${count}. ${i.toString}",
-          logLevelType = logLevelType,
-          stackIndex = defaultStackIndex,
-          isPrintStack = isPrintStack
-        )
-      }
-      else {
-        additionalLogging(
-          message = s"  ${count}. null",
-          logLevelType = logLevelType,
-          stackIndex = defaultStackIndex,
-          isPrintStack = isPrintStack
-        )
-      }
-    })
-
-    additionalLogging(
-      message = s"\n[Complete] Total entities printed : [${count}]",
+      message = message,
       logLevelType = logLevelType,
       stackIndex = defaultStackIndex,
       isPrintStack = isPrintStack

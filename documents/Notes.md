@@ -4,11 +4,8 @@
 # scala-rtb-example
  scala real time bidding system using openRTB
 
-# Links
-- https://www.smaato.com/real-time-bidding/
-- 
-
-## References
+## References with Links
+- RTB : https://www.smaato.com/real-time-bidding/
 - SBT Guide for multiple projects: https://bit.ly/3bkRgy8
 - Project Example: https://bit.ly/3bfICkk
 - Share code between projects https://bit.ly/2z70jEx
@@ -32,7 +29,8 @@
 - TimeStamp Encoder : https://bit.ly/2Wpq22W
 - Slick ORM example : https://scala-slick.org/doc/3.2.0/orm-to-slick.html
 - Slick DateTime Attr : https://scala-slick.org/doc/3.3.2/upgrade.html
-- Sqlite Mills as Date : https://bit.ly/2SGLBuI | `CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)` | `CAST(ROUND((julianday('now') - 2440587.5)*86400000) As INTEGER) ` 
+- Sqlite Mills as Date : https://bit.ly/2SGLBuI | `CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)` | `CAST(ROUND((julianday('now') - 2440587.5)*86400000) As INTEGER) `
+- Circe Enum Json : https://bit.ly/2Wt7jDE | https://bit.ly/3b8vqgh
 
 
 ```scala

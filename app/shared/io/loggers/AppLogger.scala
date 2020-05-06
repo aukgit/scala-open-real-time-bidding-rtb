@@ -25,6 +25,6 @@ object AppLogger extends
     printLoggerStatus(logger, "logger")
   }
 
-  def getLoggerExecutionContext : ExecutionContext = executionContextManager.newExecutionContext
+  implicit def getLoggerExecutionContext : ExecutionContext = executionContextManager.defaultExecutionContext
 }
 

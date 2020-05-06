@@ -103,7 +103,7 @@ trait AdditionalLogger {
       }
 
       val isExecute = nullableObjects.isDefined && nullableObjects.get.nonEmpty
-      logEntitiesNonFuture(isExecute = isExecute, nullableObjects, messageFinal)
+      logEntitiesWithCondition(isExecute = isExecute, nullableObjects, messageFinal)
     } catch {
       case e : Exception => println(e.toString)
     }

@@ -13,13 +13,13 @@ object Application {
 
     val repos = new Repositories(appManager)
     val campaignsResponse = repos.campaignRepository.getAllAsResponse
-    campaignsResponse.printResults()
+    campaignsResponse.logResults()
 
     val bidResponseRepository = repos
       .bidResponseRepository
 
     val allRows = bidResponseRepository.getAll
-    AppLogger.logEntitiesNonFuture(true, allRows, "all rows")
+    AppLogger.logEntities( allRows, "all rows")
     //    val toAllDates = allRows.map(w => {
     //      w.cr2.get..toString
     //    })
