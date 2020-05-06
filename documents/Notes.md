@@ -33,7 +33,7 @@
 - Circe Enum Json : https://bit.ly/2Wt7jDE | https://bit.ly/3b8vqgh
 - Scala Dynamic Type : https://bit.ly/2W9gWID | 
 - Circe Optics : https://bit.ly/3b8O5Zh
-
+- Scala nameOf : https://stackoverflow.com/questions/5050682/get-scala-variable-name-at-runtime | https://github.com/dwickern/scala-nameof
 
 ```scala
 def anyTypeToByteArray(value: Any): Array[Byte] = {
