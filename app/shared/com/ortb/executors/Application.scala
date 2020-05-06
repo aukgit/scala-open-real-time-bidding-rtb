@@ -23,7 +23,21 @@ import shared.io.loggers.AppLogger
 import enumeratum.values._
 sealed abstract class Judgement(val value: Int) extends IntEnumEntry with AllowAlias
 sealed abstract class LibraryItem(val value: Int, val name: String) extends IntEnumEntry
+sealed abstract class CirceLibraryItem(val value: Int, val name: String) extends IntEnumEntry
+case object CirceLibraryItem extends IntEnum[CirceLibraryItem] with IntCirceEnum[CirceLibraryItem] {
 
+  // A good mix of named, unnamed, named + unordered args
+  case object Book     extends CirceLibraryItem(value = 1, name = "book")
+  case object Movie    extends CirceLibraryItem(name = "movie", value = 2)
+  case object Magazine extends CirceLibraryItem(3, "magazine")
+  case object CD       extends CirceLibraryItem(4, name = "cd")
+
+  val values = findValues
+
+}
+
+import io.circe.Json
+import io.circe.syntax._
 object LibraryItem extends IntEnum[LibraryItem] {
 
 
@@ -55,7 +69,8 @@ object Judgement extends IntEnum[Judgement] {
 case class MX(
   w : Judgement,
   w2: Judgement,
-  w3 : LibraryItem)
+  w3 : LibraryItem,
+  w4: CirceLibraryItem)
 
 object Application {
   def main(args : Array[String]) : Unit = {
@@ -64,14 +79,16 @@ object Application {
 
     val x = Judgement.OK
     println(x == Judgement.Meh)
-    print(MX(Judgement.withValue(1), Judgement.withValue(2), LibraryItem.Book).asJson)
+    print(MX(
+      Judgement.withValue(1),
+      Judgement.withValue(2),
+      LibraryItem.withValue(2),
+      CirceLibraryItem.Book).asJson)
 
     val jsonString = """
       |{
       |  "w" : {
-      |    "Good" : {
-      |
-      |    }
+      |    "Good" : {}
       |  },
       |  "w2" : {
       |    "OK" : {
