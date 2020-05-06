@@ -55,7 +55,7 @@ CREATE TABLE "Auction" (
   "WinningBidRequestId" INTEGER DEFAULT NULL,
   "IsPrecachedAdvertiseServed" INTEGER(1) NOT NULL DEFAULT 0,
   "WinningPrice" REAL NOT NULL DEFAULT -1,
-  "Currency" TEXT NOT NULL DEFAULT "USD",
+  "Currency" TEXT(5) DEFAULT 'USD',
   "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "WinningBidRequestIdFK" FOREIGN KEY ("WinningBidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
 );
@@ -149,7 +149,7 @@ CREATE TABLE "BidRequest" (
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
   "BidResponseId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "Currency" TEXT(5) DEFAULT 'USD',
   "BidRequestId" INTEGER DEFAULT NULL,
   "IsAnyBidWonTheAuction" INTEGER(1) NOT NULL DEFAULT 0,
   "IsAuctionOccured" INTEGER(1) NOT NULL DEFAULT 0,
@@ -436,7 +436,7 @@ CREATE TABLE "LostBid" (
   "BidId" INTEGER,
   "Reason" TEXT,
   "LosingPrice" REAL,
-  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "Currency" TEXT(5) DEFAULT 'USD',
   "DemandSidePlatformId" INTEGER NOT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -474,7 +474,7 @@ CREATE TABLE "PrivateMarketPlaceDeal" (
   "ImpressionId" INTEGER DEFAULT NULL,
   "BidRequestId" INTEGER DEFAULT NULL,
   "BidFloor" REAL DEFAULT 0,
-  "BidFloorCurrency" TEXT(3) DEFAULT "USD"
+  "BidFloorCurrency" TEXT(5) DEFAULT "USD"
 );
 
 -- ----------------------------
@@ -525,7 +525,7 @@ CREATE TABLE "Transaction" (
   "AdvertiseId" INTEGER NOT NULL,
   "Spend" REAL NOT NULL,
   "ImpressionId" INTEGER NOT NULL,
-  "Currency" TEXT NOT NULL DEFAULT 'USD',
+  "Currency" TEXT(5) DEFAULT 'USD',
   "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (datetime('now','utc')),
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
