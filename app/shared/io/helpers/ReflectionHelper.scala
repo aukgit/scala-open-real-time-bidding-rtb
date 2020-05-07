@@ -3,6 +3,7 @@ package shared.io.helpers
 import java.lang.reflect.Field
 
 import shared.com.ortb.constants.AppConstants
+import shared.io.helpers.traits.NiceObject
 import shared.io.loggers.AppLogger
 
 import scala.reflect.ClassTag
@@ -77,18 +78,12 @@ object ReflectionHelper {
     false
   }
 
-  def getCaseClassFields[T : TypeTag] : Iterable[MethodSymbol] = typeOf[T].members.collect {
+  def getFieldsAsMethodSymbol[T : TypeTag] : Iterable[MethodSymbol] = typeOf[T].members.collect {
     case m : MethodSymbol if m.isCaseAccessor => m
   }
 
-  def getCaseClassFieldsNames[T <: Class[T]] : Iterable[Field] = {
-    classOf[T]
-      .getDeclaredFields
-  }
-
-  class NiceObject[T <: AnyRef](x : T) {
-    def niceClass : Class[_ <: T] = x.getClass.asInstanceOf[Class[T]]
-  }
+  def getFields[T](implicit ct: ClassTag[T]) : Iterable[Field] =
+    ct.runtimeClass.getDeclaredFields
 
   implicit def toNiceObject[T <: AnyRef](x : T) : NiceObject[T] = new NiceObject(x)
 }
