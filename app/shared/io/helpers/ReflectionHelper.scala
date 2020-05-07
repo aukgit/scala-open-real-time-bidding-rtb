@@ -1,8 +1,11 @@
 package shared.io.helpers
 
+import java.lang.reflect.Field
+
 import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
+import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
 import scala.reflect.runtime.{ universe => ru }
 
@@ -36,7 +39,7 @@ object ReflectionHelper {
 
     try {
       val classEntity = item.get.getClass
-      return classEntity.getTypeName.replace("$",AppConstants.Dot)
+      return classEntity.getTypeName.replace("$", AppConstants.Dot)
     } catch {
       case e : Exception => AppLogger.error(e)
     }
@@ -46,7 +49,7 @@ object ReflectionHelper {
 
   def isIntegerType[T]()(implicit T : ru.TypeTag[T]) : Boolean = {
     val typeOfKey = typeOf[T]
-    typeOfKey match {
+    return typeOfKey match {
       case i if i =:= typeOf[Int] =>
         return true
     }
@@ -56,7 +59,7 @@ object ReflectionHelper {
 
   def isStringType[T]()(implicit T : TypeTag[T]) : Boolean = {
     val typeOfKey = typeOf[T]
-    typeOfKey match {
+    return typeOfKey match {
       case i if i =:= typeOf[String] =>
         return true
     }
@@ -64,14 +67,29 @@ object ReflectionHelper {
     false
   }
 
-//  def isTypeOf[T, TCastingType](implicit T : ru.TypeTag[T], TCastingType: ru.TypeTag[T]) : Boolean = {
-//    val typeOfKey = typeOf[T]
-//    typeOfKey match {
-//      case i if i =:= typeOf[TCastingType] =>
-//        return true
-//    }
-//
-//    false
-//  }
+  def isTypeOf[T : ru.TypeTag, TCastingType : ru.TypeTag] : Boolean = {
+    val typeOfKey = typeOf[T]
+    return typeOfKey match {
+      case i if i =:= typeOf[TCastingType] =>
+        return true
+    }
+
+    false
+  }
+
+  def getCaseClassFields[T : TypeTag] : Iterable[MethodSymbol] = typeOf[T].members.collect {
+    case m : MethodSymbol if m.isCaseAccessor => m
+  }
+
+  def getCaseClassFieldsNames[T <: Class[T]] : Iterable[Field] = {
+    classOf[T]
+      .getDeclaredFields
+  }
+
+  class NiceObject[T <: AnyRef](x : T) {
+    def niceClass : Class[_ <: T] = x.getClass.asInstanceOf[Class[T]]
+  }
+
+  implicit def toNiceObject[T <: AnyRef](x : T) : NiceObject[T] = new NiceObject(x)
 }
 

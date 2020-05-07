@@ -20,11 +20,36 @@
 - Class[T] : https://bit.ly/2VqpVF2
 - Variance : https://medium.com/@wiemzin/variances-in-scala-9c7d17af9dc4
 - Scala Generic with Shapeless: https://meta.plasm.us/posts/2015/11/08/type-classes-and-generic-derivation/
-- Reflection : https://bit.ly/350JYx7 | 
-   - https://bit.ly/3bwnjem 
-   - https://bit.ly/2VBq60l 
-   - https://bit.ly/2x4GHA8
-   - https://bit.ly/2yyNH9d `currentMirror.classSymbol(new A().getClass).toType.members.filter(w => !w.isMethod && w.isPrivate).head`
+- Reflection (https://bit.ly/2xIQTi5): 
+   - https://bit.ly/350JYx7 | 
+   - https://bit.ly/3bwnjem : No TypeTag available for case class Type
+   - https://bit.ly/2VBq60l : Scala: convert map to case class
+   - https://bit.ly/2x4GHA8 : “No TypeTag available for T” in method using generics
+   - https://bit.ly/2yyNH9d : `currentMirror.classSymbol(new A().getClass).toType.members.filter(w => !w.isMethod && w.isPrivate).head`
+   - https://bit.ly/2YCJZGi : Getting field names
+   - https://bit.ly/2WayLqG : **Get TypeTag[A] from Class[A]**
+   - https://bit.ly/2xI8AhL : **How to get TypeTag for generic class at runtime**
+   - https://bit.ly/3dniR27 : scala - How to get rid of : class type required but T found
+   - https://bit.ly/2yBq5AS : Scala: class type required but {generic type} found in trait -
+   
+   ```scala
+        import scala.slick.driver.MySQLDriver.simple.Tag // here mysql is used , you can import the driver specific to your db
+        
+        object DAO {
+          var db: Database = null
+        }
+        
+        trait CommonAPI[T, A<: Table[T]] {
+          private val db = DAO.db
+          private val tableTag : Tag => A = _
+          def setTag(tag : Tag => A) = { tableTag = tag }
+          private val objects = TableQuery(tableTag)
+        
+          def count: Future[Int] = db.run(objects.length.result)
+          def insert(obj: T#TableElementType): Future[Int] = db.run(objects += obj)
+          def all: Future[Seq[T]] = db.run(objects.result)
+        }
+       ```  
 - Bytes to object and object to Bytes : https://bit.ly/2SaE9I7 (Serializing)
 - Slick Big Table Generate : https://bit.ly/35nyELq
 - Slick Generate Table and View Both : https://bit.ly/35qj8Pd
