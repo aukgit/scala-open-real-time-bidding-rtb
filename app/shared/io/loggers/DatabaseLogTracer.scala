@@ -64,7 +64,7 @@ trait DatabaseLogTracer {
     AppLogger.logAsJson(
       message,
       logLevelType = logLevelType,
-      nullableObject = Some(row))
+      maybeModel = Some(row))
 
     logTraceRepository.add(row)
   }

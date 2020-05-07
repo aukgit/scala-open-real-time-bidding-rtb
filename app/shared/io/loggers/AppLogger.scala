@@ -15,6 +15,8 @@ object AppLogger extends
   InfoLogger with
   DebugLogger with
   WarnLogger with
+  JsonLogger with
+  MaybeModelLogger with
   EntitiesLogger with
   SentryLogger with
   AdditionalLogger with

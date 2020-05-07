@@ -90,8 +90,8 @@ trait EntitiesLogger {
     val typeName = getTypeName(Some(entities.head))
     // TODO : Do research on StringBuilder vs ArrayBuffer as in C# List performs better than StringBuilder
     //        for recreation of string builder is always costly.
+    //        ON simple search I have found that string builder performs better than ArrayBuffer in scala
 
-    val sb = new StringBuilder(defaultCharactersCapacity)
     val header = s"\n[$logLevelType]: Printing Entities ($typeName):\n"
     var count = 0
 
@@ -106,12 +106,7 @@ trait EntitiesLogger {
     }).mkString(AppConstants.NewLine)
 
     val footer = s"\n[Complete] Total entities printed : [${ count }]"
-
-    sb.addAll(header)
-    sb.addAll(items)
-    sb.addAll(footer)
-    val returningResult = sb.toString
-    sb.clear()
+    val returningResult = s"${header}${items}${footer}"
 
     returningResult
   }

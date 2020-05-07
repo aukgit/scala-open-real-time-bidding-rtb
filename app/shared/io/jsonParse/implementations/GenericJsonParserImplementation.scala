@@ -159,8 +159,19 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     toJsonObjectOption.get
   }
 
-  override def fromJsonToJsonString(model : Option[Json]) : Option[String] = {
+  /**
+   *
+   * @param model
+   * @param isPrettyFormat : if true then returns string using space2
+   *
+   * @return
+   */
+  override def fromJsonToJsonString(model : Option[Json], isPrettyFormat : Boolean) : Option[String] = {
     EmptyValidateHelper.throwOnNullOrNone(model, Some("model is empty"))
+
+    if (isPrettyFormat) {
+      return Some(model.get.spaces2)
+    }
 
     Some(model.get.noSpaces)
   }
@@ -256,7 +267,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
       return "Given object is null for logging."
     }
 
-    val jsonPrettyFormatString = toJsonStringPrettyFormat(entities)
+    val jsonPrettyFormatString = toJsonStringPrettyFormatForModels(entities)
     val typeName = getTypeName(Some(entities.get.head))
     val objectStringMessage = s"$typeName :\n ${ jsonPrettyFormatString }"
 
@@ -282,7 +293,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
    *
    * @return
    */
-  override def toJsonStringPrettyFormat(models : Option[Iterable[T]]) : Option[String] = {
+  override def toJsonStringPrettyFormatForModels(models : Option[Iterable[T]]) : Option[String] = {
     val jsons = toJsonObjects(models)
 
     if (EmptyValidateHelper.isItemsEmpty(jsons)) {
@@ -290,6 +301,59 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     }
 
     fromJsonsToJsonString(jsons, isPrettyFormat = true)
+  }
+
+
+  /**
+   * Usages 2 space json String format.
+   *
+   * @param models
+   *
+   * @return
+   */
+  override def toJsonStringPrettyFormat(models : Option[T]) : Option[String] = {
+    val jsons = toJsonObject(models)
+
+    if (EmptyValidateHelper.isEmpty(jsons)) {
+      return None
+    }
+
+    Some(jsons.get.spaces2)
+  }
+
+  /**
+   * Usages 2 space json String format.
+   *
+   * @param models
+   *
+   * @return empty string if something went wrong or cannot parse.
+   */
+  override def toJsonStringPrettyFormatForModelsDirect(models : Iterable[T]) : String = {
+    val jsonString = toJsonStringPrettyFormatForModels(Some(models))
+
+    if(EmptyValidateHelper.isOptionStringDefined(jsonString)){
+      return jsonString.get
+    }
+
+    ""
+  }
+
+
+  /**
+   * Usages 2 space json String format.
+   *
+   * @param models
+   *
+   * @return empty string if something went wrong or cannot parse.
+   */
+  override def toJsonStringPrettyFormatDirect(model : T) : String = {
+    val jsonString = toJsonStringPrettyFormat(Some(model))
+
+    if(EmptyValidateHelper.isOptionStringDefined(jsonString)){
+      return jsonString.get
+    }
+
+    ""
   }
 
   override def toJsonObjects(models : Option[Iterable[T]]) : Option[Iterable[Json]] = {
