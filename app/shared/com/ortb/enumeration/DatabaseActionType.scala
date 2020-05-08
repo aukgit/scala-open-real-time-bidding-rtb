@@ -2,11 +2,6 @@ package shared.com.ortb.enumeration
 
 import enumeratum.values._
 
-//object DatabaseActionType extends Enumeration {
-//  type DatabaseActionType = Value
-//  val Create, Read, Update, Delete, AddOrUpdate, Unknown, Combined = Value
-//}
-
 sealed abstract class DatabaseActionType(val value : String) extends StringEnumEntry
 
 case object DatabaseActionType extends StringEnum[DatabaseActionType] with StringCirceEnum[DatabaseActionType] {
@@ -27,3 +22,7 @@ case object DatabaseActionType extends StringEnum[DatabaseActionType] with Strin
 
   lazy val values : IndexedSeq[DatabaseActionType] = findValues
 }
+
+
+
+

@@ -1,8 +1,9 @@
 package shared.io.helpers.traits
 
 import java.lang.reflect.{ Field, Method }
-import shared.io.helpers._
-import shared.io.helpers.EmptyValidateHelper
+
+import shared.com.ortb.enumeration.ReflectionModifier
+import shared.io.helpers.{ EmptyValidateHelper, _ }
 
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
@@ -52,11 +53,14 @@ trait ClassTagHelperBase {
   def getSuperClassFields[T](implicit ct : ClassTag[T]) : Array[Field] =
     getClass[T].getSuperclass.getFields
 
-  //  def getFields[T](implicit ct : ClassTag[T]) : Iterable[Field] =
-  //    getFields[T].filter(w=> w.get)
+  def getFieldsWithModifier[T](reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Array[Field] =
+    getFields[T].filter(w => reflectionModifier.value == w.getModifiers)
 
   def getMethods[T](implicit ct : ClassTag[T]) : Array[Method] =
     getClass[T].getMethods
+
+  def getMethodsWithModifier[T](reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Array[Method] =
+    getMethods[T].filter(w => reflectionModifier.value == w.getModifiers)
 
   def getConstructors[T](implicit ct : ClassTag[T]) : Array[java.lang.reflect.Constructor[_]] =
     getClass[T].getDeclaredConstructors
