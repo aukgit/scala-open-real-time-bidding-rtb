@@ -1,6 +1,6 @@
 package shared.io.helpers.traits
 
-import java.lang.reflect.{ Field, Method }
+import java.lang.reflect.{ Field, Member, Method }
 
 import shared.com.ortb.enumeration.ReflectionModifier
 import shared.io.helpers.{ EmptyValidateHelper, _ }
@@ -61,6 +61,11 @@ trait ClassTagHelperBase {
 
   def getMethodsWithModifier[T](reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Array[Method] =
     getMethods[T].filter(w => reflectionModifier.value == w.getModifiers)
+
+  def getFilterMembersWithModifier[T](
+    members: Iterable[Member],
+    reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Iterable[Member] =
+    members.filter(w => reflectionModifier.value == w.getModifiers)
 
   def getConstructors[T](implicit ct : ClassTag[T]) : Array[java.lang.reflect.Constructor[_]] =
     getClass[T].getDeclaredConstructors

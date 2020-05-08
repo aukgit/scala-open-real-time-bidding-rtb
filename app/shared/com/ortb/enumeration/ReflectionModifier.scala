@@ -2,7 +2,9 @@ package shared.com.ortb.enumeration
 
 import enumeratum.values._
 
-case object ReflectionModifier extends IntEnum[ReflectionModifier] with IntCirceEnum[ReflectionModifier] {
+case object ReflectionModifier
+  extends IntEnum[ReflectionModifier]
+    with IntCirceEnum[ReflectionModifier] {
 
   case object Private extends ReflectionModifier(2)
 

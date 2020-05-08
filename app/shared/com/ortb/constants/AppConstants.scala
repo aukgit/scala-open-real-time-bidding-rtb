@@ -66,6 +66,8 @@ object AppConstants {
 
   val EqualSign = "="
 
+  val Colon = ":"
+
   /**
    * "=${NewLine}"
    */
@@ -74,5 +76,5 @@ object AppConstants {
   /**
    * "=${NewLine}${DoubleSpace}"
    */
-  lazy val LogEqualNewLineWithIndent : String = s"${EqualSign}${LogEqualNewLine}${DoubleSpace}"
+  lazy val LogEqualNewLineWithIndent : String = s"${LogEqualNewLine}${DoubleSpace}"
 }

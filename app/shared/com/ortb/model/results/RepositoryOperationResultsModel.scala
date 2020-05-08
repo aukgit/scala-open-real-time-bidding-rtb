@@ -25,9 +25,9 @@ case class RepositoryOperationResultsModel[TRow, TKey](
       .getJsonGenericParser
       .toJsonStringPrettyFormatDirect(attributes.get)
 
-    s"""EntitiesMessage${ AppConstants.LogEqualNewLineWithIndent }
-       |$message
-       |Attributes${ AppConstants.LogEqualNewLineWithIndent }
+    s"""
+       |EntitiesMessage${ AppConstants.Colon }$message
+       |Attributes${ AppConstants.Colon }
        |${ attributesToJson }""".stripMargin
   }
 
