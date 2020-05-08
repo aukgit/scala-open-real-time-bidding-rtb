@@ -31,7 +31,7 @@
    - https://bit.ly/2xI8AhL : **How to get TypeTag for generic class at runtime**
    - https://bit.ly/3dniR27 : scala - How to get rid of : class type required but T found
    - https://bit.ly/2yBq5AS : Scala: class type required but {generic type} found in trait -
-   
+      
    ```scala
         import scala.slick.driver.MySQLDriver.simple.Tag // here mysql is used , you can import the driver specific to your db
         
@@ -48,8 +48,8 @@
           def count: Future[Int] = db.run(objects.length.result)
           def insert(obj: T#TableElementType): Future[Int] = db.run(objects += obj)
           def all: Future[Seq[T]] = db.run(objects.result)
-        }
-       ```  
+        }  
+  ```
 - Bytes to object and object to Bytes : https://bit.ly/2SaE9I7 (Serializing)
 - Slick Big Table Generate : https://bit.ly/35nyELq
 - Slick Generate Table and View Both : https://bit.ly/35qj8Pd
@@ -64,6 +64,7 @@
 - Circe Optics : https://bit.ly/3b8O5Zh
 - Scala nameOf : https://stackoverflow.com/questions/5050682/get-scala-variable-name-at-runtime | https://github.com/dwickern/scala-nameof
 - Publish sbt package : https://bit.ly/2WbEqNn
+- Pimp My Library (Extension) : https://bit.ly/2WGpkyi | https://bit.ly/2WGpkyi
 
 ```scala
 def anyTypeToByteArray(value: Any): Array[Byte] = {
