@@ -3,7 +3,7 @@ package shared.io.helpers.traits
 import java.lang.reflect.{ Field, Member, Method, Parameter }
 
 import shared.com.ortb.enumeration.ReflectionModifier
-import shared.com.ortb.model.results.{ ResultWithCountSuccessModel, ResultWithSuccessModel }
+import shared.com.ortb.model.results.{ ResultModel, ResultWithCountSuccessModel, ResultWithSuccessModel }
 import shared.com.ortb.model.{ reflection, _ }
 import shared.com.ortb.model.reflection.{ ClassMembersInfoModel, ConstructorWrapperModel, FieldWrapperModel, MethodWrapperModel }
 import shared.io.helpers.{ EmptyValidateHelper, _ }
@@ -20,7 +20,7 @@ trait ExtractHelper {
     item.get
   }
 
-  def getFromResult[T](item : Option[ResultWithSuccessModel[T]]) : T = {
+  def getFromResult[T](item : Option[ResultModel[T]]) : T = {
     if(EmptyValidateHelper.isEmpty(item) ||
       EmptyValidateHelper.isEmpty(item.get.result)){
       return null.asInstanceOf[T]
@@ -30,12 +30,7 @@ trait ExtractHelper {
   }
 
   def getFromCountResult[T](item : Option[ResultWithCountSuccessModel[T]]) : T = {
-    if(EmptyValidateHelper.isEmpty(item) ||
-      EmptyValidateHelper.isEmpty(item.get.result)){
-      return null.asInstanceOf[T]
-    }
-
-    item.get.result.get
+    getFromResult(item)
   }
 }
 

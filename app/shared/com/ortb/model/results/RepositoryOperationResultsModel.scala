@@ -13,7 +13,8 @@ case class RepositoryOperationResultsModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
   data : Iterable[EntityWrapperModel[TRow, TKey]]) {
   lazy val hasItems : Boolean = EmptyValidateHelper.hasAnyItemDirect(data)
-  lazy val basicEncoderForGenericResponseAttributesModel = new BasicJsonEncoderImplementation[GenericResponseAttributesModel]
+  lazy val basicEncoderForGenericResponseAttributesModel =
+    new BasicJsonEncoderImplementation[GenericResponseAttributesModel]
 
   def logResults(
     additionalMessage : String = "",

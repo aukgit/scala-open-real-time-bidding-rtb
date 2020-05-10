@@ -4,4 +4,4 @@ case class ResultWithCountSuccessModel[T](
   result : Option[T],
   count : Int,
   isSuccess : Boolean,
-  message : String = "") extends ResultModel[T](result)
+  message : String = "") extends ResultModel[T]
