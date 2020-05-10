@@ -1,7 +1,8 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.reflection
 
 import java.lang.reflect.{ Member, Parameter }
 
+import shared.com.ortb.model.traits.ItemsExistence
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.helpers.traits.ParameterCompareHelper
 
@@ -56,7 +57,6 @@ case class ClassMembersInfoModel(
 
     methodsByKey.filter(w => w.parameterCount == parameterCount)
   }
-
 
   def getMethodsByParameter(name : String, parameters : Array[Parameter])
   : Iterable[MethodWrapperModel] = {

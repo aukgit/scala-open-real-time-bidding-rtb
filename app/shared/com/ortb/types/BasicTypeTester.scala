@@ -1,4 +1,4 @@
-package shared.com.ortb
+package shared.com.ortb.types
 
 import shared.io.helpers.NumberHelper
 

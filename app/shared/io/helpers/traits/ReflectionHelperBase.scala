@@ -1,8 +1,8 @@
 package shared.io.helpers.traits
 
-import cats.data.NonEmptyList
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.{ CaseClassFieldModel, CaseClassInfoModel }
+import shared.com.ortb.model.reflection
+import shared.com.ortb.model.reflection.{ CaseClassFieldModel, CaseClassInfoModel }
 import shared.io.helpers._
 import shared.io.loggers.AppLogger
 
@@ -86,7 +86,7 @@ trait ReflectionHelperBase {
 
     val product = maybeProduct.get
 
-    if(product.productArity == 0){
+    if (product.productArity == 0) {
       Some(CaseClassInfoModel(List.empty))
     }
 
@@ -97,11 +97,11 @@ trait ReflectionHelperBase {
     while (it.hasNext) {
       val name = product.productElementName(i)
       val value = it.next()
-      array(i) = CaseClassFieldModel(name,value, i)
+      array(i) = CaseClassFieldModel(name, value, i)
       i += 1
     }
 
-    Some(CaseClassInfoModel(array.toList))
+    Some(reflection.CaseClassInfoModel(array.toList))
   }
 
   def getFieldsNamesOfCaseModel(caseModel : Any) : Option[Iterable[String]] = {

@@ -3,7 +3,7 @@ package shared.io.loggers.traits
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.com.ortb.model.CaseClassInfoModel
+import shared.com.ortb.model.reflection.CaseClassInfoModel
 import shared.io.helpers.{ EmptyValidateHelper, ReflectionHelper, ToStringHelper }
 import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger

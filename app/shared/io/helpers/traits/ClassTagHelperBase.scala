@@ -3,12 +3,41 @@ package shared.io.helpers.traits
 import java.lang.reflect.{ Field, Member, Method, Parameter }
 
 import shared.com.ortb.enumeration.ReflectionModifier
-import shared.com.ortb.model.results.ResultWithCountSuccessModel
-import shared.com.ortb.model._
+import shared.com.ortb.model.results.{ ResultWithCountSuccessModel, ResultWithSuccessModel }
+import shared.com.ortb.model.{ reflection, _ }
+import shared.com.ortb.model.reflection.{ ClassMembersInfoModel, ConstructorWrapperModel, FieldWrapperModel, MethodWrapperModel }
 import shared.io.helpers.{ EmptyValidateHelper, _ }
 
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
+
+trait ExtractHelper {
+  def get[T](item : Option[T]) : T = {
+    if(EmptyValidateHelper.isEmpty(item)){
+      return null.asInstanceOf[T]
+    }
+
+    item.get
+  }
+
+  def getFromResult[T](item : Option[ResultWithSuccessModel[T]]) : T = {
+    if(EmptyValidateHelper.isEmpty(item) ||
+      EmptyValidateHelper.isEmpty(item.get.result)){
+      return null.asInstanceOf[T]
+    }
+
+    item.get.result.get
+  }
+
+  def getFromCountResult[T](item : Option[ResultWithCountSuccessModel[T]]) : T = {
+    if(EmptyValidateHelper.isEmpty(item) ||
+      EmptyValidateHelper.isEmpty(item.get.result)){
+      return null.asInstanceOf[T]
+    }
+
+    item.get.result.get
+  }
+}
 
 trait ClassTagHelperBase {
   def getClass[T](implicit ct : ClassTag[T]) : Class[_] =
@@ -73,7 +102,7 @@ trait ClassTagHelperBase {
       1.2)
 
     methods.foreach(w => {
-      val methodWrapper = MethodWrapperModel(w)
+      val methodWrapper = reflection.MethodWrapperModel(w)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
         key = methodWrapper.name,
@@ -110,7 +139,7 @@ trait ClassTagHelperBase {
       1.2)
 
     fields.foreach(f => {
-      val fieldWrapperModel = FieldWrapperModel(f)
+      val fieldWrapperModel = reflection.FieldWrapperModel(f)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
         key = fieldWrapperModel.name,
@@ -147,7 +176,7 @@ trait ClassTagHelperBase {
       1.2)
 
     constructors.foreach(constructor => {
-      val fieldWrapperModel = ConstructorWrapperModel(constructor)
+      val fieldWrapperModel = reflection.ConstructorWrapperModel(constructor)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
         key = fieldWrapperModel.name,
@@ -168,6 +197,11 @@ trait ClassTagHelperBase {
     val fields = getFieldWrapperModelsAsMap[T](ct)
     val methods = getMethodWrapperModelsAsMap[T](ct)
     val constructors = getMethodWrapperModelsAsMap[T](ct)
+//
+//    ClassMembersInfoModel(
+//      getClass[T],
+//      fields.result.get
+//    )
     ???
   }
 

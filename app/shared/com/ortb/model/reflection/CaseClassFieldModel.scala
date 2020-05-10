@@ -1,8 +1,6 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.reflection
 
-import shared.com.ortb.BasicTypeTester
-
-import scala.reflect.runtime.{ universe => ru }
+import shared.com.ortb.types.BasicTypeTester
 
 case class CaseClassFieldModel(
   name : String,

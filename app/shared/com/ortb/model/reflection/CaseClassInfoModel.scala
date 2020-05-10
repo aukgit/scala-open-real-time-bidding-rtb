@@ -1,5 +1,6 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.reflection
 
+import shared.com.ortb.model.traits.ItemsExistence
 import shared.io.helpers.EmptyValidateHelper
 
 case class CaseClassInfoModel(
