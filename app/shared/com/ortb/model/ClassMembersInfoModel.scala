@@ -1,8 +1,9 @@
 package shared.com.ortb.model
 
-import java.lang.reflect.Member
+import java.lang.reflect.{ Member, Parameter }
 
 import shared.io.helpers.EmptyValidateHelper
+import shared.io.helpers.traits.ParameterCompareHelper
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -32,23 +33,43 @@ case class ClassMembersInfoModel(
     lazy override val iterable : Iterable[ConstructorWrapperModel] = constructors.values.flatten
   }
 
-  def getMethods(name : String, parameterCount : Int) : Iterable[MethodWrapperModel] = {
+  def getMethods(name : String) : Iterable[MethodWrapperModel] = {
     //noinspection DuplicatedCode
     if (!methodsInfo.hasItem) {
       return Iterable.empty
     }
 
-    val filteredMethods = methods(name)
-    filteredMethods.filter(w => w.parameterCount == parameterCount)
+    if (!methods.contains(name)) {
+      return Iterable.empty[MethodWrapperModel]
+    }
+
+    methods(name)
   }
 
-  def getMethodsByParameter(name : String, parameterCount : Int) : Iterable[MethodWrapperModel] = {
+  def getMethods(name : String, parameterCount : Int) : Iterable[MethodWrapperModel] = {
     //noinspection DuplicatedCode
-    if (!methodsInfo.hasItem) {
-      return Iterable.empty
+    val methodsByKey = getMethods(name)
+
+    if (EmptyValidateHelper.isItemsEmptyDirect(methodsByKey)) {
+      return methodsByKey
     }
 
-    val filteredMethods = methods(name)
-    filteredMethods.filter(w => w.parameterCount == parameterCount)
+    methodsByKey.filter(w => w.parameterCount == parameterCount)
+  }
+
+
+  def getMethodsByParameter(name : String, parameters : Array[Parameter])
+  : Iterable[MethodWrapperModel] = {
+    //noinspection DuplicatedCode
+    val methods = getMethods(name, parameters.length)
+
+    if (EmptyValidateHelper.isItemsEmptyDirect(methods)) {
+      return methods
+    }
+
+    methods.filter(methodWrapperModel =>
+      ParameterCompareHelper.isParametersEquivalent(
+        methodWrapperModel.parameters,
+        parameters))
   }
 }

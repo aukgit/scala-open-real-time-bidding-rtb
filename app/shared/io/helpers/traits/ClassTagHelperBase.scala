@@ -1,6 +1,6 @@
 package shared.io.helpers.traits
 
-import java.lang.reflect.{ Field, Member, Method }
+import java.lang.reflect.{ Field, Member, Method, Parameter }
 
 import shared.com.ortb.enumeration.ReflectionModifier
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
@@ -165,7 +165,9 @@ trait ClassTagHelperBase {
   }
 
   def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel = {
-
+    val fields = getFieldWrapperModelsAsMap[T](ct)
+    val methods = getMethodWrapperModelsAsMap[T](ct)
+    val constructors = getMethodWrapperModelsAsMap[T](ct)
     ???
   }
 
