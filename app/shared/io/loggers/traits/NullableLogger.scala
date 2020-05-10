@@ -18,7 +18,7 @@ trait NullableLogger {
     stackIndex : Int = defaultStackIndex + 2,
     isPrintStack : Boolean = false) : Unit = {
     eventualMaybeT.onComplete(row => {
-      logNonFutureNullable(
+      logNullable(
         message = message,
         maybeT = row.getOrElse(None),
         logLevelType = logLevelType,
@@ -27,7 +27,7 @@ trait NullableLogger {
     })(getLoggerExecutionContext)
   }
 
-  def logNonFutureNullable[T](
+  def logNullable[T](
     message : String,
     maybeT : Option[T],
     logLevelType : LogLevelType = LogLevelType.DEBUG,

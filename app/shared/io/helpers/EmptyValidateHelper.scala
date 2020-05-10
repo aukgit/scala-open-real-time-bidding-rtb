@@ -24,7 +24,7 @@ object EmptyValidateHelper {
     item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val isDirectEmpty = item == null || String.valueOf(item) == "None"
-    if(isDirectEmpty){
+    if (isDirectEmpty) {
       return true
     }
 
@@ -185,6 +185,15 @@ object EmptyValidateHelper {
     }
 
     hasItem
+  }
+
+  //noinspection DuplicatedCode
+  def isItemsEmptyArray[A](
+    items : Option[Array[A]],
+    message : Option[String] = None) : Boolean = {
+    items == null ||
+      items.isEmpty ||
+      !hasAnyItemDirect(items.get, message)
   }
 
   //noinspection DuplicatedCode

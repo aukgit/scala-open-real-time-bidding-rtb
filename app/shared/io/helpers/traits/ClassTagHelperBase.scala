@@ -3,6 +3,8 @@ package shared.io.helpers.traits
 import java.lang.reflect.{ Field, Member, Method }
 
 import shared.com.ortb.enumeration.ReflectionModifier
+import shared.com.ortb.model.results.ResultWithCountSuccessModel
+import shared.com.ortb.model._
 import shared.io.helpers.{ EmptyValidateHelper, _ }
 
 import scala.collection.mutable.ArrayBuffer
@@ -44,28 +46,145 @@ trait ClassTagHelperBase {
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
         key = key,
-        value = f)
+        value = f,
+        defaultCapacity = 1)
     })
 
     map.toMap
+  }
+
+  def getMethodWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
+  ResultWithCountSuccessModel[Map[String, ArrayBuffer[MethodWrapperModel]]] = {
+    val methods = getMethods[T]
+    val typeName = ct.runtimeClass.getTypeName
+    val length = methods.length
+    val classHeader = s"[${ typeName.toString }] "
+    if (EmptyValidateHelper.isItemsEmptyDirect(methods)) {
+      return ResultWithCountSuccessModel[Map[String, ArrayBuffer[MethodWrapperModel]]](
+        Some(Map.empty[String, ArrayBuffer[MethodWrapperModel]]),
+        0,
+        isSuccess = false,
+        s"${ classHeader }No methods found"
+      )
+    }
+
+    val map = new collection.mutable.HashMap[String, ArrayBuffer[MethodWrapperModel]](
+      length + 1,
+      1.2)
+
+    methods.foreach(w => {
+      val methodWrapper = MethodWrapperModel(w)
+      MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
+        hashMap = map,
+        key = methodWrapper.name,
+        value = methodWrapper,
+        defaultCapacity = 1)
+    })
+
+    val finalMap = Some(map.toMap)
+    ResultWithCountSuccessModel[Map[String, ArrayBuffer[MethodWrapperModel]]](
+      finalMap,
+      count = length,
+      isSuccess = true,
+      s"${ classHeader }Methods found [${ length }]"
+    )
+  }
+
+  def getFieldWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
+  ResultWithCountSuccessModel[Map[String, ArrayBuffer[FieldWrapperModel]]] = {
+    val fields = getFields[T]
+    val typeName = ct.runtimeClass.getTypeName
+    val length = fields.length
+    val classHeader = s"[${ typeName.toString }] "
+    if (EmptyValidateHelper.isItemsEmptyDirect(fields)) {
+      return ResultWithCountSuccessModel[Map[String, ArrayBuffer[FieldWrapperModel]]](
+        Some(Map.empty[String, ArrayBuffer[FieldWrapperModel]]),
+        0,
+        isSuccess = false,
+        s"${ classHeader }Not fields found"
+      )
+    }
+
+    val map = new collection.mutable.HashMap[String, ArrayBuffer[FieldWrapperModel]](
+      length + 1,
+      1.2)
+
+    fields.foreach(f => {
+      val fieldWrapperModel = FieldWrapperModel(f)
+      MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
+        hashMap = map,
+        key = fieldWrapperModel.name,
+        value = fieldWrapperModel,
+        defaultCapacity = 1)
+    })
+
+    val finalMap = Some(map.toMap)
+    ResultWithCountSuccessModel[Map[String, ArrayBuffer[FieldWrapperModel]]](
+      finalMap,
+      count = length,
+      isSuccess = true,
+      s"${ classHeader }Fields found [${ length }]"
+    )
+  }
+
+  def getConstructorWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
+  ResultWithCountSuccessModel[Map[String, ArrayBuffer[ConstructorWrapperModel]]] = {
+    val constructors = getConstructors[T]
+    val typeName = ct.runtimeClass.getTypeName
+    val length = constructors.length
+    val classHeader = s"[${ typeName.toString }] "
+    if (EmptyValidateHelper.isItemsEmptyDirect(constructors)) {
+      return ResultWithCountSuccessModel[Map[String, ArrayBuffer[ConstructorWrapperModel]]](
+        Some(Map.empty[String, ArrayBuffer[ConstructorWrapperModel]]),
+        0,
+        isSuccess = false,
+        s"${ classHeader }No constructors found"
+      )
+    }
+
+    val map = new collection.mutable.HashMap[String, ArrayBuffer[ConstructorWrapperModel]](
+      length + 1,
+      1.2)
+
+    constructors.foreach(constructor => {
+      val fieldWrapperModel = ConstructorWrapperModel(constructor)
+      MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
+        hashMap = map,
+        key = fieldWrapperModel.name,
+        value = fieldWrapperModel,
+        defaultCapacity = 1)
+    })
+
+    val finalMap = Some(map.toMap)
+    ResultWithCountSuccessModel[Map[String, ArrayBuffer[ConstructorWrapperModel]]](
+      finalMap,
+      count = length,
+      isSuccess = true,
+      s"${ classHeader }Constructors found [${ length }]"
+    )
+  }
+
+  def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel = {
+
+    ???
   }
 
   def getSuperClassFields[T](implicit ct : ClassTag[T]) : Array[Field] =
     getClass[T].getSuperclass.getFields
 
   def getFieldsWithModifier[T](reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Array[Field] =
-    getFields[T].filter(w => reflectionModifier.value == w.getModifiers)
+    getFields[T].filter(field => reflectionModifier.value == field.getModifiers)
 
   def getMethods[T](implicit ct : ClassTag[T]) : Array[Method] =
     getClass[T].getMethods
 
   def getMethodsWithModifier[T](reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Array[Method] =
-    getMethods[T].filter(w => reflectionModifier.value == w.getModifiers)
+    getMethods[T].filter(method => reflectionModifier.value == method.getModifiers)
 
   def getFilterMembersWithModifier[T](
-    members: Iterable[Member],
+    members : Iterable[Member],
     reflectionModifier : ReflectionModifier)(implicit ct : ClassTag[T]) : Iterable[Member] =
-    members.filter(w => reflectionModifier.value == w.getModifiers)
+    members.filter(member => reflectionModifier.value == member.getModifiers)
 
   def getConstructors[T](implicit ct : ClassTag[T]) : Array[java.lang.reflect.Constructor[_]] =
     getClass[T].getDeclaredConstructors

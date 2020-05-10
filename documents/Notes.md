@@ -22,6 +22,7 @@
 - Scala Generic with Shapeless: https://meta.plasm.us/posts/2015/11/08/type-classes-and-generic-derivation/
 - Reflection (https://bit.ly/2xIQTi5): 
    - https://bit.ly/350JYx7 | 
+   - https://bit.ly/3bhknRK : Array kinds match type
    - https://bit.ly/3bwnjem : No TypeTag available for case class Type
    - https://bit.ly/2VBq60l : Scala: convert map to case class
    - https://bit.ly/2x4GHA8 : “No TypeTag available for T” in method using generics

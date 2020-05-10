@@ -19,7 +19,7 @@ import io.circe.optics._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema.Tables._
-import shared.io.helpers.JodaDateTimeHelper
+import shared.io.helpers.{ JodaDateTimeHelper, ReflectionHelper }
 import shared.io.loggers.AppLogger
 import enumeratum.values._
 import shared.io.redis.implementations.{ RedisClientAgentImplementation, RedisClientCorePropertiesContractsImplementation }
@@ -154,6 +154,9 @@ object Application {
     bidResponseRepository
       .add(row)
 
-    AppLogger.debug(response.toString)
+    val res = response.data.get
+    val we  = ReflectionHelper.getCaseClassInfoModel(res)
+
+    // AppLogger.debug(response.toString)
   }
 }

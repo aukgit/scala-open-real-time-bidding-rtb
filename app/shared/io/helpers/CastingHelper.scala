@@ -3,6 +3,19 @@ package shared.io.helpers
 import shared.io.loggers.AppLogger
 
 object CastingHelper {
+  def isProduct(item : Any) : Boolean = {
+    if(EmptyValidateHelper.isEmptyAny(item)){
+      return false
+    }
+
+    item.isInstanceOf[Product]
+  }
+
+  def toProduct(item : Any) : Option[Product] = {
+    val productModel = safeCastAs[Product](item)
+    productModel
+  }
+
   def safeCastAs[T](item : Any) : Option[T] = {
     val isEmpty = EmptyValidateHelper.isEmptyAny(item)
 

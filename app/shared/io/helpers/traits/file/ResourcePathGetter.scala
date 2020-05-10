@@ -19,7 +19,7 @@ trait ResourcePathGetter {
 
     try {
       val xFile = new File(givenUrl.get.getPath).getParentFile
-      AppLogger.logNonFutureNullable("xFile", Some(xFile))
+      AppLogger.logNullable("xFile", Some(xFile))
       return urlReduceByParent(Some(xFile.toURL), level2)
     }
     catch {
@@ -42,12 +42,12 @@ trait ResourcePathGetter {
 
       if (resourceUrl == null) {
         resourceUrl = getResourcePathClassDirectory
-        AppLogger.logNonFutureNullable("resourceUrl-step1", Some(resourceUrl))
+        AppLogger.logNullable("resourceUrl-step1", Some(resourceUrl))
       }
 
       if (resourceUrl == null) {
         resourceUrl = getResourcePathUsingPlayFramework
-        AppLogger.logNonFutureNullable("resourceUrl-step2", Some(resourceUrl))
+        AppLogger.logNullable("resourceUrl-step2", Some(resourceUrl))
       }
 
       if (resourceUrl != null) {

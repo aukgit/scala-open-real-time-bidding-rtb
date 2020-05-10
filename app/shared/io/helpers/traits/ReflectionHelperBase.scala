@@ -1,10 +1,13 @@
 package shared.io.helpers.traits
 
+import cats.data.NonEmptyList
+import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.model.{ CaseClassFieldModel, CaseClassInfoModel }
+import shared.io.helpers._
+import shared.io.loggers.AppLogger
+
 import scala.reflect.runtime.universe._
 import scala.reflect.runtime.{ universe => ru }
-import shared.com.ortb.constants.AppConstants
-import shared.io.helpers.ClassTagHelperBaseConcreteImplementation
-import shared.io.loggers.AppLogger
 
 trait ReflectionHelperBase {
   def getTypeTag[T : ru.TypeTag] : ru.TypeTag[T] =
@@ -73,6 +76,52 @@ trait ReflectionHelperBase {
 
   def getFieldsAsMethodSymbol[T : TypeTag] : Iterable[MethodSymbol] = typeOf[T].members.collect {
     case m : MethodSymbol if m.isCaseAccessor => m
+  }
+
+  def getCaseClassInfoModel(caseModel : Any) : Option[CaseClassInfoModel] = {
+    val maybeProduct = CastingHelper.toProduct(caseModel)
+    if (maybeProduct.isEmpty) {
+      return None
+    }
+
+    val product = maybeProduct.get
+
+    if(product.productArity == 0){
+      Some(CaseClassInfoModel(List.empty))
+    }
+
+    val array = new Array[CaseClassFieldModel](product.productArity)
+    val it = product.productIterator
+    var i = 0
+
+    while (it.hasNext) {
+      val name = product.productElementName(i)
+      val value = it.next()
+      array(i) = CaseClassFieldModel(name,value, i)
+      i += 1
+    }
+
+    Some(CaseClassInfoModel(array.toList))
+  }
+
+  def getFieldsNamesOfCaseModel(caseModel : Any) : Option[Iterable[String]] = {
+    val maybeProduct = CastingHelper.toProduct(caseModel)
+    if (maybeProduct.isEmpty) {
+      return None
+    }
+
+    val product = maybeProduct.get
+
+    val array = new Array[String](product.productArity)
+    val elements = product.productElementNames
+    var i = 0
+
+    while (elements.hasNext) {
+      array(i) = elements.next
+      i += 1
+    }
+
+    Some(array)
   }
 
   lazy val classTagHelper : ClassTagHelperBase = new ClassTagHelperBaseConcreteImplementation

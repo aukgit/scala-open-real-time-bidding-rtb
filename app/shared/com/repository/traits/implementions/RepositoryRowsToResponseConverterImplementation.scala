@@ -26,7 +26,7 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
       id = Some(idsList.get.head.toString),
       ids = idsList,
       dbAction,
-      message)
+      message = message)
 
     val repositoryResponse = RepositoryOperationResultsModel(
       Some(attributes),

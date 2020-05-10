@@ -3,6 +3,8 @@ package shared.io.loggers.traits
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
+import shared.com.ortb.model.CaseClassInfoModel
+import shared.io.helpers.{ EmptyValidateHelper, ReflectionHelper, ToStringHelper }
 import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger
 
@@ -72,6 +74,18 @@ trait EntitiesLogger {
     })
   }
 
+  def getProductFieldHeader(caseInfoModel : Option[CaseClassInfoModel]) : String = {
+    if(caseInfoModel.isEmpty || EmptyValidateHelper.isItemsEmptyDirect(List(caseInfoModel.get))){
+      return s"${AppConstants.DoubleSpace}0. Unable to extract field Details."
+    }
+
+    val headers = caseInfoModel
+      .get
+      .caseFieldModel
+      .map(w => w.toStringField)
+    s"${AppConstants.DoubleSpace}0. ${ToStringHelper.join(Some(headers), "|")}${AppConstants.NewLine}"
+  }
+
   def getLogMessageForEntities[T](
     isExecute : Boolean,
     entities : Iterable[T],
@@ -87,13 +101,16 @@ trait EntitiesLogger {
       return s"Empty -> No item present in the entities for logging. $additional"
     }
 
-    val typeName = getTypeName(Some(entities.head))
+    val first = entities.head
+    val typeName = getTypeName(Some(first))
     // TODO : Do research on StringBuilder vs ArrayBuffer as in C# List performs better than StringBuilder
     //        for recreation of string builder is always costly.
     //        ON simple search I have found that string builder performs better than ArrayBuffer in scala
 
     val header = s"\n[$logLevelType]: Printing Entities ($typeName):\n"
     var count = 0
+    val caseInfoModel = ReflectionHelper.getCaseClassInfoModel(first)
+    val productFieldNamesHeader = getProductFieldHeader(caseInfoModel)
 
     val items = entities.map(i => {
       count += 1
@@ -106,7 +123,7 @@ trait EntitiesLogger {
     }).mkString(AppConstants.NewLine)
 
     val footer = s"\n[Complete] Total entities printed : [${ count }]"
-    val returningResult = s"${header}${items}${footer}"
+    val returningResult = s"${header}${productFieldNamesHeader}${items}${footer}"
 
     returningResult
   }
