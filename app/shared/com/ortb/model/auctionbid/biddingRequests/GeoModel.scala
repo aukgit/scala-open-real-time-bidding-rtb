@@ -19,4 +19,4 @@ case class GeoModel(
   /**
    * Local time as the number +/- of minutes from UTC.
    */
-  utcoffset: Option[Int])
+  utcoffset : Option[Int])

@@ -3,7 +3,6 @@ package shared.com.ortb.model.requests
 import controllers.webapi.core.AbstractRestWebApi
 import play.api.mvc.{ AnyContent, Request }
 import shared.com.ortb.model.wrappers.PaginationWrapperModel
-import shared.com.ortb.model.wrappers.persistent.WebApiEntityResponseWrapper
 
 case class PaginationRequestModel[TTable, TRow, TKey](
   controller : AbstractRestWebApi[TTable, TRow, TKey],

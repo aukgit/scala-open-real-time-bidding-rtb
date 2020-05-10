@@ -12,7 +12,7 @@ case class HttpFailedExceptionActionWrapper[TRow, TKey](
   lineNumber : Option[Int] = None,
   entityWrapper : Option[EntityWrapperWithOptions[TRow, TKey]] = None,
   controllerGenericActionWrapper : ControllerGenericActionWrapper,
-  headers    : Option[Seq[Headers]] = None
+  headers : Option[Seq[Headers]] = None
 ) extends HttpActionWrapperBase[TRow, TKey](
   methodName = methodName,
   lineNumber = lineNumber,

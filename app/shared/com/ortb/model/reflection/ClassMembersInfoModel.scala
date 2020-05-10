@@ -34,30 +34,6 @@ case class ClassMembersInfoModel(
     lazy override val iterable : Iterable[ConstructorWrapperModel] = constructors.values.flatten
   }
 
-  def getMethods(name : String) : Iterable[MethodWrapperModel] = {
-    //noinspection DuplicatedCode
-    if (!methodsInfo.hasItem) {
-      return Iterable.empty
-    }
-
-    if (!methods.contains(name)) {
-      return Iterable.empty[MethodWrapperModel]
-    }
-
-    methods(name)
-  }
-
-  def getMethods(name : String, parameterCount : Int) : Iterable[MethodWrapperModel] = {
-    //noinspection DuplicatedCode
-    val methodsByKey = getMethods(name)
-
-    if (EmptyValidateHelper.isItemsEmptyDirect(methodsByKey)) {
-      return methodsByKey
-    }
-
-    methodsByKey.filter(w => w.parameterCount == parameterCount)
-  }
-
   def getMethodsByParameter(name : String, parameters : Array[Parameter])
   : Iterable[MethodWrapperModel] = {
     //noinspection DuplicatedCode
@@ -71,5 +47,29 @@ case class ClassMembersInfoModel(
       ParameterCompareHelper.isParametersEquivalent(
         methodWrapperModel.parameters,
         parameters))
+  }
+
+  def getMethods(name : String, parameterCount : Int) : Iterable[MethodWrapperModel] = {
+    //noinspection DuplicatedCode
+    val methodsByKey = getMethods(name)
+
+    if (EmptyValidateHelper.isItemsEmptyDirect(methodsByKey)) {
+      return methodsByKey
+    }
+
+    methodsByKey.filter(w => w.parameterCount == parameterCount)
+  }
+
+  def getMethods(name : String) : Iterable[MethodWrapperModel] = {
+    //noinspection DuplicatedCode
+    if (!methodsInfo.hasItem) {
+      return Iterable.empty
+    }
+
+    if (!methods.contains(name)) {
+      return Iterable.empty[MethodWrapperModel]
+    }
+
+    methods(name)
   }
 }

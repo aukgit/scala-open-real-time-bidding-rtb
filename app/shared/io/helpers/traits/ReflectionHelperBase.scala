@@ -16,7 +16,7 @@ trait ReflectionHelperBase {
   /**
    * reference : https://bit.ly/3evRZy7
    *
-   * @param givenClass
+   * @param givenClass : Given class type
    * @tparam T
    *
    * @return

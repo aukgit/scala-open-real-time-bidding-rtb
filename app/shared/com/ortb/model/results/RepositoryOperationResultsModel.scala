@@ -15,6 +15,19 @@ case class RepositoryOperationResultsModel[TRow, TKey](
   lazy val hasItems : Boolean = EmptyValidateHelper.hasAnyItemDirect(data)
   lazy val basicEncoderForGenericResponseAttributesModel = new BasicJsonEncoderImplementation[GenericResponseAttributesModel]
 
+  def logResults(
+    additionalMessage : String = "",
+    logLevelType : LogLevelType = LogLevelType.INFO) : Unit = {
+    if (!hasItems) {
+      AppLogger.info(AppConstants.NoContent)
+      return
+    }
+
+    val message = getLogMessage(additionalMessage)
+
+    AppLogger.additionalLogging(message, logLevelType)
+  }
+
   def getLogMessage(additionalMessage : String = "") : String = {
     if (!hasItems) {
       return AppConstants.NoContent
@@ -29,18 +42,5 @@ case class RepositoryOperationResultsModel[TRow, TKey](
        |EntitiesMessage${ AppConstants.Colon }$message
        |Attributes${ AppConstants.Colon }
        |${ attributesToJson }""".stripMargin
-  }
-
-  def logResults(
-    additionalMessage : String = "",
-    logLevelType : LogLevelType = LogLevelType.INFO) : Unit = {
-    if (!hasItems) {
-      AppLogger.info(AppConstants.NoContent)
-      return
-    }
-
-    val message = getLogMessage(additionalMessage)
-
-    AppLogger.additionalLogging(message, logLevelType)
   }
 }
