@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 import shared.com.ortb.enumeration.ReflectionModifier
 import shared.com.ortb.manager.traits.{ CreateDefaultContext, DefaultExecutionContextManagerConcreteImplementation }
 import shared.com.ortb.model.reflection
-import shared.com.ortb.model.reflection._
+import shared.com.ortb.model.reflection.{ MemberWrapperBaseModel, _ }
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.io.helpers.{ EmptyValidateHelper, _ }
 
@@ -207,12 +207,12 @@ trait ClassTagHelperBase extends CreateDefaultContext {
     classMembersInfo : ClassMembersInfoBaseImplementationModel)
   = {
     Future {
-      val arrayBuffer = new ConcurrentArrayList[MemberWrapperModel](defaultMemberPossibility)
-        with SynchronizedBuffer[MemberWrapperModel]
+      val arrayBuffer = new ArrayBuffer[MemberWrapperBaseModel](defaultMemberPossibility)
+      val abW = new ConcurrentArrayBufferWrapper(arrayBuffer)
       var totalCount = 0
 
-      def processMember(memberWrapperModel : MemberWrapperModel) : Unit = {
-        arrayBuffer.addOne()
+      def processMember(member : Member) : Unit = {
+        abW.addOne(new MemberWrapperConcreteModel(member))
         totalCount += 1
       }
 
@@ -220,19 +220,16 @@ trait ClassTagHelperBase extends CreateDefaultContext {
         "members collector",
         () =>
           classMembersInfo
-            .fields
-            .values
-            .flatten
+            .classType
+            .getFields
             .foreach(processMember),
         () => classMembersInfo
-          .methods
-          .values
-          .flatten
+          .classType
+          .getMethods
           .foreach(processMember),
         () => classMembersInfo
-          .constructors
-          .values
-          .flatten
+          .classType
+          .getConstructors
           .foreach(processMember)
       )
 
@@ -246,12 +243,12 @@ trait ClassTagHelperBase extends CreateDefaultContext {
 
   def getEventualMembersMap(
     classMembersInfo : ClassMembersInfoBaseImplementationModel) :
-  Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]]] = {
+  Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]]] = {
     Future {
-      val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]
+      val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]
       var totalCount = 0
 
-      def processMember(memberWrapperModel : MemberWrapperModel) : Unit = {
+      def processMember(memberWrapperModel : MemberWrapperBaseModel) : Unit = {
         MapHelper
           .hashMapWithArrayBufferAdder
           .concurrentMapAddToArrayBuffer(

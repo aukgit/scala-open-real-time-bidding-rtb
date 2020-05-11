@@ -4,4 +4,4 @@ import java.lang.reflect.Field
 
 case class FieldWrapperModel(
   field : Field)
-  extends MemberWrapperModel(field)
+  extends MemberWrapperConcreteModel(field)

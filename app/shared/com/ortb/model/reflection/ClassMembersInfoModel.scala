@@ -32,15 +32,15 @@ case class ClassMembersInfoModel(
   fields : Map[String, ArrayBuffer[FieldWrapperModel]],
   methods : Map[String, ArrayBuffer[MethodWrapperModel]],
   constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]],
-  eventualMembers : Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]]])
+  eventualMembers : Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]]])
   extends ClassMembersInfoBaseModel {
 
-  lazy val membersMaps : Map[String, ArrayBuffer[MemberWrapperModel]] =
+  lazy val membersMaps : Map[String, ArrayBuffer[MemberWrapperBaseModel]] =
     ExtractHelper.getFromEventualResult(eventualMembers)
       .asScala
       .toMap
 
-  lazy val memberWrapperModels : LazyList[MemberWrapperModel] =
+  lazy val memberWrapperModels : LazyList[MemberWrapperBaseModel] =
     membersMaps.values.flatten.to(LazyList)
 
   lazy val membersIterable : Iterable[Member] =
