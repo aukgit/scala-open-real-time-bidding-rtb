@@ -134,35 +134,38 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   }
 
   def getConstructorWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
-  ResultWithCountSuccessModel[Map[String, ArrayBuffer[ConstructorWrapperModel]]] = {
+  ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]] = {
     val constructors = getConstructors[T]
     val typeName = ct.runtimeClass.getTypeName
     val length = constructors.length
     val classHeader = s"[${ typeName.toString }] "
     if (EmptyValidateHelper.isItemsEmptyDirect(constructors)) {
-      return ResultWithCountSuccessModel[Map[String, ArrayBuffer[ConstructorWrapperModel]]](
-        Some(Map.empty[String, ArrayBuffer[ConstructorWrapperModel]]),
+      return ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]](
+        Some(Map.empty[Int, ArrayBuffer[ConstructorWrapperModel]]),
         0,
         isSuccess = false,
         s"${ classHeader }No constructors found"
       )
     }
 
-    val map = new collection.mutable.HashMap[String, ArrayBuffer[ConstructorWrapperModel]](
+    val map = new collection.mutable.HashMap[Int, ArrayBuffer[ConstructorWrapperModel]](
       length + 1,
       1.2)
 
+    var index= 0
     constructors.foreach(constructor => {
       val fieldWrapperModel = reflection.ConstructorWrapperModel(constructor)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
-        key = fieldWrapperModel.name,
+        key = index,
         value = fieldWrapperModel,
         defaultCapacity = 1)
+
+      index += 1
     })
 
     val finalMap = Some(map.toMap)
-    ResultWithCountSuccessModel[Map[String, ArrayBuffer[ConstructorWrapperModel]]](
+    ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]](
       finalMap,
       count = length,
       isSuccess = true,
@@ -171,7 +174,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   }
 
   def getEventualMembersMap(
-    classMembersInfoBaseImplementationModel : ClassMembersInfoBaseImplementationModel) = {
+    classMembersInfoBaseImplementationModel : ClassMembersInfoBaseImplementationModel) : Nothing = {
     Future {
       val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]
       var totalCount = 0
@@ -179,7 +182,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
       ParallelTaskHelper.runInThreads(
         "members collector",
         () =>
-          classMembersInfoBaseImplementationModel.fields.foreach(w => {
+          classMembersInfoBaseImplementationModel.fields.values.flatten.foreach(w => {
             MapHelper
               .hashMapWithArrayBufferAdder
               .concurrentMapAddToArrayBuffer(map, w.name, w)
@@ -197,7 +200,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel = {
     val fields = getFieldWrapperModelsAsMap[T](ct)
     val methods = getMethodWrapperModelsAsMap[T](ct)
-    val constructors = getMethodWrapperModelsAsMap[T](ct)
+    val constructors = getConstructorWrapperModelsAsMap[T](ct)
     val extractedFields = ExtractHelper.getFromResult(fields)
     val extractedMethods = ExtractHelper.getFromResult(methods)
     val extractedConstructors = ExtractHelper.getFromResult(constructors)
@@ -212,13 +215,13 @@ trait ClassTagHelperBase extends CreateDefaultContext {
 
     val eventualMembersMap = getEventualMembersMap(clx)
 
-    ClassMembersInfoModel(
-      classT,
-      extractedFields,
-      extractedMethods,
-      extractedConstructors,
-      eventualMembersMap
-    )
+//    ClassMembersInfoModel(
+//      classT,
+//      extractedFields,
+//      extractedMethods,
+//      extractedConstructors,
+//      eventualMembersMap
+//    )
     ???
   }
 

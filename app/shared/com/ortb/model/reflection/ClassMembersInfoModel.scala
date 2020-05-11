@@ -12,21 +12,21 @@ import scala.concurrent.Future
 
 trait ClassMembersInfoBaseModel {
   val classType : Class[_]
-  val fields : Array[FieldWrapperModel]
+  val fields : Map[String, ArrayBuffer[FieldWrapperModel]]
   val methods : Map[String, ArrayBuffer[MethodWrapperModel]]
   val constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]]
 }
 
-case class ClassMembersInfoBaseImplementationModel (
- classType : Class[_],
- fields : Array[FieldWrapperModel],
- methods : Map[String, ArrayBuffer[MethodWrapperModel]],
- constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]],
+case class ClassMembersInfoBaseImplementationModel(
+  classType : Class[_],
+  fields : Map[String, ArrayBuffer[FieldWrapperModel]],
+  methods : Map[String, ArrayBuffer[MethodWrapperModel]],
+  constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]]
 ) extends ClassMembersInfoBaseModel
 
 case class ClassMembersInfoModel(
   classType : Class[_],
-  fields : Array[FieldWrapperModel],
+  fields : Map[String, ArrayBuffer[FieldWrapperModel]],
   methods : Map[String, ArrayBuffer[MethodWrapperModel]],
   constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]],
   eventualMembers : Future[Map[String, ArrayBuffer[MemberWrapperModel]]],
@@ -41,7 +41,7 @@ case class ClassMembersInfoModel(
 
   lazy val fieldsInfo : ItemsExistence[FieldWrapperModel] = new ItemsExistence[FieldWrapperModel] {
     lazy override val hasItem : Boolean = EmptyValidateHelper.hasAnyItemDirect(fields)
-    lazy override val iterable : Iterable[FieldWrapperModel] = fields
+    lazy override val iterable : Iterable[FieldWrapperModel] = fields.values.flatten
   }
 
   lazy val methodsInfo : ItemsExistence[MethodWrapperModel] = new ItemsExistence[MethodWrapperModel] {
