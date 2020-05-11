@@ -148,8 +148,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
       extractedMethods,
       extractedConstructors
     )
-
-    val eventualMembersMap = getEventualMembersMap(clx)
+    val eventualMembersMap = getEventualMembers(clx)
 
     ClassMembersInfoModel(
       classT,
@@ -204,7 +203,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   lazy val defaultMemberPossibility : Int = 30
 
   def getEventualMembers(
-    classMembersInfo : ClassMembersInfoBaseImplementationModel) :
+    classMembersInfo : ClassMembersInfoBaseModel) :
   Future[ResultWithCountSuccessModel[scala.Array[MemberWrapperBaseModel]]] = {
     Future {
       val arrayBuffer = new ArrayBuffer[MemberWrapperBaseModel](defaultMemberPossibility)
@@ -242,7 +241,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   }
 
   def getEventualMembersMap(
-    classMembersInfo : ClassMembersInfoBaseImplementationModel) :
+    classMembersInfo : ClassMembersInfoBaseModel) :
   Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]]] = {
     Future {
       val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]
