@@ -1,6 +1,6 @@
 package shared.io.helpers.traits
 
-import java.lang.reflect.{ Field, Member, Method }
+import java.lang.reflect._
 import java.util.concurrent.ConcurrentHashMap
 
 import shared.com.ortb.enumeration.ReflectionModifier
@@ -133,6 +133,34 @@ trait ClassTagHelperBase extends CreateDefaultContext {
     )
   }
 
+  def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel = {
+    val fields = getFieldWrapperModelsAsMap[T](ct)
+    val methods = getMethodWrapperModelsAsMap[T](ct)
+    val constructors = getConstructorWrapperModelsAsMap[T](ct)
+    val extractedFields = ExtractHelper.getFromResult(fields)
+    val extractedMethods = ExtractHelper.getFromResult(methods)
+    val extractedConstructors = ExtractHelper.getFromResult(constructors)
+    val classT = getClass[T]
+
+    val clx = ClassMembersInfoBaseImplementationModel(
+      classT,
+      extractedFields,
+      extractedMethods,
+      extractedConstructors
+    )
+
+    val eventualMembersMap = getEventualMembersMap(clx)
+
+    ClassMembersInfoModel(
+      classT,
+      extractedFields,
+      extractedMethods,
+      extractedConstructors,
+      eventualMembersMap
+    )
+    ???
+  }
+
   def getConstructorWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
   ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]] = {
     val constructors = getConstructors[T]
@@ -152,7 +180,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
       length + 1,
       1.2)
 
-    var index= 0
+    var index = 0
     constructors.foreach(constructor => {
       val fieldWrapperModel = reflection.ConstructorWrapperModel(constructor)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
@@ -174,55 +202,49 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   }
 
   def getEventualMembersMap(
-    classMembersInfoBaseImplementationModel : ClassMembersInfoBaseImplementationModel) : Nothing = {
+    classMembersInfo : ClassMembersInfoBaseImplementationModel) :
+  Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]]] = {
     Future {
       val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]
       var totalCount = 0
 
+      def processMember(memberWrapperModel : MemberWrapperModel) : Unit = {
+        MapHelper
+          .hashMapWithArrayBufferAdder
+          .concurrentMapAddToArrayBuffer(
+            map,
+            memberWrapperModel.name,
+            memberWrapperModel)
+
+        totalCount += 1
+      }
+
       ParallelTaskHelper.runInThreads(
         "members collector",
         () =>
-          classMembersInfoBaseImplementationModel.fields.values.flatten.foreach(w => {
-            MapHelper
-              .hashMapWithArrayBufferAdder
-              .concurrentMapAddToArrayBuffer(map, w.name, w)
-            totalCount += 1
-          })
-
-
+          classMembersInfo
+            .fields
+            .values
+            .flatten
+            .foreach(processMember),
+        () => classMembersInfo
+          .methods
+          .values
+          .flatten
+          .foreach(processMember),
+        () => classMembersInfo
+          .constructors
+          .values
+          .flatten
+          .foreach(processMember)
       )
 
+      ResultWithCountSuccessModel(
+        result = Some(map),
+        count = totalCount,
+        isSuccess = true
+      )
     }(createDefaultContext())
-
-    ???
-  }
-
-  def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel = {
-    val fields = getFieldWrapperModelsAsMap[T](ct)
-    val methods = getMethodWrapperModelsAsMap[T](ct)
-    val constructors = getConstructorWrapperModelsAsMap[T](ct)
-    val extractedFields = ExtractHelper.getFromResult(fields)
-    val extractedMethods = ExtractHelper.getFromResult(methods)
-    val extractedConstructors = ExtractHelper.getFromResult(constructors)
-    val classT = getClass[T]
-
-    val clx = ClassMembersInfoBaseImplementationModel(
-      classT,
-      extractedFields,
-      extractedMethods,
-      extractedConstructors
-    )
-
-    val eventualMembersMap = getEventualMembersMap(clx)
-
-//    ClassMembersInfoModel(
-//      classT,
-//      extractedFields,
-//      extractedMethods,
-//      extractedConstructors,
-//      eventualMembersMap
-//    )
-    ???
   }
 
   def getSuperClassFields[T](implicit ct : ClassTag[T]) : Array[Field] =

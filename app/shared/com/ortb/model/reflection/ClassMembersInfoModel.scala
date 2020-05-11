@@ -1,14 +1,17 @@
 package shared.com.ortb.model.reflection
 
 import java.lang.reflect.{ Member, Parameter }
+import java.util.concurrent.ConcurrentHashMap
 
+import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.com.ortb.model.traits.ItemsExistence
-import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.EmptyValidateHelper
-import shared.io.helpers.traits.ParameterCompareHelper
+import shared.io.helpers.traits.{ ExtractHelper, ParameterCompareHelper }
 
+import scala.collection._
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
+import scala.jdk.CollectionConverters._
 
 trait ClassMembersInfoBaseModel {
   val classType : Class[_]
@@ -29,13 +32,17 @@ case class ClassMembersInfoModel(
   fields : Map[String, ArrayBuffer[FieldWrapperModel]],
   methods : Map[String, ArrayBuffer[MethodWrapperModel]],
   constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]],
-  eventualMembers : Future[Map[String, ArrayBuffer[MemberWrapperModel]]],
-  totalMembers : Int) extends ClassMembersInfoBaseModel {
+  eventualMembers : Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]]])
+  extends ClassMembersInfoBaseModel {
 
   lazy val membersMaps : Map[String, ArrayBuffer[MemberWrapperModel]] =
-    FutureToRegular.toRegular(eventualMembers)
-  lazy val memberWrapperModels : Iterable[MemberWrapperModel] =
-    membersMaps.values.flatten
+    ExtractHelper.getFromEventualResult(eventualMembers)
+      .asScala
+      .toMap
+
+  lazy val memberWrapperModels : LazyList[MemberWrapperModel] =
+    membersMaps.values.flatten.to(LazyList)
+
   lazy val membersIterable : Iterable[Member] =
     memberWrapperModels.map(w => w.member)
 

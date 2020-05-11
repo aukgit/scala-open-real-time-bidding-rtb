@@ -3,7 +3,7 @@ package shared.io.helpers.traits
 import shared.io.helpers.EmptyValidateHelper
 
 trait ParallelTaskHelper {
-  def runInThreadsSequence(taskName : String, tasks : Seq[() => Unit]) {
+  def runInThreadsSequence(taskName : String, tasks : Seq[() => Unit]) : Unit = {
     if (EmptyValidateHelper.isItemsEmptyDirect(tasks)) {
       return;
     }
