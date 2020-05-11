@@ -1,6 +1,6 @@
 package shared.io.helpers.traits
 
-import java.lang.reflect._
+import java.lang.reflect.{ Field, Member, Method }
 import java.util.concurrent.ConcurrentHashMap
 
 import shared.com.ortb.enumeration.ReflectionModifier
