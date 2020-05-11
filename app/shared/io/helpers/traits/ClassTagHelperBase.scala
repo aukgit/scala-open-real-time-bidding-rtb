@@ -201,6 +201,49 @@ trait ClassTagHelperBase extends CreateDefaultContext {
     )
   }
 
+  lazy val defaultMemberPossibility : Int = 30
+
+  def getEventualMembers(
+    classMembersInfo : ClassMembersInfoBaseImplementationModel)
+  = {
+    Future {
+      val arrayBuffer = new ConcurrentArrayList[MemberWrapperModel](defaultMemberPossibility)
+        with SynchronizedBuffer[MemberWrapperModel]
+      var totalCount = 0
+
+      def processMember(memberWrapperModel : MemberWrapperModel) : Unit = {
+        arrayBuffer.addOne()
+        totalCount += 1
+      }
+
+      ParallelTaskHelper.runInThreads(
+        "members collector",
+        () =>
+          classMembersInfo
+            .fields
+            .values
+            .flatten
+            .foreach(processMember),
+        () => classMembersInfo
+          .methods
+          .values
+          .flatten
+          .foreach(processMember),
+        () => classMembersInfo
+          .constructors
+          .values
+          .flatten
+          .foreach(processMember)
+      )
+
+      ResultWithCountSuccessModel(
+        result = Some(arrayBuffer),
+        count = totalCount,
+        isSuccess = true
+      )
+    }(createDefaultContext())
+  }
+
   def getEventualMembersMap(
     classMembersInfo : ClassMembersInfoBaseImplementationModel) :
   Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]]] = {
