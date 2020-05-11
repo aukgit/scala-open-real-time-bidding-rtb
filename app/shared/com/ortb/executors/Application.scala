@@ -22,6 +22,7 @@ import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.{ JodaDateTimeHelper, ReflectionHelper }
 import shared.io.loggers.AppLogger
 import enumeratum.values._
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.io.redis.implementations.{ RedisClientAgentImplementation, RedisClientCorePropertiesContractsImplementation }
 import shared.io.redis.traits.RedisClientAgent
 sealed abstract class Judgement(val value: Int) extends IntEnumEntry with AllowAlias
@@ -155,6 +156,9 @@ object Application {
       .add(row)
 
     val res = response.data.get
+
+    val w = ReflectionHelper.classTagHelper.getMembersInfo[BidresponseRow]
+
     val we  = ReflectionHelper.getCaseClassInfoModel(res)
 
     // AppLogger.debug(response.toString)

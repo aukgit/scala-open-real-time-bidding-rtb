@@ -157,7 +157,6 @@ trait ClassTagHelperBase extends CreateDefaultContext {
       extractedConstructors,
       eventualMembersMap
     )
-    ???
   }
 
   def getConstructorWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
