@@ -204,8 +204,8 @@ trait ClassTagHelperBase extends CreateDefaultContext {
   lazy val defaultMemberPossibility : Int = 30
 
   def getEventualMembers(
-    classMembersInfo : ClassMembersInfoBaseImplementationModel)
-  = {
+    classMembersInfo : ClassMembersInfoBaseImplementationModel) :
+  Future[ResultWithCountSuccessModel[scala.Array[MemberWrapperBaseModel]]] = {
     Future {
       val arrayBuffer = new ArrayBuffer[MemberWrapperBaseModel](defaultMemberPossibility)
       val abW = new ConcurrentArrayBufferWrapper(arrayBuffer)
@@ -234,7 +234,7 @@ trait ClassTagHelperBase extends CreateDefaultContext {
       )
 
       ResultWithCountSuccessModel(
-        result = Some(arrayBuffer),
+        result = Some(arrayBuffer.toArray),
         count = totalCount,
         isSuccess = true
       )
