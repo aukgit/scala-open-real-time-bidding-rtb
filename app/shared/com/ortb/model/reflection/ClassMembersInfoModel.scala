@@ -3,25 +3,45 @@ package shared.com.ortb.model.reflection
 import java.lang.reflect.{ Member, Parameter }
 
 import shared.com.ortb.model.traits.ItemsExistence
+import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.helpers.traits.ParameterCompareHelper
 
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Future
+
+trait ClassMembersInfoBaseModel {
+  val classType : Class[_]
+  val fields : Array[FieldWrapperModel]
+  val methods : Map[String, ArrayBuffer[MethodWrapperModel]]
+  val constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]]
+}
+
+case class ClassMembersInfoBaseImplementationModel (
+ classType : Class[_],
+ fields : Array[FieldWrapperModel],
+ methods : Map[String, ArrayBuffer[MethodWrapperModel]],
+ constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]],
+) extends ClassMembersInfoBaseModel
 
 case class ClassMembersInfoModel(
   classType : Class[_],
-  fields : Map[String, FieldWrapperModel],
+  fields : Array[FieldWrapperModel],
   methods : Map[String, ArrayBuffer[MethodWrapperModel]],
   constructors : Map[Int, ArrayBuffer[ConstructorWrapperModel]],
-  members : Map[String, ArrayBuffer[MemberWrapperModel]],
-  totalMembers : Int) {
+  eventualMembers : Future[Map[String, ArrayBuffer[MemberWrapperModel]]],
+  totalMembers : Int) extends ClassMembersInfoBaseModel {
 
-  lazy val memberWrapperModels : Iterable[MemberWrapperModel] = members.values.flatten
-  lazy val membersIterable : Iterable[Member] = memberWrapperModels.map(w => w.member)
+  lazy val membersMaps : Map[String, ArrayBuffer[MemberWrapperModel]] =
+    FutureToRegular.toRegular(eventualMembers)
+  lazy val memberWrapperModels : Iterable[MemberWrapperModel] =
+    membersMaps.values.flatten
+  lazy val membersIterable : Iterable[Member] =
+    memberWrapperModels.map(w => w.member)
 
   lazy val fieldsInfo : ItemsExistence[FieldWrapperModel] = new ItemsExistence[FieldWrapperModel] {
     lazy override val hasItem : Boolean = EmptyValidateHelper.hasAnyItemDirect(fields)
-    lazy override val iterable : Iterable[FieldWrapperModel] = fields.values
+    lazy override val iterable : Iterable[FieldWrapperModel] = fields
   }
 
   lazy val methodsInfo : ItemsExistence[MethodWrapperModel] = new ItemsExistence[MethodWrapperModel] {

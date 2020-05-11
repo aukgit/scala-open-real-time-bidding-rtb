@@ -1,40 +1,22 @@
 package shared.io.helpers.traits
 
-import java.lang.reflect.{ Field, Member, Method, Parameter }
+import java.lang.reflect.{ Field, Member, Method }
+import java.util.concurrent.ConcurrentHashMap
 
 import shared.com.ortb.enumeration.ReflectionModifier
-import shared.com.ortb.model.results.{ ResultModel, ResultWithCountSuccessModel, ResultWithSuccessModel }
-import shared.com.ortb.model.{ reflection, _ }
-import shared.com.ortb.model.reflection.{ ClassMembersInfoModel, ConstructorWrapperModel, FieldWrapperModel, MethodWrapperModel }
+import shared.com.ortb.manager.traits.{ CreateDefaultContext, DefaultExecutionContextManagerConcreteImplementation }
+import shared.com.ortb.model.reflection
+import shared.com.ortb.model.reflection._
+import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.io.helpers.{ EmptyValidateHelper, _ }
 
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.reflect.ClassTag
 
-trait ExtractHelper {
-  def get[T](item : Option[T]) : T = {
-    if(EmptyValidateHelper.isEmpty(item)){
-      return null.asInstanceOf[T]
-    }
+trait ClassTagHelperBase extends CreateDefaultContext {
+  lazy val executionContextManager = new DefaultExecutionContextManagerConcreteImplementation
 
-    item.get
-  }
-
-  def getFromResult[T](item : Option[ResultModel[T]]) : T = {
-    if(EmptyValidateHelper.isEmpty(item) ||
-      EmptyValidateHelper.isEmpty(item.get.result)){
-      return null.asInstanceOf[T]
-    }
-
-    item.get.result.get
-  }
-
-  def getFromCountResult[T](item : Option[ResultWithCountSuccessModel[T]]) : T = {
-    getFromResult(item)
-  }
-}
-
-trait ClassTagHelperBase {
   def getClass[T](implicit ct : ClassTag[T]) : Class[_] =
     ct.runtimeClass
 
@@ -188,15 +170,55 @@ trait ClassTagHelperBase {
     )
   }
 
+  def getEventualMembersMap(
+    classMembersInfoBaseImplementationModel : ClassMembersInfoBaseImplementationModel) = {
+    Future {
+      val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperModel]]
+      var totalCount = 0
+
+      ParallelTaskHelper.runInThreads(
+        "members collector",
+        () =>
+          classMembersInfoBaseImplementationModel.fields.foreach(w => {
+            MapHelper
+              .hashMapWithArrayBufferAdder
+              .concurrentMapAddToArrayBuffer(map, w.name, w)
+            totalCount += 1
+          })
+
+
+      )
+
+    }(createDefaultContext())
+
+    ???
+  }
+
   def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel = {
     val fields = getFieldWrapperModelsAsMap[T](ct)
     val methods = getMethodWrapperModelsAsMap[T](ct)
     val constructors = getMethodWrapperModelsAsMap[T](ct)
-//
-//    ClassMembersInfoModel(
-//      getClass[T],
-//      fields.result.get
-//    )
+    val extractedFields = ExtractHelper.getFromResult(fields)
+    val extractedMethods = ExtractHelper.getFromResult(methods)
+    val extractedConstructors = ExtractHelper.getFromResult(constructors)
+    val classT = getClass[T]
+
+    val clx = ClassMembersInfoBaseImplementationModel(
+      classT,
+      extractedFields,
+      extractedMethods,
+      extractedConstructors
+    )
+
+    val eventualMembersMap = getEventualMembersMap(clx)
+
+    ClassMembersInfoModel(
+      classT,
+      extractedFields,
+      extractedMethods,
+      extractedConstructors,
+      eventualMembersMap
+    )
     ???
   }
 
@@ -219,4 +241,6 @@ trait ClassTagHelperBase {
 
   def getConstructors[T](implicit ct : ClassTag[T]) : Array[java.lang.reflect.Constructor[_]] =
     getClass[T].getDeclaredConstructors
+
+  implicit override def createDefaultContext() : ExecutionContext = executionContextManager.defaultExecutionContext
 }

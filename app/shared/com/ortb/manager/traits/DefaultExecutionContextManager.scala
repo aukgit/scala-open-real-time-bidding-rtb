@@ -2,7 +2,7 @@ package shared.com.ortb.manager.traits
 
 import scala.concurrent.{ ExecutionContext, ExecutionContextExecutor }
 
-trait DefaultExecutionContextManager {
+trait DefaultExecutionContextManager extends CreateDefaultContext {
   lazy val defaultParallelProcessing : Int = 8
 
   def createDefaultContext() : ExecutionContext = createDefault().prepare()
