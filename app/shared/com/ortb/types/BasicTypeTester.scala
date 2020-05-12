@@ -32,8 +32,6 @@ class BasicTypeTester(val value : Any) {
 
   def getOptionAs[T] : Option[T] = value.asInstanceOf[Option[T]]
 
-  def isTypeOf[T] : Boolean = is[T]
-
   def is[T] : Boolean = !isEmpty && value.isInstanceOf[T]
 
   def typeClassName(unknownTypeName : String = "Any") : String =
