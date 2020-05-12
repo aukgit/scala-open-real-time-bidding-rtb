@@ -81,7 +81,7 @@ trait EntitiesLogger {
 
     val headers = caseInfoModel
       .get
-      .caseFieldModel
+      .productFieldModel
       .map(w => w.toStringField)
     s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), "|") }${ AppConstants.NewLine }"
   }
