@@ -1,6 +1,7 @@
 package shared.com.ortb.model.reflection.traits
 
-trait ClassMembersInfoContractsModel
-  extends ClassMembersDetailedInfo
-    with ClassMembersInfoEventualToRegularModel
-    with ClassMembersInfoGetMethods
+trait ClassMembersInfoContractsModel[T]
+  extends ClassMembersDetailedInfo[T]
+    with ClassMembersInfoEventualToRegularModel[T]
+    with ClassMembersInfoGetMethods[T]
+    with ClassMembersInfoToProduct[T]

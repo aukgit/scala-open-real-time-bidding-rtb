@@ -15,8 +15,8 @@ import scala.concurrent.Future
 
 trait ClassTagHelperEventualMembers {
   this : ClassTagHelperConcreteImplementation =>
-  def getEventualMembers(
-    classMembersInfo : ClassMembersInfoBaseModel) :
+  def getEventualMembers[T](
+    classMembersInfo : ClassMembersInfoBaseModel[T]) :
   Future[ResultWithCountSuccessModel[scala.Array[MemberWrapperBaseModel]]] = {
     Future {
       val arrayBuffer = new ArrayBuffer[MemberWrapperBaseModel](defaultMemberPossibility)

@@ -7,8 +7,8 @@ import shared.io.helpers.{ EmptyValidateHelper, ParameterCompareHelper }
 
 import scala.collection.Iterable
 
-trait ClassMembersInfoGetMethods {
-  val classMembersInfo : ClassMembersInfoBaseModel
+trait ClassMembersInfoGetMethods[T] {
+  val classMembersInfo : ClassMembersInfoBaseModel[T]
 
   def getMethodsByParameter(name : String, parameters : Array[Parameter])
   : Iterable[MethodWrapperModel] = {

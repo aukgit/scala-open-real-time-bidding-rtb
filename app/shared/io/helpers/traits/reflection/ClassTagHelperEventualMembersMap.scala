@@ -14,8 +14,8 @@ import scala.concurrent.Future
 
 trait ClassTagHelperEventualMembersMap {
   this : ClassTagHelperConcreteImplementation =>
-  def getEventualMembersMap(
-    classMembersInfo : ClassMembersInfoBaseModel) :
+  def getEventualMembersMap[T](
+    classMembersInfo : ClassMembersInfoBaseModel[T]) :
   Future[ResultWithCountSuccessModel[ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]]] = {
     Future {
       val map = new ConcurrentHashMap[String, ArrayBuffer[MemberWrapperBaseModel]]

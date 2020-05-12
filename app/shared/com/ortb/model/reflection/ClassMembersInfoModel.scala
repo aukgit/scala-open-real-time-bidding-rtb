@@ -7,13 +7,14 @@ import scala.collection._
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 
-case class ClassMembersInfoModel(
+case class ClassMembersInfoModel[T](
   classType : Class[_],
+  entity : Option[T],
   eventualFields : Future[Map[String, ArrayBuffer[FieldWrapperModel]]],
   eventualMethods : Future[Map[String, ArrayBuffer[MethodWrapperModel]]],
   eventualConstructors : Future[Map[Int, ArrayBuffer[ConstructorWrapperModel]]],
   eventualMembers : Future[ResultWithCountSuccessModel[scala.Array[MemberWrapperBaseModel]]])
-  extends ClassMembersInfoBaseModel
-    with ClassMembersInfoContractsModel {
-  lazy override val classMembersInfo : ClassMembersInfoBaseModel = this
+  extends ClassMembersInfoBaseModel[T]
+    with ClassMembersInfoContractsModel[T] {
+  lazy override val classMembersInfo : ClassMembersInfoBaseModel[T] = this
 }

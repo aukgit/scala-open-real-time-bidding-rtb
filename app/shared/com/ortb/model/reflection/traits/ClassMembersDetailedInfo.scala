@@ -6,7 +6,7 @@ import shared.io.helpers.EmptyValidateHelper
 
 import scala.collection.Iterable
 
-trait ClassMembersDetailedInfo {
+trait ClassMembersDetailedInfo[T] {
   lazy val fieldsInfo : ItemsExistence[FieldWrapperModel] = new ItemsExistence[FieldWrapperModel] {
     lazy override val hasItem : Boolean = EmptyValidateHelper.hasAnyItemDirect(classMembersInfo.fields)
     lazy override val iterable : Iterable[FieldWrapperModel] = classMembersInfo.fields.values.flatten
@@ -21,5 +21,6 @@ trait ClassMembersDetailedInfo {
     lazy override val hasItem : Boolean = EmptyValidateHelper.hasAnyItemDirect(classMembersInfo.constructors)
     lazy override val iterable : Iterable[ConstructorWrapperModel] = classMembersInfo.constructors.values.flatten
   }
-  val classMembersInfo : ClassMembersInfoBaseModel
+
+  val classMembersInfo : ClassMembersInfoBaseModel[T]
 }
