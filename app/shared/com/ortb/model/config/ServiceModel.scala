@@ -1,9 +1,9 @@
 package shared.com.ortb.model.config
 
 case class ServiceModel(
-  title       : String,
+  title : String,
   description : String,
-  domain      : String,
-  port        : Int,
-  routing     : Array[String]
+  domain : String,
+  port : Int,
+  routing : Array[String]
 )

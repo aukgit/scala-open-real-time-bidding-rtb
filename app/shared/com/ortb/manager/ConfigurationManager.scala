@@ -3,11 +3,12 @@ package shared.com.ortb.manager
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.model.error.FileErrorModel
-import shared.io.{AppLogger, JsonParser}
-import shared.io.PathHelper._
+import shared.io.helpers.PathHelper._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
+import shared.io.helpers.JsonHelper
+import shared.io.loggers.AppLogger
 
 trait ConfigurationManagerType {
   def getConfig(path : String) : ConfigModel
@@ -21,7 +22,7 @@ class ConfigurationManager extends ConfigurationManagerType {
         decode[ConfigModel](jsonContents)
       }
 
-      val result = JsonParser.toObjectFromJSONPath[ConfigModel](
+      val result = JsonHelper.toObjectFromJSONPath[ConfigModel](
         AppConstants.PathConstants.ConfigDefaultPath,
         decoder)
 

@@ -4,6 +4,19 @@
   "server": {
     "commonDomain": "",
     "isUseDefaultDomainForAll": true,
+    "demandSidePlatformConfiguration": {
+      "defaultBidIncrementNumber": 0.1,
+      "defaultBidStaticDeal": 0.3,
+      "defaultAdvertiseLimit": 5,
+      "defaultGenericLimit": 5,
+      "isStaticSimulate": true,
+      "isAddNewAdvertiseOnNotFound": true,
+      "isRedisCacheEnabled": true,
+      "randomNumberIncrementerGuessRange": {
+        "start" : 0.012,
+        "end" : 0.015
+      }
+    },
     "services": {
       "root": {
         "prefix": "",
@@ -20,12 +33,14 @@
         "title": "Request Simulator Service",
         "description": "Gives a JSON BID REQUEST Sample based on request.",
         "routing": [
-          "bannerRequest",
-          "geoRequest",
-          "wmax",
-          "hmax",
-          "hmaxMin",
-          "contextExample"
+          "banner-json",
+          "banner-minmax",
+          "banner-minmax-mimes",
+          "geo-request",
+          "banner-wmax",
+          "banner-hmax",
+          "banner-hmax-min",
+          "content-context"
         ]
       },
       "monitorService": {
@@ -114,15 +129,16 @@
       }
     ],
     "redisServer": {
-      "domain": "",
-      "port": 0
+      "domain": "localhost",
+      "port": 6379
     }
   },
   "databaseRelativePath": "openRTBSample.db",
   "isDebug": true,
   "isLogError": true,
   "isLogDatabaseQueryLogs": true,
-  "isEnableSentry": true,
+  "isLogDatabaseActionsToDatabase": true,
+  "isEnableSentry": false,
   "author": "Md. Alim Ul Karim",
   "databaseGenerate": {
     "profile": "slick.jdbc.SQLiteProfile",
@@ -133,6 +149,6 @@
     "compiledOutputDir": "",
     "pkg": "shared.com.ortb.persistent.schema"
   },
-  "defaultTimeout": 5,
+  "defaultTimeout": 5000,
   "defaultParallelProcessing": 5
 }

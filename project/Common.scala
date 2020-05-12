@@ -18,7 +18,8 @@ object Common extends AutoPlugin {
       // "-encoding",
       "UTF-8", // yes, this is 2 args
       "-language:implicitConversions",
-       "-Ywarn-numeric-widen"
+      "-Ywarn-numeric-widen"
+//      "-Ylog-classpath"
     ),
     scalacOptions in Test ++= Seq("-Yrangepos"),
     autoAPIMappings := true

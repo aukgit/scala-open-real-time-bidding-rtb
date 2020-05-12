@@ -10,41 +10,43 @@ lazy val commonSettings = Seq(
 
 lazy val organizationName : String = "com.openrtb"
 lazy val nameF : String = "scala-open-rtb-example"
-lazy val scalaVersionF = "2.13.1"
+lazy val scalaVersionF = "2.13.2"
 lazy val log4Version = "2.11.0"
 lazy val akkaVersion = "2.6.4"
 lazy val akkaHttpVersion = "10.1.11"
-lazy val circeVersion = "0.12.3"
+lazy val circeVersion = "0.13.0"
+lazy val enumeratumCirceVersion = "1.6.0"
 
 // More details at https://github.com/tototoshi/slick-joda-mapper
 lazy val slickVersion = "3.3.2"
-lazy val slickJodaMapperVersion = "2.4"
-
-
+lazy val slickJodaMapperVersion = "2.4.2"
 
 lazy val allDependencies = Seq(
   ///////////////////////////////////////////////////
   // Akka core
   ///////////////////////////////////////////////////
 
-  // "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-remote" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
-  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
+
   "com.typesafe.akka" %% "akka-http-caching" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.26",
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
   ///////////////////////////////////////////////////
-  // Serialization frameworks
+  // Serialization frameworks (JSON parsing, Circe)
   ///////////////////////////////////////////////////
 
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
+  "io.circe" %% "circe-optics" % circeVersion,
+  "io.circe" %% "circe-derivation" % "0.13.0-M4",
+  "de.heikoseeberger" %% "akka-http-circe" % "1.31.0",
+  "com.beachape" %% "enumeratum-circe" % enumeratumCirceVersion,
 
   ///////////////////////////////////////////////////
   // Serialization frameworks : AKKA Enhanced Serializing
@@ -61,7 +63,9 @@ lazy val allDependencies = Seq(
   "org.apache.logging.log4j" % "log4j-api" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1",
   "io.sentry" % "sentry-log4j2" % "1.7.30",
-  "org.slf4j" % "slf4j-nop" % "1.7.26",
+  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.4.1",
+  "org.apache.logging.log4j" % "log4j-api" % "2.4.1",
+  "org.apache.logging.log4j" % "log4j-core" % "2.4.1",
   "com.typesafe.play" %% "play-logback" % "2.8.1",
 
   ///////////////////////////////////////////////////
@@ -71,6 +75,14 @@ lazy val allDependencies = Seq(
   "com.typesafe.slick" %% "slick" % slickVersion,
   "com.typesafe.slick" %% "slick-codegen" % slickVersion,
   "org.xerial" % "sqlite-jdbc" % "3.30.1",
+
+  ///////////////////////////////////////////////////
+  // DateTime, Joda Mapper, Sqlite
+  ///////////////////////////////////////////////////
+
+  "org.joda" % "joda-convert" % "2.2.1",
+  "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapperVersion,
+  "joda-time" % "joda-time" % "2.7",
 
   ///////////////////////////////////////////////////
   // Unit Test Frameworks
@@ -86,7 +98,6 @@ lazy val allDependencies = Seq(
   ///////////////////////////////////////////////////
 
   "org.scala-lang" % "scala-reflect" % scalaVersionF,
-  // "org.scala-lang" % "scala-reflect" % "2.10.0",
   "org.scala-lang" % "scala-compiler" % scalaVersionF,
   "org.scala-lang" % "scala-library" % scalaVersionF,
 
@@ -105,7 +116,10 @@ lazy val allDependencies = Seq(
   // Others
   ///////////////////////////////////////////////////
 
-  "org.webjars" %% "webjars-play" % "2.8.0"
+  "org.webjars" %% "webjars-play" % "2.8.0",
+  "net.debasishg" %% "redisclient" % "3.20",
+  "org.apache.commons" % "commons-configuration2" % "2.7",
+  "com.github.dwickern" %% "scala-nameof" % "2.0.0" % "provided"
 )
 
 lazy val root = (project in file("."))
@@ -121,7 +135,6 @@ lazy val root = (project in file("."))
     libraryDependencies ++= allDependencies,
     libraryDependencies ++= Seq(
       guice,
-      "org.joda" % "joda-convert" % "2.2.1",
       "net.logstash.logback" % "logstash-logback-encoder" % "6.2",
       "io.lemonlabs" %% "scala-uri" % "1.5.1",
       "net.codingwell" %% "scala-guice" % "4.2.6",
