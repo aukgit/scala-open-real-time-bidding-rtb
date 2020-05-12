@@ -7,8 +7,3 @@ abstract class MemberWrapperBaseModel {
   lazy val modifiers = new ModifierEnhancementConcreteImplementation(member.getModifiers)
   lazy val name : String = member.getName
 }
-
-class MemberWrapperConcreteModel(
-  memberIn : Member) extends MemberWrapperBaseModel {
-  lazy override val member : Member = memberIn
-}
