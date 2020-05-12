@@ -7,7 +7,7 @@ import shared.io.jsonParse.traits.JsonCodec
 
 class JsonCodecImplementation[T](
   implicit val decodeCodec : DerivedAsObjectCodec[T],
-  val decodeListCodec      : DerivedAsObjectCodec[List[T]])
+  val decodeListCodec : DerivedAsObjectCodec[List[T]])
   extends JsonCodec[T] {
 
   implicit def defaultCodec : Codec.AsObject[T] = deriveCodec[T](decodeCodec)

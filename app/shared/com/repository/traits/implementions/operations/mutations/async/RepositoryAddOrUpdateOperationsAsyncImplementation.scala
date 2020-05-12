@@ -1,5 +1,6 @@
 package shared.com.repository.traits.implementions.operations.mutations.async
 
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.async.RepositoryAddOrUpdateOperationsAsync
@@ -16,7 +17,15 @@ trait RepositoryAddOrUpdateOperationsAsyncImplementation[TTable, TRow, TKey]
   ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     if (isExists(entityId)) {
       // update
-      return updateAsync(entityId, entity)
+      val result = updateAsync(entityId, entity)
+
+      traceFutureResult(
+        isLogDatabaseActionsToDatabase,
+        "addOrUpdateAsync",
+        Some(result),
+        DatabaseActionType.AddOrUpdate)
+
+      return result
     }
 
     // add

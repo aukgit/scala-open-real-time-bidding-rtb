@@ -1,12 +1,12 @@
 package shared.com.repository.traits.implementions
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.RepositoryOperationResultModel
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.EntityResponseCreator
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 
 import scala.concurrent.Future
@@ -18,14 +18,14 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     affectedRow : Int,
     entity : Option[TRow],
     actionType : DatabaseActionType,
-    message     : String = "",
-    isSuccess   : Boolean = true
+    message : String = "",
+    isSuccess : Boolean = true
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val message2 = getMessageForEntity(Some(affectedRow), actionType, message)
     val hasAffected = affectedRow > 0
 
     if (hasAffected && entity.isDefined) {
-      AppLogger.logEntitiesNonFuture(isLogQueries, Seq(entity.get), message2)
+      AppLogger.logEntitiesWithCondition(isLogDatabaseQueryLogs, Seq(entity.get), message2)
     }
 
     if (hasAffected) {
@@ -51,22 +51,27 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     isSuccess : Boolean = true
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val message2 : String =
-      getMessageForEntity(affectedRowsCount, actionType, message)
+      getMessageForEntity(
+        affectedRowsCount,
+        actionType,
+        message)
 
     if (affectedEntity != null) {
       AppLogger.logEntityNonFuture(
-        isLogQueries,
+        isLogDatabaseQueryLogs,
         affectedEntity,
         message2
       )
 
-      return createResponseFor(
+      val response = createResponseFor(
         entityId = Some(getEntityIdFromOptionRow(affectedEntity)),
         entity = affectedEntity,
         actionType = actionType,
         message = message2,
         isSuccess = isSuccess
       )
+
+      return response
     }
 
     getEmptyResponseFor(actionType)
@@ -74,29 +79,34 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
 
   def getEmptyResponseFor(actionType : DatabaseActionType)
   : RepositoryOperationResultModel[TRow, TKey] =
-    BasicAdapterHelper.repositoryAdapter.getEmptyResponse[TRow, TKey](
+    AdapterHelper.repositoryAdapter.getEmptyResponse[TRow, TKey](
       actionType)
 
   protected def createResponseFor(
     entityId : Option[TKey],
-    entity   : Option[TRow],
+    entity : Option[TRow],
     actionType : DatabaseActionType,
-    message    : String = "",
-    isSuccess  : Boolean = true
+    message : String = "",
+    isSuccess : Boolean = true
   ) : RepositoryOperationResultModel[TRow, TKey] = {
     val attributesModel =
-      GenericResponseAttributesModel(isSuccess, Some(actionType), message)
+      GenericResponseAttributesModel(
+        isSuccess,
+        id = Some(entity.get.toString),
+        ids = None,
+        Some(actionType),
+        message = message)
 
     RepositoryOperationResultModel(
       Some(attributesModel),
-      Some(EntityWrapper(entityId.get, entity.get))
+      Some(EntityWrapperModel(entityId.get, entity.get))
     )
   }
 
   protected def getMessageForEntity(
     affectedRowsCount : Option[Int],
-    actionType        : DatabaseActionType,
-    message           : String) : String = {
+    actionType : DatabaseActionType,
+    message : String) : String = {
     var message2 = message;
     if (message2.isEmpty) {
       var affectedCount = ""
@@ -115,7 +125,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     actionType : DatabaseActionType
   ) : Future[RepositoryOperationResultModel[TRow, TKey]] = {
     AppLogger.conditionalInfo(
-      isLogQueries,
+      isLogDatabaseQueryLogs,
       s"${ headerMessage } $actionType is skipped."
     )
 

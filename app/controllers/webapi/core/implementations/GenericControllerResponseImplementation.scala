@@ -12,7 +12,8 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
   def getGenericResponseAttributesModelToGenericControllerResponseAttributesModel[TTable, TRow, TKey](
     httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
     genericResponseAttributesModel : GenericResponseAttributesModel,
-    entityIds                      : Iterable[String] = None)
+    message : String,
+    entityIds : Iterable[String] = None)
   : GenericControllerResponseAttributesModel = {
     val hasUri = EmptyValidateHelper.isStringDefined(genericResponseAttributesModel.requestUri)
     val requestUri : String = if (hasUri) genericResponseAttributesModel.requestUri else httpResponseCreateRequestModel
@@ -22,12 +23,12 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
       genericResponseAttributesModel.actionType.get.toString,
       requestUri,
       entityIds,
-      genericResponseAttributesModel.message)
+      message)
   }
 
   def getSuccessResponseForRepositoryOperationResultModel[TTable, TRow, TKey](
-    httpResponseCreateRequestModel    : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
-    repositoryResponse                : Option[RepositoryOperationResultModel[TRow, TKey]]) : String = {
+    httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
+    repositoryResponse : Option[RepositoryOperationResultModel[TRow, TKey]]) : String = {
     val responseEntityWrapper = repositoryResponse.get.data
     val service = httpResponseCreateRequestModel.controller.service
 
@@ -35,17 +36,18 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val attributes = getGenericResponseAttributesModelToGenericControllerResponseAttributesModel(
       httpResponseCreateRequestModel,
       repositoryResponse.get.attributes.get,
+      repositoryResponse.get.attributes.get.message,
       Seq(entityWrapper.entityId.toString))
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), Seq(entityWrapper.entity))
     val encoder = service.serviceEncoders.controllerSuccessEncoder
     val finalJson = encoder.getJsonGenericParser
-                           .toJsonString(Some(response))
+      .toJsonString(Some(response))
     finalJson.get
   }
 
   def getSuccessResponseForRepositoryOperationResultsModel[TTable, TRow, TKey](
-    httpResponseCreateRequestModel                     : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
-    repositoryResponse                                 : Option[RepositoryOperationResultsModel[TRow, TKey]])
+    httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
+    repositoryResponse : Option[RepositoryOperationResultsModel[TRow, TKey]])
   : String = {
     val responseEntityWrapper = repositoryResponse.get.data
     val service = httpResponseCreateRequestModel.controller.service
@@ -55,17 +57,20 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val attributes = getGenericResponseAttributesModelToGenericControllerResponseAttributesModel(
       httpResponseCreateRequestModel,
       repositoryResponse.get.attributes.get,
+      repositoryResponse.get.attributes.get.message,
       idsString)
-    val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), rows)
+    val response = ControllerSuccessResultsModel[TRow, TKey](
+      Some(attributes),
+      rows)
     val encoder = service.serviceEncoders.controllerSuccessEncoder
     val finalJson = encoder.getJsonGenericParser
-                           .toJsonString(Some(response))
+      .toJsonString(Some(response))
     finalJson.get
   }
 
   def getSuccessResponseForWebApiResponseWrapper[TTable, TRow, TKey](
-    httpResponseCreateRequestModel          : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
-    webApiResponse                          : Option[WebApiEntityResponseWrapper[TRow, TKey]]) : String = {
+    httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey],
+    webApiResponse : Option[WebApiEntityResponseWrapper[TRow, TKey]]) : String = {
     val responseEntityWrapperOptions = webApiResponse.get.entityWrapper
     val entityWrapper = responseEntityWrapperOptions.get
     val service = httpResponseCreateRequestModel.controller.service
@@ -79,7 +84,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributesModel), Seq(entityWrapper.entity.get))
     val encoder = service.serviceEncoders.controllerSuccessEncoder
     val finalJson = encoder.getJsonGenericParser
-                           .toJsonString(Some(response))
+      .toJsonString(Some(response))
     finalJson.get
   }
 

@@ -7,23 +7,31 @@ import shared.io.loggers.AppLogger
 
 trait AdditionalLogger {
   this : AppLogger.type =>
-
-  def additionalLogging(
+  def GetCompiledMessage[T](
     message : String,
+    message2 : String,
     logLevelType : LogLevelType,
-    stackIndex   : Int = defaultSecondStackIndex,
-    isPrintStack : Boolean = false) : Unit = {
-    try {
-      logBasedOnLevel(message, logLevelType)
-      logToSentry(message, logLevelType)
-      printStacks(isPrintStack, logLevelType)
-    } catch {
-      case e : Exception => println(e.toString)
+    stackIndex : Int) : String = {
+    val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
+    val logTypePrint = logLevelType match {
+      case LogLevelType.ALL =>
+        LogLevelType.ALL.toString
+      case LogLevelType.INFO =>
+        LogLevelType.INFO.toString
+      case LogLevelType.DEBUG =>
+        LogLevelType.DEBUG.toString
+      case LogLevelType.WARN =>
+        LogLevelType.WARN.toString
+      case LogLevelType.ERROR =>
+        LogLevelType.ERROR.toString
     }
+
+    val messageFinal = s"$logTypePrint :$methodNameDisplay ${ message }${ message2 }"
+    messageFinal
   }
 
   private def logBasedOnLevel(
-    message      : String,
+    message : String,
     logLevelType : LogLevelType) : Unit = {
     if (isPrintln) {
       println(message)
@@ -40,6 +48,20 @@ trait AdditionalLogger {
         logger.error(message)
       case _ =>
         throw new InvalidDatatypeValueException("LogType is out of range", Array(logLevelType))
+    }
+  }
+
+  def additionalLogging(
+    message : String,
+    logLevelType : LogLevelType,
+    stackIndex : Int = defaultSecondStackIndex,
+    isPrintStack : Boolean = false) : Unit = {
+    try {
+      logBasedOnLevel(message, logLevelType)
+      logToSentry(message, logLevelType)
+      printStacks(isPrintStack, logLevelType)
+    } catch {
+      case e : Exception => println(e.toString)
     }
   }
 

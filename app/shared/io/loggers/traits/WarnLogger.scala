@@ -8,7 +8,7 @@ trait WarnLogger {
 
   def warn(msg : String, stackIndex : Int = defaultStackIndex, isPrintStack : Boolean = false) : Unit = {
     val methodNameDisplay = getMethodNameDisplayWrapper(stackIndex)
-    val message = s"WARN :$methodNameDisplay ${msg}"
+    val message = s"WARN :$methodNameDisplay ${ msg }"
 
     additionalLogging(
       message = message,

@@ -2,10 +2,10 @@ package shared.com.repository.traits.implementions.operations.mutations
 
 import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOrUpdateOperations
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 
 trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
@@ -17,7 +17,7 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
     toRegular(addOrUpdateAsync(entityId, entity), defaultTimeout)
 
   def addOrUpdateEntities(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
+    entityWrappers : Iterable[EntityWrapperModel[TRow, TKey]]
   ) : RepositoryOperationResultsModel[TRow, TKey] = {
     if (entityWrappers == null || entityWrappers.isEmpty) {
       AppLogger.info(
@@ -32,7 +32,7 @@ trait RepositoryAddOrUpdateOperationsImplementation[TTable, TRow, TKey]
         addOrUpdateAsync(entityWrapper.entityId, entityWrapper.entity)
     )
 
-    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    AdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responsesEntityWrappers,
       databaseActionType = DatabaseActionType.AddOrUpdate
     )

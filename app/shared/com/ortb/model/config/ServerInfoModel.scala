@@ -1,9 +1,10 @@
 package shared.com.ortb.model.config
 
 case class ServerInfoModel(
-  commonDomain             : String,
-  services                 : ServicesModel,
+  commonDomain : String,
+  services : ServicesModel,
   isUseDefaultDomainForAll : Boolean,
-  requestDefaultHeaders    : Array[KeyValuePairModel],
-  redisServer              : DomainPortModel
+  demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel,
+  requestDefaultHeaders : Array[KeyValuePairModel],
+  redisServer : DomainPortModel
 )

@@ -33,6 +33,8 @@
 
 
 ->         /services/v1/rtbSimulateService                  controllers.controllerRoutes.routerGeneric.RtbServiceBasicRouter
+->         /services/v1/demansideplantformservice           controllers.controllerRoutes.routerGeneric.DemandSidePlatformServiceRouter
+->         /services/v1/dspService                          controllers.controllerRoutes.routerGeneric.DemandSidePlatformServiceRouter
 
 
 # Map static resources from the /public folder to the /assets URL path

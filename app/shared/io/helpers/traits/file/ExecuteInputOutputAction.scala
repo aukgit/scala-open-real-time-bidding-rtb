@@ -4,8 +4,8 @@ import java.nio.file.Path
 
 trait ExecuteInputOutputAction {
   def executeInputOutputAction[ReturnType](
-    path             : Path,
+    path : Path,
     performingAction : () => ReturnType,
-    emptyResult      : ReturnType
+    emptyResult : ReturnType
   ) : ReturnType
 }

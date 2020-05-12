@@ -1,8 +1,8 @@
 package shared.io.helpers
 
 import shared.com.ortb.constants.AppConstants
-import shared.io.loggers.AppLogger
 import shared.io.helpers.traits.file.ResourcePathGetter
+import shared.io.loggers.AppLogger
 
 object PathHelper extends ResourcePathGetter {
 
@@ -30,7 +30,7 @@ object PathHelper extends ResourcePathGetter {
         separator = pathSeparator
       }
 
-      val absolutePath = s"${AppConstants.PathConstants.ResourcePath}${separator}${relativeCombined}"
+      val absolutePath = s"${ AppConstants.PathConstants.ResourcePath }${ separator }${ relativeCombined }"
       AppLogger.info(absolutePath);
       return absolutePath
     }
@@ -44,7 +44,9 @@ object PathHelper extends ResourcePathGetter {
   /**
    * Expand variables to specific paths ${WorkingDirectory},${WDir}, ${WDir} to Working Directory (Root).
    * ${ResourceDirectory},${ResourceDir}, ${RDir} to Resource Directory.
+   *
    * @param expressionPath
+   *
    * @return
    */
   def getExpendedPath(expressionPath : String) : String = {

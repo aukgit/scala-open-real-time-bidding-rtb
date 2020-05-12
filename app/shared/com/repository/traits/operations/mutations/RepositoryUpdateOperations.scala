@@ -1,7 +1,7 @@
 package shared.com.repository.traits.operations.mutations
 
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.com.ortb.model.wrappers.persistent.EntityWrapper
+import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 
 trait RepositoryUpdateOperations[TTable, TRow, TKey]
   extends RepositoryOperationsBase[TRow] {
@@ -10,6 +10,6 @@ trait RepositoryUpdateOperations[TTable, TRow, TKey]
     entity   : TRow) : RepositoryOperationResultModel[TRow, TKey]
 
   def updateEntities(
-    entityWrappers : Iterable[EntityWrapper[TRow, TKey]]
+    entityWrappers : Iterable[EntityWrapperModel[TRow, TKey]]
   ) : RepositoryOperationResultsModel[TRow, TKey]
 }

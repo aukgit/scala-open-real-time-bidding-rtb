@@ -5,4 +5,4 @@ case class GenericControllerResponseAttributesModel(
   databaseActionPerformed : String = "",
   requestUri : String = "",
   entityIds : Iterable[String],
-  message            : String = "")
+  message : String = "")

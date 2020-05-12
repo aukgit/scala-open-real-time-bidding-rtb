@@ -9,10 +9,12 @@ trait PaginationHelperBase {
 
   /**
    * Based on the request given serves JSON string for serving.
+   *
    * @param paginationRequestModel
    * @tparam TTable
    * @tparam TRow
    * @tparam TKey
+   *
    * @return
    */
   def getPaginationResponse[TTable, TRow, TKey](

@@ -13,7 +13,7 @@ case class ControllerGenericActionWrapper(
   controllerDefaultActionType : ControllerDefaultActionType,
   requestContent : Option[Request[AnyContent]] = None,
   isMultipleTransaction : Boolean = false,
-  message: String = ""
+  message : String = ""
 ) {
   /**
    * Using a pattern matcher.

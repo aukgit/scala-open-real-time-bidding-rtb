@@ -1,3 +1,0 @@
-package shared.com.ortb.adapters
-
-class RepositoryOperationResultModelAdapterConcreteImplementation extends RepositoryOperationResultModelAdapterImplementation

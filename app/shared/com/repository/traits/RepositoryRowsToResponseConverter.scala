@@ -1,6 +1,6 @@
 package shared.com.repository.traits
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 
 trait RepositoryRowsToResponseConverter[TTable, TRow, TKey] {

@@ -1,7 +1,7 @@
 package shared.com.repository.traits.implementions.adapters
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.wrappers.persistent.{ EntityWrapper, EntityWrapperWithOptions }
+import shared.com.ortb.model.wrappers.persistent.{ EntityWrapperModel, EntityWrapperWithOptions }
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.adapters.RepositoryWrapperAdapter
 import shared.io.helpers.EmptyValidateHelper
@@ -15,7 +15,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
 
   //noinspection DuplicatedCode
   override def toEntityWrapper(
-      item: Option[TRow]): Option[EntityWrapper[TRow, TKey]] = {
+      item: Option[TRow]): Option[EntityWrapperModel[TRow, TKey]] = {
     val isEmpty =
       EmptyValidateHelper.isEmpty(item, Some(AppConstants.NoContent))
 
@@ -25,7 +25,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
 
     val id = getEntityIdFromOptionRow(item)
 
-    Some(EntityWrapper(id, entity = item.get))
+    Some(EntityWrapperModel(id, entity = item.get))
   }
 
   //noinspection DuplicatedCode
@@ -44,7 +44,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
   }
 
   override def fromEntityWrapperToEntityWrapperWithOptions(
-      item: Option[EntityWrapper[TRow, TKey]])
+      item: Option[EntityWrapperModel[TRow, TKey]])
     : Option[EntityWrapperWithOptions[TRow, TKey]] = {
     val isEmpty = EmptyValidateHelper.isEmpty(item)
 
@@ -71,7 +71,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
 
   override def fromEntityWrapperWithOptionsToEntityWrapper(
       item: Option[EntityWrapperWithOptions[TRow, TKey]])
-    : Option[EntityWrapper[TRow, TKey]] = {
+    : Option[EntityWrapperModel[TRow, TKey]] = {
     val isEmpty = EmptyValidateHelper.isEmpty(item)
 
     if (isEmpty) {
@@ -82,7 +82,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
       val entityWrapperWithOptions = item.get
       val id: TKey = entityWrapperWithOptions.entityId.get
       val entity: TRow = entityWrapperWithOptions.entity.get
-      val entityWrapper = EntityWrapper[TRow, TKey](
+      val entityWrapper = EntityWrapperModel[TRow, TKey](
         id,
         entity
       )
@@ -110,7 +110,7 @@ trait RepositoryWrapperAdapterImplementation[TTable, TRow, TKey]
   }
 
   override def toEntitiesWrapper(items: Option[Iterable[TRow]])
-    : Option[Iterable[EntityWrapper[TRow, TKey]]] = {
+    : Option[Iterable[EntityWrapperModel[TRow, TKey]]] = {
     val isEmpty =
       EmptyValidateHelper.isItemsEmpty(items, Some(AppConstants.NoContent))
 

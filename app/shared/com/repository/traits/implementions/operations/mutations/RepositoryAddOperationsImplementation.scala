@@ -4,7 +4,7 @@ import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.repository.RepositoryBase
 import shared.com.repository.traits.operations.mutations.RepositoryAddOperations
-import shared.io.helpers.BasicAdapterHelper
+import shared.io.helpers.AdapterHelper
 import shared.io.loggers.AppLogger
 import slick.dbio.{ Effect, NoStream }
 import slick.sql.FixedSqlAction
@@ -35,7 +35,7 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
       list(i) = this.addAsync(entity)
     }
 
-    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    AdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       list,
       databaseActionType = DatabaseActionType.Create
     )
@@ -53,7 +53,7 @@ trait RepositoryAddOperationsImplementation[TTable, TRow, TKey]
     val responsesEntityWrappers = entities
       .map(entity => this.addAsync(entity))
 
-    BasicAdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
+    AdapterHelper.repositoryAdapter.fromRepositoryOperationResultModelsToRepositoryOperationResultsModel(
       responsesEntityWrappers,
       databaseActionType = DatabaseActionType.Create
     )

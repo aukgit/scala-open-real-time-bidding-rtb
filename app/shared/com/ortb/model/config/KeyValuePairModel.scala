@@ -1,6 +1,6 @@
 package shared.com.ortb.model.config
 
 case class KeyValuePairModel(
-  key   : String,
+  key : String,
   value : String
 )
