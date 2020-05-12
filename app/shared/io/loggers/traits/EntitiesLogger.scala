@@ -3,7 +3,7 @@ package shared.io.loggers.traits
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.com.ortb.model.reflection.CaseClassInfoModel
+import shared.com.ortb.model.reflection.ProductInfoModel
 import shared.io.helpers.{ EmptyValidateHelper, ReflectionHelper, ToStringHelper }
 import shared.io.helpers.ReflectionHelper.getTypeName
 import shared.io.loggers.AppLogger
@@ -74,16 +74,16 @@ trait EntitiesLogger {
     })
   }
 
-  def getProductFieldHeader(caseInfoModel : Option[CaseClassInfoModel]) : String = {
-    if(caseInfoModel.isEmpty || EmptyValidateHelper.isItemsEmptyDirect(List(caseInfoModel.get))){
-      return s"${AppConstants.DoubleSpace}0. Unable to extract field Details."
+  def getProductFieldHeader(caseInfoModel : Option[ProductInfoModel]) : String = {
+    if (caseInfoModel.isEmpty || EmptyValidateHelper.isItemsEmptyDirect(List(caseInfoModel.get))) {
+      return s"${ AppConstants.DoubleSpace }0. Unable to extract field Details."
     }
 
     val headers = caseInfoModel
       .get
       .caseFieldModel
       .map(w => w.toStringField)
-    s"${AppConstants.DoubleSpace}0. ${ToStringHelper.join(Some(headers), "|")}${AppConstants.NewLine}"
+    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), "|") }${ AppConstants.NewLine }"
   }
 
   def getLogMessageForEntities[T](
@@ -109,7 +109,7 @@ trait EntitiesLogger {
 
     val header = s"\n[$logLevelType]: Printing Entities ($typeName):\n"
     var count = 0
-    val caseInfoModel = ReflectionHelper.getCaseClassInfoModel(first)
+    val caseInfoModel = ReflectionHelper.getProductInfoModel(first)
     val productFieldNamesHeader = getProductFieldHeader(caseInfoModel)
 
     val items = entities.map(i => {

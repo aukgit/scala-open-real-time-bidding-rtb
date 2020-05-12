@@ -2,7 +2,7 @@ package shared.com.ortb.model.reflection
 
 import shared.com.ortb.types.BasicTypeTester
 
-case class CaseClassFieldModel(
+case class ProductFieldModel(
   name : String,
   value : Any,
   index : Int) {

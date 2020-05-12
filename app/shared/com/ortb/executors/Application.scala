@@ -43,7 +43,7 @@ object Application {
     val w = ReflectionHelper.classTagHelper.getMembersInfo[BidresponseRow]
     val w2 = ReflectionHelper.classTagHelper.getMembersInfoForT(Some(response))
 
-    val we  = ReflectionHelper.getCaseClassInfoModel(res)
+    val we = ReflectionHelper.getProductInfoModel(res)
 
     // AppLogger.debug(response.toString)
 

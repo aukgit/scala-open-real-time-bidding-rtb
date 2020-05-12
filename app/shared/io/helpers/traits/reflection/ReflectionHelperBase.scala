@@ -2,7 +2,7 @@ package shared.io.helpers.traits.reflection
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.reflection
-import shared.com.ortb.model.reflection.{ CaseClassFieldModel, CaseClassInfoModel }
+import shared.com.ortb.model.reflection.{ ProductFieldModel, ProductInfoModel }
 import shared.io.helpers.CastingHelper
 import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 import shared.io.loggers.AppLogger
@@ -81,7 +81,7 @@ trait ReflectionHelperBase {
     case m : MethodSymbol if m.isCaseAccessor => m
   }
 
-  def getCaseClassInfoModel(caseModel : Any) : Option[CaseClassInfoModel] = {
+  def getProductInfoModel(caseModel : Any) : Option[ProductInfoModel] = {
     val maybeProduct = CastingHelper.toProduct(caseModel)
     if (maybeProduct.isEmpty) {
       return None
@@ -90,24 +90,24 @@ trait ReflectionHelperBase {
     val product = maybeProduct.get
 
     if (product.productArity == 0) {
-      Some(CaseClassInfoModel(List.empty))
+      Some(ProductInfoModel(List.empty))
     }
 
-    val array = new Array[CaseClassFieldModel](product.productArity)
+    val array = new Array[ProductFieldModel](product.productArity)
     val it = product.productIterator
     var i = 0
 
     while (it.hasNext) {
       val name = product.productElementName(i)
       val value = it.next()
-      array(i) = CaseClassFieldModel(name, value, i)
+      array(i) = ProductFieldModel(name, value, i)
       i += 1
     }
 
-    Some(reflection.CaseClassInfoModel(array.toList))
+    Some(reflection.ProductInfoModel(array.toList))
   }
 
-  def getFieldsNamesOfCaseModel(caseModel : Any) : Option[Iterable[String]] = {
+  def getFieldsNamesOfProductOrCaseClass(caseModel : Any) : Option[Iterable[String]] = {
     val maybeProduct = CastingHelper.toProduct(caseModel)
     if (maybeProduct.isEmpty) {
       return None
