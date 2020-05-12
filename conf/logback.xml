@@ -128,9 +128,11 @@
   <logger name="slick" level="OFF" />
 
   <root level="ALL">
-    <appender-ref ref="AllLogger"/>
+<!--    <appender-ref ref="AllLogger"/>-->
     <appender-ref ref="RollingWeeklyFileAppender"/>
     <appender-ref ref="ConsoleDefaultPrintAppender"/>
+<!--    <appender-ref ref="InfoRollingWeeklyFileAppender"/>-->
+    <appender-ref ref="DebugLogger"/>
     <appender-ref ref="SecurityFileAppender"/>
   </root>
 
