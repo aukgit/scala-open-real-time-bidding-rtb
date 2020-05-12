@@ -1,5 +1,6 @@
 package shared.com.ortb.model.reflection
 
+import shared.com.ortb.model.reflection.traits.{ ClassMembersInfoBaseModel, ClassMembersInfoContractsModel }
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 
 import scala.collection._

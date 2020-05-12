@@ -2,7 +2,8 @@ package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Member
 
-import shared.com.ortb.model.reflection.{ ClassMembersInfoBaseModel, MemberWrapperBaseModel, MemberWrapperConcreteModel }
+import shared.com.ortb.model.reflection.traits.ClassMembersInfoBaseModel
+import shared.com.ortb.model.reflection.{ MemberWrapperBaseModel, MemberWrapperConcreteModel }
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.io.helpers.ParallelTaskHelper
 import shared.io.helpers.implementation.ConcurrentArrayBufferWrapper

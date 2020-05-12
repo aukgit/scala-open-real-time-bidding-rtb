@@ -1,5 +1,7 @@
 package shared.com.ortb.model.reflection
 
+import shared.com.ortb.model.reflection.traits.{ ClassMembersInfoBaseModel, ClassMembersInfoContractsModel }
+
 import scala.collection.Map
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future

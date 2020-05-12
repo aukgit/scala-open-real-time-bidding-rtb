@@ -1,5 +1,6 @@
-package shared.com.ortb.model.reflection
+package shared.com.ortb.model.reflection.traits
 
+import shared.com.ortb.model.reflection.{ ConstructorWrapperModel, FieldWrapperModel, MethodWrapperModel }
 import shared.com.ortb.model.traits.ItemsExistence
 import shared.io.helpers.EmptyValidateHelper
 

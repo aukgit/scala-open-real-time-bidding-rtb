@@ -1,4 +1,6 @@
-package shared.com.ortb.model.reflection
+package shared.com.ortb.model.reflection.traits
+
+import shared.com.ortb.model.reflection.{ ConstructorWrapperModel, FieldWrapperModel, MethodWrapperModel }
 
 import scala.collection.Map
 import scala.collection.mutable.ArrayBuffer

@@ -1,7 +1,8 @@
-package shared.com.ortb.model.reflection
+package shared.com.ortb.model.reflection.traits
 
 import java.lang.reflect.Member
 
+import shared.com.ortb.model.reflection.{ ConstructorWrapperModel, FieldWrapperModel, MemberWrapperBaseModel, MethodWrapperModel }
 import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.{ ExtractHelper, ReflectionHelper }
 

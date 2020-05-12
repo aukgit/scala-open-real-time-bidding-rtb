@@ -2,7 +2,8 @@ package shared.io.helpers.traits.reflection
 
 import java.util.concurrent.ConcurrentHashMap
 
-import shared.com.ortb.model.reflection.{ ClassMembersInfoBaseModel, MemberWrapperBaseModel }
+import shared.com.ortb.model.reflection.MemberWrapperBaseModel
+import shared.com.ortb.model.reflection.traits.ClassMembersInfoBaseModel
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.io.helpers.traits.ParallelTaskHelperBase
 import shared.io.helpers.{ MapHelper, ParallelTaskHelper }

@@ -1,4 +1,4 @@
-package shared.com.ortb.model.reflection
+package shared.com.ortb.model.reflection.traits
 
 trait ClassMembersInfoContractsModel
   extends ClassMembersDetailedInfo

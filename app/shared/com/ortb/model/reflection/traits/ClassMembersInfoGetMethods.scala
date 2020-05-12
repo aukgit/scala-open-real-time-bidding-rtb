@@ -1,7 +1,8 @@
-package shared.com.ortb.model.reflection
+package shared.com.ortb.model.reflection.traits
 
 import java.lang.reflect.Parameter
 
+import shared.com.ortb.model.reflection.MethodWrapperModel
 import shared.io.helpers.{ EmptyValidateHelper, ParameterCompareHelper }
 
 import scala.collection.Iterable
