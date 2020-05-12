@@ -15,6 +15,7 @@ class HashMapWithArrayBufferAdderConcreteImplementation extends HashMapWithArray
 
     if (!hashMap.contains(key)) {
       arrayBuffer = new ArrayBuffer[TValue](defaultCapacity)
+      hashMap.addOne(key, arrayBuffer)
     } else {
       arrayBuffer = hashMap(key)
     }
@@ -31,11 +32,14 @@ class HashMapWithArrayBufferAdderConcreteImplementation extends HashMapWithArray
 
     if (!concurrentMap.containsKey(key)) {
       arrayBuffer = new ArrayBuffer[TValue](defaultCapacity)
+      concurrentMap.put(key, arrayBuffer)
     } else {
       // NOTE: Don't use getOrDefault as it gets evaluated and creates Array buffer on each call.
       arrayBuffer = concurrentMap.get(key)
     }
 
-    arrayBuffer.addOne(value)
+    this.synchronized {
+      arrayBuffer.addOne(value)
+    }
   }
 }

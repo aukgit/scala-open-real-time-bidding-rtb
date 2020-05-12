@@ -124,5 +124,5 @@ trait ReflectionHelperBase {
     Some(array)
   }
 
-  lazy val classTagHelper : ClassTagHelperBase = new ClassTagHelperBaseConcreteImplementation
+  lazy val classTagHelper : ClassTagHelper = new ClassTagHelperConcreteImplementation
 }
