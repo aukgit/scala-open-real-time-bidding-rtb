@@ -16,7 +16,10 @@ trait JodaDateTimeHelperBase {
   implicit def nowUtc : DateTime = DateTime.now(DateTimeZone.UTC)
 
   def nowUtcJavaInstant : Instant =
-    java.time.Instant.ofEpochMilli( nowUtcMillis ) ;
+    java.time.Instant.ofEpochMilli(nowUtcMillis)
+
+  def nowUtcJavaInstantOption : Option[Instant] =
+    Some(nowUtcJavaInstant)
 
   def nowUtcAsString(pattern : String = defaultDateTimeFormatPattern) : String = {
     try {
@@ -25,20 +28,20 @@ trait JodaDateTimeHelperBase {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(
           e,
-          s"Cannot convert pattern(${AppConstants.Quote}${ pattern }${AppConstants.Quote}) to String.")
+          s"Cannot convert pattern(${ AppConstants.Quote }${ pattern }${ AppConstants.Quote }) to String.")
     }
 
     null
   }
 
-  def toStringWithPattern(dateTime: DateTime, pattern : String = defaultDateTimeFormatPattern) : String = {
+  def toStringWithPattern(dateTime : DateTime, pattern : String = defaultDateTimeFormatPattern) : String = {
     try {
       return dateTime.toString(pattern)
     } catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(
           e,
-          s"Cannot convert pattern(${AppConstants.Quote}${ pattern }${AppConstants.Quote}) to String.")
+          s"Cannot convert pattern(${ AppConstants.Quote }${ pattern }${ AppConstants.Quote }) to String.")
     }
 
     null
@@ -54,7 +57,7 @@ trait JodaDateTimeHelperBase {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(
           e,
-          s"Cannot parse datetime(${AppConstants.Quote}$inputDateAsString${AppConstants.Quote}) using pattern(${AppConstants.Quote}${ pattern }${AppConstants.Quote}).")
+          s"Cannot parse datetime(${ AppConstants.Quote }$inputDateAsString${ AppConstants.Quote }) using pattern(${ AppConstants.Quote }${ pattern }${ AppConstants.Quote }).")
     }
 
     null
@@ -70,10 +73,10 @@ trait JodaDateTimeHelperBase {
 
   def millisToUtcDateTime(millis : Long) : DateTime = new DateTime(millis, DateTimeZone.UTC)
 
-  def getDifferenceBetween(earlier: DateTime ,later:DateTime ) : DateTime =
-    later.minus( earlier.getMillis);
+  def getDifferenceBetween(earlier : DateTime, later : DateTime) : DateTime =
+    later.minus(earlier.getMillis);
 
-  def getDaysDifferenceBetween(earlier: DateTime ,later:DateTime ) : Int =
+  def getDaysDifferenceBetween(earlier : DateTime, later : DateTime) : Int =
     getDifferenceBetween(earlier, later).getDayOfYear - 1
 
   def millisStringToDateTime(millis : String) : DateTime = {

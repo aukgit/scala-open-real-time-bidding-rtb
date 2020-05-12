@@ -5,9 +5,10 @@ import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.io.loggers.DatabaseLogTracerImplementation
+import shared.io.loggers.{ AppLogger, DatabaseLogTracerImplementation }
 
 import scala.concurrent.Future
+import scala.util.{ Failure, Success }
 
 trait RepositoryDatabaseTraceLogger[TRow, TKey] extends DefaultExecutionContextManager {
   val databaseLogger : DatabaseLogTracerImplementation
@@ -82,12 +83,17 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends DefaultExecutionContextM
       return
     }
 
-    resultModel.get.onComplete(w =>
-      trace(
-        isLogQueries,
-        methodName,
-        Some(w.get),
-        databaseActionType, logLevelType))
+    resultModel.get.onComplete {
+      case Success(value) =>
+        trace(
+          isLogQueries,
+          methodName,
+          Some(value),
+          databaseActionType, logLevelType)
+
+      case Failure(value) =>
+        AppLogger.error(value.toString)
+    }
   }
 
   def traceFutureResults(

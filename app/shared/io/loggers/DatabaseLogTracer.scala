@@ -3,12 +3,12 @@ package shared.io.loggers
 import shared.com.ortb.persistent.schema.Tables._
 import org.joda.time.{ DateTime, DateTimeZone }
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.persistent.repositories.LogTraceRepository
-import shared.io.helpers.{ EmptyValidateHelper, ToStringHelper }
+import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper, ToStringHelper }
 
 trait DatabaseLogTracer {
   protected val appManager : AppManager
@@ -46,20 +46,25 @@ trait DatabaseLogTracer {
       case e:Exception => AppLogger.error(e)
     }
 
-//    val row = LogtraceRow(
-//      -1,
-//      Some(log.methodName),
-//      Some(className),
-//      requestString,
-//      Some(log.message),
-//      entityString,
-//      log.databaseTransactionId)
-//
-//    AppLogger.logAsJson(
-//      message,
-//      logLevelType = logLevelType,
-//      maybeModel = Some(row))
-//
-//    logTraceRepository.add(row)
+    val row = LogtraceRow(
+      -1,
+      Some(log.methodName),
+      Some(className),
+      requestString,
+      Some(log.message),
+      entityString,
+      log.databaseTransactionId,
+      JodaDateTimeHelper.nowUtcJavaInstantOption)
+
+    AppLogger.logAsJson(
+      message,
+      logLevelType = logLevelType,
+      maybeModel = Some(row))
+
+    val addAction = logTraceRepository.getAddAction(row)
+
+    logTraceRepository.saveAsync(
+      addAction,
+      DatabaseActionType.Create)
   }
 }

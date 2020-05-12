@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 13/05/2020 02:53:46
+ Date: 13/05/2020 03:37:52
 */
 
 PRAGMA foreign_keys = false;
@@ -603,7 +603,7 @@ INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
-INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 121);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 
 -- ----------------------------
@@ -717,7 +717,6 @@ UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 -- ----------------------------
 -- Auto increment value for BidResponse
 -- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 121 WHERE name = 'BidResponse';
 
 -- ----------------------------
 -- Auto increment value for Campaign

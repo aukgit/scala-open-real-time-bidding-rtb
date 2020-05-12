@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 13/05/2020 02:53:59
+ Date: 13/05/2020 03:37:58
 */
 
 PRAGMA foreign_keys = false;
@@ -564,7 +564,6 @@ UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 -- ----------------------------
 -- Auto increment value for BidResponse
 -- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 121 WHERE name = 'BidResponse';
 
 -- ----------------------------
 -- Auto increment value for Campaign

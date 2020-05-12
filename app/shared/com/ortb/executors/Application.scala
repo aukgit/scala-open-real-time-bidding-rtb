@@ -5,9 +5,11 @@ import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.{ JodaDateTimeHelper, ReflectionHelper }
 import shared.io.loggers.AppLogger
+import com.github.dwickern.macros.NameOf._
 
 object Application {
   def main(args : Array[String]) : Unit = {
+    println("wwww")
     val appManager = new AppManager
     println(appManager.config)
 
@@ -17,7 +19,7 @@ object Application {
 
     val bidResponseRepository = repos
       .bidResponseRepository
-    // println(nameOf(bidResponseRepository))
+     println(nameOf(bidResponseRepository))
 
     val allRows = bidResponseRepository.getAll
     AppLogger.logEntities( allRows, "all rows")
@@ -35,7 +37,7 @@ object Application {
 
     bidResponseRepository
       .add(row)
-
+    bidResponseRepository.addEntities(Seq(row,row))
     val res = response.data.get
 
     val w = ReflectionHelper.classTagHelper.getMembersInfo[BidresponseRow]
@@ -44,5 +46,6 @@ object Application {
     val we  = ReflectionHelper.getCaseClassInfoModel(res)
 
     // AppLogger.debug(response.toString)
+
   }
 }
