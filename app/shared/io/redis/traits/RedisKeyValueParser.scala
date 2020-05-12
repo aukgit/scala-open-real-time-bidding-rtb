@@ -30,19 +30,19 @@ trait RedisKeyValueParser extends CommonJsonParsingMechanism {
 
   def getObject(key : String) : Option[Any]
 
-  def setSerializedObjectToString(
+  def setSerializedObjectToBytes(
     key : String,
     value : Option[Any],
     whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
+    expire : Duration = null) : Option[Array[Byte]]
 
-  def getDeserializeObjectAs[T](key : String) : Option[T]
+  def getDeserializeObjectFromBytesAs[T](key : String) : Option[T]
 
-  def setSerializedObjectsToString(
+  def setSerializedObjectsToBytes(
     key : String,
     items : Option[List[Any]],
     whenSet : SetBehaviour = Always,
-    expire : Duration = null) : Unit
+    expire : Duration = null) : Option[Array[Byte]]
 
   def getSerializedObjectsAs[T](key : String) : Option[List[T]]
 }

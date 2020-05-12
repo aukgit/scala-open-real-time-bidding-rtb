@@ -1,5 +1,6 @@
 package shared.io.helpers
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.circe.parser._
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder, Error, Json }
@@ -14,6 +15,22 @@ object JsonHelper extends CirceJsonSupport {
     } catch {
       case e : Exception =>
         AppLogger.error(e)
+    }
+
+    None
+  }
+
+  def toJsonNode(
+    jsonString : Option[String]) : Option[JsonNode] = {
+    try {
+      if (EmptyValidateHelper.isDefined(jsonString)) {
+        val node = play.libs.Json.parse(jsonString.get)
+        return Some(node)
+      }
+    } catch {
+      case e : Exception =>
+        AppLogger.error(e)
+        AppLogger.logNullable("Json parsing failed for ", jsonString)
     }
 
     None

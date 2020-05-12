@@ -1,64 +1,12 @@
 package shared.io.loggers.traits
 
 import com.sun.org.apache.xerces.internal.impl.dv.InvalidDatatypeValueException
-import io.circe.generic.decoding.DerivedDecoder
-import io.circe.generic.encoding.DerivedAsObjectEncoder
-import shapeless.Lazy
 import shared.com.ortb.enumeration.LogLevelType
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
-import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
 import shared.io.loggers.AppLogger
 
 trait AdditionalLogger {
   this : AppLogger.type =>
-
-  def logAsJson[T](
-    message : String,
-    message2 : String = "",
-    nullableObject : Option[T] = None,
-    nullableObjects : Option[Iterable[T]] = None,
-    logLevelType : LogLevelType = LogLevelType.DEBUG,
-    stackIndex : Int = defaultSecondStackIndex,
-    isPrintStack : Boolean = false)(
-    implicit decoder : Lazy[DerivedDecoder[T]],
-    encoder : Lazy[DerivedAsObjectEncoder[T]]
-  ) : Unit = {
-    try {
-      val messageFinal : String = GetCompiledMessage(message, message2, logLevelType, stackIndex)
-      additionalLogging(messageFinal, logLevelType, stackIndex, isPrintStack)
-      val isJson = true
-
-      if (isJson) {
-        lazy val basicJsonEncoder = new BasicJsonEncoderImplementation[T]()(decoder, encoder)
-
-        if (nullableObject.isDefined) {
-          val logJson = basicJsonEncoder.getJsonGenericParser.toLogStringForEntity(nullableObject)
-          additionalLogging(logJson, logLevelType, stackIndex)
-        }
-
-        val isExecute = nullableObjects.isDefined && nullableObjects.get.nonEmpty
-
-        if (isExecute) {
-          val logJson = basicJsonEncoder.getJsonGenericParser.toLogStringForEntities(nullableObjects)
-          additionalLogging(logJson, logLevelType, stackIndex)
-        }
-      }
-      else {
-        log(
-          "",
-          "",
-          nullableObject,
-          nullableObjects,
-          isMessagePrint = false,
-          logLevelType,
-          stackIndex,
-          isPrintStack)
-      }
-    } catch {
-      case e : Exception => println(e.toString)
-    }
-  }
-
   def GetCompiledMessage[T](
     message : String,
     message2 : String,
@@ -80,33 +28,6 @@ trait AdditionalLogger {
 
     val messageFinal = s"$logTypePrint :$methodNameDisplay ${ message }${ message2 }"
     messageFinal
-  }
-
-  def log[T](
-    message : String,
-    message2 : String = "",
-    nullableObject : Option[Any] = None,
-    nullableObjects : Option[Iterable[T]] = None,
-    isMessagePrint: Boolean = true,
-    logLevelType : LogLevelType = LogLevelType.DEBUG,
-    stackIndex : Int = defaultSecondStackIndex,
-    isPrintStack : Boolean = false) : Unit = {
-    try {
-      val messageFinal : String = GetCompiledMessage(message, message2, logLevelType, stackIndex)
-
-      if(isMessagePrint){
-        additionalLogging(messageFinal, logLevelType, stackIndex, isPrintStack)
-      }
-
-      if (nullableObject.isDefined) {
-        logNonFutureNullable(message = messageFinal, nullableObject, logLevelType, stackIndex, isPrintStack = false)
-      }
-
-      val isExecute = nullableObjects.isDefined && nullableObjects.get.nonEmpty
-      logEntitiesNonFuture(isExecute = isExecute, nullableObjects, messageFinal)
-    } catch {
-      case e : Exception => println(e.toString)
-    }
   }
 
   private def logBasedOnLevel(

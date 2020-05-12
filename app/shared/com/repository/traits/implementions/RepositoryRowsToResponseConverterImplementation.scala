@@ -1,6 +1,6 @@
 package shared.com.repository.traits.implementions
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
@@ -26,8 +26,7 @@ trait RepositoryRowsToResponseConverterImplementation[TTable, TRow, TKey] extend
       id = Some(idsList.get.head.toString),
       ids = idsList,
       dbAction,
-      message)
-
+      message = message)
 
     val repositoryResponse = RepositoryOperationResultsModel(
       Some(attributes),

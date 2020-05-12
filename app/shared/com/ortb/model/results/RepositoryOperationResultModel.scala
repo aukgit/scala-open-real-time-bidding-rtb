@@ -10,6 +10,16 @@ import scala.reflect.runtime.{ universe => ru }
 case class RepositoryOperationResultModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
   data : Option[EntityWrapperModel[TRow, TKey]] = None) {
+  def getIdAsInt : Option[Int] = {
+    val tt : ru.TypeTag[Int] = typeTag[Int]
+    getIdAs[Int](tt)
+  }
+
+  def getIdAsString : Option[String] = {
+    val tt : ru.TypeTag[String] = typeTag[String]
+    getIdAs[String](tt)
+  }
+
   def getIdAs[T](implicit T : ru.TypeTag[T]) : Option[T] = {
     if (attributes.isEmpty) {
       return None
@@ -22,15 +32,5 @@ case class RepositoryOperationResultModel[TRow, TKey](
     } else {
       throw new NotImplementedError("Type can be either string or integer for T")
     }
-  }
-
-  def getIdAsInt : Option[Int] = {
-    val tt : ru.TypeTag[Int] = typeTag[Int]
-    getIdAs[Int](tt)
-  }
-
-  def getIdAsString : Option[String] = {
-    val tt : ru.TypeTag[String] = typeTag[String]
-    getIdAs[String](tt)
   }
 }

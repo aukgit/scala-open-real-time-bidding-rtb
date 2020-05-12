@@ -1,6 +1,5 @@
 package shared.com.ortb.model.auctionbid
 
-import shared.com.ortb.model.config.RangeModel
 import shared.com.ortb.persistent.schema.Tables._
 
 import scala.util.Random
@@ -29,10 +28,11 @@ case class BidFailedInfoModel(
   /**
    * Returns a random number from 0 to absoluteDifferenceOfAverageLosingAndWinningPrice
    * If (absoluteDifferenceOfAverageLosingAndWinningPrice <= 0) then returns staticIncrement
+   *
    * @return
    */
   def randomNumberBetweenAverageLosingAndWinningPriceOrStaticIncrementIfNoDifference : Double = {
-    if(absoluteDifferenceOfAverageLosingAndWinningPrice <= 0){
+    if (absoluteDifferenceOfAverageLosingAndWinningPrice <= 0) {
       return staticIncrement
     }
 

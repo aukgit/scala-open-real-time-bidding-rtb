@@ -8,5 +8,5 @@ import shared.io.redis.traits.RedisClientCorePropertiesContracts
 class RedisClientCorePropertiesContractsImplementation(appManager : AppManager) extends RedisClientCorePropertiesContracts {
   lazy val config : ConfigModel = appManager.config
   lazy val redisServerConfigurationInfo : DomainPortModel = config.server.redisServer
-  lazy val redisClient : RedisClient = new RedisClient(redisServerConfigurationInfo.domain, 6379)
+  lazy val redisClient : RedisClient = new RedisClient(redisServerConfigurationInfo.domain, redisServerConfigurationInfo.port)
 }

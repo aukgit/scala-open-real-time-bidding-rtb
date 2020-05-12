@@ -43,11 +43,38 @@ object AppConstants {
 
   lazy val EmptyString : String = ""
 
-  lazy val CurrencyUsd: String = "USD"
+  lazy val CurrencyUsd : String = "USD"
 
   lazy val EmptyStringOption : Option[String] = Some("")
 
   lazy val EmptyDoubleOption : Option[Double] = Some(0)
 
   lazy val EmptyIntegerOption : Option[Int] = Some(0)
+
+  lazy val Quote = "\""
+
+  /**
+   * System.lineSeparator
+   */
+  lazy val NewLine : String = System.lineSeparator
+
+  lazy val DoubleSpace : String = "  "
+
+  lazy val Space2 : String = DoubleSpace
+
+  lazy val Space4 : String = s"$DoubleSpace${DoubleSpace}"
+
+  val EqualSign = "="
+
+  val Colon = ":"
+
+  /**
+   * "=${NewLine}"
+   */
+  lazy val LogEqualNewLine : String = s"${EqualSign}${NewLine}"
+
+  /**
+   * "=${NewLine}${DoubleSpace}"
+   */
+  lazy val LogEqualNewLineWithIndent : String = s"${LogEqualNewLine}${DoubleSpace}"
 }

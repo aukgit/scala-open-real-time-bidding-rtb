@@ -1,16 +1,16 @@
 package shared.com.repository.traits
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
-import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
-import shared.io.loggers.DatabaseLogTracerImplementation
+import shared.io.loggers.{ AppLogger, DatabaseLogTracerImplementation }
 
 import scala.concurrent.Future
+import scala.util.{ Failure, Success }
 
-trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContextManager{
+trait RepositoryDatabaseTraceLogger[TRow, TKey] extends DefaultExecutionContextManager {
   val databaseLogger : DatabaseLogTracerImplementation
   protected val headerMessage : String
 
@@ -79,16 +79,21 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContext
     resultModel : Option[Future[RepositoryOperationResultModel[TRow, TKey]]],
     databaseActionType : DatabaseActionType,
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
-    if(resultModel.isEmpty){
+    if (resultModel.isEmpty) {
       return
     }
 
-    resultModel.get.onComplete(w =>
-      trace(
-        isLogQueries,
-        methodName,
-        Some(w.get),
-        databaseActionType, logLevelType))
+    resultModel.get.onComplete {
+      case Success(value) =>
+        trace(
+          isLogQueries,
+          methodName,
+          Some(value),
+          databaseActionType, logLevelType)
+
+      case Failure(value) =>
+        AppLogger.error(value.toString)
+    }
   }
 
   def traceFutureResults(
@@ -97,7 +102,7 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContext
     resultsModel : Option[Future[RepositoryOperationResultsModel[TRow, TKey]]],
     databaseActionType : DatabaseActionType,
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
-    if(resultsModel.isEmpty){
+    if (resultsModel.isEmpty) {
       return
     }
 

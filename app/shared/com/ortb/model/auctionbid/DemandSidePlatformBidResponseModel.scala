@@ -25,10 +25,6 @@ case class DemandSidePlatformBidResponseModel(
     callStacks.addAll(callStackModels)
   }
 
-  def getCallStacks : List[CallStackModel] = {
-    callStacks.toList
-  }
-
   def toPrintModel : DspBidderPrintResultModel = {
     val callStacksAsStrings = IterableHelper.toListStrings(Some(getCallStacks))
     val dealsAsStrings = IterableHelper.toListStrings(deals)
@@ -39,5 +35,9 @@ case class DemandSidePlatformBidResponseModel(
       dealsAsStrings,
       callStacksAsStrings
     )
+  }
+
+  def getCallStacks : List[CallStackModel] = {
+    callStacks.toList
   }
 }

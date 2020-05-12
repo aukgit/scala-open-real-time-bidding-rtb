@@ -3,12 +3,12 @@ package shared.io.loggers
 import shared.com.ortb.persistent.schema.Tables._
 import org.joda.time.{ DateTime, DateTimeZone }
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.logging.LogTraceModel
 import shared.com.ortb.persistent.repositories.LogTraceRepository
-import shared.io.helpers.{ EmptyValidateHelper, ToStringHelper }
+import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper, ToStringHelper }
 
 trait DatabaseLogTracer {
   protected val appManager : AppManager
@@ -19,11 +19,6 @@ trait DatabaseLogTracer {
     log : LogTraceModel,
     message : String = "LogTrace",
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
-    val timeInMilliseconds = DateTime.now(DateTimeZone.UTC).getMillis
-    val toDateSample = new DateTime(timeInMilliseconds)
-
-    AppLogger.debug("Date", toDateSample.toString)
-
     var entityString : Option[String] =AppConstants.EmptyStringOption
     var requestString : Option[String] = AppConstants.EmptyStringOption
 
@@ -59,13 +54,17 @@ trait DatabaseLogTracer {
       Some(log.message),
       entityString,
       log.databaseTransactionId,
-      Some(timeInMilliseconds.asInstanceOf[Double]))
+      JodaDateTimeHelper.nowUtcJavaInstantOption)
 
     AppLogger.logAsJson(
       message,
       logLevelType = logLevelType,
-      nullableObject = Some(row))
+      maybeModel = Some(row))
 
-    logTraceRepository.add(row)
+    val addAction = logTraceRepository.getAddAction(row)
+
+    logTraceRepository.saveAsync(
+      addAction,
+      DatabaseActionType.Create)
   }
 }

@@ -52,16 +52,17 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
     val repository =
       demandSidePlatformCorePropertiesContracts.repositories.bidResponseRepository
     val bidRequestId = Some(request.bidRequestRow.bidrequestid)
-    val row = BidresponseRow(
-      -1,
-      issendnobidresponse = 1,
-      bidrequestid = bidRequestId,
-      currency = AppConstants.CurrencyUsd,createddate = None)
-
-    val createdResponse = repository.add(row)
-    createdResponse.getIdAsInt
-
-    val w = BidResponseModelWrapper()
+//    val row = BidresponseRow(
+//      -1,
+//      issendnobidresponse = 1,
+//      bidrequestid = bidRequestId,
+//      currency = AppConstants.CurrencyUsd,
+//      createddate = 0, cr2 = None)
+//
+//    val createdResponse = repository.add(row)
+//    createdResponse.getIdAsInt
+//
+//    val w = BidResponseModelWrapper()
     throw new NotImplementedError()
   }
 }

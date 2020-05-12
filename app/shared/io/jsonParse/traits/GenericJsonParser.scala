@@ -33,7 +33,28 @@ trait GenericJsonParser[T] {
    * @param models
    * @return
    */
-  def toJsonStringPrettyFormat(models : Option[Iterable[T]]) : Option[String]
+  def toJsonStringPrettyFormatForModels(models : Option[Iterable[T]]) : Option[String]
+
+  /**
+   * Usages 2 space json String format.
+   * @param models
+   * @return
+   */
+  def toJsonStringPrettyFormat(models : Option[T]) : Option[String]
+
+  /**
+   * Usages 2 space json String format.
+   * @param models
+   * @return : empty string if something went wrong or cannot parse.
+   */
+  def toJsonStringPrettyFormatForModelsDirect(models : Iterable[T]) : String
+
+  /**
+   * Usages 2 space json String format.
+   * @param models
+   * @return : empty string if something went wrong or cannot parse.
+   */
+  def toJsonStringPrettyFormatDirect(models : T) : String
 
   def toJsonString(model : Option[T]) : Option[String]
 
@@ -43,7 +64,13 @@ trait GenericJsonParser[T] {
 
   def fromModelsToJsonObjects(model : Option[Iterable[T]]) : Option[Iterable[Json]]
 
-  def fromJsonToJsonString(model : Option[Json]) : Option[String]
+  /**
+   *
+   * @param model
+   * @param isPrettyFormat : if true then returns string using space2
+   * @return
+   */
+  def fromJsonToJsonString(model : Option[Json], isPrettyFormat: Boolean) : Option[String]
 
   /**
    *
@@ -64,6 +91,11 @@ trait GenericJsonParser[T] {
   def toLogStringForEntities(
     entities : Option[Iterable[T]]) : String
 
+  /**
+   * Includes entity type name
+   * @param entity : Prints entity type name.
+   * @return
+   */
   def toLogStringForEntity(
     entity : Option[T]) : String
 }

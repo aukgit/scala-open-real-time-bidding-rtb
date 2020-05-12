@@ -9,7 +9,7 @@ import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 import play.api.routing.sird._
 import shared.com.ortb.enumeration.ControllerDefaultActionType
-import shared.com.ortb.model.results.ResultWithBooleanModel
+import shared.com.ortb.model.results.ResultWithSuccessModel
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 import shared.io.helpers.NumberHelper
 
@@ -61,7 +61,7 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
   }
 
   protected def performIntegerConversionFailedAction(
-    stringToInt : ResultWithBooleanModel[Int]) : Action[AnyContent] = {
+    stringToInt : ResultWithSuccessModel[Int]) : Action[AnyContent] = {
     val httpFailedActionWrapper = controller.createHttpFailedActionWrapper(
       s"Couldn't convert [$stringToInt] to integer.",
       actionWrapper = routingActionWrapper

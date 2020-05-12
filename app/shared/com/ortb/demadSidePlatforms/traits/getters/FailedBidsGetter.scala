@@ -96,8 +96,7 @@ trait FailedBidsGetter {
     val demandSidePlatformId = coreProperties.demandSideId
     val lostBidsQuery = lostBids
       .filter(r => r.demandsideplatformid === demandSidePlatformId)
-      .sortBy(_.losingprice.desc)
-      .sortBy(_.createddate.desc)
+      .sortBy(_.lostbidid.desc)
       .take(limit)
 
     val lostBidsSqlProfileAction = lostBidsQuery
@@ -117,7 +116,7 @@ trait FailedBidsGetter {
     val query = winningPriceInfoViewRepository
       .getAllQuery
       .filter(w => w.iswon === 1)
-      .sortBy(_.impressioncreateddate.desc)
+      .sortBy(_.impressionid.desc)
       .take(limit)
       .result
 

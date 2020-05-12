@@ -3,10 +3,12 @@ package shared.io.redis.implementations
 import com.google.inject.Inject
 import com.redis.RedisClient
 import com.redis.api.StringApi.{ Always, SetBehaviour }
+import io.circe.Json
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
 import shared.com.ortb.model.config.DomainPortModel
+import shared.com.ortb.model.results.DualResultModel
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.traits.{ CommonJsonParsingMechanism, JsonParserCreator }
 import shared.io.loggers.AppLogger
@@ -33,20 +35,26 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
     expire : Duration = null)
     (
       implicit decoder : Lazy[DerivedDecoder[T]],
-      encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
+      encoder : Lazy[DerivedAsObjectEncoder[T]]) :  Option[Json] = {
     try {
       if (EmptyValidateHelper.isEmpty(value, Some(s"Key: $key, value given is empty."))) {
-        return
+        return None
       }
 
       val jsonParser = getBasicJsonEncoder[T]
-      val toJson = jsonParser.getJsonGenericParser.toJsonString(value)
-      redisClient.set(key, toJson.get, whenSet, expire)
+      val toJson = jsonParser.getJsonGenericParser.toJsonObject(value)
+
+      if(EmptyValidateHelper.isDefined(toJson)){
+        redisClient.set(key, toJson.get.noSpaces, whenSet, expire)
+        return toJson
+      }
     }
     catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(e, key)
     }
+
+    None
   }
 
   override def getObjectFromJsonAs[T](key : String)(
@@ -55,7 +63,7 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
     try {
       val value = redisClient.get(key)
       val jsonParser = getBasicJsonEncoder[T]
-      jsonParser.getJsonGenericParser.toModel(value)
+      return jsonParser.getJsonGenericParser.toModel(value)
     }
     catch {
       case e : Exception =>
@@ -71,20 +79,34 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
     whenSet : SetBehaviour = Always,
     expire : Duration = null)(
     implicit decoder : Lazy[DerivedDecoder[T]],
-    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Option[DualResultModel[Iterable[Json], String]] = {
     try {
-      if (EmptyValidateHelper.isItemsEmpty(Some(items), Some(s"[setIterableObjectsAsJson] -> Key: $key, value given is empty."))) {
-        return
+      if (EmptyValidateHelper.isItemsEmpty(Some(items), Some(
+        s"[setIterableObjectsAsJson] -> Key: $key, value given is empty."))) {
+        return None
       }
 
       val jsonParser = getBasicJsonEncoder[T]
-      val toJson = jsonParser.getJsonGenericParser.fromModelsToJsonString(Some(items))
-      redisClient.set(key, toJson.get, whenSet, expire)
+      val parser = jsonParser
+        .getJsonGenericParser
+      val toJsons = parser
+        .fromModelsToJsonObjects(Some(items))
+
+      if(EmptyValidateHelper.hasAnyItem(toJsons)){
+        val jsonString =parser.fromJsonsToJsonString(toJsons)
+        redisClient.set(key, jsonString.get, whenSet, expire)
+
+        return Some(DualResultModel[Iterable[Json], String](
+          toJsons,
+          jsonString))
+      }
     }
     catch {
       case e : Exception =>
         AppLogger.errorCaptureAndThrow(e, key)
     }
+
+    None
   }
 
   def getIterableObjectsAs[T](key : String)(

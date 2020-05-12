@@ -1,6 +1,6 @@
 package shared.com.repository.traits.implementions
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
@@ -25,7 +25,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
     val hasAffected = affectedRow > 0
 
     if (hasAffected && entity.isDefined) {
-      AppLogger.logEntitiesNonFuture(isLogDatabaseQueryLogs, Seq(entity.get), message2)
+      AppLogger.logEntitiesWithCondition(isLogDatabaseQueryLogs, Seq(entity.get), message2)
     }
 
     if (hasAffected) {
@@ -63,13 +63,15 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
         message2
       )
 
-      return createResponseFor(
+      val response = createResponseFor(
         entityId = Some(getEntityIdFromOptionRow(affectedEntity)),
         entity = affectedEntity,
         actionType = actionType,
         message = message2,
         isSuccess = isSuccess
       )
+
+      return response
     }
 
     getEmptyResponseFor(actionType)
@@ -93,7 +95,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
         id = Some(entity.get.toString),
         ids = None,
         Some(actionType),
-        message)
+        message = message)
 
     RepositoryOperationResultModel(
       Some(attributesModel),

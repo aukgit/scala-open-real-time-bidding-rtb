@@ -6,9 +6,13 @@ import shared.io.loggers.AppLogger
 object SerializingHelper {
   def toBytesArray(value : Any) : Option[Array[Byte]] = {
     try {
-      val valueConverted : Array[Byte] = SerializationUtils.serialize(value.isInstanceOf[Serializable])
+      value match {
+        case serializable : Serializable =>
+          val valueConverted : Array[Byte] = SerializationUtils.serialize(serializable)
 
-      return Some(valueConverted)
+          return Some(valueConverted)
+        case _ => throw new Exception("Given object is null or not serializable")
+      }
     }
     catch {
       case e : Exception =>

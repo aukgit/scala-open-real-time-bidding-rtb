@@ -7,7 +7,9 @@ object EmptyValidateHelper {
   def throwOnNullOrNone(
     item : Any,
     message : Option[String] = None) : Unit = {
-    val isEmpty = item == null || isEmptyAny(item, None)
+    val isEmpty = item == null ||
+      String.valueOf(item) == "None" ||
+      isEmptyAny(item, None)
 
     if (isEmpty && isOptionStringDefinedWithoutMessage(message)) {
       throw new NullPointerException(message.get)
@@ -22,7 +24,7 @@ object EmptyValidateHelper {
     item : Any,
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
     val isDirectEmpty = item == null || String.valueOf(item) == "None"
-    if(isDirectEmpty){
+    if (isDirectEmpty) {
       return true
     }
 
@@ -186,6 +188,15 @@ object EmptyValidateHelper {
   }
 
   //noinspection DuplicatedCode
+  def isItemsEmptyArray[A](
+    items : Option[Array[A]],
+    message : Option[String] = None) : Boolean = {
+    items == null ||
+      items.isEmpty ||
+      !hasAnyItemDirect(items.get, message)
+  }
+
+  //noinspection DuplicatedCode
   def isItemsEmpty[A](
     items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
@@ -266,8 +277,8 @@ object EmptyValidateHelper {
     items : Option[Iterable[A]],
     message : Option[String] = None) : Boolean = {
     val hasItem = items != null &&
-      items.get != Nil &&
       items.isDefined &&
+      items.get != Nil &&
       items.get != null &&
       items.get.nonEmpty
 

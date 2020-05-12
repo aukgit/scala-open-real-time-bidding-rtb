@@ -1,10 +1,11 @@
 package shared.io.jsonParse.implementations
 
+import io.circe.{ Decoder, _ }
+import io.circe.derivation._
 import io.circe.generic.codec.DerivedAsObjectCodec
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
-import io.circe.generic.semiauto.{ deriveDecoder, _ }
-import io.circe.{ Decoder, _ }
+
 import play.api.libs.json
 import play.api.libs.json.JsValue
 import shapeless.Lazy
@@ -13,13 +14,15 @@ import shared.io.jsonParse.traits.JsonCirceDefaultEncoders
 import scala.reflect.ClassTag
 
 class JsonCirceDefaultEncodersImplementation[T](
-  implicit val decodeCodec : DerivedAsObjectCodec[T],
-  implicit val decoder : Lazy[DerivedDecoder[T]],
-  implicit val classTag : ClassTag[T],
-  implicit val decodeDeviceDecode : ClassTag[T],
-  val encoder : Lazy[DerivedAsObjectEncoder[T]],
-  val decodeListCodec : DerivedAsObjectCodec[List[T]]
-) extends JsonCirceDefaultEncoders[T] {
+   implicit val decodeCodec : DerivedAsObjectCodec[T],
+   implicit val decoder : Lazy[DerivedDecoder[T]],
+   implicit val classTag : ClassTag[T],
+   implicit val decodeDeviceDecode : ClassTag[T],
+   val encoder : Lazy[DerivedAsObjectEncoder[T]],
+   val decodeListCodec : DerivedAsObjectCodec[List[T]]
+ ) extends JsonCirceDefaultEncoders[T] {
+
+  import io.circe.generic.semiauto.{ deriveDecoder, _ }
 
   def defaultCodec : Codec.AsObject[T] = deriveCodec[T](decodeCodec)
 
@@ -34,9 +37,8 @@ class JsonCirceDefaultEncodersImplementation[T](
     json.Json.parse(toJsonString(entities))
   }
 
-  def toJsonString(
-    entities : Iterable[T],
-    additionalAnnotationForItems : String = null) : String = {
+  def toJsonString(entities : Iterable[T],
+                   additionalAnnotationForItems : String = null) : String = {
     getJsonGenericParser.toJsonString(entities, additionalAnnotationForItems)
   }
 

@@ -13,28 +13,29 @@ trait NullableLogger {
 
   def logFutureNullable[T](
     message : String,
-    nullableObject : Future[Option[T]],
+    eventualMaybeT : Future[Option[T]],
     logLevelType : LogLevelType = LogLevelType.DEBUG,
     stackIndex : Int = defaultStackIndex + 2,
     isPrintStack : Boolean = false) : Unit = {
-    val regularNullable = Try(FutureToRegular.toRegular(nullableObject)).get
-    logNonFutureNullable(
-      message = message,
-      nullableObject = regularNullable,
-      logLevelType = logLevelType,
-      stackIndex = stackIndex,
-      isPrintStack = isPrintStack)
+    eventualMaybeT.onComplete(row => {
+      logNullable(
+        message = message,
+        maybeT = row.getOrElse(None),
+        logLevelType = logLevelType,
+        stackIndex = stackIndex,
+        isPrintStack = isPrintStack)
+    })(getLoggerExecutionContext)
   }
 
-  def logNonFutureNullable[T](
+  def logNullable[T](
     message : String,
-    nullableObject : Option[T],
+    maybeT : Option[T],
     logLevelType : LogLevelType = LogLevelType.DEBUG,
     stackIndex : Int = defaultSecondStackIndex + 1,
     isPrintStack : Boolean = false) : Unit = {
     val methodNameDisplay = getMethodNameHeader(stackIndex)
-    val finalMessage = s"Nullable Logger - [${ logLevelType }] : ${ methodNameDisplay } - $message"
-    if (nullableObject.isEmpty) {
+    val finalMessage = s"[$logLevelType]: ${ methodNameDisplay } - $message"
+    if (maybeT.isEmpty) {
       additionalLogging(
         message = s"""$finalMessage : null.""",
         logLevelType = logLevelType,
@@ -46,7 +47,7 @@ trait NullableLogger {
 
     try {
       additionalLogging(
-        message = s"${ finalMessage } : ${ nullableObject.get.toString }.",
+        message = s"${ finalMessage } - ${ maybeT.get.toString }.",
         logLevelType = logLevelType,
         stackIndex = stackIndex,
         isPrintStack = isPrintStack)

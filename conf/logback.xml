@@ -11,7 +11,7 @@
       <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread%n
         %message%n%xException
       </pattern>
     </encoder>
@@ -27,7 +27,7 @@
       <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread%n
         %message%n%xException
       </pattern>
     </encoder>
@@ -42,7 +42,7 @@
       <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread%n
         %message%n%xException
       </pattern>
     </encoder>
@@ -57,7 +57,7 @@
       <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread%n
         %message%n%xException
       </pattern>
     </encoder>
@@ -72,7 +72,7 @@
       <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
-      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread - @%method:%line) -
+      <pattern>%date{yyyy-MM-dd HH:mm:ss ZZZZ} [%level] from %logger in %thread%n
         %message%n%xException
       </pattern>
     </encoder>
@@ -88,14 +88,13 @@
     </filter>
     <file>${application.home:-.}/logs/security.log</file>
     <encoder>
-      <pattern>%date [%level] [%marker] from %logger in %thread - @%method:%line) - %message%n%xException</pattern>
+      <pattern>%date [%level] [%marker] from %logger in %thread%n %message%n%xException</pattern>
     </encoder>
   </appender>
 
   <appender name="ConsoleDefaultPrintAppender" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}@%method:%line - %msg%n - %coloredLevel %logger{15} -
-        [%X{akkaSource}] %message%n%xException{10}
+      <pattern> %message%n%xException{10}
       </pattern>
     </encoder>
   </appender>
@@ -125,12 +124,15 @@
   <logger name="akka.stream.Log" level="NONE"/>
   <logger name="actors" level="ALL"/>
   <logger name="controllers" level="ALL"/>
-  <logger name="slick.jdbc" level="ERROR" />
+<!--  <logger name="slick.jdbc" level="ERROR" />-->
+  <logger name="slick" level="OFF" />
 
   <root level="ALL">
-    <appender-ref ref="AllLogger"/>
+<!--    <appender-ref ref="AllLogger"/>-->
     <appender-ref ref="RollingWeeklyFileAppender"/>
     <appender-ref ref="ConsoleDefaultPrintAppender"/>
+<!--    <appender-ref ref="InfoRollingWeeklyFileAppender"/>-->
+    <appender-ref ref="DebugLogger"/>
     <appender-ref ref="SecurityFileAppender"/>
   </root>
 

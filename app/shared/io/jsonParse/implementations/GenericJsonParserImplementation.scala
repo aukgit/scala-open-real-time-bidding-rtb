@@ -3,8 +3,9 @@ package shared.io.jsonParse.implementations
 import com.fasterxml.jackson.databind.JsonNode
 import io.circe.Json
 import io.circe.parser.decode
+import shared.com.ortb.constants.AppConstants
 import shared.io.helpers.ReflectionHelper.getTypeName
-import shared.io.helpers.{ CastingHelper, EmptyValidateHelper }
+import shared.io.helpers._
 import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
 import shared.io.loggers.AppLogger
 
@@ -13,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   extends GenericJsonParser[T] {
-  val quote = "\""
+  lazy val quote : String = AppConstants.Quote
 
   override def fromJsonStringToModels(jsonString : Option[String]) : Option[Iterable[T]] = {
     val models = toModels(jsonString)
@@ -45,7 +46,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNonFutureNullable("Json parsing failed for ", jsonString)
+        AppLogger.logNullable("Json parsing failed for ", jsonString)
     }
 
     None
@@ -54,43 +55,33 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   override def toJsonNodes(jsonString : Option[String]) : Option[ArrayBuffer[JsonNode]] = {
     try {
       val jsonNodeOption = toJsonNode(jsonString)
-      if (EmptyValidateHelper.isDefined(jsonNodeOption)) {
-        val jsonNode = jsonNodeOption.get
-        if (jsonNode.isArray) {
-          val results = new ArrayBuffer[JsonNode]
+      val isInvalidData = EmptyValidateHelper.isEmpty(jsonNodeOption) ||
+        !jsonNodeOption.get.isArray
 
-          jsonNode.elements().forEachRemaining(currentJsonNode => {
-            results += currentJsonNode
-          })
-
-          return Some(results)
-        }
-
+      if (isInvalidData) {
+        return None
       }
+
+      val jsonNode = jsonNodeOption.get
+      val results = new ArrayBuffer[JsonNode]
+
+      jsonNode.elements().forEachRemaining(currentJsonNode => {
+        results += currentJsonNode
+      })
+
+      return Some(results)
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNonFutureNullable("Json parsing failed for ", jsonString)
+        AppLogger.logNullable("Json parsing failed for ", jsonString)
     }
 
     None
   }
 
   override def toJsonNode(
-    jsonString : Option[String]) : Option[JsonNode] = {
-    try {
-      if (EmptyValidateHelper.isDefined(jsonString)) {
-        val node = play.libs.Json.parse(jsonString.get)
-        return Some(node)
-      }
-    } catch {
-      case e : Exception =>
-        AppLogger.error(e)
-        AppLogger.logNonFutureNullable("Json parsing failed for ", jsonString)
-    }
-
-    None
-  }
+    jsonString : Option[String]) : Option[JsonNode] =
+    JsonHelper.toJsonNode(jsonString)
 
   override def fromModelsToJsonNodes(
     models : Option[Iterable[T]]) : Option[Iterable[JsonNode]] = {
@@ -105,7 +96,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logEntitiesNonFuture(isExecute = true, models)
+        AppLogger.logEntitiesWithCondition(isExecute = true, models)
     }
 
     None
@@ -135,7 +126,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     try {
       val modelEither = decode[T](json)(basicJsonEncoder.getDecoder)
 
-      if (EmptyValidateHelper.isRightEmptyOnEither(modelEither)) {
+      if (EmptyValidateHelper.isRightDefinedOnEither(modelEither)) {
         val model = CastingHelper.safeCastAs[T](modelEither.getOrElse(null))
 
         return model
@@ -168,8 +159,19 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     toJsonObjectOption.get
   }
 
-  override def fromJsonToJsonString(model : Option[Json]) : Option[String] = {
+  /**
+   *
+   * @param model
+   * @param isPrettyFormat : if true then returns string using space2
+   *
+   * @return
+   */
+  override def fromJsonToJsonString(model : Option[Json], isPrettyFormat : Boolean) : Option[String] = {
     EmptyValidateHelper.throwOnNullOrNone(model, Some("model is empty"))
+
+    if (isPrettyFormat) {
+      return Some(model.get.spaces2)
+    }
 
     Some(model.get.noSpaces)
   }
@@ -211,7 +213,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNonFutureNullable("Json parsing failed for ", model)
+        AppLogger.logNullable("Json parsing failed for ", model)
     }
 
     None
@@ -261,25 +263,25 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   }
 
   override def toLogStringForEntities(entities : Option[Iterable[T]]) : String = {
-    if(EmptyValidateHelper.isItemsEmpty(entities)){
+    if (EmptyValidateHelper.isItemsEmpty(entities)) {
       return "Given object is null for logging."
     }
 
-    val jsonPrettyFormatString = toJsonStringPrettyFormat(entities)
+    val jsonPrettyFormatString = toJsonStringPrettyFormatForModels(entities)
     val typeName = getTypeName(Some(entities.get.head))
-    val objectStringMessage = s"$typeName :\n ${jsonPrettyFormatString}"
+    val objectStringMessage = s"$typeName :\n ${ jsonPrettyFormatString }"
 
     objectStringMessage
   }
 
   override def toLogStringForEntity(entity : Option[T]) : String = {
-    if(entity.isEmpty){
+    if (entity.isEmpty) {
       return "Given object is null for logging."
     }
 
     val jsonObject = toJsonObject(entity)
     val typeName = getTypeName(entity)
-    val objectStringMessage = s"$typeName :\n ${jsonObject.get.spaces2}"
+    val objectStringMessage = s"$typeName :\n ${ jsonObject.get.spaces2 }"
 
     objectStringMessage
   }
@@ -291,7 +293,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
    *
    * @return
    */
-  override def toJsonStringPrettyFormat(models : Option[Iterable[T]]) : Option[String] = {
+  override def toJsonStringPrettyFormatForModels(models : Option[Iterable[T]]) : Option[String] = {
     val jsons = toJsonObjects(models)
 
     if (EmptyValidateHelper.isItemsEmpty(jsons)) {
@@ -299,6 +301,59 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     }
 
     fromJsonsToJsonString(jsons, isPrettyFormat = true)
+  }
+
+
+  /**
+   * Usages 2 space json String format.
+   *
+   * @param models
+   *
+   * @return
+   */
+  override def toJsonStringPrettyFormat(models : Option[T]) : Option[String] = {
+    val jsons = toJsonObject(models)
+
+    if (EmptyValidateHelper.isEmpty(jsons)) {
+      return None
+    }
+
+    Some(jsons.get.spaces2)
+  }
+
+  /**
+   * Usages 2 space json String format.
+   *
+   * @param models
+   *
+   * @return empty string if something went wrong or cannot parse.
+   */
+  override def toJsonStringPrettyFormatForModelsDirect(models : Iterable[T]) : String = {
+    val jsonString = toJsonStringPrettyFormatForModels(Some(models))
+
+    if(EmptyValidateHelper.isOptionStringDefined(jsonString)){
+      return jsonString.get
+    }
+
+    ""
+  }
+
+
+  /**
+   * Usages 2 space json String format.
+   *
+   * @param models
+   *
+   * @return empty string if something went wrong or cannot parse.
+   */
+  override def toJsonStringPrettyFormatDirect(model : T) : String = {
+    val jsonString = toJsonStringPrettyFormat(Some(model))
+
+    if(EmptyValidateHelper.isOptionStringDefined(jsonString)){
+      return jsonString.get
+    }
+
+    ""
   }
 
   override def toJsonObjects(models : Option[Iterable[T]]) : Option[Iterable[Json]] = {

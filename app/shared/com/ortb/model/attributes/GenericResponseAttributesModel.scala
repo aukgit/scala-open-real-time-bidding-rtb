@@ -1,7 +1,7 @@
 package shared.com.ortb.model.attributes
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 
 case class GenericResponseAttributesModel(
   isSuccess : Boolean,

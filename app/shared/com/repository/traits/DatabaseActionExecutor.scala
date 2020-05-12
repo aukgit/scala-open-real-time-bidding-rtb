@@ -2,7 +2,7 @@ package shared.com.repository.traits
 
 import java.awt.dnd.InvalidDnDOperationException
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.implicits.implementations.ImplicitsImplementation.anyRefCaller
 import shared.com.ortb.model.results.RepositoryOperationResultModel
 import shared.com.repository.RepositoryBase
@@ -123,7 +123,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   def runAsyncAs[T >: Null <: AnyRef, TRow2](dbAction: T): Future[Seq[TRow2]] = {
     try {
       val results = getDatabaseQueryResultAs[T, TRow2](dbAction).get
-      AppLogger.logEntities(isLogDatabaseQueryLogs, results)
+      AppLogger.logEventualEntitiesWithCondition(isLogDatabaseQueryLogs, results)
       return results
     } catch {
       case e: Exception => AppLogger.error(e)
@@ -144,7 +144,7 @@ trait DatabaseActionExecutor[TTable, TRow, TKey] {
   def runAsync[T >: Null <: AnyRef](dbAction: T): Future[Seq[TRow]] = {
     try {
       val results = getDatabaseQueryResult(dbAction).get
-      AppLogger.logEntities(isLogDatabaseQueryLogs, results)
+      AppLogger.logEventualEntitiesWithCondition(isLogDatabaseQueryLogs, results)
       return results
     } catch {
       case e: Exception => AppLogger.error(e)

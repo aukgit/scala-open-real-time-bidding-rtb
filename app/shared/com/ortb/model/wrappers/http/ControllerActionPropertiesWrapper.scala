@@ -1,6 +1,5 @@
 package shared.com.ortb.model.wrappers.http
 
-import shared.com.ortb.enumeration.DatabaseActionType.DatabaseActionType
 import shared.com.ortb.enumeration.HttpActionWrapperType.HttpActionWrapperType
 import shared.com.ortb.enumeration.HttpMethodType.HttpMethodType
 import shared.com.ortb.enumeration._

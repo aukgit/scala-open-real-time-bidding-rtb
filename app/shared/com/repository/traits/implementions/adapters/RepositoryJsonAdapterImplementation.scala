@@ -13,7 +13,7 @@ import shared.io.loggers.AppLogger
 
 trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
   extends BasicAdapterImplementation
-    with RepositoryJsonAdapter[TTable, TRow, TKey] with CirceJsonSupport {
+    with RepositoryJsonAdapter[TTable, TRow, TKey] {
   this : RepositoryBase[TTable, TRow, TKey] =>
 
   //noinspection DuplicatedCode
