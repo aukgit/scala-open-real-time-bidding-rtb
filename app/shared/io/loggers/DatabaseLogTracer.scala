@@ -19,11 +19,6 @@ trait DatabaseLogTracer {
     log : LogTraceModel,
     message : String = "LogTrace",
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
-    val timeInMilliseconds = DateTime.now(DateTimeZone.UTC).getMillis
-    val toDateSample = new DateTime(timeInMilliseconds)
-
-    AppLogger.debug("Date", toDateSample.toString)
-
     var entityString : Option[String] =AppConstants.EmptyStringOption
     var requestString : Option[String] = AppConstants.EmptyStringOption
 
@@ -51,21 +46,20 @@ trait DatabaseLogTracer {
       case e:Exception => AppLogger.error(e)
     }
 
-    val row = LogtraceRow(
-      -1,
-      Some(log.methodName),
-      Some(className),
-      requestString,
-      Some(log.message),
-      entityString,
-      log.databaseTransactionId,
-      Some(timeInMilliseconds.asInstanceOf[Double]))
-
-    AppLogger.logAsJson(
-      message,
-      logLevelType = logLevelType,
-      maybeModel = Some(row))
-
-    logTraceRepository.add(row)
+//    val row = LogtraceRow(
+//      -1,
+//      Some(log.methodName),
+//      Some(className),
+//      requestString,
+//      Some(log.message),
+//      entityString,
+//      log.databaseTransactionId)
+//
+//    AppLogger.logAsJson(
+//      message,
+//      logLevelType = logLevelType,
+//      maybeModel = Some(row))
+//
+//    logTraceRepository.add(row)
   }
 }

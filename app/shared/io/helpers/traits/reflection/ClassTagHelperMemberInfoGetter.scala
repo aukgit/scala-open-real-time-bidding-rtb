@@ -11,23 +11,12 @@ import scala.reflect.ClassTag
 trait ClassTagHelperMemberInfoGetter {
   this : ClassTagHelperConcreteImplementation =>
   def getMembersInfoForT[T](
-    clazz : Class[T],
     maybeInstance : Option[T]) : ClassMembersInfoModel[T] = {
-    getMembersInfoFor[T](clazz.getClass, maybeInstance)
-  }
-
-  def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel[T] = {
-    val clxReflection = getClass[T](ct)
-    getMembersInfoFor[T](clxReflection, None)
-  }
-
-  def getMembersInfo[T](clazz : T)(implicit ct : ClassTag[T]) : ClassMembersInfoModel[T] = {
-    if (EmptyValidateHelper.isEmptyDirect(clazz)) {
-      val clxReflection = getClass[T](ct)
-      return getMembersInfoFor(clxReflection, None)
+    if(EmptyValidateHelper.isEmpty(maybeInstance)){
+      return null
     }
 
-    getMembersInfoFor(clazz.getClass, None)
+    getMembersInfoFor[T](maybeInstance.get.getClass, maybeInstance)
   }
 
   def getMembersInfoFor[T](
@@ -66,5 +55,19 @@ trait ClassTagHelperMemberInfoGetter {
       extractedConstructors,
       eventualMembersMap
     )
+  }
+
+  def getMembersInfo[T](implicit ct : ClassTag[T]) : ClassMembersInfoModel[T] = {
+    val clxReflection = getClass[T](ct)
+    getMembersInfoFor[T](clxReflection, None)
+  }
+
+  def getMembersInfo[T](clazz : T)(implicit ct : ClassTag[T]) : ClassMembersInfoModel[T] = {
+    if (EmptyValidateHelper.isEmptyDirect(clazz)) {
+      val clxReflection = getClass[T](ct)
+      return getMembersInfoFor(clxReflection, None)
+    }
+
+    getMembersInfoFor(clazz.getClass, None)
   }
 }

@@ -63,13 +63,15 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
         message2
       )
 
-      return createResponseFor(
+      val response = createResponseFor(
         entityId = Some(getEntityIdFromOptionRow(affectedEntity)),
         entity = affectedEntity,
         actionType = actionType,
         message = message2,
         isSuccess = isSuccess
       )
+
+      return response
     }
 
     getEmptyResponseFor(actionType)
@@ -93,7 +95,7 @@ trait EntityResponseCreatorImplementation[TTable, TRow, TKey]
         id = Some(entity.get.toString),
         ids = None,
         Some(actionType),
-        message)
+        message = message)
 
     RepositoryOperationResultModel(
       Some(attributesModel),

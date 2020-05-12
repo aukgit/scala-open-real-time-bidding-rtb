@@ -158,6 +158,7 @@ object Application {
     val res = response.data.get
 
     val w = ReflectionHelper.classTagHelper.getMembersInfo[BidresponseRow]
+    val w2 = ReflectionHelper.classTagHelper.getMembersInfoForT(Some(response))
 
     val we  = ReflectionHelper.getCaseClassInfoModel(res)
 

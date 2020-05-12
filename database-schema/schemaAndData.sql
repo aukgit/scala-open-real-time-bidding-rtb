@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 06/05/2020 06:43:45
+ Date: 13/05/2020 02:53:46
 */
 
 PRAGMA foreign_keys = false;
@@ -192,8 +192,8 @@ CREATE TABLE "Campaign" (
 -- ----------------------------
 -- Records of Campaign
 -- ----------------------------
-INSERT INTO "Campaign" VALUES (1, 'First Cricket Campaign', 'IAB17', 10.0, 0.0, 10.0, 0.0, 0.0, 0, 1, 1, 1, 999, 0, '', (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)), (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)));
-INSERT INTO "Campaign" VALUES (2, 'Business Campaing', 'IAB3', 5.0, 0.0, 5.0, 0.0, 0.0, 0, 2, 2, 1, 999, 0, '', (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)), (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)));
+INSERT INTO "Campaign" VALUES (1, 'First Cricket Campaign', 'IAB17', 10.0, 0.0, 10.0, 0.0, 0.0, 0, 1, 1, 1, 999, 0, '', 1588757576689, 1588757576689);
+INSERT INTO "Campaign" VALUES (2, 'Business Campaing', 'IAB3', 5.0, 0.0, 5.0, 0.0, 0.0, 0, 2, 2, 1, 999, 0, '', 1588757576691, 1588757576691);
 
 -- ----------------------------
 -- Table structure for CampaignTargetCity
@@ -424,7 +424,7 @@ CREATE TABLE "LogTrace" (
   "Message" TEXT,
   "EntityData" TEXT,
   "DatabaseTransactionTypeId" INTEGER,
-  "CreatedDateTimestamp" NUMERIC DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER))
+  "CreatedDateTimestamp" TIMESTAMP DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER))
 );
 
 -- ----------------------------
@@ -594,32 +594,17 @@ CREATE TABLE "sqlite_sequence" (
 -- ----------------------------
 -- Records of sqlite_sequence
 -- ----------------------------
-INSERT INTO "sqlite_sequence" VALUES ('ContentContext', 7);
-INSERT INTO "sqlite_sequence" VALUES ('DemandSidePlatform', 3);
-INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
-INSERT INTO "sqlite_sequence" VALUES ('DemandSidePlatform', 3);
-INSERT INTO "sqlite_sequence" VALUES ('ContentContext', 7);
-INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
-INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetCity', 0);
-INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetSite', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
-INSERT INTO "sqlite_sequence" VALUES ('CampaignTargetOperatingSystem', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BannerAdvertiseType', 4);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
-INSERT INTO "sqlite_sequence" VALUES ('GeoMapping', 0);
-INSERT INTO "sqlite_sequence" VALUES ('CreativeAttribute', 16);
-INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
-INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
-INSERT INTO "sqlite_sequence" VALUES ('BidContentCategoriesMapping', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
-INSERT INTO "sqlite_sequence" VALUES ('SeatBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('LostBid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Bid', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Transaction', 0);
-INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Campaign', 2);
-INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('ContentContext', 7);
+INSERT INTO "sqlite_sequence" VALUES ('CreativeAttribute', 16);
+INSERT INTO "sqlite_sequence" VALUES ('DemandSidePlatform', 3);
+INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
+INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
+INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
+INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 121);
+INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
@@ -730,6 +715,11 @@ FROM
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
+-- Auto increment value for BidResponse
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 121 WHERE name = 'BidResponse';
+
+-- ----------------------------
 -- Auto increment value for Campaign
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
@@ -750,7 +740,10 @@ UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
 
 -- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 0 WHERE name = 'LogTrace';
+-- Auto increment value for LogTrace
+-- ----------------------------
+
+-- ----------------------------
 -- Auto increment value for NoBidResponseType
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';

@@ -1,7 +1,6 @@
 package shared.com.repository.traits
 
-import shared.com.ortb.enumeration.DatabaseActionType
-import shared.com.ortb.enumeration.LogLevelType
+import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
 import shared.com.ortb.model.logging.LogTraceModel
@@ -10,7 +9,7 @@ import shared.io.loggers.DatabaseLogTracerImplementation
 
 import scala.concurrent.Future
 
-trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContextManager{
+trait RepositoryDatabaseTraceLogger[TRow, TKey] extends DefaultExecutionContextManager {
   val databaseLogger : DatabaseLogTracerImplementation
   protected val headerMessage : String
 
@@ -79,7 +78,7 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContext
     resultModel : Option[Future[RepositoryOperationResultModel[TRow, TKey]]],
     databaseActionType : DatabaseActionType,
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
-    if(resultModel.isEmpty){
+    if (resultModel.isEmpty) {
       return
     }
 
@@ -97,7 +96,7 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends  DefaultExecutionContext
     resultsModel : Option[Future[RepositoryOperationResultsModel[TRow, TKey]]],
     databaseActionType : DatabaseActionType,
     logLevelType : LogLevelType = LogLevelType.DEBUG) : Unit = {
-    if(resultsModel.isEmpty){
+    if (resultsModel.isEmpty) {
       return
     }
 

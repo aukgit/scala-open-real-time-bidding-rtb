@@ -112,19 +112,19 @@ trait Tables {
    *  @param winningbidrequestid Database column WinningBidRequestId SqlType(INTEGER), Default(None)
    *  @param isprecachedadvertiseserved Database column IsPrecachedAdvertiseServed SqlType(INTEGER), Length(1,false), Default(0)
    *  @param winningprice Database column WinningPrice SqlType(REAL), Default(-1.0)
-   *  @param currency Database column Currency SqlType(TEXT)
+   *  @param currency Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD))
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class AuctionRow(auctionid: Int, winningbidrequestid: Option[Int] = None, isprecachedadvertiseserved: Int = 0, winningprice: Double = -1.0, currency: String, createddatetimestamp: java.time.Instant)
+  case class AuctionRow(auctionid: Int, winningbidrequestid: Option[Int] = None, isprecachedadvertiseserved: Int = 0, winningprice: Double = -1.0, currency: Option[String] = Some("USD"), createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching AuctionRow objects using plain SQL queries */
-  implicit def GetResultAuctionRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Double], e3: GR[String], e4: GR[java.time.Instant]): GR[AuctionRow] = GR{
+  implicit def GetResultAuctionRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Double], e3: GR[Option[String]], e4: GR[java.time.Instant]): GR[AuctionRow] = GR{
     prs => import prs._
-    AuctionRow.tupled((<<[Int], <<?[Int], <<[Int], <<[Double], <<[String], <<[java.time.Instant]))
+    AuctionRow.tupled((<<[Int], <<?[Int], <<[Int], <<[Double], <<?[String], <<[java.time.Instant]))
   }
   /** Table description of table Auction. Objects of this class serve as prototypes for rows in queries. */
   class Auction(_tableTag: Tag) extends profile.api.Table[AuctionRow](_tableTag, "Auction") {
     def * = (auctionid, winningbidrequestid, isprecachedadvertiseserved, winningprice, currency, createddatetimestamp) <> (AuctionRow.tupled, AuctionRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(auctionid), winningbidrequestid, Rep.Some(isprecachedadvertiseserved), Rep.Some(winningprice), Rep.Some(currency), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> AuctionRow.tupled((_1.get, _2, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(auctionid), winningbidrequestid, Rep.Some(isprecachedadvertiseserved), Rep.Some(winningprice), currency, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> AuctionRow.tupled((_1.get, _2, _3.get, _4.get, _5, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column AuctionId SqlType(INTEGER), AutoInc, PrimaryKey */
     val auctionid: Rep[Int] = column[Int]("AuctionId", O.AutoInc, O.PrimaryKey)
@@ -134,8 +134,8 @@ trait Tables {
     val isprecachedadvertiseserved: Rep[Int] = column[Int]("IsPrecachedAdvertiseServed", O.Length(1,varying=false), O.Default(0))
     /** Database column WinningPrice SqlType(REAL), Default(-1.0) */
     val winningprice: Rep[Double] = column[Double]("WinningPrice", O.Default(-1.0))
-    /** Database column Currency SqlType(TEXT) */
-    val currency: Rep[String] = column[String]("Currency")
+    /** Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD)) */
+    val currency: Rep[Option[String]] = column[Option[String]]("Currency", O.Length(5,varying=false), O.Default(Some("USD")))
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 
@@ -391,7 +391,7 @@ trait Tables {
 
   /** Entity class storing rows of table Bidresponse
    *  @param bidresponseid Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey
-   *  @param currency Database column Currency SqlType(TEXT), Default(USD)
+   *  @param currency Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD))
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
    *  @param isanybidwontheauction Database column IsAnyBidWonTheAuction SqlType(INTEGER), Length(1,false), Default(0)
    *  @param isauctionoccured Database column IsAuctionOccured SqlType(INTEGER), Length(1,false), Default(0)
@@ -399,22 +399,22 @@ trait Tables {
    *  @param issendnobidresponse Database column IsSendNoBidResponse SqlType(INTEGER), Length(1,false), Default(0)
    *  @param nobidresponsetypeid Database column NoBidResponseTypeId SqlType(INTEGER), Default(None)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class BidresponseRow(bidresponseid: Int, currency: String = "USD", bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddatetimestamp: java.time.Instant)
+  case class BidresponseRow(bidresponseid: Int, currency: Option[String] = Some("USD"), bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
-  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[java.time.Instant]): GR[BidresponseRow] = GR{
+  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[java.time.Instant]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<[java.time.Instant]))
+    BidresponseRow.tupled((<<[Int], <<?[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<[java.time.Instant]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
     def * = (bidresponseid, currency, bidrequestid, isanybidwontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddatetimestamp) <> (BidresponseRow.tupled, BidresponseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(bidresponseid), Rep.Some(currency), bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6.get, _7.get, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(bidresponseid), currency, bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val bidresponseid: Rep[Int] = column[Int]("BidResponseId", O.AutoInc, O.PrimaryKey)
-    /** Database column Currency SqlType(TEXT), Default(USD) */
-    val currency: Rep[String] = column[String]("Currency", O.Default("USD"))
+    /** Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD)) */
+    val currency: Rep[Option[String]] = column[Option[String]]("Currency", O.Length(5,varying=false), O.Default(Some("USD")))
     /** Database column BidRequestId SqlType(INTEGER), Default(None) */
     val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
     /** Database column IsAnyBidWonTheAuction SqlType(INTEGER), Length(1,false), Default(0) */
@@ -901,12 +901,12 @@ trait Tables {
    *  @param message Database column Message SqlType(TEXT)
    *  @param entitydata Database column EntityData SqlType(TEXT)
    *  @param databasetransactiontypeid Database column DatabaseTransactionTypeId SqlType(INTEGER)
-   *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(NUMERIC) */
-  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontypeid: Option[Int], createddatetimestamp: Option[Double])
+   *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
+  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontypeid: Option[Int], createddatetimestamp: Option[java.time.Instant])
   /** GetResult implicit for fetching LogtraceRow objects using plain SQL queries */
-  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[Option[Double]]): GR[LogtraceRow] = GR{
+  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[Option[java.time.Instant]]): GR[LogtraceRow] = GR{
     prs => import prs._
-    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[Double]))
+    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[java.time.Instant]))
   }
   /** Table description of table LogTrace. Objects of this class serve as prototypes for rows in queries. */
   class Logtrace(_tableTag: Tag) extends profile.api.Table[LogtraceRow](_tableTag, "LogTrace") {
@@ -928,8 +928,8 @@ trait Tables {
     val entitydata: Rep[Option[String]] = column[Option[String]]("EntityData")
     /** Database column DatabaseTransactionTypeId SqlType(INTEGER) */
     val databasetransactiontypeid: Rep[Option[Int]] = column[Option[Int]]("DatabaseTransactionTypeId")
-    /** Database column CreatedDateTimestamp SqlType(NUMERIC) */
-    val createddatetimestamp: Rep[Option[Double]] = column[Option[Double]]("CreatedDateTimestamp")
+    /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
+    val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
   }
   /** Collection-like TableQuery object for table Logtrace */
   lazy val Logtrace = new TableQuery(tag => new Logtrace(tag))
@@ -939,20 +939,20 @@ trait Tables {
    *  @param bidid Database column BidId SqlType(INTEGER)
    *  @param reason Database column Reason SqlType(TEXT)
    *  @param losingprice Database column LosingPrice SqlType(REAL)
-   *  @param currency Database column Currency SqlType(TEXT), Default(USD)
+   *  @param currency Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD))
    *  @param demandsideplatformid Database column DemandSidePlatformId SqlType(INTEGER)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class LostbidRow(lostbidid: Int, bidid: Option[Int], reason: Option[String], losingprice: Option[Double], currency: String = "USD", demandsideplatformid: Int, createddatetimestamp: java.time.Instant)
+  case class LostbidRow(lostbidid: Int, bidid: Option[Int], reason: Option[String], losingprice: Option[Double], currency: Option[String] = Some("USD"), demandsideplatformid: Int, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching LostbidRow objects using plain SQL queries */
-  implicit def GetResultLostbidRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[Double]], e4: GR[String], e5: GR[java.time.Instant]): GR[LostbidRow] = GR{
+  implicit def GetResultLostbidRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[Double]], e4: GR[java.time.Instant]): GR[LostbidRow] = GR{
     prs => import prs._
-    LostbidRow.tupled((<<[Int], <<?[Int], <<?[String], <<?[Double], <<[String], <<[Int], <<[java.time.Instant]))
+    LostbidRow.tupled((<<[Int], <<?[Int], <<?[String], <<?[Double], <<?[String], <<[Int], <<[java.time.Instant]))
   }
   /** Table description of table LostBid. Objects of this class serve as prototypes for rows in queries. */
   class Lostbid(_tableTag: Tag) extends profile.api.Table[LostbidRow](_tableTag, "LostBid") {
     def * = (lostbidid, bidid, reason, losingprice, currency, demandsideplatformid, createddatetimestamp) <> (LostbidRow.tupled, LostbidRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(lostbidid), bidid, reason, losingprice, Rep.Some(currency), Rep.Some(demandsideplatformid), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> LostbidRow.tupled((_1.get, _2, _3, _4, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(lostbidid), bidid, reason, losingprice, currency, Rep.Some(demandsideplatformid), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> LostbidRow.tupled((_1.get, _2, _3, _4, _5, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column LostBidId SqlType(INTEGER), AutoInc, PrimaryKey */
     val lostbidid: Rep[Int] = column[Int]("LostBidId", O.AutoInc, O.PrimaryKey)
@@ -962,8 +962,8 @@ trait Tables {
     val reason: Rep[Option[String]] = column[Option[String]]("Reason")
     /** Database column LosingPrice SqlType(REAL) */
     val losingprice: Rep[Option[Double]] = column[Option[Double]]("LosingPrice")
-    /** Database column Currency SqlType(TEXT), Default(USD) */
-    val currency: Rep[String] = column[String]("Currency", O.Default("USD"))
+    /** Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD)) */
+    val currency: Rep[Option[String]] = column[Option[String]]("Currency", O.Length(5,varying=false), O.Default(Some("USD")))
     /** Database column DemandSidePlatformId SqlType(INTEGER) */
     val demandsideplatformid: Rep[Int] = column[Int]("DemandSidePlatformId")
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
@@ -1005,7 +1005,7 @@ trait Tables {
    *  @param impressionid Database column ImpressionId SqlType(INTEGER), Default(None)
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
    *  @param bidfloor Database column BidFloor SqlType(REAL), Default(Some(0.0))
-   *  @param bidfloorcurrency Database column BidFloorCurrency SqlType(TEXT), Length(3,false) */
+   *  @param bidfloorcurrency Database column BidFloorCurrency SqlType(TEXT), Length(5,false) */
   case class PrivatemarketplacedealRow(privatemarketplacedealid: Int, impressionid: Option[Int] = None, bidrequestid: Option[Int] = None, bidfloor: Option[Double] = Some(0.0), bidfloorcurrency: Option[String])
   /** GetResult implicit for fetching PrivatemarketplacedealRow objects using plain SQL queries */
   implicit def GetResultPrivatemarketplacedealRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[Double]], e3: GR[Option[String]]): GR[PrivatemarketplacedealRow] = GR{
@@ -1026,8 +1026,8 @@ trait Tables {
     val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
     /** Database column BidFloor SqlType(REAL), Default(Some(0.0)) */
     val bidfloor: Rep[Option[Double]] = column[Option[Double]]("BidFloor", O.Default(Some(0.0)))
-    /** Database column BidFloorCurrency SqlType(TEXT), Length(3,false) */
-    val bidfloorcurrency: Rep[Option[String]] = column[Option[String]]("BidFloorCurrency", O.Length(3,varying=false))
+    /** Database column BidFloorCurrency SqlType(TEXT), Length(5,false) */
+    val bidfloorcurrency: Rep[Option[String]] = column[Option[String]]("BidFloorCurrency", O.Length(5,varying=false))
   }
   /** Collection-like TableQuery object for table Privatemarketplacedeal */
   lazy val Privatemarketplacedeal = new TableQuery(tag => new Privatemarketplacedeal(tag))
@@ -1122,19 +1122,19 @@ trait Tables {
    *  @param advertiseid Database column AdvertiseId SqlType(INTEGER)
    *  @param spend Database column Spend SqlType(REAL)
    *  @param impressionid Database column ImpressionId SqlType(INTEGER)
-   *  @param currency Database column Currency SqlType(TEXT), Default(USD)
+   *  @param currency Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD))
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class TransactionRow(transactionid: Int, advertiseid: Int, spend: Double, impressionid: Int, currency: String = "USD", createddatetimestamp: java.time.Instant)
+  case class TransactionRow(transactionid: Int, advertiseid: Int, spend: Double, impressionid: Int, currency: Option[String] = Some("USD"), createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching TransactionRow objects using plain SQL queries */
-  implicit def GetResultTransactionRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[String], e3: GR[java.time.Instant]): GR[TransactionRow] = GR{
+  implicit def GetResultTransactionRow(implicit e0: GR[Int], e1: GR[Double], e2: GR[Option[String]], e3: GR[java.time.Instant]): GR[TransactionRow] = GR{
     prs => import prs._
-    TransactionRow.tupled((<<[Int], <<[Int], <<[Double], <<[Int], <<[String], <<[java.time.Instant]))
+    TransactionRow.tupled((<<[Int], <<[Int], <<[Double], <<[Int], <<?[String], <<[java.time.Instant]))
   }
   /** Table description of table Transaction. Objects of this class serve as prototypes for rows in queries. */
   class Transaction(_tableTag: Tag) extends profile.api.Table[TransactionRow](_tableTag, "Transaction") {
     def * = (transactionid, advertiseid, spend, impressionid, currency, createddatetimestamp) <> (TransactionRow.tupled, TransactionRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(transactionid), Rep.Some(advertiseid), Rep.Some(spend), Rep.Some(impressionid), Rep.Some(currency), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> TransactionRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(transactionid), Rep.Some(advertiseid), Rep.Some(spend), Rep.Some(impressionid), currency, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> TransactionRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column TransactionId SqlType(INTEGER), AutoInc, PrimaryKey */
     val transactionid: Rep[Int] = column[Int]("TransactionId", O.AutoInc, O.PrimaryKey)
@@ -1144,8 +1144,8 @@ trait Tables {
     val spend: Rep[Double] = column[Double]("Spend")
     /** Database column ImpressionId SqlType(INTEGER) */
     val impressionid: Rep[Int] = column[Int]("ImpressionId")
-    /** Database column Currency SqlType(TEXT), Default(USD) */
-    val currency: Rep[String] = column[String]("Currency", O.Default("USD"))
+    /** Database column Currency SqlType(TEXT), Length(5,false), Default(Some(USD)) */
+    val currency: Rep[Option[String]] = column[Option[String]]("Currency", O.Length(5,varying=false), O.Default(Some("USD")))
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 

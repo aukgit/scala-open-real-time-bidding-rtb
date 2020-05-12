@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 03/05/2020 02:14:29
+ Date: 13/05/2020 02:53:59
 */
 
 PRAGMA foreign_keys = false;
@@ -28,19 +28,19 @@ CREATE TABLE "Advertise" (
   "BidUrl" TEXT NOT NULL,
   "IFrameHtml" TEXT,
   "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
-  "IsBanner" integer(1) DEFAULT 0,
+  "IsBanner" INTEGER(1) DEFAULT 0,
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
   "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
-  "Height" integer NOT NULL DEFAULT 0,
-  "Width" integer NOT NULL DEFAULT 0,
-  "MinHeight" integer NOT NULL DEFAULT 0,
-  "MinWidth" integer NOT NULL DEFAULT 0,
-  "MaxHeight" integer NOT NULL DEFAULT 0,
-  "MaxWidth" integer NOT NULL DEFAULT 0,
+  "Height" INTEGER NOT NULL DEFAULT 0,
+  "Width" INTEGER NOT NULL DEFAULT 0,
+  "MinHeight" INTEGER NOT NULL DEFAULT 0,
+  "MinWidth" INTEGER NOT NULL DEFAULT 0,
+  "MaxHeight" INTEGER NOT NULL DEFAULT 0,
+  "MaxWidth" INTEGER NOT NULL DEFAULT 0,
   "HasAgeRestriction" INTEGER(1) NOT NULL,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
-  "CreatedDate" real,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
@@ -53,10 +53,10 @@ DROP TABLE IF EXISTS "Auction";
 CREATE TABLE "Auction" (
   "AuctionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "WinningBidRequestId" INTEGER DEFAULT NULL,
-  "IsPrecachedAdvertiseServed" integer(1) NOT NULL DEFAULT 0,
+  "IsPrecachedAdvertiseServed" INTEGER(1) NOT NULL DEFAULT 0,
   "WinningPrice" REAL NOT NULL DEFAULT -1,
-  "Currency" TEXT NOT NULL DEFAULT "USD",
-  "CreatedDated" real NOT NULL,
+  "Currency" TEXT(5) DEFAULT 'USD',
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "WinningBidRequestIdFK" FOREIGN KEY ("WinningBidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -76,20 +76,20 @@ DROP TABLE IF EXISTS "Bid";
 CREATE TABLE "Bid" (
   "BidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BidRawJson" TEXT DEFAULT NULL,
-  "DealBiddingPrice" real DEFAULT 0,
+  "DealBiddingPrice" REAL DEFAULT 0,
   "ActualWiningPrice" REAL DEFAULT 0,
-  "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
+  "IsImpressionServedOrWonByAuction" INTEGER(1) DEFAULT 0,
   "SeatBidId" INTEGER NOT NULL,
   "CampaignId" INTEGER DEFAULT NULL,
   "ImpressionId" INTEGER DEFAULT NULL,
   "AdvertiseId" INTEGER DEFAULT NULL,
   "CreativeAttributeId" INTEGER DEFAULT NULL,
-  "Adm" text DEFAULT NULL,
-  "NUrl" text DEFAULT NULL,
+  "Adm" TEXT DEFAULT NULL,
+  "NUrl" TEXT DEFAULT NULL,
   "IUrl" TEXT DEFAULT NULL,
-  "Height" integer DEFAULT NULL,
-  "Width" integer DEFAULT NULL,
-  "CreatedDate" real DEFAULT 0,
+  "Height" INTEGER DEFAULT NULL,
+  "Width" INTEGER DEFAULT NULL,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -103,8 +103,8 @@ CREATE TABLE "Bid" (
 DROP TABLE IF EXISTS "BidContentCategoriesMapping";
 CREATE TABLE "BidContentCategoriesMapping" (
   "BidContentCategoriesMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "BidId" integer NOT NULL,
-  "ContentCategoryId" text NOT NULL,
+  "BidId" INTEGER NOT NULL,
+  "ContentCategoryId" TEXT NOT NULL,
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -117,19 +117,19 @@ CREATE TABLE "BidRequest" (
   "BidRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "DemandSidePlatformId" INTEGER NOT NULL,
   "AuctionId" INTEGER DEFAULT NULL,
-  "IsBanner" integer(1) NOT NULL DEFAULT 0,
-  "IsVideo" integer(1) NOT NULL DEFAULT 0,
-  "Height" integer DEFAULT NULL,
-  "Width" integer DEFAULT NULL,
+  "IsBanner" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
+  "Height" INTEGER DEFAULT NULL,
+  "Width" INTEGER DEFAULT NULL,
   "Countries" TEXT DEFAULT NULL,
   "Cities" TEXT DEFAULT NULL,
   "TargetedSites" TEXT DEFAULT NULL,
   "TargetedCities" TEXT DEFAULT NULL,
   "RawBidRequestJson" TEXT NOT NULL DEFAULT '',
-  "Currency" TEXT(5) DEFAULT USD,
+  "Currency" TEXT(5) DEFAULT 'USD',
   "ContentContextId" INTEGER DEFAULT NULL,
-  "IsWonTheAuction" integer(1) NOT NULL DEFAULT 0,
-  "CreatedDate" real DEFAULT 0,
+  "IsWonTheAuction" INTEGER(1) NOT NULL DEFAULT 0,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -140,15 +140,15 @@ CREATE TABLE "BidRequest" (
 -- ----------------------------
 DROP TABLE IF EXISTS "BidResponse";
 CREATE TABLE "BidResponse" (
-  "BidResponseId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "Currency" TEXT NOT NULL DEFAULT "USD",
+  "BidResponseId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Currency" TEXT(5) DEFAULT 'USD',
   "BidRequestId" INTEGER DEFAULT NULL,
-  "IsAnyBidWonTheAuction" integer(1) NOT NULL DEFAULT 0,
-  "IsAuctionOccured" integer(1) NOT NULL DEFAULT 0,
-  "IsPreCachedBidServed" integer(1) NOT NULL DEFAULT 0,
-  "IsSendNoBidResponse" integer(1) NOT NULL DEFAULT 0,
+  "IsAnyBidWonTheAuction" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsAuctionOccured" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsPreCachedBidServed" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsSendNoBidResponse" INTEGER(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
-  "CreatedDate" real DEFAULT NULL,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -160,24 +160,24 @@ DROP TABLE IF EXISTS "Campaign";
 CREATE TABLE "Campaign" (
   "CampaignId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignName" TEXT NOT NULL,
-  "ContentCategoryId" text DEFAULT NULL,
-  "TotalBudgetCPM" real NOT NULL DEFAULT 0,
-  "SpendAlready" real NOT NULL DEFAULT 0,
-  "RemainingAmount" real NOT NULL DEFAULT 0,
-  "StartDate" real DEFAULT 0,
-  "EndDate" real DEFAULT 0,
-  "ImpressionCount" integer NOT NULL DEFAULT 0,
-  "DemandSidePlatformId" integer NOT NULL,
-  "IsRunning" integer(1) NOT NULL DEFAULT 0,
-  "Priority" integer(3) NOT NULL DEFAULT 999,
-  "IsRetrictToUserGender" integer(1) NOT NULL DEFAULT 0,
-  "ExpectedUserGender" TEXT(2) DEFAULT NULL,
+  "ContentCategoryId" TEXT DEFAULT NULL,
+  "TotalBudgetCPM" REAL NOT NULL DEFAULT 0,
+  "SpendAlready" REAL NOT NULL DEFAULT 0,
+  "RemainingAmount" REAL NOT NULL DEFAULT 0,
+  "StartDate" REAL DEFAULT 0,
+  "EndDate" REAL DEFAULT 0,
+  "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
   "PublisherId" INTEGER DEFAULT NULL,
-  "CreatedDate" REAL DEFAULT 0,
-  "ModifiedDate" REAL DEFAULT 0,
-  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "DemandSidePlatformId" INTEGER NOT NULL,
+  "IsRunning" INTEGER(1) NOT NULL DEFAULT 0,
+  "Priority" INTEGER(3) NOT NULL DEFAULT 999,
+  "IsRetrictToUserGender" INTEGER(1) NOT NULL DEFAULT 0,
+  "ExpectedUserGender" TEXT(2) DEFAULT NULL,
+  "ModifiedDate" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE SET NULL ON UPDATE SET NULL,
+  CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   UNIQUE ("CampaignId" ASC)
 );
 
@@ -186,9 +186,9 @@ CREATE TABLE "Campaign" (
 -- ----------------------------
 DROP TABLE IF EXISTS "CampaignTargetCity";
 CREATE TABLE "CampaignTargetCity" (
-  "CampaignTargetCityId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CampaignTargetCityId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignTargetCity" TEXT NOT NULL,
-  "CampaignId" integer NOT NULL,
+  "CampaignId" INTEGER NOT NULL,
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -197,9 +197,9 @@ CREATE TABLE "CampaignTargetCity" (
 -- ----------------------------
 DROP TABLE IF EXISTS "CampaignTargetOperatingSystem";
 CREATE TABLE "CampaignTargetOperatingSystem" (
-  "CampaignTargetOperatingSystemId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CampaignTargetOperatingSystemId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignTargetOperatingSystem" TEXT NOT NULL,
-  "CampaignId" integer NOT NULL,
+  "CampaignId" INTEGER NOT NULL,
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -208,9 +208,9 @@ CREATE TABLE "CampaignTargetOperatingSystem" (
 -- ----------------------------
 DROP TABLE IF EXISTS "CampaignTargetSite";
 CREATE TABLE "CampaignTargetSite" (
-  "CampaignTargetSiteId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "CampaignTargetSiteId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "CampaignTargetSite" TEXT NOT NULL,
-  "CampaignId" integer NOT NULL,
+  "CampaignId" INTEGER NOT NULL,
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -219,7 +219,7 @@ CREATE TABLE "CampaignTargetSite" (
 -- ----------------------------
 DROP TABLE IF EXISTS "ContentCategory";
 CREATE TABLE "ContentCategory" (
-  "ContentCategoryId" text NOT NULL,
+  "ContentCategoryId" TEXT NOT NULL,
   "ContentCategoryName" TEXT NOT NULL,
   PRIMARY KEY ("ContentCategoryId")
 );
@@ -269,7 +269,7 @@ CREATE TABLE "GeoMapping" (
   "GeoMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER DEFAULT NULL,
   "Country" TEXT DEFAULT NULL,
-  "HasCity" integer(1) NOT NULL DEFAULT 0,
+  "HasCity" INTEGER(1) NOT NULL DEFAULT 0,
   "City" TEXT DEFAULT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -282,12 +282,12 @@ CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "RawImpressionJson" TEXT NOT NULL DEFAULT "",
   "BidId" INTEGER DEFAULT NULL,
-  "IsImpressionServedOrWonByAuction" integer(1) DEFAULT 0,
-  "Bidfloor" real DEFAULT 0,
+  "IsImpressionServedOrWonByAuction" INTEGER(1) DEFAULT 0,
+  "Bidfloor" REAL DEFAULT 0,
   "BidfloorCur" TEXT DEFAULT "USD",
   "Hash" TEXT DEFAULT NULL,
-  "DisplayedDate" real DEFAULT 0,
-  "CreatedDate" real NOT NULL DEFAULT 0,
+  "DisplayDate" TIMESTAMP DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -305,7 +305,7 @@ CREATE TABLE "Keyword" (
 -- ----------------------------
 DROP TABLE IF EXISTS "KeywordAdvertiseMapping";
 CREATE TABLE "KeywordAdvertiseMapping" (
-  "KeywordAdvertiseMappingId" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "KeywordAdvertiseMappingId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER NOT NULL,
   "KeywordId" INTEGER NOT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -323,8 +323,8 @@ CREATE TABLE "LogTrace" (
   "Request" TEXT,
   "Message" TEXT,
   "EntityData" TEXT,
-  "DatabaseTransactionTypeId" integer,
-  "CreatedDate" real
+  "DatabaseTransactionTypeId" INTEGER,
+  "CreatedDateTimestamp" TIMESTAMP DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER))
 );
 
 -- ----------------------------
@@ -335,9 +335,10 @@ CREATE TABLE "LostBid" (
   "LostBidId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "BidId" INTEGER,
   "Reason" TEXT,
-  "LosingPrice" real,
-  "CreatedDate" real,
-  "DemandSidePlatformId" integer NOT NULL,
+  "LosingPrice" REAL,
+  "Currency" TEXT(5) DEFAULT 'USD',
+  "DemandSidePlatformId" INTEGER NOT NULL,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -359,8 +360,8 @@ CREATE TABLE "PrivateMarketPlaceDeal" (
   "PrivateMarketPlaceDealId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "ImpressionId" INTEGER DEFAULT NULL,
   "BidRequestId" INTEGER DEFAULT NULL,
-  "BidFloor" real DEFAULT 0,
-  "BidFloorCurrency" TEXT(3) DEFAULT "USD"
+  "BidFloor" REAL DEFAULT 0,
+  "BidFloorCurrency" TEXT(5) DEFAULT "USD"
 );
 
 -- ----------------------------
@@ -386,9 +387,9 @@ CREATE TABLE "SeatBid" (
   "BidResponseId" INTEGER DEFAULT NULL,
   "AuctionId" INTEGER DEFAULT NULL,
   "DemandSidePlatformId" INTEGER DEFAULT NULL,
-  "IsGroupBid" integer(1) DEFAULT 0,
+  "IsGroupBid" INTEGER(1) DEFAULT 0,
   "SeatBidRawJson" TEXT DEFAULT NULL,
-  "CreatedDate" real DEFAULT 0,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -402,10 +403,10 @@ DROP TABLE IF EXISTS "Transaction";
 CREATE TABLE "Transaction" (
   "TransactionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "AdvertiseId" INTEGER NOT NULL,
-  "Spend" real NOT NULL,
+  "Spend" REAL NOT NULL,
   "ImpressionId" INTEGER NOT NULL,
-  "Currency" TEXT NOT NULL,
-  "CreatedDate" real,
+  "Currency" TEXT(5) DEFAULT 'USD',
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -419,10 +420,10 @@ CREATE TABLE "UserClassification" (
   "UserKeywordsContains" TEXT DEFAULT NULL,
   "InternetProtocol" TEXT DEFAULT NULL,
   "Country" TEXT DEFAULT NULL,
-  "lat" real DEFAULT NULL,
-  "lon" real DEFAULT NULL,
-  "IsWhiteList" integer(1) DEFAULT 0,
-  "IsBlackList" integer(1) DEFAULT 0
+  "lat" REAL DEFAULT NULL,
+  "lon" REAL DEFAULT NULL,
+  "IsWhiteList" INTEGER(1) DEFAULT 0,
+  "IsBlackList" INTEGER(1) DEFAULT 0
 );
 
 -- ----------------------------
@@ -450,6 +451,16 @@ DROP TABLE IF EXISTS "sqlite_sequence";
 CREATE TABLE "sqlite_sequence" (
   "name" ,
   "seq" 
+);
+
+-- ----------------------------
+-- Table structure for sqlite_stat1
+-- ----------------------------
+DROP TABLE IF EXISTS "sqlite_stat1";
+CREATE TABLE "sqlite_stat1" (
+  "tbl" ,
+  "idx" ,
+  "stat" 
 );
 
 -- ----------------------------
@@ -524,9 +535,9 @@ CREATE VIEW "WinningPriceInfoView" AS SELECT
 	Auction.WinningPrice as AuctionWinningPrice, 	
 	Bid.DealBiddingPrice, 
 	Bid.ActualWiningPrice, 
-	Auction.CreatedDated AS AuctionCreatedDate, 
-	Bid.CreatedDate AS BiddingCreatedDate, 
-	Impression.CreatedDate AS ImpressionCreatedDate, 
+	Auction.CreatedDateTimestamp AS AuctionCreatedDateTimestamp, 
+	Bid.CreatedDateTimestamp AS BiddingCreatedDateTimestamp, 
+	Impression.CreatedDateTimestamp AS ImpressionCreatedDateTimestamp, 
 	Bid.IsImpressionServedOrWonByAuction AS IsWon, 
 	SeatBid.IsGroupBid	
 FROM
@@ -546,46 +557,19 @@ FROM
 		SeatBid.AuctionId = Auction.AuctionId;
 
 -- ----------------------------
--- Auto increment value for Advertise
--- ----------------------------
-
--- ----------------------------
 -- Auto increment value for BannerAdvertiseType
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
--- Auto increment value for Bid
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for BidContentCategoriesMapping
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for BidRequest
--- ----------------------------
-
--- ----------------------------
 -- Auto increment value for BidResponse
 -- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 121 WHERE name = 'BidResponse';
 
 -- ----------------------------
 -- Auto increment value for Campaign
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
-
--- ----------------------------
--- Auto increment value for CampaignTargetCity
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for CampaignTargetOperatingSystem
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for CampaignTargetSite
--- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for ContentContext
@@ -603,19 +587,7 @@ UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
 
 -- ----------------------------
--- Auto increment value for GeoMapping
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for Impression
--- ----------------------------
-
--- ----------------------------
 -- Auto increment value for LogTrace
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for LostBid
 -- ----------------------------
 
 -- ----------------------------
@@ -627,14 +599,6 @@ UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
 -- Auto increment value for Publisher
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
-
--- ----------------------------
--- Auto increment value for SeatBid
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for Transaction
--- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for VideoPlaybackMethod
