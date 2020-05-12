@@ -1,10 +1,10 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Member
 
 import shared.com.ortb.enumeration.ReflectionModifier
 import shared.com.ortb.manager.traits.CreateDefaultContext
-import shared.io.helpers.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 
 import scala.reflect.ClassTag
 

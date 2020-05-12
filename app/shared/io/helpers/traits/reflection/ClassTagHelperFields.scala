@@ -1,9 +1,9 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Field
 
 import shared.com.ortb.enumeration.ReflectionModifier
-import shared.io.helpers.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 
 import scala.reflect.ClassTag
 

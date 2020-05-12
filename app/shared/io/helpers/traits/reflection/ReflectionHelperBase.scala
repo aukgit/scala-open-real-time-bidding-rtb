@@ -1,15 +1,15 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.{ CaseClassFieldModel, CaseClassInfoModel }
-import shared.io.helpers._
+import shared.io.helpers.CastingHelper
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 import shared.io.loggers.AppLogger
 
-import scala.reflect.runtime.universe._
-import scala.reflect.runtime.{ universe => ru }
-
 trait ReflectionHelperBase {
+  lazy val classTagHelper : ClassTagHelper = new ClassTagHelperConcreteImplementation
+
   def getTypeTag[T : ru.TypeTag] : ru.TypeTag[T] =
     ru.typeTag[T]
 
@@ -123,6 +123,4 @@ trait ReflectionHelperBase {
 
     Some(array)
   }
-
-  lazy val classTagHelper : ClassTagHelper = new ClassTagHelperConcreteImplementation
 }

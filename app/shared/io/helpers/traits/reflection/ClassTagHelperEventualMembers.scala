@@ -1,10 +1,12 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Member
 
 import shared.com.ortb.model.reflection.{ ClassMembersInfoBaseModel, MemberWrapperBaseModel, MemberWrapperConcreteModel }
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
-import shared.io.helpers.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementation.ConcurrentArrayBufferWrapper
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.traits.ParallelTaskHelperBase
 
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
@@ -24,7 +26,7 @@ trait ClassTagHelperEventualMembers {
         totalCount += 1
       }
 
-      ParallelTaskHelper.runInThreads(
+      ParallelTaskHelperBase.runInThreads(
         "members collector",
         () =>
           classMembersInfo

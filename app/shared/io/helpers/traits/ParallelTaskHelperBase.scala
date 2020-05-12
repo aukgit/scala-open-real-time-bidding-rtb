@@ -2,7 +2,7 @@ package shared.io.helpers.traits
 
 import shared.io.helpers.EmptyValidateHelper
 
-trait ParallelTaskHelper {
+trait ParallelTaskHelperBase {
   def runInThreadsSequence(taskName : String, tasks : Seq[() => Unit]) : Unit = {
     if (EmptyValidateHelper.isItemsEmptyDirect(tasks)) {
       return;
@@ -25,4 +25,3 @@ trait ParallelTaskHelper {
     runInThreadsSequence(taskName, tasks)
 }
 
-object ParallelTaskHelper extends ParallelTaskHelper

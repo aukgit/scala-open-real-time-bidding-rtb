@@ -1,8 +1,9 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Field
 
-import shared.io.helpers.{ ClassTagHelperConcreteImplementation, EmptyValidateHelper }
+import shared.io.helpers.EmptyValidateHelper
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 
 import scala.reflect.ClassTag
 

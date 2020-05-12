@@ -1,6 +1,8 @@
-package shared.io.helpers.traits
+package shared.io.helpers.implementation
 
 import java.util.concurrent.ConcurrentMap
+
+import shared.io.helpers.traits.HashMapWithArrayBufferAdder
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer

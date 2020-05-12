@@ -1,9 +1,10 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.MethodWrapperModel
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
-import shared.io.helpers.{ ClassTagHelperConcreteImplementation, EmptyValidateHelper, MapHelper }
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.{ EmptyValidateHelper, MapHelper }
 
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag

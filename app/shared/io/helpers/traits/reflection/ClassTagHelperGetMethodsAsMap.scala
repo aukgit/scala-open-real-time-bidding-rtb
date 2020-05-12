@@ -1,8 +1,9 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Method
 
-import shared.io.helpers.{ ClassTagHelperConcreteImplementation, EmptyValidateHelper, MapHelper }
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.{ EmptyValidateHelper, MapHelper }
 
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag

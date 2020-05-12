@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.com.ortb.model.traits.ItemsExistence
 import shared.io.helpers.{ EmptyValidateHelper, ReflectionHelper }
-import shared.io.helpers.traits.{ ExtractHelper, ParameterCompareHelper }
+import shared.io.helpers.traits.{ ExtractHelperBase, ParameterCompareHelperBase }
 
 import scala.collection._
 import scala.collection.mutable.ArrayBuffer
@@ -36,7 +36,7 @@ case class ClassMembersInfoModel(
   extends ClassMembersInfoBaseModel {
 
   lazy val membersMaps : Map[String, ArrayBuffer[MemberWrapperBaseModel]] =
-    ExtractHelper.getFromEventualResult(
+    ExtractHelperBase.getFromEventualResult(
       ReflectionHelper
         .classTagHelper
         .getEventualMembersMap(this))
@@ -44,7 +44,7 @@ case class ClassMembersInfoModel(
       .toMap
 
   lazy val memberWrapperModels : LazyList[MemberWrapperBaseModel] =
-    ExtractHelper.getFromEventualResult(eventualMembers).to(LazyList)
+    ExtractHelperBase.getFromEventualResult(eventualMembers).to(LazyList)
 
   lazy val membersIterable : Iterable[Member] =
     memberWrapperModels.map(w => w.member)
@@ -74,7 +74,7 @@ case class ClassMembersInfoModel(
     }
 
     methods.filter(methodWrapperModel =>
-      ParameterCompareHelper.isParametersEquivalent(
+      ParameterCompareHelperBase.isParametersEquivalent(
         methodWrapperModel.parameters,
         parameters))
   }

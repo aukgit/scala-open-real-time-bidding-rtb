@@ -6,7 +6,7 @@ import shared.io.helpers.EmptyValidateHelper
 
 import scala.concurrent.Future
 
-trait ExtractHelper {
+trait ExtractHelperBase {
   def getFromEventual[T](item : Future[Option[T]]) : T = {
     val maybeT = FutureToRegular.toRegular(item)
     get(maybeT)
@@ -40,4 +40,4 @@ trait ExtractHelper {
   }
 }
 
-object ExtractHelper extends ExtractHelper
+

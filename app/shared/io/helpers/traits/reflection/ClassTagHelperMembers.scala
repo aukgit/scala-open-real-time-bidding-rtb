@@ -1,6 +1,6 @@
-package shared.io.helpers.traits
+package shared.io.helpers.traits.reflection
 
-import shared.io.helpers.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 
 trait ClassTagHelperMembers
   extends ClassTagHelperMemberInfoGetter
