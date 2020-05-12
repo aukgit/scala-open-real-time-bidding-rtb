@@ -4,6 +4,7 @@ import java.lang.reflect.Member
 
 import shared.com.ortb.model.reflection.{ ClassMembersInfoBaseModel, MemberWrapperBaseModel, MemberWrapperConcreteModel }
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
+import shared.io.helpers.ParallelTaskHelper
 import shared.io.helpers.implementation.ConcurrentArrayBufferWrapper
 import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.traits.ParallelTaskHelperBase
@@ -26,7 +27,7 @@ trait ClassTagHelperEventualMembers {
         totalCount += 1
       }
 
-      ParallelTaskHelperBase.runInThreads(
+      ParallelTaskHelper.runInThreads(
         "members collector",
         () =>
           classMembersInfo

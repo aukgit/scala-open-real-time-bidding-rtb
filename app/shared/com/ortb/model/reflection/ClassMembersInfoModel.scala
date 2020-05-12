@@ -1,12 +1,10 @@
 package shared.com.ortb.model.reflection
 
 import java.lang.reflect.{ Member, Parameter }
-import java.util.concurrent.ConcurrentHashMap
 
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.com.ortb.model.traits.ItemsExistence
-import shared.io.helpers.{ EmptyValidateHelper, ReflectionHelper }
-import shared.io.helpers.traits.{ ExtractHelperBase, ParameterCompareHelperBase }
+import shared.io.helpers.{ EmptyValidateHelper, ExtractHelper, ParameterCompareHelper, ReflectionHelper }
 
 import scala.collection._
 import scala.collection.mutable.ArrayBuffer
@@ -36,7 +34,7 @@ case class ClassMembersInfoModel(
   extends ClassMembersInfoBaseModel {
 
   lazy val membersMaps : Map[String, ArrayBuffer[MemberWrapperBaseModel]] =
-    ExtractHelperBase.getFromEventualResult(
+    ExtractHelper.getFromEventualResult(
       ReflectionHelper
         .classTagHelper
         .getEventualMembersMap(this))
@@ -44,7 +42,7 @@ case class ClassMembersInfoModel(
       .toMap
 
   lazy val memberWrapperModels : LazyList[MemberWrapperBaseModel] =
-    ExtractHelperBase.getFromEventualResult(eventualMembers).to(LazyList)
+    ExtractHelper.getFromEventualResult(eventualMembers).to(LazyList)
 
   lazy val membersIterable : Iterable[Member] =
     memberWrapperModels.map(w => w.member)
@@ -74,7 +72,7 @@ case class ClassMembersInfoModel(
     }
 
     methods.filter(methodWrapperModel =>
-      ParameterCompareHelperBase.isParametersEquivalent(
+      ParameterCompareHelper.isParametersEquivalent(
         methodWrapperModel.parameters,
         parameters))
   }

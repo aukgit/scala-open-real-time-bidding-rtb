@@ -7,5 +7,4 @@ trait ClassTagHelperMembers
     with ClassTagHelperEventualMembers
     with ClassTagHelperEventualMembersMap {
   this : ClassTagHelperConcreteImplementation =>
-
 }

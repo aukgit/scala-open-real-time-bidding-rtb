@@ -12,9 +12,13 @@ import scala.reflect.ClassTag
 trait ClassTagHelperConstructorWrappersAsMap {
   this : ClassTagHelperConcreteImplementation =>
   def getConstructorWrapperModelsAsMap[T](implicit ct : ClassTag[T]) :
+  ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]] =
+    getConstructorWrapperModelsAsMap(getClass[T](ct))
+
+  def getConstructorWrapperModelsAsMap(classRefection : Class[_]) :
   ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]] = {
-    val constructors = getConstructors[T]
-    val typeName = ct.runtimeClass.getTypeName
+    val constructors = classRefection.getConstructors
+    val typeName = classRefection.getTypeName
     val length = constructors.length
     val classHeader = s"[${ typeName.toString }] "
     if (EmptyValidateHelper.isItemsEmptyDirect(constructors)) {

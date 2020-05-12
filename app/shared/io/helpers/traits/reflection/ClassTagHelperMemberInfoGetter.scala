@@ -1,6 +1,7 @@
 package shared.io.helpers.traits.reflection
 
 import shared.com.ortb.model.reflection.{ ClassMembersInfoBaseImplementationModel, ClassMembersInfoModel }
+import shared.io.helpers.ExtractHelper
 import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.traits.ExtractHelperBase
 
@@ -12,10 +13,10 @@ trait ClassTagHelperMemberInfoGetter {
     val classT = clazz.getClass
     val fields = getFieldWrapperModelsAsMap(classT)
     val methods = getMethodWrapperModelsAsMap(classT)
-    val constructors = getConstructorWrapperModelsAsMap[T](ct)
-    val extractedFields = ExtractHelperBase.getFromResult(fields)
-    val extractedMethods = ExtractHelperBase.getFromResult(methods)
-    val extractedConstructors = ExtractHelperBase.getFromResult(constructors)
+    val constructors = getConstructorWrapperModelsAsMap(classT)
+    val extractedFields = ExtractHelper.getFromResult(fields)
+    val extractedMethods = ExtractHelper.getFromResult(methods)
+    val extractedConstructors = ExtractHelper.getFromResult(constructors)
 
     val clx = ClassMembersInfoBaseImplementationModel(
       classT,

@@ -7,6 +7,9 @@ import shared.io.helpers.CastingHelper
 import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
 import shared.io.loggers.AppLogger
 
+import scala.reflect.runtime.universe._
+import scala.reflect.runtime.{ universe => ru }
+
 trait ReflectionHelperBase {
   lazy val classTagHelper : ClassTagHelper = new ClassTagHelperConcreteImplementation
 
