@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 14/05/2020 03:28:05
+ Date: 14/05/2020 03:55:01
 */
 
 PRAGMA foreign_keys = false;
@@ -40,7 +40,7 @@ CREATE TABLE "Advertise" (
   "HasAgeRestriction" INTEGER(1) NOT NULL,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
@@ -56,7 +56,7 @@ CREATE TABLE "Auction" (
   "IsPrecachedAdvertiseServed" INTEGER(1) NOT NULL DEFAULT 0,
   "WinningPrice" REAL NOT NULL DEFAULT -1,
   "Currency" TEXT(5) DEFAULT 'USD',
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "WinningBidRequestIdFK" FOREIGN KEY ("WinningBidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE "Bid" (
   "IUrl" TEXT DEFAULT NULL,
   "Height" INTEGER DEFAULT NULL,
   "Width" INTEGER DEFAULT NULL,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "CampaignIdFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFk" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -129,7 +129,7 @@ CREATE TABLE "BidRequest" (
   "Currency" TEXT(5) DEFAULT 'USD',
   "ContentContextId" INTEGER DEFAULT NULL,
   "IsWonTheAuction" INTEGER(1) NOT NULL DEFAULT 0,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -148,7 +148,7 @@ CREATE TABLE "BidResponse" (
   "IsPreCachedBidServed" INTEGER(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" INTEGER(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
-  "CreatedDateTimestamp" TIMESTAMP,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -173,8 +173,8 @@ CREATE TABLE "Campaign" (
   "Priority" INTEGER(3) NOT NULL DEFAULT 999,
   "IsRetrictToUserGender" INTEGER(1) NOT NULL DEFAULT 0,
   "ExpectedUserGender" TEXT(2) DEFAULT NULL,
-  "ModifiedDate" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "ModifiedDate" TIMESTAMP NOT NULL,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "DemandSidePlatformIdFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ContentCategoryIdFK" FOREIGN KEY ("ContentCategoryId") REFERENCES "ContentCategory" ("ContentCategoryId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "PublisherIdCampaignFK" FOREIGN KEY ("PublisherId") REFERENCES "Publisher" ("PublisherId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -286,8 +286,8 @@ CREATE TABLE "Impression" (
   "Bidfloor" REAL DEFAULT 0,
   "BidfloorCur" TEXT DEFAULT "USD",
   "Hash" TEXT DEFAULT NULL,
-  "DisplayDate" TIMESTAMP DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "DisplayDate" TIMESTAMP NOT NULL,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
@@ -338,7 +338,7 @@ CREATE TABLE "LostBid" (
   "LosingPrice" REAL,
   "Currency" TEXT(5) DEFAULT 'USD',
   "DemandSidePlatformId" INTEGER NOT NULL,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "DemandSidePlatformFK" FOREIGN KEY ("DemandSidePlatformId") REFERENCES "DemandSidePlatform" ("DemandSidePlatformId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -389,7 +389,7 @@ CREATE TABLE "SeatBid" (
   "DemandSidePlatformId" INTEGER DEFAULT NULL,
   "IsGroupBid" INTEGER(1) DEFAULT 0,
   "SeatBidRawJson" TEXT DEFAULT NULL,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "AuctionIdFK" FOREIGN KEY ("AuctionId") REFERENCES "Auction" ("AuctionId") ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -406,7 +406,7 @@ CREATE TABLE "Transaction" (
   "Spend" REAL NOT NULL,
   "ImpressionId" INTEGER NOT NULL,
   "Currency" TEXT(5) DEFAULT 'USD',
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "AdvertiseIdFK" FOREIGN KEY ("AdvertiseId") REFERENCES "Advertise" ("AdvertiseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
