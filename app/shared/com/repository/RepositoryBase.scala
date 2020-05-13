@@ -1,10 +1,8 @@
 package shared.com.repository
 
 import com.google.inject.Inject
-import shared.com.ortb.exceptions.NotSupportException
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
-import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.persistent.schema.DatabaseSchema
 import shared.com.repository.traits.implementions.adapters.{ RepositoryJsonAdapterImplementation, RepositoryWrapperAdapterImplementation }
 import shared.com.repository.traits.implementions.operations.mutations.RepositoryOperationsImplementation
@@ -13,16 +11,12 @@ import shared.com.repository.traits.implementions.operations.queries.SingleRepos
 import shared.com.repository.traits.implementions.{ EntityResponseCreatorImplementation, RepositoryRowsToResponseConverterImplementation }
 import shared.com.repository.traits.{ FutureToRegular, _ }
 import shared.io.jsonParse.implementations.JsonCirceDefaultEncodersImplementation
-import shared.io.jsonParse.traits.CirceJsonSupport
 import shared.io.loggers.DatabaseLogTracerImplementation
-import slick.dbio.{ Effect, NoStream }
-import slick.lifted.Query
-import slick.sql.FixedSqlAction
 
 import scala.concurrent.duration._
 
 abstract class RepositoryBase[TTable, TRow, TKey] @Inject()
-(val appManager : AppManager)
+(appManager : AppManager)
   extends DatabaseSchema(appManager)
     with SingleRepositoryBaseImplementation[TTable, TRow, TKey]
     with EntityResponseCreatorImplementation[TTable, TRow, TKey]
@@ -47,7 +41,6 @@ abstract class RepositoryBase[TTable, TRow, TKey] @Inject()
     if (config != null && config.defaultTimeout < 0) Duration.Inf
     else config.defaultTimeout.seconds
 
-  lazy val config : ConfigModel = appManager.config
   lazy protected val headerMessage : String = s"[$tableName] ->"
 
   /**

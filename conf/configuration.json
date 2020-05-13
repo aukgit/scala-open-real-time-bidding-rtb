@@ -134,11 +134,14 @@
     }
   },
   "databaseRelativePath": "openRTBSample.db",
-  "isDebug": true,
-  "isLogError": true,
-  "isLogDatabaseQueryLogs": true,
-  "isLogDatabaseActionsToDatabase": true,
-  "isEnableSentry": false,
+  "logConfiguration": {
+    "isDebug": true,
+    "isLogError": true,
+    "isLogDatabaseQueryLogs": true,
+    "isLogDatabaseActionsToDatabase": true,
+    "isPrintDuringLogDatabaseActionsToDatabase": true,
+    "isEnableSentry": false
+  },
   "author": "Md. Alim Ul Karim",
   "databaseGenerate": {
     "profile": "slick.jdbc.SQLiteProfile",

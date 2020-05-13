@@ -1,6 +1,7 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.auctionbid.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel }
 import shared.com.ortb.model.logging.LogTraceModel
@@ -68,7 +69,8 @@ trait BiddableInfoModelsGetter {
     val logModel = LogTraceModel(
       methodName,
       request = Some(impression),
-      entity = Some(model))
+      entity = Some(model),
+      databaseTransactionType = Some(DatabaseActionType.Read.toString))
 
     coreProperties.databaseLogger.trace(logModel)
 

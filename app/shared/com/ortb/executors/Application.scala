@@ -31,7 +31,7 @@ object Application {
 
     val row = BidresponseRow(
       -1,
-      createddatetimestamp = None)
+      createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
     val response = bidResponseRepository
       .add(row)
 
@@ -45,7 +45,7 @@ object Application {
 
     val we = ReflectionHelper.getProductInfoModel(res)
 
-    // AppLogger.debug(response.toString)
+    AppLogger.debug(response.toString)
 
   }
 }
