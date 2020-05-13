@@ -12,9 +12,9 @@
 - Or any issues [create an issue](https://github.com/aukgit/scala-open-real-time-bidding-rtb/issues/new)
 
 # Documents Links
-- IAB OpenRTB 2.3 Specs link :
-- OpenRTB Notes : 
-- Other Notes :
+- IAB OpenRTB 2.3 Specs link : https://bit.ly/3brj8Qf
+- OpenRTB Notes (Details and terms for OpenRTB) : https://bit.ly/3bqqt2r
+- **Other Notes** [Important] : https://bit.ly/3cwPcDC
 
 # Videos Learning Regarding OpenRTB/Auction
 - https://bit.ly/3ebe30Y
@@ -33,5 +33,6 @@ https://github.com/tporadowski/redis/releases/tag/v5.0.9
 # How it works
 
 # Contributors
+- [Md. Alim Ul Karim (@aukgit)](https://github.com/aukgit) | alim.karim.git at gmail
 
 # Story
