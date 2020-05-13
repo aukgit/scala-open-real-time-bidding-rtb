@@ -13,6 +13,9 @@ trait ConfigurationExpansion {
   /**
    * Determinate weather to log queries to database or not
    */
-  lazy val isLogDatabaseActionsToDatabase : Boolean = logConfiguration.isLogDatabaseActionsToDatabase
+  lazy val isDatabaseTraceEnabled : Boolean =
+    logConfiguration.isLogDatabaseActionsToDatabase ||
+      logConfiguration.isPrintDuringLogDatabaseActionsToDatabase
+
   val appManager : AppManager
 }

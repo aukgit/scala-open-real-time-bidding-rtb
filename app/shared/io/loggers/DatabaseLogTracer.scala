@@ -63,7 +63,7 @@ trait DatabaseLogTracer extends ConfigurationExpansion {
         maybeModel = Some(row))
     }
 
-    if (isLogDatabaseActionsToDatabase) {
+    if (logConfiguration.isLogDatabaseActionsToDatabase) {
       val addAction = logTraceRepository.getAddAction(row)
 
       logTraceRepository.saveAsync(
