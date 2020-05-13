@@ -156,7 +156,7 @@ CREATE TABLE "BidResponse" (
   "IsPreCachedBidServed" INTEGER(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" INTEGER(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
-  "CreatedDateTimestamp" TIMESTAMP,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -386,7 +386,7 @@ CREATE TABLE "Impression" (
   "Bidfloor" REAL DEFAULT 0,
   "BidfloorCur" TEXT DEFAULT "USD",
   "Hash" TEXT DEFAULT NULL,
-  "DisplayDate" TIMESTAMP,
+  "DisplayDate" TIMESTAMP NOT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
