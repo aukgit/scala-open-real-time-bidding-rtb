@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 13/05/2020 03:37:58
+ Date: 14/05/2020 03:28:05
 */
 
 PRAGMA foreign_keys = false;
@@ -148,7 +148,7 @@ CREATE TABLE "BidResponse" (
   "IsPreCachedBidServed" INTEGER(1) NOT NULL DEFAULT 0,
   "IsSendNoBidResponse" INTEGER(1) NOT NULL DEFAULT 0,
   "NoBidResponseTypeId" INTEGER DEFAULT NULL,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
+  "CreatedDateTimestamp" TIMESTAMP,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "NoBidResponseTypeIdFK" FOREIGN KEY ("NoBidResponseTypeId") REFERENCES "NoBidResponseType" ("NoBidResponseTypeId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -323,8 +323,8 @@ CREATE TABLE "LogTrace" (
   "Request" TEXT,
   "Message" TEXT,
   "EntityData" TEXT,
-  "DatabaseTransactionTypeId" INTEGER,
-  "CreatedDateTimestamp" TIMESTAMP DEFAULT (CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER))
+  "DatabaseTransactionType" TEXT,
+  "CreatedDateTimestamp" TIMESTAMP
 );
 
 -- ----------------------------
@@ -562,10 +562,6 @@ FROM
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
--- Auto increment value for BidResponse
--- ----------------------------
-
--- ----------------------------
 -- Auto increment value for Campaign
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
@@ -584,10 +580,6 @@ UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 -- Auto increment value for DemandSidePlatform
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
-
--- ----------------------------
--- Auto increment value for LogTrace
--- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for NoBidResponseType
