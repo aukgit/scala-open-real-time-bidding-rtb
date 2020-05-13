@@ -399,17 +399,17 @@ trait Tables {
    *  @param issendnobidresponse Database column IsSendNoBidResponse SqlType(INTEGER), Length(1,false), Default(0)
    *  @param nobidresponsetypeid Database column NoBidResponseTypeId SqlType(INTEGER), Default(None)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class BidresponseRow(bidresponseid: Int, currency: Option[String] = Some("USD"), bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddatetimestamp: java.time.Instant)
+  case class BidresponseRow(bidresponseid: Int, currency: Option[String] = Some("USD"), bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddatetimestamp: Option[java.time.Instant])
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
-  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[java.time.Instant]): GR[BidresponseRow] = GR{
+  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[Option[java.time.Instant]]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<?[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<[java.time.Instant]))
+    BidresponseRow.tupled((<<[Int], <<?[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[java.time.Instant]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
     def * = (bidresponseid, currency, bidrequestid, isanybidwontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddatetimestamp) <> (BidresponseRow.tupled, BidresponseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(bidresponseid), currency, bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(bidresponseid), currency, bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, createddatetimestamp)).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8, _9)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val bidresponseid: Rep[Int] = column[Int]("BidResponseId", O.AutoInc, O.PrimaryKey)
@@ -428,7 +428,7 @@ trait Tables {
     /** Database column NoBidResponseTypeId SqlType(INTEGER), Default(None) */
     val nobidresponsetypeid: Rep[Option[Int]] = column[Option[Int]]("NoBidResponseTypeId", O.Default(None))
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-    val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
+    val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
 
     /** Foreign key referencing Bidrequest (database name BidRequest_FK_1) */
     lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
