@@ -399,17 +399,17 @@ trait Tables {
    *  @param issendnobidresponse Database column IsSendNoBidResponse SqlType(INTEGER), Length(1,false), Default(0)
    *  @param nobidresponsetypeid Database column NoBidResponseTypeId SqlType(INTEGER), Default(None)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class BidresponseRow(bidresponseid: Int, currency: Option[String] = Some("USD"), bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddatetimestamp: Option[java.time.Instant])
+  case class BidresponseRow(bidresponseid: Int, currency: Option[String] = Some("USD"), bidrequestid: Option[Int] = None, isanybidwontheauction: Int = 0, isauctionoccured: Int = 0, isprecachedbidserved: Int = 0, issendnobidresponse: Int = 0, nobidresponsetypeid: Option[Int] = None, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching BidresponseRow objects using plain SQL queries */
-  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[Option[java.time.Instant]]): GR[BidresponseRow] = GR{
+  implicit def GetResultBidresponseRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[java.time.Instant]): GR[BidresponseRow] = GR{
     prs => import prs._
-    BidresponseRow.tupled((<<[Int], <<?[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[java.time.Instant]))
+    BidresponseRow.tupled((<<[Int], <<?[String], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<[java.time.Instant]))
   }
   /** Table description of table BidResponse. Objects of this class serve as prototypes for rows in queries. */
   class Bidresponse(_tableTag: Tag) extends profile.api.Table[BidresponseRow](_tableTag, "BidResponse") {
     def * = (bidresponseid, currency, bidrequestid, isanybidwontheauction, isauctionoccured, isprecachedbidserved, issendnobidresponse, nobidresponsetypeid, createddatetimestamp) <> (BidresponseRow.tupled, BidresponseRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(bidresponseid), currency, bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, createddatetimestamp)).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8, _9)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(bidresponseid), currency, bidrequestid, Rep.Some(isanybidwontheauction), Rep.Some(isauctionoccured), Rep.Some(isprecachedbidserved), Rep.Some(issendnobidresponse), nobidresponsetypeid, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> BidresponseRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column BidResponseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val bidresponseid: Rep[Int] = column[Int]("BidResponseId", O.AutoInc, O.PrimaryKey)
@@ -428,7 +428,7 @@ trait Tables {
     /** Database column NoBidResponseTypeId SqlType(INTEGER), Default(None) */
     val nobidresponsetypeid: Rep[Option[Int]] = column[Option[Int]]("NoBidResponseTypeId", O.Default(None))
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-    val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
+    val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 
     /** Foreign key referencing Bidrequest (database name BidRequest_FK_1) */
     lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
@@ -760,17 +760,17 @@ trait Tables {
    *  @param hash Database column Hash SqlType(TEXT), Default(None)
    *  @param displaydate Database column DisplayDate SqlType(TIMESTAMP)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class ImpressionRow(impressionid: Int, rawimpressionjson: String, bidid: Option[Int] = None, isimpressionservedorwonbyauction: Option[Int] = Some(0), bidfloor: Option[Double] = Some(0.0), bidfloorcur: Option[String], hash: Option[String] = None, displaydate: Option[java.time.Instant], createddatetimestamp: java.time.Instant)
+  case class ImpressionRow(impressionid: Int, rawimpressionjson: String, bidid: Option[Int] = None, isimpressionservedorwonbyauction: Option[Int] = Some(0), bidfloor: Option[Double] = Some(0.0), bidfloorcur: Option[String], hash: Option[String] = None, displaydate: java.time.Instant, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching ImpressionRow objects using plain SQL queries */
-  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[Double]], e4: GR[Option[String]], e5: GR[Option[java.time.Instant]], e6: GR[java.time.Instant]): GR[ImpressionRow] = GR{
+  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[Double]], e4: GR[Option[String]], e5: GR[java.time.Instant]): GR[ImpressionRow] = GR{
     prs => import prs._
-    ImpressionRow.tupled((<<[Int], <<[String], <<?[Int], <<?[Int], <<?[Double], <<?[String], <<?[String], <<?[java.time.Instant], <<[java.time.Instant]))
+    ImpressionRow.tupled((<<[Int], <<[String], <<?[Int], <<?[Int], <<?[Double], <<?[String], <<?[String], <<[java.time.Instant], <<[java.time.Instant]))
   }
   /** Table description of table Impression. Objects of this class serve as prototypes for rows in queries. */
   class Impression(_tableTag: Tag) extends profile.api.Table[ImpressionRow](_tableTag, "Impression") {
     def * = (impressionid, rawimpressionjson, bidid, isimpressionservedorwonbyauction, bidfloor, bidfloorcur, hash, displaydate, createddatetimestamp) <> (ImpressionRow.tupled, ImpressionRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(impressionid), Rep.Some(rawimpressionjson), bidid, isimpressionservedorwonbyauction, bidfloor, bidfloorcur, hash, displaydate, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2.get, _3, _4, _5, _6, _7, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(impressionid), Rep.Some(rawimpressionjson), bidid, isimpressionservedorwonbyauction, bidfloor, bidfloorcur, hash, Rep.Some(displaydate), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2.get, _3, _4, _5, _6, _7, _8.get, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey */
     val impressionid: Rep[Int] = column[Int]("ImpressionId", O.AutoInc, O.PrimaryKey)
@@ -787,7 +787,7 @@ trait Tables {
     /** Database column Hash SqlType(TEXT), Default(None) */
     val hash: Rep[Option[String]] = column[Option[String]]("Hash", O.Default(None))
     /** Database column DisplayDate SqlType(TIMESTAMP) */
-    val displaydate: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("DisplayDate")
+    val displaydate: Rep[java.time.Instant] = column[java.time.Instant]("DisplayDate")
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 
@@ -900,19 +900,19 @@ trait Tables {
    *  @param request Database column Request SqlType(TEXT)
    *  @param message Database column Message SqlType(TEXT)
    *  @param entitydata Database column EntityData SqlType(TEXT)
-   *  @param databasetransactiontypeid Database column DatabaseTransactionTypeId SqlType(INTEGER)
+   *  @param databasetransactiontype Database column DatabaseTransactionType SqlType(TEXT)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontypeid: Option[Int], createddatetimestamp: Option[java.time.Instant])
+  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontype: Option[String], createddatetimestamp: Option[java.time.Instant])
   /** GetResult implicit for fetching LogtraceRow objects using plain SQL queries */
-  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[Option[java.time.Instant]]): GR[LogtraceRow] = GR{
+  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[java.time.Instant]]): GR[LogtraceRow] = GR{
     prs => import prs._
-    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[java.time.Instant]))
+    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[java.time.Instant]))
   }
   /** Table description of table LogTrace. Objects of this class serve as prototypes for rows in queries. */
   class Logtrace(_tableTag: Tag) extends profile.api.Table[LogtraceRow](_tableTag, "LogTrace") {
-    def * = (logtraceid, methodname, classname, request, message, entitydata, databasetransactiontypeid, createddatetimestamp) <> (LogtraceRow.tupled, LogtraceRow.unapply)
+    def * = (logtraceid, methodname, classname, request, message, entitydata, databasetransactiontype, createddatetimestamp) <> (LogtraceRow.tupled, LogtraceRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(logtraceid), methodname, classname, request, message, entitydata, databasetransactiontypeid, createddatetimestamp)).shaped.<>({r=>import r._; _1.map(_=> LogtraceRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(logtraceid), methodname, classname, request, message, entitydata, databasetransactiontype, createddatetimestamp)).shaped.<>({r=>import r._; _1.map(_=> LogtraceRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column LogTraceId SqlType(INTEGER), AutoInc, PrimaryKey */
     val logtraceid: Rep[Int] = column[Int]("LogTraceId", O.AutoInc, O.PrimaryKey)
@@ -926,8 +926,8 @@ trait Tables {
     val message: Rep[Option[String]] = column[Option[String]]("Message")
     /** Database column EntityData SqlType(TEXT) */
     val entitydata: Rep[Option[String]] = column[Option[String]]("EntityData")
-    /** Database column DatabaseTransactionTypeId SqlType(INTEGER) */
-    val databasetransactiontypeid: Rep[Option[Int]] = column[Option[Int]]("DatabaseTransactionTypeId")
+    /** Database column DatabaseTransactionType SqlType(TEXT) */
+    val databasetransactiontype: Rep[Option[String]] = column[Option[String]]("DatabaseTransactionType")
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
   }
