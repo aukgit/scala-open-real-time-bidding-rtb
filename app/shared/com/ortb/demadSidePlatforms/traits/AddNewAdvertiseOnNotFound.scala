@@ -12,7 +12,16 @@ import slick.jdbc.SQLiteProfile.api._
 trait AddNewAdvertiseOnNotFound {
   this : DemandSidePlatformBiddingAgent =>
 
-  def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
+  def addNewAdvertiseIfNoAdvertiseInTheGivenCriteriaAsync(
+    request : DemandSidePlatformBiddingRequestWrapperModel,
+    isEmpty : Boolean,
+    impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit =
+    addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
+      request : DemandSidePlatformBiddingRequestWrapperModel,
+      isEmpty : Boolean,
+      impressionBiddableInfoModel : ImpressionBiddableInfoModel)
+
+  private def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
     request : DemandSidePlatformBiddingRequestWrapperModel,
     isEmpty : Boolean,
     impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {

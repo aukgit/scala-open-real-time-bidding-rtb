@@ -7,6 +7,7 @@ import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperMode
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 
 import scala.concurrent.Future
+import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
@@ -46,7 +47,8 @@ trait ImpressionDealsGetter {
     var threshold : Double = 0
 
     if (bidFloor <= 0) {
-      threshold = coreProperties.defaultStaticDeal
+      val initial = coreProperties.defaultStaticDeal - coreProperties.defaultStaticDeal * 0.9
+      threshold = Random.between(initial, coreProperties.defaultStaticDeal)
     } else {
       threshold = bidFloor
     }
@@ -73,12 +75,11 @@ trait ImpressionDealsGetter {
     val list = biddableImpressionInfoModels.map(b => {
       val attr = b.attributes
       val isEmpty = !attr.isBiddable && attr.advertisesFoundCount == 0
-      Future {
-        addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
-          request,
-          isEmpty,
-          b)
-      }
+
+      addNewAdvertiseIfNoAdvertiseInTheGivenCriteriaAsync(
+        request,
+        isEmpty,
+        b)
 
       getImpressionInfoModelFromImpressionBiddableInfoModel(
         bidFailedInfoWithRowsModel.attributes,

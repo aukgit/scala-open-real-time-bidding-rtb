@@ -59,3 +59,41 @@ Publisher id
 - **(Process) Can anyone explain me how the DSP, Ad exchange and SSP works? https://bit.ly/3d402Rg**
 
 
+# Bid Response Examples
+
+```javascript
+{
+  "id": "1234567890",
+  "bidid": "abc1123",
+  "cur": "USD",
+  "seatbid": [
+    {
+      "seat": "512",
+      "bid": [
+        {
+          "id": "1",
+          "impid": "102",
+          "price": 9.43,
+          "nurl": "http://adserver.com/winnotice?impid=102",
+          "iurl": "http://adserver.com/pathtosampleimage",
+          "adomain": [
+            "advertiserdomain.com"
+          ],
+          "cid": "campaign111",
+          "crid": "creative112",
+          "attr": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            12
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
