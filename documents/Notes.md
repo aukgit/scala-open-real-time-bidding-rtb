@@ -66,6 +66,7 @@
 - Scala nameOf : https://stackoverflow.com/questions/5050682/get-scala-variable-name-at-runtime | https://github.com/dwickern/scala-nameof
 - Publish sbt package : https://bit.ly/2WbEqNn
 - Pimp My Library (Extension) : https://bit.ly/2WGpkyi | https://bit.ly/2WGpkyi
+- Sqlite Expressions : https://www.sqlite.org/lang_expr.html 
 
 ```scala
 def anyTypeToByteArray(value: Any): Array[Byte] = {

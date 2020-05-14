@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 14/05/2020 03:52:15
+ Date: 14/05/2020 16:43:09
 */
 
 PRAGMA foreign_keys = false;
@@ -45,6 +45,11 @@ CREATE TABLE "Advertise" (
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- ----------------------------
+-- Records of Advertise
+-- ----------------------------
+INSERT INTO "Advertise" VALUES (1, 1, 1, 'Sample Advertise', 1, 'bidURL', 'iframe', 0, 1, 0, 0, 200, 500, 0, 0, 0, 0, 0, 0, 0, 1588757576655);
 
 -- ----------------------------
 -- Table structure for Auction
@@ -603,6 +608,9 @@ INSERT INTO "sqlite_sequence" VALUES ('NoBidResponseType', 8);
 INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
+INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
+INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 1);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
@@ -615,10 +623,24 @@ CREATE TABLE "sqlite_stat1" (
 );
 
 -- ----------------------------
+-- View structure for AdvertiseIsRunningView
+-- ----------------------------
+DROP VIEW IF EXISTS "AdvertiseIsRunningView";
+CREATE VIEW "AdvertiseIsRunningView" AS SELECT
+	Advertise.*, 
+	Campaign.IsRunning
+FROM
+	Advertise
+	INNER JOIN
+	Campaign
+	ON 
+		Advertise.CampaignId = Campaign.CampaignId;
+
+-- ----------------------------
 -- View structure for BidRelatedIdsView
 -- ----------------------------
 DROP VIEW IF EXISTS "BidRelatedIdsView";
-CREATE VIEW "BidRelatedIdsView" AS SELECT
+CREATE VIEW "BidRelatedIdsView" AS SELECT DISTINCT
 	Bid.BidId, 
 	Impression.ImpressionId, 
 	Bid.SeatBidId, 
@@ -630,16 +652,16 @@ CREATE VIEW "BidRelatedIdsView" AS SELECT
 	SeatBid.DemandSidePlatformId	
 FROM
 	Impression
-	INNER JOIN
+	LEFT JOIN
 	Bid
 	ON 
 		Impression.BidId = Bid.BidId AND
 		Impression.ImpressionId = Bid.ImpressionId
-	INNER JOIN
+	LEFT JOIN
 	SeatBid
 	ON 
 		Bid.SeatBidId = SeatBid.SeatBidId
-	INNER JOIN
+	LEFT JOIN
 	Auction
 	ON 
 		SeatBid.AuctionId = Auction.AuctionId;
@@ -708,9 +730,18 @@ FROM
 		SeatBid.AuctionId = Auction.AuctionId;
 
 -- ----------------------------
+-- Auto increment value for Advertise
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 1 WHERE name = 'Advertise';
+
+-- ----------------------------
 -- Auto increment value for BannerAdvertiseType
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
+
+-- ----------------------------
+-- Auto increment value for BidResponse
+-- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for Campaign
@@ -731,6 +762,10 @@ UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 -- Auto increment value for DemandSidePlatform
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
+
+-- ----------------------------
+-- Auto increment value for LogTrace
+-- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for NoBidResponseType

@@ -75,13 +75,37 @@ class DemandSidePlatformBiddingAgent(
       .getIdAsInt
 
     // create seatbid
+    // TODO : look for group winning info if required or asked
     val seatBid = SeatbidRow(
       -1,
       bidRequestId,
       bidResponseId,
       auctionId,
       Some(coreProperties.demandSideId),
+      createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
     )
+
+    val seatBidRepository = coreProperties
+      .repositories
+      .seatBidRepository
+
+    val seatBidId = seatBidRepository
+      .add(seatBid)
+      .getIdAsInt
+
+    // create bid
+    // a single seat bid contains number of bids
+    // TODO : investigate the usages of SeatBid array
+    //        One seatbid can do the job no need for multiple then contains in the definition of the specs
+    impressionDeals.get.foreach(impressionDeal => {
+      // create bid
+      val bidRow = BidRow(
+        -1,
+        dealbiddingprice = Some(impressionDeal.deal),
+        seatbidid = seatBidId.get,
+        campaignid = impressionDeal.impression.ca
+      )
+    })
 
     ???
   }

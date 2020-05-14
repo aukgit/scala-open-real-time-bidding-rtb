@@ -14,11 +14,13 @@ trait ImpressionDealsGetter {
   lazy val randomNumberIncrementerGuessRange : RangeModel = coreProperties.randomNumberIncrementerGuessRange
 
   def getImpressionInfoModelFromImpressionBiddableInfoModel(
-    bidFailedReasonsModel : BidFailedInfoModel,
-    impressionBiddableInfoModel : ImpressionBiddableInfoModel) : ImpressionDealModel = {
-    val isNonBiddable = bidFailedReasonsModel == null ||
-      impressionBiddableInfoModel == null ||
-      !impressionBiddableInfoModel.attributes.isBiddable
+    bidFailedReasons : BidFailedInfoModel,
+    impressionBiddableInfo : ImpressionBiddableInfoModel) : ImpressionDealModel = {
+    val isNonBiddable = bidFailedReasons == null ||
+      impressionBiddableInfo == null ||
+      !impressionBiddableInfo
+        .attributes
+        .isBiddable
 
     if (isNonBiddable) {
       return null
@@ -26,22 +28,22 @@ trait ImpressionDealsGetter {
 
     val randomIncrements = randomNumberIncrementerGuessRange.guessRandomInBetween
     val hasExactHeightsWidths = EmptyValidateHelper.hasAnyItem(
-      impressionBiddableInfoModel.exactHeightWidthAdvertises)
-    val bidFloor = NumberHelper.getAsDouble(impressionBiddableInfoModel.impression.bidfloor)
+      impressionBiddableInfo.exactHeightWidthAdvertises)
+    val bidFloor = NumberHelper.getAsDouble(impressionBiddableInfo.impression.bidfloor)
 
     if (hasExactHeightsWidths) {
       // more price
-      val randomInBetweenAvgWinAndLoss = bidFailedReasonsModel
+      val randomInBetweenAvgWinAndLoss = bidFailedReasons
         .randomNumberBetweenAverageLosingAndWinningPriceOrStaticIncrementIfNoDifference
 
       val deal =
         bidFloor +
           randomInBetweenAvgWinAndLoss +
-          bidFailedReasonsModel.averageOfWiningPrices +
+          bidFailedReasons.averageOfWiningPrices +
           randomIncrements +
           coreProperties.defaultIncrementNumber
 
-      return ImpressionDealModel(impressionBiddableInfoModel.impression, deal)
+      return ImpressionDealModel(impressionBiddableInfo.impression, deal)
     }
 
     var threshold : Double = 0
@@ -55,10 +57,10 @@ trait ImpressionDealsGetter {
 
     val deal = threshold +
       randomIncrements +
-      bidFailedReasonsModel.absoluteDifferenceOfAverageLosingAndWinningPrice +
+      bidFailedReasons.absoluteDifferenceOfAverageLosingAndWinningPrice +
       coreProperties.defaultIncrementNumber
 
-    ImpressionDealModel(impressionBiddableInfoModel.impression, deal)
+    ImpressionDealModel(impressionBiddableInfo.impression, deal)
   }
 
   def getImpressionInfoModelsFromImpressionBiddableInfoModels(
@@ -69,7 +71,7 @@ trait ImpressionDealsGetter {
       return None
     }
 
-    val bidFailedInfoWithRowsModel = getLastFailedDealsAsBidFailedInfoWithRowsModel(
+    val bidFailedInfoWithRowsModel = getLastFailedDealsAsBidFailedInfoWithRows(
       request)
 
     val list = biddableImpressionInfoModels.map(b => {
