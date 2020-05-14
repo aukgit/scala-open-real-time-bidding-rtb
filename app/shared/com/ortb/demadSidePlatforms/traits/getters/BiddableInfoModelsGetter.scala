@@ -18,7 +18,7 @@ import scala.concurrent.Future
 trait BiddableInfoModelsGetter {
   this : DemandSidePlatformBiddingAgent =>
 
-  def getImpressionBiddableInfoModel(
+  def getImpressionBiddableInfo(
     advertisesTable : TableQuery[Tables.Advertise],
     advertiseRepository : AdvertiseRepository,
     impression : ImpressionModel,
@@ -88,12 +88,12 @@ trait BiddableInfoModelsGetter {
     val futureTasks : Seq[Future[ImpressionBiddableInfoModel]] =
       impressions.map(impression => {
         Future(
-          getImpressionBiddableInfoModel(
+          getImpressionBiddableInfo(
             advertises,
             advertiseRepository,
             impression,
             limit).get
-        )
+        )(createDefaultContext())
       })
 
     futureTasks.map(futureTask => FutureToRegular.toRegular(futureTask))

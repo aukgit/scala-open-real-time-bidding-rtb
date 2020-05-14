@@ -16,7 +16,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Auction.schema, Banneradvertisetype.schema, Bid.schema, Bidcontentcategoriesmapping.schema, Bidrelatedidsview.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Creativeattribute.schema, Demandsideplatform.schema, Devicetype.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Keywordadvertisemappingidsview.schema, Logtrace.schema, Lostbid.schema, Nobidresponsetype.schema, Privatemarketplacedeal.schema, Publisher.schema, Seatbid.schema, Transaction.schema, Userclassification.schema, Videoplaybackmethod.schema, Videoresponseprotocol.schema, Winningpriceinfoview.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Advertise.schema, Advertiseisrunningview.schema, Auction.schema, Banneradvertisetype.schema, Bid.schema, Bidcontentcategoriesmapping.schema, Bidrelatedidsview.schema, Bidrequest.schema, Bidresponse.schema, Campaign.schema, Campaigntargetcity.schema, Campaigntargetoperatingsystem.schema, Campaigntargetsite.schema, Contentcategory.schema, Contentcontext.schema, Creativeattribute.schema, Demandsideplatform.schema, Devicetype.schema, Geomapping.schema, Impression.schema, Keyword.schema, Keywordadvertisemapping.schema, Keywordadvertisemappingidsview.schema, Logtrace.schema, Lostbid.schema, Nobidresponsetype.schema, Privatemarketplacedeal.schema, Publisher.schema, Seatbid.schema, Transaction.schema, Userclassification.schema, Videoplaybackmethod.schema, Videoresponseprotocol.schema, Winningpriceinfoview.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -106,6 +106,87 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Advertise */
   lazy val Advertise = new TableQuery(tag => new Advertise(tag))
+
+  /** Entity class storing rows of table Advertiseisrunningview
+   *  @param advertiseid Database column AdvertiseId SqlType(INTEGER)
+   *  @param campaignid Database column CampaignId SqlType(INTEGER)
+   *  @param banneradvertisetypeid Database column BannerAdvertiseTypeId SqlType(INTEGER)
+   *  @param advertisetitle Database column AdvertiseTitle SqlType(TEXT)
+   *  @param contentcontextid Database column ContentContextId SqlType(INTEGER)
+   *  @param bidurl Database column BidUrl SqlType(TEXT)
+   *  @param iframehtml Database column IFrameHtml SqlType(TEXT)
+   *  @param iscountryspecific Database column IsCountrySpecific SqlType(INTEGER), Length(1,false)
+   *  @param isbanner Database column IsBanner SqlType(INTEGER), Length(1,false)
+   *  @param isvideo Database column IsVideo SqlType(INTEGER), Length(1,false)
+   *  @param impressioncount Database column ImpressionCount SqlType(INTEGER)
+   *  @param height Database column Height SqlType(INTEGER)
+   *  @param width Database column Width SqlType(INTEGER)
+   *  @param minheight Database column MinHeight SqlType(INTEGER)
+   *  @param minwidth Database column MinWidth SqlType(INTEGER)
+   *  @param maxheight Database column MaxHeight SqlType(INTEGER)
+   *  @param maxwidth Database column MaxWidth SqlType(INTEGER)
+   *  @param hasagerestriction Database column HasAgeRestriction SqlType(INTEGER), Length(1,false)
+   *  @param minage Database column MinAge SqlType(INTEGER)
+   *  @param maxage Database column MaxAge SqlType(INTEGER)
+   *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP)
+   *  @param isrunning Database column IsRunning SqlType(INTEGER), Length(1,false) */
+  case class AdvertiseisrunningviewRow(advertiseid: Option[Int], campaignid: Option[Int], banneradvertisetypeid: Option[Int], advertisetitle: Option[String], contentcontextid: Option[Int], bidurl: Option[String], iframehtml: Option[String], iscountryspecific: Option[Int], isbanner: Option[Int], isvideo: Option[Int], impressioncount: Option[Int], height: Option[Int], width: Option[Int], minheight: Option[Int], minwidth: Option[Int], maxheight: Option[Int], maxwidth: Option[Int], hasagerestriction: Option[Int], minage: Option[Int], maxage: Option[Int], createddatetimestamp: Option[java.time.Instant], isrunning: Option[Int])
+  /** GetResult implicit for fetching AdvertiseisrunningviewRow objects using plain SQL queries */
+  implicit def GetResultAdvertiseisrunningviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[String]], e2: GR[Option[java.time.Instant]]): GR[AdvertiseisrunningviewRow] = GR{
+    prs => import prs._
+    AdvertiseisrunningviewRow.tupled((<<?[Int], <<?[Int], <<?[Int], <<?[String], <<?[Int], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.time.Instant], <<?[Int]))
+  }
+  /** Table description of table AdvertiseIsRunningView. Objects of this class serve as prototypes for rows in queries. */
+  class Advertiseisrunningview(_tableTag: Tag) extends profile.api.Table[AdvertiseisrunningviewRow](_tableTag, "AdvertiseIsRunningView") {
+    def * = (advertiseid, campaignid, banneradvertisetypeid, advertisetitle, contentcontextid, bidurl, iframehtml, iscountryspecific, isbanner, isvideo, impressioncount, height, width, minheight, minwidth, maxheight, maxwidth, hasagerestriction, minage, maxage, createddatetimestamp, isrunning) <> (AdvertiseisrunningviewRow.tupled, AdvertiseisrunningviewRow.unapply)
+
+    /** Database column AdvertiseId SqlType(INTEGER) */
+    val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId")
+    /** Database column CampaignId SqlType(INTEGER) */
+    val campaignid: Rep[Option[Int]] = column[Option[Int]]("CampaignId")
+    /** Database column BannerAdvertiseTypeId SqlType(INTEGER) */
+    val banneradvertisetypeid: Rep[Option[Int]] = column[Option[Int]]("BannerAdvertiseTypeId")
+    /** Database column AdvertiseTitle SqlType(TEXT) */
+    val advertisetitle: Rep[Option[String]] = column[Option[String]]("AdvertiseTitle")
+    /** Database column ContentContextId SqlType(INTEGER) */
+    val contentcontextid: Rep[Option[Int]] = column[Option[Int]]("ContentContextId")
+    /** Database column BidUrl SqlType(TEXT) */
+    val bidurl: Rep[Option[String]] = column[Option[String]]("BidUrl")
+    /** Database column IFrameHtml SqlType(TEXT) */
+    val iframehtml: Rep[Option[String]] = column[Option[String]]("IFrameHtml")
+    /** Database column IsCountrySpecific SqlType(INTEGER), Length(1,false) */
+    val iscountryspecific: Rep[Option[Int]] = column[Option[Int]]("IsCountrySpecific", O.Length(1,varying=false))
+    /** Database column IsBanner SqlType(INTEGER), Length(1,false) */
+    val isbanner: Rep[Option[Int]] = column[Option[Int]]("IsBanner", O.Length(1,varying=false))
+    /** Database column IsVideo SqlType(INTEGER), Length(1,false) */
+    val isvideo: Rep[Option[Int]] = column[Option[Int]]("IsVideo", O.Length(1,varying=false))
+    /** Database column ImpressionCount SqlType(INTEGER) */
+    val impressioncount: Rep[Option[Int]] = column[Option[Int]]("ImpressionCount")
+    /** Database column Height SqlType(INTEGER) */
+    val height: Rep[Option[Int]] = column[Option[Int]]("Height")
+    /** Database column Width SqlType(INTEGER) */
+    val width: Rep[Option[Int]] = column[Option[Int]]("Width")
+    /** Database column MinHeight SqlType(INTEGER) */
+    val minheight: Rep[Option[Int]] = column[Option[Int]]("MinHeight")
+    /** Database column MinWidth SqlType(INTEGER) */
+    val minwidth: Rep[Option[Int]] = column[Option[Int]]("MinWidth")
+    /** Database column MaxHeight SqlType(INTEGER) */
+    val maxheight: Rep[Option[Int]] = column[Option[Int]]("MaxHeight")
+    /** Database column MaxWidth SqlType(INTEGER) */
+    val maxwidth: Rep[Option[Int]] = column[Option[Int]]("MaxWidth")
+    /** Database column HasAgeRestriction SqlType(INTEGER), Length(1,false) */
+    val hasagerestriction: Rep[Option[Int]] = column[Option[Int]]("HasAgeRestriction", O.Length(1,varying=false))
+    /** Database column MinAge SqlType(INTEGER) */
+    val minage: Rep[Option[Int]] = column[Option[Int]]("MinAge")
+    /** Database column MaxAge SqlType(INTEGER) */
+    val maxage: Rep[Option[Int]] = column[Option[Int]]("MaxAge")
+    /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
+    val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
+    /** Database column IsRunning SqlType(INTEGER), Length(1,false) */
+    val isrunning: Rep[Option[Int]] = column[Option[Int]]("IsRunning", O.Length(1,varying=false))
+  }
+  /** Collection-like TableQuery object for table Advertiseisrunningview */
+  lazy val Advertiseisrunningview = new TableQuery(tag => new Advertiseisrunningview(tag))
 
   /** Entity class storing rows of table Auction
    *  @param auctionid Database column AuctionId SqlType(INTEGER), AutoInc, PrimaryKey

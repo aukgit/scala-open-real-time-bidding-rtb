@@ -98,13 +98,13 @@ class DemandSidePlatformBiddingAgent(
     // TODO : investigate the usages of SeatBid array
     //        One seatbid can do the job no need for multiple then contains in the definition of the specs
     impressionDeals.get.foreach(impressionDeal => {
-      // create bid
-      val bidRow = BidRow(
-        -1,
-        dealbiddingprice = Some(impressionDeal.deal),
-        seatbidid = seatBidId.get,
-        campaignid = impressionDeal.impression.ca
-      )
+      // TODO : create bid
+//      val bidRow = BidRow(
+//        -1,
+//        dealbiddingprice = Some(impressionDeal.deal),
+//        seatbidid = seatBidId.get,
+//        campaignid = impressionDeal.impression.ca
+//      )
     })
 
     ???
