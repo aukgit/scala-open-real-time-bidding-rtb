@@ -63,8 +63,8 @@ Publisher id
 
 ```javascript
 {
-  "id": "1234567890",
-  "bidid": "abc1123",
+  "id": "1234567890", // bid response id
+  "bidid": "abc1123",  // bid request id
   "cur": "USD",
   "seatbid": [
     {

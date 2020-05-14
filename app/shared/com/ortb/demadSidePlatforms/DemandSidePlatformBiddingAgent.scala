@@ -56,9 +56,12 @@ class DemandSidePlatformBiddingAgent(
     impressionDeals : Option[List[ImpressionDealModel]]) :
   Option[DemandSidePlatformBidResponseModel] = {
     // create bid response
+    val bidRequestRow = request.bidRequestRow
+    val bidRequestId = Some(bidRequestRow.bidrequestid)
+    val auctionId = bidRequestRow.auctionid
     val bidResponse = BidresponseRow(
       -1,
-      bidrequestid = Some(request.bidRequestRow.bidrequestid),
+      bidrequestid = bidRequestId,
       isauctionoccured = 1,
       createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
     )
@@ -70,9 +73,15 @@ class DemandSidePlatformBiddingAgent(
     val bidResponseId = bidResponseRepository
       .add(bidResponse)
       .getIdAsInt
-      .get
 
-    // create bid
+    // create seatbid
+    val seatBid = SeatbidRow(
+      -1,
+      bidRequestId,
+      bidResponseId,
+      auctionId,
+      Some(coreProperties.demandSideId),
+    )
 
     ???
   }
