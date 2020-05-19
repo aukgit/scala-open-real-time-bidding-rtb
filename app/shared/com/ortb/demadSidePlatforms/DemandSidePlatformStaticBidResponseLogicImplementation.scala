@@ -7,6 +7,9 @@ import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, Im
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
+import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel }
+import shared.com.ortb.persistent.schema.Tables
+import shared.io.helpers.{ JodaDateTimeHelper, PrimitiveTypeHelper }
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -27,7 +30,8 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     for (impression <- impressions) {
       if (impression.bidfloor.isDefined) {
         val deal : Double = impression.bidfloor.get + defaultIncrementNumber
-        val impressionDealModel = ImpressionDealModel(impression, deal)
+        val advertise = createStaticAdvertise(impression, deal, "Title")
+        val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
         deals.addOne(impressionDealModel)
 
         val callStackModel = CallStackModel(
@@ -39,7 +43,8 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
 
         callStacks.addOne(callStackModel)
       } else {
-        deals.addOne(ImpressionDealModel(impression, defaultStaticDeal))
+        val advertise = createStaticAdvertise(impression, defaultStaticDeal, "Title")
+        deals.addOne(ImpressionDealModel(impression, advertise, defaultStaticDeal))
 
         val callStackModel = CallStackModel(
           deal = defaultStaticDeal,
@@ -61,6 +66,77 @@ class DemandSidePlatformStaticBidResponseLogicImplementation
     dspBidderResultModel.addCallStacks(callStacks)
 
     Some(dspBidderResultModel)
+  }
+
+  def createStaticAdvertise(
+    impression : ImpressionModel,
+    deal : Double,
+    title : String = "Dummy Static Advertise") : Tables.AdvertiseRow = {
+    val hasBanner = PrimitiveTypeHelper
+      .BooleanEnhancement(impression.banner.isDefined)
+      .toInt
+    val hasVideo = PrimitiveTypeHelper
+      .BooleanEnhancement(impression.video.isDefined)
+      .toInt
+
+    val heightWidth = getHeightWidth(impression)
+    val maxHeightWidth = getMaxHeightWidth(impression)
+    val minHeightWidth = getMinHeightWidth(impression)
+
+    Tables.AdvertiseRow(
+      -1,
+      -1,
+      5,
+      title,
+      Some(5),
+      "bidUrl()",
+      Some("Iframe()"),
+      0,
+      Some(hasBanner),
+      hasVideo,
+      1,
+      heightWidth.height,
+      heightWidth.width,
+      minHeightWidth.height,
+      minHeightWidth.width,
+      maxHeightWidth.height,
+      maxHeightWidth.width,
+      0,
+      Some(0),
+      Some(0),
+      JodaDateTimeHelper.nowUtcJavaInstant)
+  }
+
+  def getHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {
+    if (impression.hasBanner) {
+      return impression.banner.get
+    }
+
+    if (impression.hasVideo) {
+      return impression.video.get
+    }
+
+    EmptyHeightWidthModel()
+  }
+
+  def getMaxHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {
+    if (impression.hasBanner) {
+      val banner = impression.banner.get
+
+      return HeightWidthModel(banner.hmax, banner.wmax)
+    }
+
+    EmptyHeightWidthModel()
+  }
+
+  def getMinHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {
+    if (impression.hasBanner) {
+      val banner = impression.banner.get
+
+      return HeightWidthModel(banner.hmin, banner.wmin)
+    }
+
+    EmptyHeightWidthModel()
   }
 
   override def getBidStaticNoContent(

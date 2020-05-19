@@ -6,51 +6,62 @@ import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, ImpressionBiddable
 import shared.com.ortb.model.config.RangeModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.schema.Tables
+import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 
+import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Future
 import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
   lazy val randomNumberIncrementerGuessRange : RangeModel = coreProperties.randomNumberIncrementerGuessRange
 
-  def getImpressionInfoModelsFromImpressionBiddableInfoModels(
+  def getImpressionInfosFromImpressionBiddableInfos(
     request : DemandSidePlatformBiddingRequestWrapperModel,
-    biddableImpressionInfos : Seq[ImpressionBiddableInfoModel]) :
+    impressionBiddableInfos : Seq[ImpressionBiddableInfoModel]) :
   Option[List[ImpressionDealModel]] = {
-    if (EmptyValidateHelper.isItemsEmpty(Some(biddableImpressionInfos))) {
+    if (EmptyValidateHelper.isItemsEmpty(Some(impressionBiddableInfos))) {
       return None
     }
 
     val bidFailedInfoWithRowsModel = getLastFailedDealsAsBidFailedInfoWithRows(
       request)
 
-    val list = biddableImpressionInfos.map(b => {
-      val attr = b.attributes
+    val capacity = impressionBiddableInfos.length * 10
+    val eventualImpressionDeals = new ArrayBuffer[Future[ImpressionDealModel]](capacity)
+
+    impressionBiddableInfos.foreach(impressionBiddableInfo => {
+      val attributes = impressionBiddableInfo.attributes
 
       addNewAdvertiseIfNoAdvertiseInTheGivenCriteriaAsync(
         request,
-        !attr.isBiddable,
-        b)
+        !attributes.isBiddable,
+        impressionBiddableInfo)
 
-      if (EmptyValidateHelper.hasAnyItem(b.advertises)) {
-        b.advertises.get.map(advertise => {
-          getImpressionInfoModelFromImpressionBiddableInfoModel(
-            bidFailedInfoWithRowsModel.attributes,
-            b,
-            advertise)
+      if (EmptyValidateHelper.hasAnyItem(impressionBiddableInfo.advertises)) {
+        impressionBiddableInfo.advertises.get.foreach(advertise => {
+          val eventualImpressionDeal = Future {
+            getImpressionInfoFromImpressionBiddableInfo(
+              bidFailedInfoWithRowsModel.attributes,
+              impressionBiddableInfo,
+              advertise)
+          }(createDefaultContext())
+
+          eventualImpressionDeals.addOne(eventualImpressionDeal)
         })
-      } else {
-        null
       }
+    })
 
-    }).filter(w => w != null).toList
+    val impressionDeals = eventualImpressionDeals
+      .map(w => FutureToRegular.toRegular(w))
+      .toList
 
-    Some(list)
+    Some(impressionDeals)
   }
 
-  def getImpressionInfoModelFromImpressionBiddableInfoModel(
+  def getImpressionInfoFromImpressionBiddableInfo(
     bidFailedReasons : BidFailedInfoModel,
     impressionBiddableInfo : ImpressionBiddableInfoModel,
     selectedAdvertise : Tables.AdvertiseRow) : ImpressionDealModel = {

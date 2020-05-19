@@ -1,5 +1,7 @@
 package shared.com.ortb.model.auctionbid.biddingRequests
 
+import shared.com.ortb.model.HeightWidthBaseModel
+
 /**
  * Video Request(for Bid) Details inside the BidRequest -> Impression[] -> Impression -> video
  *
@@ -84,3 +86,4 @@ case class VideoImpressionModel(
    * 16:9 window is allowed, where 0 = no, 1 = yes.
    */
   boxingallowed : Option[Int] = Some(1))
+  extends HeightWidthBaseModel(h, w)

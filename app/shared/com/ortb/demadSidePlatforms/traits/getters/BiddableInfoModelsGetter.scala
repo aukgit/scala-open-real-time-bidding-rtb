@@ -29,17 +29,7 @@ trait BiddableInfoModelsGetter {
       EmptyValidateHelper.isEmpty(impression.video)
 
     if (isEmptyBannerAndVideo) {
-      val model = ImpressionBiddableInfoModel(
-        impression,
-        None,
-        None,
-        ImpressionBiddableAttributesModel(
-          isBiddable = false,
-          hasBanner = false,
-          hasVideo = false,
-          0))
-
-      return Some(model)
+      return EmptyImpressionBiddableInfoFor(impression)
     }
 
     val maybeBanner = impression.banner
@@ -57,14 +47,13 @@ trait BiddableInfoModelsGetter {
     val isBiddable = rows.nonEmpty
 
     val impressionAttributes = ImpressionBiddableAttributesModel(
-      isBiddable,
       hasBanner = maybeBanner.isDefined,
       hasVideo = maybeVideo.isDefined,
       totalCount.get)
 
     val model = ImpressionBiddableInfoModel(
       impression,
-      Some(rows.toArray),
+      Some(rows),
       exactQueryRows,
       impressionAttributes)
 
@@ -77,6 +66,17 @@ trait BiddableInfoModelsGetter {
     coreProperties.databaseLogger.trace(logModel)
 
     Some(model)
+  }
+
+  private def EmptyImpressionBiddableInfoFor(impression : ImpressionModel) = {
+    Some(ImpressionBiddableInfoModel(
+      impression,
+      None,
+      None,
+      ImpressionBiddableAttributesModel(
+        hasBanner = false,
+        hasVideo = false,
+        0)))
   }
 
   def getBiddableImpressionInfoModels(

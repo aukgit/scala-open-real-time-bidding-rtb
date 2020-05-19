@@ -7,11 +7,6 @@ trait DefaultExecutionContextManager extends CreateDefaultContext {
 
   def createDefaultContext() : ExecutionContext = createDefault().prepare()
 
-  //noinspection ScalaDeprecation
-  lazy implicit val defaultExecutionContext : ExecutionContext =
-    createDefault()
-      .prepare()
-
   def newExecutionContext : ExecutionContext = createDefault()
     .prepare()
 

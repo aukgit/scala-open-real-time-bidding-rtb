@@ -5,7 +5,6 @@ import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse, RunQuery }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
-import shared.com.ortb.manager.traits.CreateDefaultContext
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModel
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
@@ -13,15 +12,13 @@ import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperMode
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper }
 
-import scala.concurrent.ExecutionContext
-
 class DemandSidePlatformBiddingAgent(
   val coreProperties : DemandSidePlatformCorePropertiesContracts,
   algorithmType : DemandSidePlatformBiddingAlgorithmType)
   extends DemandSidePlatformBiddingLogic
     with DemandSidePlatformBiddingProperties
     with AddNewAdvertiseOnNotFound
-    with CreateDefaultContext
+
     with BiddableInfoModelsGetter
     with AdvertiseBannerQueryAppendLogic
     with AdvertiseVideoQueryAppendLogic
@@ -29,21 +26,12 @@ class DemandSidePlatformBiddingAgent(
     with FailedBidsGetter
     with ImpressionDealsGetter
     with DefaultActualNoContentResponse {
-  lazy val defaultLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultGenericLimit
-  lazy val defaultAdvertiseLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultAdvertiseLimit
-  lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
-      DemandSidePlatformStaticBidResponseLogicImplementation(coreProperties)
-
-  implicit override def createDefaultContext() : ExecutionContext =
-    executionContextManager.defaultExecutionContext
-
-  override def getBidStatic(request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] =
-    demandSidePlatformStaticBidResponseLogic.getBidStatic(request)
-
-  override def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
 
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     coreProperties.demandSidePlatformConfiguration
+
+  def getBidStatic(request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] =
+    demandSidePlatformStaticBidResponseLogic.getBidStatic(request)
 
   override def getBidStaticNoContent(request : DemandSidePlatformBiddingRequestWrapperModel) :
   Option[DemandSidePlatformBidResponseModel] =
@@ -117,7 +105,7 @@ class DemandSidePlatformBiddingAgent(
       request : DemandSidePlatformBiddingRequestWrapperModel)
 
     val impressionDeals =
-      getImpressionInfoModelsFromImpressionBiddableInfoModels(
+      getImpressionInfosFromImpressionBiddableInfos(
         request,
         biddableImpressionInfoModels)
 
