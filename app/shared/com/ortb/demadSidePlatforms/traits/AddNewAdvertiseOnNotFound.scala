@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits
 
+import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.ImpressionBiddableInfoModel
@@ -15,11 +16,14 @@ trait AddNewAdvertiseOnNotFound {
   def addNewAdvertiseIfNoAdvertiseInTheGivenCriteriaAsync(
     request : DemandSidePlatformBiddingRequestWrapperModel,
     isEmpty : Boolean,
-    impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit =
-    addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
+    impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {
+    val thread = new Thread(() => addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
       request : DemandSidePlatformBiddingRequestWrapperModel,
       isEmpty : Boolean,
-      impressionBiddableInfoModel : ImpressionBiddableInfoModel)
+      impressionBiddableInfoModel : ImpressionBiddableInfoModel))
+
+    thread.start()
+  }
 
   private def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
     request : DemandSidePlatformBiddingRequestWrapperModel,
@@ -30,7 +34,7 @@ trait AddNewAdvertiseOnNotFound {
     }
 
     // create DSP -> campaign -> Advertise
-    val methodName = "addNewAdvertiseIfNoAdvertiseInTheGivenCriteria"
+    val methodName = nameOf(addNewAdvertiseIfNoAdvertiseInTheGivenCriteria _)
     AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${ request.bidRequestModel.toString }")
 
     val demandSideId = coreProperties.demandSideId
@@ -101,7 +105,7 @@ trait AddNewAdvertiseOnNotFound {
       hasagerestriction = 0,
       minage = Some(0),
       maxage = Some(0),
-      createddatetimestamp=JodaDateTimeHelper.nowUtcJavaInstant)
+      createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
 
     advertiseRepository.add(advertise)
     AppLogger.debug("Advertise added")

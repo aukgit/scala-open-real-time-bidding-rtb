@@ -25,8 +25,10 @@ trait BiddableInfoModelsGetter {
     limit : Int = defaultAdvertiseLimit) : Option[ImpressionBiddableInfoModel] = {
     val methodName = "getImpressionBiddableInfoModel"
 
-    if (EmptyValidateHelper.isEmpty(impression.banner)) {
-      // no banner
+    val isEmptyBannerAndVideo = EmptyValidateHelper.isEmpty(impression.banner) &&
+      EmptyValidateHelper.isEmpty(impression.video)
+
+    if (isEmptyBannerAndVideo) {
       val model = ImpressionBiddableInfoModel(
         impression,
         None,
@@ -34,30 +36,30 @@ trait BiddableInfoModelsGetter {
         ImpressionBiddableAttributesModel(
           isBiddable = false,
           hasBanner = false,
+          hasVideo = false,
           0))
 
       return Some(model)
     }
 
-    val banner = impression.banner.get
+    val maybeBanner = impression.banner
+    val maybeVideo = impression.video
     val advertisesQueryIn = advertisesTable.filter(advertise =>
       advertise.isvideo === 0)
 
-    val advertisesQuery = appendQueryForBanner(advertisesQueryIn, banner)
+    val advertisesBannerQuery = appendQueryForBanner(advertisesQueryIn, maybeBanner)
+    val advertisesQuery = appendQueryForVideo(advertisesBannerQuery, maybeVideo)
     val countQuery = advertisesQuery.length.result
     val query = advertisesQuery.take(limit).result
-    val exactQueryRows = getExactHeightWidthQueryRows(
-      advertiseRepository,
-      advertisesQuery,
-      banner)
-
+    val exactQueryRows = runQuery(advertisesQuery)
     val totalCount = advertiseRepository.count(countQuery)
     val rows = advertiseRepository.run(query)
     val isBiddable = rows.nonEmpty
 
     val impressionAttributes = ImpressionBiddableAttributesModel(
       isBiddable,
-      hasBanner = true,
+      hasBanner = maybeBanner.isDefined,
+      hasVideo = maybeVideo.isDefined,
       totalCount.get)
 
     val model = ImpressionBiddableInfoModel(

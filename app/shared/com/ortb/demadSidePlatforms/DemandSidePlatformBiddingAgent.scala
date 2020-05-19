@@ -3,7 +3,7 @@ package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.demadSidePlatforms.traits.getters._
 import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
-import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse }
+import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse, RunQuery }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.manager.traits.CreateDefaultContext
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModel
@@ -23,10 +23,11 @@ class DemandSidePlatformBiddingAgent(
     with AddNewAdvertiseOnNotFound
     with CreateDefaultContext
     with BiddableInfoModelsGetter
-    with AdvertiseQueryAppendLogic
+    with AdvertiseBannerQueryAppendLogic
+    with AdvertiseVideoQueryAppendLogic
+    with RunQuery
     with FailedBidsGetter
     with ImpressionDealsGetter
-    with ExactHeightWidthQueryRowsGetter
     with DefaultActualNoContentResponse {
   lazy val defaultLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultGenericLimit
   lazy val defaultAdvertiseLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultAdvertiseLimit
@@ -99,12 +100,12 @@ class DemandSidePlatformBiddingAgent(
     //        One seatbid can do the job no need for multiple then contains in the definition of the specs
     impressionDeals.get.foreach(impressionDeal => {
       // TODO : create bid
-//      val bidRow = BidRow(
-//        -1,
-//        dealbiddingprice = Some(impressionDeal.deal),
-//        seatbidid = seatBidId.get,
-//        campaignid = impressionDeal.impression.ca
-//      )
+      //      val bidRow = BidRow(
+      //        -1,
+      //        dealbiddingprice = Some(impressionDeal.deal),
+      //        seatbidid = seatBidId.get,
+      //        campaignid = impressionDeal.impression.ca
+      //      )
     })
 
     ???

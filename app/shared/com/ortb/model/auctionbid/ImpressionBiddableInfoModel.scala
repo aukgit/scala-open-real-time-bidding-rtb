@@ -5,7 +5,7 @@ import shared.com.ortb.persistent.schema.Tables._
 
 case class ImpressionBiddableInfoModel(
   impression : ImpressionModel,
-  advertises : Option[Array[AdvertiseRow]],
+  advertises : Option[Seq[AdvertiseRow]],
   exactHeightWidthAdvertises : Option[Seq[AdvertiseRow]],
   attributes : ImpressionBiddableAttributesModel
 )
