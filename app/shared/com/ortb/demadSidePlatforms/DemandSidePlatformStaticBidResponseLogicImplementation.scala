@@ -13,12 +13,14 @@ import shared.io.helpers.{ JodaDateTimeHelper, PrimitiveTypeHelper }
 
 import scala.collection.mutable.ArrayBuffer
 
-class DemandSidePlatformStaticBidResponseLogicImplementation
-(demandSidePlatformCoreProperties : DemandSidePlatformCorePropertiesContracts)
-  extends DemandSidePlatformStaticBidResponseLogic with DemandSidePlatformBiddingProperties {
+class DemandSidePlatformStaticBidResponseLogicImplementation(
+  val demandSideId : Int,
+  val coreProperties : DemandSidePlatformCorePropertiesContracts)
+  extends DemandSidePlatformStaticBidResponseLogic
+    with DemandSidePlatformBiddingProperties {
 
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
-    demandSidePlatformCoreProperties.demandSidePlatformConfiguration
+    coreProperties.demandSidePlatformConfiguration
 
   override def getBidStatic(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {

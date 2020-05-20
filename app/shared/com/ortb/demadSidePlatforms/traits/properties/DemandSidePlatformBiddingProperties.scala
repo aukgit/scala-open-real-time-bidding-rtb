@@ -3,14 +3,14 @@ package shared.com.ortb.demadSidePlatforms.traits.properties
 import shared.com.ortb.adapters.traits.{ BannerModelAdapter, ModelsAdapters, SiteModelAdapter }
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformStaticBidResponseLogicImplementation
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
-import shared.com.ortb.manager.traits.{ CreateDefaultContext, DefaultExecutionContextManagerConcreteImplementation }
+import shared.com.ortb.manager.traits.DefaultExecutionContextManagerConcreteImplementation
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.io.helpers.AdapterHelper
 
-import scala.concurrent.ExecutionContext
-
-trait DemandSidePlatformBiddingProperties extends CreateDefaultContext {
+trait DemandSidePlatformBiddingProperties {
+  lazy val defaultLimit : Int = this.demandSidePlatformConfiguration.defaultGenericLimit
   val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel
+  lazy val defaultAdvertiseLimit : Int = this.demandSidePlatformConfiguration.defaultAdvertiseLimit
 
   lazy val defaultIncrementNumber : Double = demandSidePlatformConfiguration.defaultBidIncrementNumber
   lazy val defaultStaticDeal : Double = demandSidePlatformConfiguration.defaultBidStaticDeal
@@ -19,15 +19,10 @@ trait DemandSidePlatformBiddingProperties extends CreateDefaultContext {
   lazy val bannerModelAdapter : BannerModelAdapter = modelsAdapters.bannerModelAdapter
   lazy val siteModelAdapter : SiteModelAdapter = modelsAdapters.siteModelAdapter
   lazy val executionContextManager = new DefaultExecutionContextManagerConcreteImplementation
-
-  lazy val defaultLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultGenericLimit
-  lazy val defaultAdvertiseLimit : Int = coreProperties.demandSidePlatformConfiguration.defaultAdvertiseLimit
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
-      DemandSidePlatformStaticBidResponseLogicImplementation(coreProperties)
+      DemandSidePlatformStaticBidResponseLogicImplementation(demandSideId, coreProperties)
+  val demandSideId : Int
   val coreProperties : DemandSidePlatformCorePropertiesContracts
-
-  implicit override def createDefaultContext() : ExecutionContext =
-    executionContextManager.defaultExecutionContext
 
   def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
 }

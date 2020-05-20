@@ -5,6 +5,7 @@ import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse, RunQuery }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
+import shared.com.ortb.manager.traits.{ CreateDefaultContext, DefaultExecutionContextManager }
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModel
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
@@ -12,13 +13,16 @@ import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperMode
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper }
 
+import scala.concurrent.ExecutionContext
+
 class DemandSidePlatformBiddingAgent(
   val coreProperties : DemandSidePlatformCorePropertiesContracts,
-  algorithmType : DemandSidePlatformBiddingAlgorithmType)
+  val demandSideId : Int,
+  val algorithmType : DemandSidePlatformBiddingAlgorithmType)
   extends DemandSidePlatformBiddingLogic
     with DemandSidePlatformBiddingProperties
     with AddNewAdvertiseOnNotFound
-
+    with CreateDefaultContext
     with BiddableInfoModelsGetter
     with AdvertiseBannerQueryAppendLogic
     with AdvertiseVideoQueryAppendLogic
@@ -26,6 +30,9 @@ class DemandSidePlatformBiddingAgent(
     with FailedBidsGetter
     with ImpressionDealsGetter
     with DefaultActualNoContentResponse {
+
+  override def createDefaultContext() : ExecutionContext =
+    executionContextManager.defaultExecutionContext
 
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     coreProperties.demandSidePlatformConfiguration

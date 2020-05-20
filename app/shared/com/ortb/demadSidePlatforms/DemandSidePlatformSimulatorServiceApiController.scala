@@ -19,7 +19,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
     appManager,
     components) with DemandSidePlatformCorePropertiesContracts {
 
-  lazy override val demandSideId = 1
+  lazy val demandSideId = 1
 
   def makeBidRequest : Action[AnyContent] = Action { implicit request =>
     try {
@@ -36,4 +36,6 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         handleError(e)
     }
   }
+
+  override val coreProperties : DemandSidePlatformCorePropertiesContracts = this
 }

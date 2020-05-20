@@ -17,7 +17,7 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   components   : ControllerComponents)
   extends ServiceBaseApiController(repositories, appManager, components)
     with ServiceControllerCorePropertiesContracts {
-
+  val currentServiceModel : ServiceModel
   lazy override val restWebApiOkJson : RestWebApiOkJsonImplementation = selfProperties.restWebApiOkJson
   lazy override val serviceTitle : String = currentServiceModel.title
   lazy val config : ConfigModel = appManager.config
@@ -25,7 +25,6 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   lazy val selfProperties : ServiceControllerCorePropertiesContracts = new ServiceControllerPropertiesContractsImplementation(
     this,
     currentServiceModel)
-  val currentServiceModel : ServiceModel
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     try {

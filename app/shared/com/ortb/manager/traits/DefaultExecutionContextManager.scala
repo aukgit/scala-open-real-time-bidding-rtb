@@ -5,8 +5,10 @@ import scala.concurrent.{ ExecutionContext, ExecutionContextExecutor }
 trait DefaultExecutionContextManager extends CreateDefaultContext {
   lazy val defaultParallelProcessing : Int = 8
 
+  //noinspection ScalaDeprecation
   def createDefaultContext() : ExecutionContext = createDefault().prepare()
 
+  //noinspection ScalaDeprecation
   def newExecutionContext : ExecutionContext = createDefault()
     .prepare()
 

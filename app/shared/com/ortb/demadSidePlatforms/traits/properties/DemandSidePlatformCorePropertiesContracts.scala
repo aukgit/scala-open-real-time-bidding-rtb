@@ -13,13 +13,13 @@ trait DemandSidePlatformCorePropertiesContracts
   extends ServiceControllerCorePropertiesContracts
     with BiddingDefaultProperties
     with DemandSidePlatformBiddingProperties {
-  val demandSideId : Int
+  lazy val randomNumberIncrementerGuessRange : RangeModel =
+    demandSidePlatformConfiguration.randomNumberIncrementerGuessRange
 
   lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(
     appManager,
     this.getClass.getName)
 
-  val repositories : Repositories
   lazy override val currentServiceModel : ServiceModel =
     services.demandSidePlatForms(demandSideId - 1)
 
@@ -32,6 +32,5 @@ trait DemandSidePlatformCorePropertiesContracts
 
   lazy val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     config.server.demandSidePlatformConfiguration
-
-  lazy val randomNumberIncrementerGuessRange : RangeModel = demandSidePlatformConfiguration.randomNumberIncrementerGuessRange
+  val repositories : Repositories
 }
