@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.logics
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.helpers.EmptyValidateHelper
@@ -16,8 +17,7 @@ trait AdvertiseBannerQueryAppendLogic {
     }
 
     val banner = maybeBanner.get
-
-    var advertisesQuery = advertisesQueryIn
+    var advertisesQuery = advertisesQueryIn.filter(w => w.isbanner === AppConstants.TrueInteger)
     if (EmptyValidateHelper.isDefinedIntPlusPositive(banner.wmax)) {
       val maxWidth = banner.wmax.get
       advertisesQuery = advertisesQuery.filter(ad => ad.maxwidth <= maxWidth)

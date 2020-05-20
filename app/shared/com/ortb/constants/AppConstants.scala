@@ -62,19 +62,24 @@ object AppConstants {
 
   lazy val Space2 : String = DoubleSpace
 
-  lazy val Space4 : String = s"$DoubleSpace${DoubleSpace}"
+  lazy val Space4 : String = s"$DoubleSpace${ DoubleSpace }"
 
   val EqualSign = "="
 
   val Colon = ":"
 
+  val NewRecordIntId : Int = -1
+  val TrueInteger : Int = 1
+  val FalseInteger : Int = 0
+  val NewRecordStringId : String = ""
+
   /**
    * "=${NewLine}"
    */
-  lazy val LogEqualNewLine : String = s"${EqualSign}${NewLine}"
+  lazy val LogEqualNewLine : String = s"${ EqualSign }${ NewLine }"
 
   /**
    * "=${NewLine}${DoubleSpace}"
    */
-  lazy val LogEqualNewLineWithIndent : String = s"${LogEqualNewLine}${DoubleSpace}"
+  lazy val LogEqualNewLineWithIndent : String = s"${ LogEqualNewLine }${ DoubleSpace }"
 }

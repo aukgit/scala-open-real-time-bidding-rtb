@@ -7,7 +7,7 @@ import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, Im
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
-import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel }
+import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.{ JodaDateTimeHelper, PrimitiveTypeHelper }
 
@@ -81,9 +81,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       .BooleanEnhancement(impression.video.isDefined)
       .toInt
 
-    val heightWidth = getHeightWidth(impression)
-    val maxHeightWidth = getMaxHeightWidth(impression)
-    val minHeightWidth = getMinHeightWidth(impression)
+    val minMaxHeightWidth = getMinMaxHeightWidths(impression)
 
     Tables.AdvertiseRow(
       -1,
@@ -97,16 +95,24 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       Some(hasBanner),
       hasVideo,
       1,
-      heightWidth.height,
-      heightWidth.width,
-      minHeightWidth.height,
-      minHeightWidth.width,
-      maxHeightWidth.height,
-      maxHeightWidth.width,
+      minMaxHeightWidth.height,
+      minMaxHeightWidth.width,
+      minMaxHeightWidth.minHeight,
+      minMaxHeightWidth.minWidth,
+      minMaxHeightWidth.maxHeight,
+      minMaxHeightWidth.maxWidth,
       0,
       Some(0),
       Some(0),
       JodaDateTimeHelper.nowUtcJavaInstant)
+  }
+
+  private def getMinMaxHeightWidths(impression : ImpressionModel) = {
+    val heightWidth = getHeightWidth(impression)
+    val maxHeightWidth = getMaxHeightWidth(impression)
+    val minHeightWidth = getMinHeightWidth(impression)
+
+    MinMaxHeightWidthModel(heightWidth, maxHeightWidth, minHeightWidth)
   }
 
   def getHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {

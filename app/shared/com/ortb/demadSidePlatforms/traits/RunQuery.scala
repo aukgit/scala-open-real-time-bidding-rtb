@@ -8,13 +8,14 @@ trait RunQuery {
   this : DemandSidePlatformBiddingAgent =>
 
   def runQuery(
-    query : Query[Advertise, AdvertiseRow, Seq]) : Option[Seq[AdvertiseRow]] = {
+    query : Query[Advertise, AdvertiseRow, Seq],
+    limit : Int = defaultLimit) : Option[Seq[AdvertiseRow]] = {
     val advertiseRepository = coreProperties
       .repositories
       .advertiseRepository
 
     val results = advertiseRepository
-      .run(query.result)
+      .takeFromAnyQuery(query, limit)
 
     Some(results)
   }

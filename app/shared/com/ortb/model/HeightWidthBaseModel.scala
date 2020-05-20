@@ -3,8 +3,8 @@ package shared.com.ortb.model
 import shared.io.helpers.EmptyValidateHelper
 
 abstract class HeightWidthBaseModel(
-  maybeHeight : Option[Int],
-  maybeWidth : Option[Int]) {
+  val maybeHeight : Option[Int],
+  val maybeWidth : Option[Int]) {
   lazy val hasHeight : Boolean =
     EmptyValidateHelper.isDefinedIntPlusPositive(
       maybeHeight)
@@ -17,4 +17,6 @@ abstract class HeightWidthBaseModel(
 
   lazy val height : Int =
     if (hasHeight) maybeHeight.get else 0
+
+  lazy val isEmptyHeightWidth : Boolean = !hasWidth && !hasHeight
 }

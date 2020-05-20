@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.getters._
 import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
@@ -127,7 +128,7 @@ class DemandSidePlatformBiddingAgent(
 
   def createNoBidResponseToDbAsync() : Unit = {
     val row = BidresponseRow(
-      -1,
+      AppConstants.NewRecordIntId,
       createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
 
     coreProperties

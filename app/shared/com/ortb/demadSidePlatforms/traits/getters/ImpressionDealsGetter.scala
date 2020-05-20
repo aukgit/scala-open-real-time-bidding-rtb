@@ -40,8 +40,8 @@ trait ImpressionDealsGetter {
         !attributes.isBiddable,
         impressionBiddableInfo)
 
-      if (EmptyValidateHelper.hasAnyItem(impressionBiddableInfo.advertises)) {
-        impressionBiddableInfo.advertises.get.foreach(advertise => {
+      if (EmptyValidateHelper.hasAnyItem(impressionBiddableInfo.advertisesWithLimit)) {
+        impressionBiddableInfo.advertisesWithLimit.get.foreach(advertise => {
           val eventualImpressionDeal = Future {
             getImpressionInfoFromImpressionBiddableInfo(
               bidFailedInfoWithRowsModel.attributes,

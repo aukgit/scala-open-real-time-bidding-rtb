@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
+import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
@@ -23,7 +24,7 @@ trait BiddableInfoModelsGetter {
     advertiseRepository : AdvertiseRepository,
     impression : ImpressionModel,
     limit : Int = defaultAdvertiseLimit) : Option[ImpressionBiddableInfoModel] = {
-    val methodName = "getImpressionBiddableInfoModel"
+    val methodName = nameOf(getImpressionBiddableInfo _)
 
     val isEmptyBannerAndVideo = EmptyValidateHelper.isEmpty(impression.banner) &&
       EmptyValidateHelper.isEmpty(impression.video)
@@ -34,17 +35,12 @@ trait BiddableInfoModelsGetter {
 
     val maybeBanner = impression.banner
     val maybeVideo = impression.video
-    val advertisesQueryIn = advertisesTable.filter(advertise =>
-      advertise.isvideo === 0)
-
-    val advertisesBannerQuery = appendQueryForBanner(advertisesQueryIn, maybeBanner)
+    // TODO improve logic here
+    val advertisesBannerQuery = appendQueryForBanner(advertisesTable, maybeBanner)
     val advertisesQuery = appendQueryForVideo(advertisesBannerQuery, maybeVideo)
     val countQuery = advertisesQuery.length.result
-    val query = advertisesQuery.take(limit).result
-    val exactQueryRows = runQuery(advertisesQuery)
     val totalCount = advertiseRepository.count(countQuery)
-    val rows = advertiseRepository.run(query)
-    val isBiddable = rows.nonEmpty
+    val rows = advertiseRepository.run(advertisesQuery, limit)
 
     val impressionAttributes = ImpressionBiddableAttributesModel(
       hasBanner = maybeBanner.isDefined,
@@ -54,7 +50,6 @@ trait BiddableInfoModelsGetter {
     val model = ImpressionBiddableInfoModel(
       impression,
       Some(rows),
-      exactQueryRows,
       impressionAttributes)
 
     val logModel = LogTraceModel(
@@ -71,7 +66,6 @@ trait BiddableInfoModelsGetter {
   private def EmptyImpressionBiddableInfoFor(impression : ImpressionModel) = {
     Some(ImpressionBiddableInfoModel(
       impression,
-      None,
       None,
       ImpressionBiddableAttributesModel(
         hasBanner = false,
@@ -95,7 +89,7 @@ trait BiddableInfoModelsGetter {
             advertiseRepository,
             impression,
             limit).get
-        )(createDefaultContext())
+        )
       })
 
     futureTasks.map(futureTask => FutureToRegular.toRegular(futureTask))
