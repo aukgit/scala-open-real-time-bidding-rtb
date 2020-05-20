@@ -6,7 +6,7 @@ import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse, RunQuery }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
-import shared.com.ortb.manager.traits.{ CreateDefaultContext, DefaultExecutionContextManager }
+import shared.com.ortb.manager.traits.CreateDefaultContext
 import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModel
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
@@ -70,6 +70,16 @@ class DemandSidePlatformBiddingAgent(
     val bidResponseId = bidResponseRepository
       .add(bidResponse)
       .getIdAsInt
+
+    // if no bid then empty array for seatbid
+    val shouldBid = EmptyValidateHelper.hasAnyItem(impressionDeals) &&
+      impressionDeals.get.exists(w => w.hasAnyDeal)
+
+    if (!shouldBid) {
+      // return without seatbid
+      return
+    }
+
 
     // create seatbid
     // TODO : look for group winning info if required or asked

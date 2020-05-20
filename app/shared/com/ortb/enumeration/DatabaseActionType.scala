@@ -22,7 +22,3 @@ case object DatabaseActionType extends StringEnum[DatabaseActionType] with Strin
 
   lazy val values : IndexedSeq[DatabaseActionType] = findValues
 }
-
-
-
-
