@@ -8,12 +8,10 @@ trait DefaultExecutionContextManager extends CreateDefaultContext {
   //noinspection ScalaDeprecation
   def createDefaultContext() : ExecutionContext = createDefault().prepare()
 
-  //noinspection ScalaDeprecation
-  def newExecutionContext : ExecutionContext = createDefault()
-    .prepare()
-
-  def createDefault(initialParallelism : Int = defaultParallelProcessing) : ExecutionContextExecutor = createNewExecutionContext(
-    initialParallelism)
+  def createDefault(initialParallelism : Int = defaultParallelProcessing) :
+  ExecutionContextExecutor =
+    createNewExecutionContext(
+      initialParallelism)
 
   def createNewExecutionContext(initialParallelism : Int) : ExecutionContextExecutor = {
     ExecutionContext.fromExecutor(
