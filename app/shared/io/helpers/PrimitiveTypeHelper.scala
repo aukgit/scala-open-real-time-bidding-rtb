@@ -18,5 +18,4 @@ object PrimitiveTypeHelper {
   implicit class IntEnhancement(i : Int) {
     def toBoolean : Boolean = if (i == 0) false else true
   }
-
 }

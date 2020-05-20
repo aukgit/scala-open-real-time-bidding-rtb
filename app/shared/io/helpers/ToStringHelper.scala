@@ -25,7 +25,7 @@ object ToStringHelper {
     catch {
       case e : Exception =>
         AppLogger.error(e, "Failed at [toStringOf]")
-        AppLogger.logNullable("Failed to make toString of :", value)
+        AppLogger.logMaybeItem("Failed to make toString of :", value)
     }
 
     None

@@ -25,7 +25,7 @@ trait RestWebApiUpdateActionImplementation[TTable, TRow, TKey]
       val optionalEntity = webApiEntityResponseWrapper.get.entityWrapper.get.entity
       val entity = optionalEntity.get
 
-      AppLogger.logNullable(s"Request : $bodyText", optionalEntity)
+      AppLogger.logMaybeItem(s"Request : $bodyText", optionalEntity)
 
       if (webApiEntityResponseWrapper == null) {
         BadRequest(

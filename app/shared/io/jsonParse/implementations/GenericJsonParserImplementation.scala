@@ -46,7 +46,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", jsonString)
+        AppLogger.logMaybeItem("Json parsing failed for ", jsonString)
     }
 
     None
@@ -73,7 +73,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", jsonString)
+        AppLogger.logMaybeItem("Json parsing failed for ", jsonString)
     }
 
     None
@@ -213,7 +213,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", model)
+        AppLogger.logMaybeItem("Json parsing failed for ", model)
     }
 
     None

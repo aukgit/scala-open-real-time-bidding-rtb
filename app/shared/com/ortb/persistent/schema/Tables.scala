@@ -12,6 +12,8 @@ trait Tables {
   import com.github.tototoshi.slick.PostgresJodaSupport._
   import org.joda.time.DateTime
   import slick.model.ForeignKeyAction
+  import slick.collection.heterogeneous._
+  import slick.collection.heterogeneous.syntax._
   // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
   import slick.jdbc.{GetResult => GR}
 
@@ -38,21 +40,24 @@ trait Tables {
    *  @param minwidth Database column MinWidth SqlType(INTEGER), Default(0)
    *  @param maxheight Database column MaxHeight SqlType(INTEGER), Default(0)
    *  @param maxwidth Database column MaxWidth SqlType(INTEGER), Default(0)
-   *  @param hasagerestriction Database column HasAgeRestriction SqlType(INTEGER), Length(1,false)
+   *  @param isheightwidthempty Database column IsHeightWidthEmpty SqlType(INTEGER), Length(1,false), Default(Some(1))
+   *  @param ismaxheightwidthempty Database column IsMaxHeightWidthEmpty SqlType(INTEGER), Length(1,false), Default(Some(1))
+   *  @param isminheightwidthempty Database column IsMinHeightWidthEmpty SqlType(INTEGER), Length(1,false), Default(Some(1))
+   *  @param hasagerestriction Database column HasAgeRestriction SqlType(INTEGER), Length(1,false), Default(0)
    *  @param minage Database column MinAge SqlType(INTEGER), Default(Some(0))
    *  @param maxage Database column MaxAge SqlType(INTEGER), Default(Some(0))
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Option[Int], bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isbanner: Option[Int] = Some(0), isvideo: Int = 0, impressioncount: Int = 0, height: Int = 0, width: Int = 0, minheight: Int = 0, minwidth: Int = 0, maxheight: Int = 0, maxwidth: Int = 0, hasagerestriction: Int, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), createddatetimestamp: java.time.Instant)
+  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Option[Int], bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isbanner: Option[Int] = Some(0), isvideo: Int = 0, impressioncount: Int = 0, height: Int = 0, width: Int = 0, minheight: Int = 0, minwidth: Int = 0, maxheight: Int = 0, maxwidth: Int = 0, isheightwidthempty: Option[Int] = Some(1), ismaxheightwidthempty: Option[Int] = Some(1), isminheightwidthempty: Option[Int] = Some(1), hasagerestriction: Int = 0, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching AdvertiseRow objects using plain SQL queries */
   implicit def GetResultAdvertiseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[String]], e4: GR[java.time.Instant]): GR[AdvertiseRow] = GR{
     prs => import prs._
-    AdvertiseRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<?[Int], <<[String], <<?[String], <<[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[Int], <<[java.time.Instant]))
+    AdvertiseRow(<<[Int], <<[Int], <<[Int], <<[String], <<?[Int], <<[String], <<?[String], <<[Int], <<?[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int], <<?[Int], <<?[Int], <<[Int], <<?[Int], <<?[Int], <<[java.time.Instant])
   }
   /** Table description of table Advertise. Objects of this class serve as prototypes for rows in queries. */
   class Advertise(_tableTag: Tag) extends profile.api.Table[AdvertiseRow](_tableTag, "Advertise") {
-    def * = (advertiseid, campaignid, banneradvertisetypeid, advertisetitle, contentcontextid, bidurl, iframehtml, iscountryspecific, isbanner, isvideo, impressioncount, height, width, minheight, minwidth, maxheight, maxwidth, hasagerestriction, minage, maxage, createddatetimestamp) <> (AdvertiseRow.tupled, AdvertiseRow.unapply)
+    def * = (advertiseid :: campaignid :: banneradvertisetypeid :: advertisetitle :: contentcontextid :: bidurl :: iframehtml :: iscountryspecific :: isbanner :: isvideo :: impressioncount :: height :: width :: minheight :: minwidth :: maxheight :: maxwidth :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: hasagerestriction :: minage :: maxage :: createddatetimestamp :: HNil).mapTo[AdvertiseRow]
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(advertiseid), Rep.Some(campaignid), Rep.Some(banneradvertisetypeid), Rep.Some(advertisetitle), contentcontextid, Rep.Some(bidurl), iframehtml, Rep.Some(iscountryspecific), isbanner, Rep.Some(isvideo), Rep.Some(impressioncount), Rep.Some(height), Rep.Some(width), Rep.Some(minheight), Rep.Some(minwidth), Rep.Some(maxheight), Rep.Some(maxwidth), Rep.Some(hasagerestriction), minage, maxage, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> AdvertiseRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6.get, _7, _8.get, _9, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19, _20, _21.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(advertiseid) :: Rep.Some(campaignid) :: Rep.Some(banneradvertisetypeid) :: Rep.Some(advertisetitle) :: contentcontextid :: Rep.Some(bidurl) :: iframehtml :: Rep.Some(iscountryspecific) :: isbanner :: Rep.Some(isvideo) :: Rep.Some(impressioncount) :: Rep.Some(height) :: Rep.Some(width) :: Rep.Some(minheight) :: Rep.Some(minwidth) :: Rep.Some(maxheight) :: Rep.Some(maxwidth) :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: Rep.Some(hasagerestriction) :: minage :: maxage :: Rep.Some(createddatetimestamp) :: HNil).shaped.<>(r => AdvertiseRow(r(0).asInstanceOf[Option[Int]].get, r(1).asInstanceOf[Option[Int]].get, r(2).asInstanceOf[Option[Int]].get, r(3).asInstanceOf[Option[String]].get, r(4).asInstanceOf[Option[Int]], r(5).asInstanceOf[Option[String]].get, r(6).asInstanceOf[Option[String]], r(7).asInstanceOf[Option[Int]].get, r(8).asInstanceOf[Option[Int]], r(9).asInstanceOf[Option[Int]].get, r(10).asInstanceOf[Option[Int]].get, r(11).asInstanceOf[Option[Int]].get, r(12).asInstanceOf[Option[Int]].get, r(13).asInstanceOf[Option[Int]].get, r(14).asInstanceOf[Option[Int]].get, r(15).asInstanceOf[Option[Int]].get, r(16).asInstanceOf[Option[Int]].get, r(17).asInstanceOf[Option[Int]], r(18).asInstanceOf[Option[Int]], r(19).asInstanceOf[Option[Int]], r(20).asInstanceOf[Option[Int]].get, r(21).asInstanceOf[Option[Int]], r(22).asInstanceOf[Option[Int]], r(23).asInstanceOf[Option[java.time.Instant]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column AdvertiseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val advertiseid: Rep[Int] = column[Int]("AdvertiseId", O.AutoInc, O.PrimaryKey)
@@ -88,8 +93,14 @@ trait Tables {
     val maxheight: Rep[Int] = column[Int]("MaxHeight", O.Default(0))
     /** Database column MaxWidth SqlType(INTEGER), Default(0) */
     val maxwidth: Rep[Int] = column[Int]("MaxWidth", O.Default(0))
-    /** Database column HasAgeRestriction SqlType(INTEGER), Length(1,false) */
-    val hasagerestriction: Rep[Int] = column[Int]("HasAgeRestriction", O.Length(1,varying=false))
+    /** Database column IsHeightWidthEmpty SqlType(INTEGER), Length(1,false), Default(Some(1)) */
+    val isheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsHeightWidthEmpty", O.Length(1,varying=false), O.Default(Some(1)))
+    /** Database column IsMaxHeightWidthEmpty SqlType(INTEGER), Length(1,false), Default(Some(1)) */
+    val ismaxheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsMaxHeightWidthEmpty", O.Length(1,varying=false), O.Default(Some(1)))
+    /** Database column IsMinHeightWidthEmpty SqlType(INTEGER), Length(1,false), Default(Some(1)) */
+    val isminheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsMinHeightWidthEmpty", O.Length(1,varying=false), O.Default(Some(1)))
+    /** Database column HasAgeRestriction SqlType(INTEGER), Length(1,false), Default(0) */
+    val hasagerestriction: Rep[Int] = column[Int]("HasAgeRestriction", O.Length(1,varying=false), O.Default(0))
     /** Database column MinAge SqlType(INTEGER), Default(Some(0)) */
     val minage: Rep[Option[Int]] = column[Option[Int]]("MinAge", O.Default(Some(0)))
     /** Database column MaxAge SqlType(INTEGER), Default(Some(0)) */
@@ -98,11 +109,11 @@ trait Tables {
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 
     /** Foreign key referencing Banneradvertisetype (database name BannerAdvertiseType_FK_1) */
-    lazy val banneradvertisetypeFk = foreignKey("BannerAdvertiseType_FK_1", banneradvertisetypeid, Banneradvertisetype)(r => r.banneradvertisetypeid, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
+    lazy val banneradvertisetypeFk = foreignKey("BannerAdvertiseType_FK_1", banneradvertisetypeid :: HNil, Banneradvertisetype)(r => r.banneradvertisetypeid :: HNil, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
     /** Foreign key referencing Campaign (database name Campaign_FK_2) */
-    lazy val campaignFk = foreignKey("Campaign_FK_2", campaignid, Campaign)(r => r.campaignid, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
+    lazy val campaignFk = foreignKey("Campaign_FK_2", campaignid :: HNil, Campaign)(r => r.campaignid :: HNil, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
     /** Foreign key referencing Contentcontext (database name ContentContext_FK_3) */
-    lazy val contentcontextFk = foreignKey("ContentContext_FK_3", contentcontextid, Contentcontext)(r => Rep.Some(r.contentcontextid), onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
+    lazy val contentcontextFk = foreignKey("ContentContext_FK_3", contentcontextid :: HNil, Contentcontext)(r => Rep.Some(r.contentcontextid) :: HNil, onUpdate=ForeignKeyAction.Cascade, onDelete=ForeignKeyAction.Cascade)
   }
   /** Collection-like TableQuery object for table Advertise */
   lazy val Advertise = new TableQuery(tag => new Advertise(tag))
@@ -125,20 +136,23 @@ trait Tables {
    *  @param minwidth Database column MinWidth SqlType(INTEGER)
    *  @param maxheight Database column MaxHeight SqlType(INTEGER)
    *  @param maxwidth Database column MaxWidth SqlType(INTEGER)
+   *  @param isheightwidthempty Database column IsHeightWidthEmpty SqlType(INTEGER), Length(1,false)
+   *  @param ismaxheightwidthempty Database column IsMaxHeightWidthEmpty SqlType(INTEGER), Length(1,false)
+   *  @param isminheightwidthempty Database column IsMinHeightWidthEmpty SqlType(INTEGER), Length(1,false)
    *  @param hasagerestriction Database column HasAgeRestriction SqlType(INTEGER), Length(1,false)
    *  @param minage Database column MinAge SqlType(INTEGER)
    *  @param maxage Database column MaxAge SqlType(INTEGER)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP)
    *  @param isrunning Database column IsRunning SqlType(INTEGER), Length(1,false) */
-  case class AdvertiseisrunningviewRow(advertiseid: Option[Int], campaignid: Option[Int], banneradvertisetypeid: Option[Int], advertisetitle: Option[String], contentcontextid: Option[Int], bidurl: Option[String], iframehtml: Option[String], iscountryspecific: Option[Int], isbanner: Option[Int], isvideo: Option[Int], impressioncount: Option[Int], height: Option[Int], width: Option[Int], minheight: Option[Int], minwidth: Option[Int], maxheight: Option[Int], maxwidth: Option[Int], hasagerestriction: Option[Int], minage: Option[Int], maxage: Option[Int], createddatetimestamp: Option[java.time.Instant], isrunning: Option[Int])
+  case class AdvertiseisrunningviewRow(advertiseid: Option[Int], campaignid: Option[Int], banneradvertisetypeid: Option[Int], advertisetitle: Option[String], contentcontextid: Option[Int], bidurl: Option[String], iframehtml: Option[String], iscountryspecific: Option[Int], isbanner: Option[Int], isvideo: Option[Int], impressioncount: Option[Int], height: Option[Int], width: Option[Int], minheight: Option[Int], minwidth: Option[Int], maxheight: Option[Int], maxwidth: Option[Int], isheightwidthempty: Option[Int], ismaxheightwidthempty: Option[Int], isminheightwidthempty: Option[Int], hasagerestriction: Option[Int], minage: Option[Int], maxage: Option[Int], createddatetimestamp: Option[java.time.Instant], isrunning: Option[Int])
   /** GetResult implicit for fetching AdvertiseisrunningviewRow objects using plain SQL queries */
   implicit def GetResultAdvertiseisrunningviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[String]], e2: GR[Option[java.time.Instant]]): GR[AdvertiseisrunningviewRow] = GR{
     prs => import prs._
-    AdvertiseisrunningviewRow.tupled((<<?[Int], <<?[Int], <<?[Int], <<?[String], <<?[Int], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.time.Instant], <<?[Int]))
+    AdvertiseisrunningviewRow(<<?[Int], <<?[Int], <<?[Int], <<?[String], <<?[Int], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.time.Instant], <<?[Int])
   }
   /** Table description of table AdvertiseIsRunningView. Objects of this class serve as prototypes for rows in queries. */
   class Advertiseisrunningview(_tableTag: Tag) extends profile.api.Table[AdvertiseisrunningviewRow](_tableTag, "AdvertiseIsRunningView") {
-    def * = (advertiseid, campaignid, banneradvertisetypeid, advertisetitle, contentcontextid, bidurl, iframehtml, iscountryspecific, isbanner, isvideo, impressioncount, height, width, minheight, minwidth, maxheight, maxwidth, hasagerestriction, minage, maxage, createddatetimestamp, isrunning) <> (AdvertiseisrunningviewRow.tupled, AdvertiseisrunningviewRow.unapply)
+    def * = (advertiseid :: campaignid :: banneradvertisetypeid :: advertisetitle :: contentcontextid :: bidurl :: iframehtml :: iscountryspecific :: isbanner :: isvideo :: impressioncount :: height :: width :: minheight :: minwidth :: maxheight :: maxwidth :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: hasagerestriction :: minage :: maxage :: createddatetimestamp :: isrunning :: HNil).mapTo[AdvertiseisrunningviewRow]
 
     /** Database column AdvertiseId SqlType(INTEGER) */
     val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId")
@@ -174,6 +188,12 @@ trait Tables {
     val maxheight: Rep[Option[Int]] = column[Option[Int]]("MaxHeight")
     /** Database column MaxWidth SqlType(INTEGER) */
     val maxwidth: Rep[Option[Int]] = column[Option[Int]]("MaxWidth")
+    /** Database column IsHeightWidthEmpty SqlType(INTEGER), Length(1,false) */
+    val isheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsHeightWidthEmpty", O.Length(1,varying=false))
+    /** Database column IsMaxHeightWidthEmpty SqlType(INTEGER), Length(1,false) */
+    val ismaxheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsMaxHeightWidthEmpty", O.Length(1,varying=false))
+    /** Database column IsMinHeightWidthEmpty SqlType(INTEGER), Length(1,false) */
+    val isminheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsMinHeightWidthEmpty", O.Length(1,varying=false))
     /** Database column HasAgeRestriction SqlType(INTEGER), Length(1,false) */
     val hasagerestriction: Rep[Option[Int]] = column[Option[Int]]("HasAgeRestriction", O.Length(1,varying=false))
     /** Database column MinAge SqlType(INTEGER) */

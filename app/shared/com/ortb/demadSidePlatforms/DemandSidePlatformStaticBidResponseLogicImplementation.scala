@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
@@ -9,7 +10,8 @@ import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
 import shared.com.ortb.persistent.schema.Tables
-import shared.io.helpers.{ JodaDateTimeHelper, PrimitiveTypeHelper }
+import shared.io.helpers.JodaDateTimeHelper
+import shared.io.helpers.PrimitiveTypeHelper._
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -74,23 +76,29 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     impression : ImpressionModel,
     deal : Double,
     title : String = "Dummy Static Advertise") : Tables.AdvertiseRow = {
-    val hasBanner = PrimitiveTypeHelper
-      .BooleanEnhancement(impression.banner.isDefined)
+
+    val hasBanner = impression
+      .banner
+      .isDefined
       .toInt
-    val hasVideo = PrimitiveTypeHelper
-      .BooleanEnhancement(impression.video.isDefined)
+
+    val hasVideo = impression
+      .video
+      .isDefined
       .toInt
 
     val minMaxHeightWidth = getMinMaxHeightWidths(impression)
+    val impressionToString = s"impression(${ impression.toString })"
+    val dealString = s"deal($deal)"
 
     Tables.AdvertiseRow(
-      -1,
-      -1,
+      AppConstants.NewRecordIntId,
+      AppConstants.NewRecordIntId,
       5,
       title,
       Some(5),
-      "bidUrl()",
-      Some("Iframe()"),
+      s"bidUrl($dealString)$impressionToString",
+      Some(s"Iframe($dealString)$impressionToString"),
       0,
       Some(hasBanner),
       hasVideo,
@@ -101,6 +109,9 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       minMaxHeightWidth.minWidth,
       minMaxHeightWidth.maxHeight,
       minMaxHeightWidth.maxWidth,
+      Some(minMaxHeightWidth.isEmptyHeightWidth.toInt),
+      Some(minMaxHeightWidth.isMaxHeightWithEmpty.toInt),
+      Some(minMaxHeightWidth.isMinHeightWithEmpty.toInt),
       0,
       Some(0),
       Some(0),
@@ -112,7 +123,10 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     val maxHeightWidth = getMaxHeightWidth(impression)
     val minHeightWidth = getMinHeightWidth(impression)
 
-    MinMaxHeightWidthModel(heightWidth, maxHeightWidth, minHeightWidth)
+    MinMaxHeightWidthModel(
+      minHeightWidth,
+      heightWidth,
+      maxHeightWidth)
   }
 
   def getHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {

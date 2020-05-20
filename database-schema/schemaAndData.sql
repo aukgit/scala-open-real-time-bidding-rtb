@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 14/05/2020 16:43:09
+ Date: 20/05/2020 18:36:00
 */
 
 PRAGMA foreign_keys = false;
@@ -37,7 +37,10 @@ CREATE TABLE "Advertise" (
   "MinWidth" INTEGER NOT NULL DEFAULT 0,
   "MaxHeight" INTEGER NOT NULL DEFAULT 0,
   "MaxWidth" INTEGER NOT NULL DEFAULT 0,
-  "HasAgeRestriction" INTEGER(1) NOT NULL,
+  "IsHeightWidthEmpty" INTEGER(1) DEFAULT 1,
+  "IsMaxHeightWidthEmpty" INTEGER(1) DEFAULT 1,
+  "IsMinHeightWidthEmpty" INTEGER(1) DEFAULT 1,
+  "HasAgeRestriction" INTEGER(1) NOT NULL DEFAULT 0,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
@@ -45,11 +48,6 @@ CREATE TABLE "Advertise" (
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- ----------------------------
--- Records of Advertise
--- ----------------------------
-INSERT INTO "Advertise" VALUES (1, 1, 1, 'Sample Advertise', 1, 'bidURL', 'iframe', 0, 1, 0, 0, 200, 500, 0, 0, 0, 0, 0, 0, 0, 1588757576655);
 
 -- ----------------------------
 -- Table structure for Auction
@@ -610,7 +608,7 @@ INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 1);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
@@ -732,7 +730,6 @@ FROM
 -- ----------------------------
 -- Auto increment value for Advertise
 -- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 1 WHERE name = 'Advertise';
 
 -- ----------------------------
 -- Auto increment value for BannerAdvertiseType
