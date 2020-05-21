@@ -8,6 +8,9 @@ import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.io.helpers.AdapterHelper
 
 trait DemandSidePlatformBiddingProperties {
+  val demandSideId : Int
+  val coreProperties : DemandSidePlatformCorePropertiesContracts
+
   lazy val defaultLimit : Int = this.demandSidePlatformConfiguration.defaultGenericLimit
   val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel
   lazy val defaultAdvertiseLimit : Int = this.demandSidePlatformConfiguration.defaultAdvertiseLimit
@@ -21,9 +24,6 @@ trait DemandSidePlatformBiddingProperties {
   lazy val executionContextManager = new DefaultExecutionContextManagerConcreteImplementation
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
       DemandSidePlatformStaticBidResponseLogicImplementation(demandSideId, coreProperties)
-  val demandSideId : Int
-  val coreProperties : DemandSidePlatformCorePropertiesContracts
-
   def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
 }
 

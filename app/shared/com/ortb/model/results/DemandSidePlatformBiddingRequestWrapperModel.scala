@@ -4,6 +4,6 @@ import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.persistent.schema.Tables._
 
 case class DemandSidePlatformBiddingRequestWrapperModel(
-  bidRequestModel : BidRequestModel,
+  bidRequest : BidRequestModel,
   bidRequestRow : BidrequestRow,
   dspId : Int)

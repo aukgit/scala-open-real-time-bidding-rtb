@@ -10,6 +10,7 @@ import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 import scala.util.Random
@@ -29,8 +30,7 @@ trait ImpressionDealsGetter {
     val bidFailedInfoWithRowsModel = getLastFailedDealsAsBidFailedInfoWithRows(
       request)
 
-    val capacity = impressionBiddableInfos.length * 10
-    val eventualImpressionDeals = new ArrayBuffer[Future[ImpressionDealModel]](capacity)
+    val eventualImpressionDealsMap = new mutable.HashMap[Int, Future[ImpressionDealModel]]
 
     impressionBiddableInfos.foreach(impressionBiddableInfo => {
       val attributes = impressionBiddableInfo.attributes
@@ -47,18 +47,26 @@ trait ImpressionDealsGetter {
               bidFailedInfoWithRowsModel.attributes,
               impressionBiddableInfo,
               advertise)
-          }(createDefaultContext())
+          }
 
-          eventualImpressionDeals.addOne(eventualImpressionDeal)
+          eventualImpressionDealsMap.addOne(advertise.advertiseid -> eventualImpressionDeal)
         })
       }
     })
 
-    val impressionDeals = eventualImpressionDeals
+    val impressionDeals = eventualImpressionDealsMap
+      .values
       .map(w => FutureToRegular.toRegular(w))
+      .filter(w =>
+        EmptyValidateHelper.isDefinedDirect(w) &&
+          w.hasAnyDeal)
       .toList
 
-    Some(impressionDeals)
+    if (EmptyValidateHelper.hasAnyItemDirect(impressionDeals)) {
+      return Some(impressionDeals)
+    }
+
+    None
   }
 
   def getImpressionInfoFromImpressionBiddableInfo(

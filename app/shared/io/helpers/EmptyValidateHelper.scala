@@ -168,6 +168,12 @@ object EmptyValidateHelper {
     items.forall(item => isDefined(item))
   }
 
+  def isDefinedDirect[A](
+    item : A,
+    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    isDefined(Some(item), message)
+  }
+
   def isDefined[A](
     item : Option[A],
     message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {

@@ -47,5 +47,4 @@ case object NoBidResponseType extends IntEnum[NoBidResponseType] with IntCirceEn
   case object BlockedPublisherOrSite extends NoBidResponseType(7)
 
   case object UnmatchedUser extends NoBidResponseType(8)
-
 }

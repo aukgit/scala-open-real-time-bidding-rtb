@@ -26,7 +26,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
   override def getBidStatic(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val impressions : Seq[ImpressionModel] = request.bidRequestModel.imp.get
+    val impressions : Seq[ImpressionModel] = request.bidRequest.imp.get
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
     val callStacks = new ArrayBuffer[CallStackModel](length)
@@ -64,7 +64,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     val dspBidderResultModel =
       DemandSidePlatformBidResponseModel(
         request,
-        request.bidRequestModel,
+        request.bidRequest,
         bidResponseWrapper = null,
         Some(deals.toList))
     dspBidderResultModel.addCallStacks(callStacks)
@@ -87,7 +87,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       .isDefined
       .toInt
 
-    val minMaxHeightWidth = getMinMaxHeightWidths(impression)
+    val minMaxHeightWidth = impression.minMaxHeightWidth
     val impressionToString = s"impression(${ impression.toString })"
     val dealString = s"deal($deal)"
 
@@ -116,49 +116,6 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       Some(0),
       Some(0),
       JodaDateTimeHelper.nowUtcJavaInstant)
-  }
-
-  private def getMinMaxHeightWidths(impression : ImpressionModel) = {
-    val heightWidth = getHeightWidth(impression)
-    val maxHeightWidth = getMaxHeightWidth(impression)
-    val minHeightWidth = getMinHeightWidth(impression)
-
-    MinMaxHeightWidthModel(
-      minHeightWidth,
-      heightWidth,
-      maxHeightWidth)
-  }
-
-  def getHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {
-    if (impression.hasBanner) {
-      return impression.banner.get
-    }
-
-    if (impression.hasVideo) {
-      return impression.video.get
-    }
-
-    EmptyHeightWidthModel()
-  }
-
-  def getMaxHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {
-    if (impression.hasBanner) {
-      val banner = impression.banner.get
-
-      return HeightWidthModel(banner.hmax, banner.wmax)
-    }
-
-    EmptyHeightWidthModel()
-  }
-
-  def getMinHeightWidth(impression : ImpressionModel) : HeightWidthBaseModel = {
-    if (impression.hasBanner) {
-      val banner = impression.banner.get
-
-      return HeightWidthModel(banner.hmin, banner.wmin)
-    }
-
-    EmptyHeightWidthModel()
   }
 
   override def getBidStaticNoContent(

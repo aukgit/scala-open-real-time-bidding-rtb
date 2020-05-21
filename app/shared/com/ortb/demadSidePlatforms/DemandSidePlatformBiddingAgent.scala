@@ -6,8 +6,9 @@ import shared.com.ortb.demadSidePlatforms.traits.logics._
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
 import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, DefaultActualNoContentResponse, RunQuery }
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
+import shared.com.ortb.enumeration.NoBidResponseType
 import shared.com.ortb.manager.traits.CreateDefaultContext
-import shared.com.ortb.model.auctionbid.bidresponses.BidResponseModel
+import shared.com.ortb.model.auctionbid.bidresponses.{ BidResponseModel, BidResponseModelWrapper }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
@@ -48,6 +49,23 @@ class DemandSidePlatformBiddingAgent(
   override def getBidPrices(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = ???
 
+  override def getBidActual(
+    request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
+    val biddableImpressionInfoModels = getBiddableImpressionInfoModels(
+      request : DemandSidePlatformBiddingRequestWrapperModel)
+
+    val impressionDeals =
+      getImpressionInfosFromImpressionBiddableInfos(
+        request,
+        biddableImpressionInfoModels)
+
+    if (EmptyValidateHelper.isItemsEmpty(impressionDeals)) {
+      return getBidActualNoContent(request)
+    }
+
+    createDemandSidePlatformBidResponse(request, impressionDeals)
+  }
+
   def createDemandSidePlatformBidResponse(
     request : DemandSidePlatformBiddingRequestWrapperModel,
     impressionDeals : Option[List[ImpressionDealModel]]) :
@@ -77,12 +95,12 @@ class DemandSidePlatformBiddingAgent(
 
     if (!shouldBid) {
       // return without seatbid
-      return
+      return emptyNonBiddingResponse(request)
     }
-
 
     // create seatbid
     // TODO : look for group winning info if required or asked
+
     val seatBid = SeatbidRow(
       -1,
       bidRequestId,
@@ -104,34 +122,51 @@ class DemandSidePlatformBiddingAgent(
     // a single seat bid contains number of bids
     // TODO : investigate the usages of SeatBid array
     //        One seatbid can do the job no need for multiple then contains in the definition of the specs
+    val bidRepository = coreProperties
+      .repositories
+      .bidRepository
     impressionDeals.get.foreach(impressionDeal => {
       // TODO : create bid
-      //      val bidRow = BidRow(
-      //        -1,
-      //        dealbiddingprice = Some(impressionDeal.deal),
-      //        seatbidid = seatBidId.get,
-      //        campaignid = impressionDeal.impression.ca
-      //      )
+      val impressionId = impressionDeal.impression.id.toInt
+      val impressionToString = s", ImpressionDealModel(${ ImpressionDealModel.toString() })"
+      val advertiseId = Some(impressionDeal.advertise.advertiseid)
+      val campaignId = 5
+      val minMaxHeightWidth = impressionDeal.impression.minMaxHeightWidth
+      val bid = BidRow(
+        AppConstants.NewRecordIntId,
+        dealbiddingprice = Some(impressionDeal.deal),
+        seatbidid = seatBidId.get,
+        campaignid = Some(campaignId),
+        impressionid = Some(impressionId),
+        advertiseid = advertiseId,
+        adm = Some(s"adm $impressionToString"),
+        iurl = Some(s"iurl $impressionToString"),
+        height = minMaxHeightWidth.maybeHeight,
+        width = minMaxHeightWidth.maybeWidth,
+        createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
+      )
+
+      bidRepository.addAsync(bid)
     })
 
     ???
   }
 
-  override def getBidActual(
-    request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val biddableImpressionInfoModels = getBiddableImpressionInfoModels(
-      request : DemandSidePlatformBiddingRequestWrapperModel)
+  def emptyNonBiddingResponse(request : DemandSidePlatformBiddingRequestWrapperModel) :
+  Option[DemandSidePlatformBidResponseModel] = {
+    val bidResponse = BidResponseModel(
+      "_",
+      None,
+      None,
+      nbr = Some(NoBidResponseType.UnknownError.value))
 
-    val impressionDeals =
-      getImpressionInfosFromImpressionBiddableInfos(
-        request,
-        biddableImpressionInfoModels)
+    val bidResponseWrapper = BidResponseModelWrapper(Some(bidResponse))
+    val demandSidePlatformBidResponse = DemandSidePlatformBidResponseModel(
+      request,
+      request.bidRequest,
+      bidResponseWrapper)
 
-    if (EmptyValidateHelper.isItemsEmpty(impressionDeals) || !impressionDeals.get.exists(w => w.hasAnyDeal)) {
-      return getBidActualNoContent(request)
-    }
-
-    createDemandSidePlatformBidResponse(request, impressionDeals)
+    Some(demandSidePlatformBidResponse)
   }
 
   def getBidResponseRow(bidResponse : Option[BidResponseModel]) : BidresponseRow = ???
