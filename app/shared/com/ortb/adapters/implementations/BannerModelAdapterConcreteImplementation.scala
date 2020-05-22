@@ -2,9 +2,8 @@ package shared.com.ortb.adapters.implementations
 
 import com.google.inject.Inject
 import shared.com.ortb.adapters.traits.{ BannerModelAdapter, BidResponseModelAdapter }
-import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
-import shared.com.ortb.enumeration.NoBidResponseType.NoBidResponseType
+import shared.com.ortb.enumeration.NoBidResponseType
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.{ BannerImpressionModel, SimpleBannerModel }
 import shared.com.ortb.model.auctionbid.bidresponses.{ BidResponseModel, BidResponseModelWrapper }
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
@@ -18,22 +17,22 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
   def getConvertBidResponseRowToBidResponse(
     dspId : Int,
     bidResponseRow : BidresponseRow) : BidResponseModel = {
-//    val isNoBidResponse = PrimitiveTypeHelper
-//      .IntEnhancement(bidResponseRow.issendnobidresponse).toBoolean
-//
-//    if (isNoBidResponse) {
-//      // no response bid
-//      val nbr = bidResponseRow.nobidresponsetypeid
-//
-//      return BidResponseModel(
-//        bidResponseRow.bidresponseid.toString,
-//        None,
-//        Some(bidResponseRow.bidrequestid.toString),
-//        nbr = nbr)
-//    }
-//
-//          val seatBid =SeatBidModel()
-//    return
+    //    val isNoBidResponse = PrimitiveTypeHelper
+    //      .IntEnhancement(bidResponseRow.issendnobidresponse).toBoolean
+    //
+    //    if (isNoBidResponse) {
+    //      // no response bid
+    //      val nbr = bidResponseRow.nobidresponsetypeid
+    //
+    //      return BidResponseModel(
+    //        bidResponseRow.bidresponseid.toString,
+    //        None,
+    //        Some(bidResponseRow.bidrequestid.toString),
+    //        nbr = nbr)
+    //    }
+    //
+    //          val seatBid =SeatBidModel()
+    //    return
     throw new NotImplementedError()
   }
 
@@ -52,17 +51,17 @@ class BidResponseModelAdapterConcreteImplementation @Inject()(
     val repository =
       demandSidePlatformCorePropertiesContracts.repositories.bidResponseRepository
     val bidRequestId = Some(request.bidRequestRow.bidrequestid)
-//    val row = BidresponseRow(
-//      -1,
-//      issendnobidresponse = 1,
-//      bidrequestid = bidRequestId,
-//      currency = AppConstants.CurrencyUsd,
-//      createddate = 0, cr2 = None)
-//
-//    val createdResponse = repository.add(row)
-//    createdResponse.getIdAsInt
-//
-//    val w = BidResponseModelWrapper()
+    //    val row = BidresponseRow(
+    //      -1,
+    //      issendnobidresponse = 1,
+    //      bidrequestid = bidRequestId,
+    //      currency = AppConstants.CurrencyUsd,
+    //      createddate = 0, cr2 = None)
+    //
+    //    val createdResponse = repository.add(row)
+    //    createdResponse.getIdAsInt
+    //
+    //    val w = BidResponseModelWrapper()
     throw new NotImplementedError()
   }
 }
