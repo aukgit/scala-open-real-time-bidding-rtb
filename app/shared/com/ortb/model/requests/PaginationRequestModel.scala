@@ -1,6 +1,6 @@
 package shared.com.ortb.model.requests
 
-import controllers.webapi.core.AbstractRestWebApi
+import shared.com.ortb.webapi.core.AbstractRestWebApi
 import play.api.mvc.{ AnyContent, Request }
 import shared.com.ortb.model.wrappers.PaginationWrapperModel
 

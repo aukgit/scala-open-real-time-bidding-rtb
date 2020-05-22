@@ -26,7 +26,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
   override def getBidStatic(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val impressions : Seq[ImpressionModel] = request.bidRequest.imp.get
+    val impressions : Seq[ImpressionModel] = request.bidRequest.imp
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
     val callStacks = new ArrayBuffer[CallStackModel](length)

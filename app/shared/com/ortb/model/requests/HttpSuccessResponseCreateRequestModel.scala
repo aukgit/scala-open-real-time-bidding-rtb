@@ -1,6 +1,6 @@
 package shared.com.ortb.model.requests
 
-import controllers.webapi.core.AbstractRestWebApi
+import shared.com.ortb.webapi.core.AbstractRestWebApi
 import shared.com.ortb.model.results.{ RepositoryOperationResultModel, RepositoryOperationResultsModel }
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
 import shared.com.ortb.model.wrappers.persistent.WebApiEntityResponseWrapper

@@ -36,7 +36,7 @@ case class BidRequestModel(
    * Recommended
    * Site is used for targeting sites
    */
-  @Deprecated("Depreciated in spec 2.5 (https://bit.ly/3bTJv1l)")
+  @deprecated("Depreciated in spec 2.5 (https://bit.ly/3bTJv1l)")
   site : Option[SiteModel] = None,
 
   /**

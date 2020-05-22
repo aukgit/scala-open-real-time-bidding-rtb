@@ -1,6 +1,6 @@
 package controllers.rtb.core
 
-import controllers.webapi.core.traits.implementations.RestWebApiMessagesImplementation
+import shared.com.ortb.webapi.core.traits.implementations.RestWebApiMessagesImplementation
 import javax.inject.Inject
 import play.api.Logger
 import play.api.mvc.{ AbstractController, ControllerComponents }

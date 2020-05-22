@@ -3,7 +3,7 @@ package controllers.controllerRoutes.router.core
 import java.security.spec.InvalidParameterSpecException
 
 import controllers.controllerRoutes.traits.RouterActionPerformByIds
-import controllers.webapi.core.AbstractRestWebApi
+import shared.com.ortb.webapi.core.AbstractRestWebApi
 import play.api.mvc.{ Action, AnyContent }
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
