@@ -4,7 +4,7 @@ import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.{ ProductFieldModel, ProductInfoModel }
 import shared.io.helpers.CastingHelper
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.loggers.AppLogger
 
 import scala.reflect.runtime.universe._

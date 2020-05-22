@@ -1,4 +1,4 @@
-package shared.io.helpers.implementation.reflection
+package shared.io.helpers.implementations.reflection
 
 import shared.io.helpers.traits.reflection.ClassTagHelper
 

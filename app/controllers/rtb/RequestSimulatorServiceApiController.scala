@@ -16,7 +16,6 @@ class RequestSimulatorServiceApiController @Inject()(
   extends AbstractBaseSimulatorServiceApiController(repositories, appManager, components) {
 
   lazy val currentServiceModel : ServiceModel = services.requestSimulatorService
-
   lazy val jsonDirectory = "jsonRequestSamples"
 
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>

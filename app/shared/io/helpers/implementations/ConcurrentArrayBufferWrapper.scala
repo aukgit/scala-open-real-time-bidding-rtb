@@ -1,4 +1,4 @@
-package shared.io.helpers.implementation
+package shared.io.helpers.implementations
 
 import scala.collection.immutable
 import scala.collection.mutable.ArrayBuffer

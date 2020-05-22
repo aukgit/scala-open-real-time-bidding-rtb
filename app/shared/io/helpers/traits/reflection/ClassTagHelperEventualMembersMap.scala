@@ -7,7 +7,7 @@ import shared.com.ortb.model.reflection.traits.ClassMembersInfoBaseModel
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.io.helpers.traits.ParallelTaskHelperBase
 import shared.io.helpers.{ MapHelper, ParallelTaskHelper }
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future

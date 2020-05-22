@@ -11,7 +11,7 @@ import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperMode
 import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.JodaDateTimeHelper
-import shared.io.helpers.PrimitiveTypeHelper._
+import shared.io.extensions.PrimitiveTypeExtensions._
 
 import scala.collection.mutable.ArrayBuffer
 

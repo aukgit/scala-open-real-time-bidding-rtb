@@ -1,15 +1,17 @@
-package shared.io.helpers
+package shared.io.extensions
 
 /**
  * Reference: https://github.com/Powerspace/scala-openrtb
  */
-object PrimitiveTypeHelper {
+object PrimitiveTypeExtensions {
 
   /**
    * Convert a boolean to the related integer value
    */
   implicit class BooleanEnhancement(b : Boolean) {
     def toInt : Int = if (b) 1 else 0
+
+    def toIntString : String = toInt.toString
   }
 
   /**

@@ -3,7 +3,7 @@ package shared.io.helpers.traits.reflection
 import java.lang.reflect.Field
 
 import shared.io.helpers.EmptyValidateHelper
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 
 import scala.reflect.ClassTag
 
