@@ -1,4 +1,4 @@
-package controllers.controllerRoutes.router.core
+package shared.com.ortb.routes.router.core
 
 import com.google.inject.Inject
 import controllers.rtb.RequestSimulatorServiceApiController

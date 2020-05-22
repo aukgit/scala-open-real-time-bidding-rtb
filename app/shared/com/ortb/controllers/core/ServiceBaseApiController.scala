@@ -1,4 +1,4 @@
-package controllers.rtb.core
+package shared.com.ortb.controllers.core
 
 import shared.com.ortb.webapi.core.traits.implementations.RestWebApiMessagesImplementation
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
-import controllers.rtb.core.AbstractBaseSimulatorServiceApiController
+import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._

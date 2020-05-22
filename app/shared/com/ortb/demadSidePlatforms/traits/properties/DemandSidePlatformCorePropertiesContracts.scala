@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
-import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
+import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, RangeModel, ServiceModel }
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository

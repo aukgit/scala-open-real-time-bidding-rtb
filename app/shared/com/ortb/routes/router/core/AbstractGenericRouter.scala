@@ -1,8 +1,8 @@
-package controllers.controllerRoutes.router.core
+package shared.com.ortb.routes.router.core
 
 import java.security.spec.InvalidParameterSpecException
 
-import controllers.controllerRoutes.traits.RouterActionPerformByIds
+import shared.com.ortb.routes.traits.RouterActionPerformByIds
 import shared.com.ortb.webapi.core.AbstractRestWebApi
 import play.api.mvc.{ Action, AnyContent }
 import play.api.routing.Router.Routes

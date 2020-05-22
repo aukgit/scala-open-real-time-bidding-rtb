@@ -1,4 +1,4 @@
-package controllers.controllerRoutes.traits
+package shared.com.ortb.routes.traits
 
 import play.api.mvc.{ Action, AnyContent }
 

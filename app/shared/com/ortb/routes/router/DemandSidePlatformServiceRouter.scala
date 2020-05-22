@@ -1,4 +1,4 @@
-package controllers.controllerRoutes.router
+package shared.com.ortb.routes.router
 
 import com.google.inject.Inject
 import play.api.routing.Router.Routes

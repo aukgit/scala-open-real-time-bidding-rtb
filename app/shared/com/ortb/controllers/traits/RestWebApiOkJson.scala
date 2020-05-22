@@ -1,4 +1,4 @@
-package controllers.rtb.traits
+package shared.com.ortb.controllers.traits
 
 import play.api.mvc.Result
 

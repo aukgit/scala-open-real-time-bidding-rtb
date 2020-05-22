@@ -1,7 +1,7 @@
-package controllers.rtb.implementations
+package shared.com.ortb.controllers.implementations
 
-import controllers.rtb.core.ServiceBaseApiController
-import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
+import shared.com.ortb.controllers.core.ServiceBaseApiController
+import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import play.api.Logger
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.{ ConfigModel, ServiceModel, ServicesModel }

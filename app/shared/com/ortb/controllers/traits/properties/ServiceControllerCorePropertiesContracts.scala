@@ -1,6 +1,6 @@
-package controllers.rtb.traits.properties
+package shared.com.ortb.controllers.traits.properties
 
-import controllers.rtb.implementations.RestWebApiOkJsonImplementation
+import shared.com.ortb.controllers.implementations.RestWebApiOkJsonImplementation
 import play.api.Logger
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.{ ConfigModel, DemandSidePlatformConfigurationModel, ServiceModel, ServicesModel }

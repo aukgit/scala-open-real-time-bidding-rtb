@@ -1,7 +1,7 @@
-package controllers.rtb.core
+package shared.com.ortb.controllers.core
 
-import controllers.rtb.implementations.{ RestWebApiOkJsonImplementation, ServiceControllerPropertiesContractsImplementation }
-import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
+import shared.com.ortb.controllers.implementations.{ RestWebApiOkJsonImplementation, ServiceControllerPropertiesContractsImplementation }
+import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import javax.inject.Inject
 import play.api.Logger
 import play.api.mvc._
