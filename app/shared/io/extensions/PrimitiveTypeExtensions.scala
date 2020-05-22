@@ -21,5 +21,4 @@ object PrimitiveTypeExtensions {
    * Convert an string to the related values
    */
   implicit class StringConverter(val s : String) extends PrimitiveTypeStringConversion
-
 }
