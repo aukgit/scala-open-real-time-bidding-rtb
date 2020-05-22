@@ -14,11 +14,16 @@ case class SeatBidModel(
   /**
    * Array of 1+ Bid objects (Section 4.2.3) each related to an impression.
    * Multiple bids can relate to the same impression.
+   * Required field.
    */
   bid : List[BidModel],
 
   /**
    * ID of the bidder seat on whose behalf this bid is made.
+   * The unique ID of the bidder seat to which this bid responseClosed applies,
+   * such as a DSPClosed's account ID for the buyerClosed
+   * https://bit.ly/2LRwlr2
+   * https://bit.ly/2LN018Q
    */
   seat : Option[String],
 

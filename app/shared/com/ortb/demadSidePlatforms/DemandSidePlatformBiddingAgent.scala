@@ -100,6 +100,8 @@ class DemandSidePlatformBiddingAgent(
 
     // create seatbid
     // TODO : look for group winning info if required or asked
+    // SeatBid is usually refers to single DSP seat in the auction
+    // Thus, from single a DSP seatbid should be only per request.
 
     val seatBid = SeatbidRow(
       -1,
@@ -131,7 +133,10 @@ class DemandSidePlatformBiddingAgent(
       val impressionToString = s", ImpressionDealModel(${ ImpressionDealModel.toString() })"
       val advertiseId = Some(impressionDeal.advertise.advertiseid)
       val campaignId = 5
-      val minMaxHeightWidth = impressionDeal.impression.minMaxHeightWidth
+      val minMaxHeightWidth = impressionDeal
+        .impression
+        .minMaxHeightWidth
+
       val bid = BidRow(
         AppConstants.NewRecordIntId,
         dealbiddingprice = Some(impressionDeal.deal),
@@ -149,7 +154,19 @@ class DemandSidePlatformBiddingAgent(
       bidRepository.addAsync(bid)
     })
 
-    ???
+    val bidResponse2 = BidResponseModel(
+      bidResponseId.toString,
+      None,
+      None,
+      nbr = Some(NoBidResponseType.UnknownError.value))
+
+    val bidResponseWrapper = BidResponseModelWrapper(Some(bidResponse2))
+    val demandSidePlatformBidResponse = DemandSidePlatformBidResponseModel(
+      request,
+      request.bidRequest,
+      bidResponseWrapper)
+
+    Some(demandSidePlatformBidResponse)
   }
 
   def emptyNonBiddingResponse(request : DemandSidePlatformBiddingRequestWrapperModel) :
