@@ -12,6 +12,9 @@ import shared.io.loggers.AppLogger
 case class RepositoryOperationResultsModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
   data : Iterable[EntityWrapperModel[TRow, TKey]]) {
+  lazy val rows : Iterable[TRow] = data.map(w => w.entity)
+  lazy val keys : Iterable[TKey] = data.map(w => w.entityId)
+
   lazy val hasItems : Boolean = EmptyValidateHelper.hasAnyItemDirect(data)
   lazy val basicEncoderForGenericResponseAttributesModel =
     new BasicJsonEncoderImplementation[GenericResponseAttributesModel]

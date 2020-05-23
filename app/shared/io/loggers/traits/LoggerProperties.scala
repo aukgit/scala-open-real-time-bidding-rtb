@@ -6,7 +6,7 @@ import shared.com.ortb.manager.traits.DefaultExecutionContextManagerConcreteImpl
 trait LoggerProperties {
   lazy val header = "[Open RTB]"
   lazy val newLine : String = AppConstants.NewLineForSentry
-  lazy val defaultStackIndex = 3
+  lazy val defaultStackIndex = 5
   lazy val defaultSecondStackIndex = 4
   lazy val isPrintln = false
   lazy val isPrintMethodName = true

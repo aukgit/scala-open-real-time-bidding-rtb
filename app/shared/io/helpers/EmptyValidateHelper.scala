@@ -4,6 +4,8 @@ import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
+  lazy val defaultNoContentMessage : Option[String] = None
+
   def throwOnNullOrNoneOrNil(
     item : Any,
     message : Option[String] = None) : Unit = {
@@ -23,7 +25,7 @@ object EmptyValidateHelper {
 
   def isEmptyAny(
     item : Any,
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     val isDirectEmpty = item == null || String.valueOf(item) == "None"
     if (isDirectEmpty) {
       return true
@@ -41,13 +43,13 @@ object EmptyValidateHelper {
 
   def isRightEmptyOnEither[A, B](
     item : Either[A, B],
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     !isRightDefinedOnEither(item, message)
   }
 
   def isRightDefinedOnEither[A, B](
     item : Either[A, B],
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     val hasItem = item != null && item.getOrElse(null) != null
 
     //noinspection DuplicatedCode
@@ -63,14 +65,14 @@ object EmptyValidateHelper {
   //noinspection DuplicatedCode
   def isEmpty[A](
     item : Option[A],
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     !isDefined(item, message)
   }
 
   //noinspection DuplicatedCode
   def isEmptyDirect[A](
     item : A,
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     !isDefined(Some(item), message)
   }
 
@@ -84,7 +86,7 @@ object EmptyValidateHelper {
    */
   def isEmptyOptionString(
     givenString : Option[String],
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     !isOptionStringDefined(givenString, message)
   }
 
@@ -123,7 +125,7 @@ object EmptyValidateHelper {
    */
   def isEmptyString(
     givenString : String,
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     !isStringDefined(givenString, message)
   }
 
@@ -171,13 +173,13 @@ object EmptyValidateHelper {
 
   def isDefinedDirect[A](
     item : A,
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     isDefined(Some(item), message)
   }
 
   def isDefined[A](
     item : Option[A],
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     val hasItem = item != null &&
       item.isDefined &&
       item.get != null &&
@@ -238,7 +240,7 @@ object EmptyValidateHelper {
 
   def isDefinedAny(
     item : Any,
-    message : Option[String] = Some(AppConstants.NoContent)) : Boolean = {
+    message : Option[String] = defaultNoContentMessage) : Boolean = {
     val hasItem = item != null &&
       String.valueOf(item) != "None" &&
       !isEmptyAny(item, None)
