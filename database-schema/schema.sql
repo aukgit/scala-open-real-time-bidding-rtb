@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 20/05/2020 18:36:06
+ Date: 23/05/2020 16:35:45
 */
 
 PRAGMA foreign_keys = false;
@@ -327,7 +327,7 @@ CREATE TABLE "LogTrace" (
   "Message" TEXT,
   "EntityData" TEXT,
   "DatabaseTransactionType" TEXT,
-  "CreatedDateTimestamp" TIMESTAMP
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL
 );
 
 -- ----------------------------

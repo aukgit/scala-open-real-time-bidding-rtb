@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 20/05/2020 18:36:00
+ Date: 23/05/2020 16:35:39
 */
 
 PRAGMA foreign_keys = false;
@@ -427,7 +427,7 @@ CREATE TABLE "LogTrace" (
   "Message" TEXT,
   "EntityData" TEXT,
   "DatabaseTransactionType" TEXT,
-  "CreatedDateTimestamp" TIMESTAMP
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL
 );
 
 -- ----------------------------
@@ -607,8 +607,8 @@ INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
-INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
+INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1

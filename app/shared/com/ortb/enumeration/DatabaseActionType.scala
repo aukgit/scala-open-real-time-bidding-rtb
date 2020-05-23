@@ -6,6 +6,8 @@ sealed abstract class DatabaseActionType(val value : String) extends StringEnumE
 
 case object DatabaseActionType extends StringEnum[DatabaseActionType] with StringCirceEnum[DatabaseActionType] {
 
+  case object None extends DatabaseActionType("None")
+
   case object Create extends DatabaseActionType("Create")
 
   case object Read extends DatabaseActionType("Read")

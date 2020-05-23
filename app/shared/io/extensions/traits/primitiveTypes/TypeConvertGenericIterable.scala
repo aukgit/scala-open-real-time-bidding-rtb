@@ -5,20 +5,25 @@ import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
 import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.persistent.repositories.LogTraceRepository
+import shared.com.ortb.persistent.schema.Tables
 import shared.io.extensions.TypeConvertExtensions._
-import shared.io.helpers.EmptyValidateHelper
+import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper, ReflectionHelper }
 import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
 import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
 import shared.io.loggers.AppLogger
 
 trait TypeConvertGenericIterable[T] {
+  protected val anyItems : Iterable[T]
+
   lazy val isEmpty : Boolean = !hasItem
   lazy val hasItem : Boolean = EmptyValidateHelper.hasAnyItemDirect(anyItems)
   lazy val toSome : Option[Iterable[T]] = Some(anyItems)
   lazy val toOption : Option[Iterable[T]] = Some(anyItems)
   lazy val toMaybe : Option[Iterable[T]] = Some(anyItems)
   lazy val toCsv : String = anyItems.mkString(",")
-  protected val anyItems : Iterable[T]
+  lazy val logTraceRepository : LogTraceRepository = AppConstants.repositories.logTraceRepository
 
   def toJoinString(separator : String) : String = anyItems.mkString(separator)
 
@@ -72,11 +77,25 @@ trait TypeConvertGenericIterable[T] {
     maybeJson.getDefinedString
   }
 
-  def logToDatabaseAsJson(message : String = "")(
+  def logToDatabaseAsJson(
+    methodName: String,
+    databaseActionType: DatabaseActionType = DatabaseActionType.None,
+    request: String = "",
+    message : String = "")(
     implicit decoder : Lazy[DerivedDecoder[T]],
     encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
     val json = toPrettyJsonString
-    AppConstants.repositories.logTraceRepository.addAsync(Logtr)
+val typeName = ReflectionHelper.getTypeName(anyItems.headOption)
+    val logTrace = new Tables.LogtraceRow(
+      AppConstants.NewRecordIntId,
+      methodName,
+      typeName,
+      request,
+      message,
+      json,
+      databaseActionType.value, JodaDateTimeHelper.)
+
+    logTraceRepository.addAsync()
     AppLogger.log(json, message)
   }
 }
