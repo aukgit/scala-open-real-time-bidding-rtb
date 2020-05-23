@@ -89,7 +89,7 @@ object AppConstants {
    */
   lazy val LogEqualNewLineWithIndent : String = s"${ LogEqualNewLine }${ DoubleSpace }"
 
-  lazy val appManager : AppManager = new AppManager
+  lazy val AppManager : AppManager = new AppManager
 
-  lazy val repositories : Repositories = new Repositories(appManager)
+  lazy val Repositories : Repositories = new Repositories(AppManager)
 }

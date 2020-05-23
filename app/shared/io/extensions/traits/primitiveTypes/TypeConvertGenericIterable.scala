@@ -5,7 +5,9 @@ import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.enumeration.DatabaseActionType
+import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
+import shared.com.ortb.enumeration.LogLevelType.LogLevelType
+import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.LogTraceRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.extensions.TypeConvertExtensions._
@@ -23,7 +25,8 @@ trait TypeConvertGenericIterable[T] {
   lazy val toOption : Option[Iterable[T]] = Some(anyItems)
   lazy val toMaybe : Option[Iterable[T]] = Some(anyItems)
   lazy val toCsv : String = anyItems.mkString(",")
-  lazy val logTraceRepository : LogTraceRepository = AppConstants.repositories.logTraceRepository
+  lazy val appManager : AppManager = AppConstants.AppManager
+  lazy val logTraceRepository : LogTraceRepository = AppConstants.Repositories.logTraceRepository
 
   def toJoinString(separator : String) : String = anyItems.mkString(separator)
 
@@ -77,25 +80,47 @@ trait TypeConvertGenericIterable[T] {
     maybeJson.getDefinedString
   }
 
+  /**
+   *
+   * @param methodName
+   * @param databaseActionType
+   * @param request
+   * @param message
+   * @param isForceLog : If true then log regardless of the configuration or else only log if appManager.config.logConfiguration.isLogToDatabaseTrace
+   * @param logLevelType
+   * @param decoder
+   * @param encoder
+   */
   def logToDatabaseAsJson(
-    methodName: String,
-    databaseActionType: DatabaseActionType = DatabaseActionType.None,
-    request: String = "",
-    message : String = "")(
+    methodName : String,
+    databaseActionType : DatabaseActionType = DatabaseActionType.None,
+    request : String = "",
+    message : String = "",
+    isForceLog: Boolean = false,
+    logLevelType: LogLevelType = LogLevelType.DEBUG)(
     implicit decoder : Lazy[DerivedDecoder[T]],
     encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
     val json = toPrettyJsonString
-val typeName = ReflectionHelper.getTypeName(anyItems.headOption)
-    val logTrace = new Tables.LogtraceRow(
+    val typeName = ReflectionHelper.getTypeName(anyItems.headOption)
+    val logTrace = Tables.LogtraceRow(
       AppConstants.NewRecordIntId,
-      methodName,
-      typeName,
-      request,
-      message,
-      json,
-      databaseActionType.value, JodaDateTimeHelper.)
+      methodName.toSome,
+      typeName.toSome,
+      request.toSome,
+      message.toSome,
+      json.toSome,
+      databaseActionType.value.toSome,
+      JodaDateTimeHelper.nowUtcJavaInstantOption)
 
-    logTraceRepository.addAsync()
-    AppLogger.log(json, message)
+    if (appManager.config.logConfiguration.isPrintDuringLogDatabaseActionsToDatabase) {
+      AppLogger.logAsJson(
+        message,
+        logLevelType = logLevelType,
+        maybeModel = logTrace.toSome)
+    }
+
+    if (appManager.config.logConfiguration.isLogToDatabaseTrace) {
+      logTraceRepository.addAsync(logTrace)
+    }
   }
 }

@@ -138,6 +138,7 @@
     "isDebug": true,
     "isLogError": true,
     "isLogDatabaseQueryLogs": true,
+    "isLogToDatabaseTrace": true,
     "isLogDatabaseActionsToDatabase": false,
     "isPrintDuringLogDatabaseActionsToDatabase": true,
     "isEnableSentry": false

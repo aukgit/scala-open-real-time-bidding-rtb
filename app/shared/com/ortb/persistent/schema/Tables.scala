@@ -1003,17 +1003,17 @@ trait Tables {
    *  @param entitydata Database column EntityData SqlType(TEXT)
    *  @param databasetransactiontype Database column DatabaseTransactionType SqlType(TEXT)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontype: Option[String], createddatetimestamp: Option[java.time.Instant])
+  case class LogtraceRow(logtraceid: Int, methodname: Option[String], classname: Option[String], request: Option[String], message: Option[String], entitydata: Option[String], databasetransactiontype: Option[String], createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching LogtraceRow objects using plain SQL queries */
-  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[java.time.Instant]]): GR[LogtraceRow] = GR{
+  implicit def GetResultLogtraceRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[java.time.Instant]): GR[LogtraceRow] = GR{
     prs => import prs._
-    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[java.time.Instant]))
+    LogtraceRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<[java.time.Instant]))
   }
   /** Table description of table LogTrace. Objects of this class serve as prototypes for rows in queries. */
   class Logtrace(_tableTag: Tag) extends profile.api.Table[LogtraceRow](_tableTag, "LogTrace") {
     def * = (logtraceid, methodname, classname, request, message, entitydata, databasetransactiontype, createddatetimestamp) <> (LogtraceRow.tupled, LogtraceRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(logtraceid), methodname, classname, request, message, entitydata, databasetransactiontype, createddatetimestamp)).shaped.<>({r=>import r._; _1.map(_=> LogtraceRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(logtraceid), methodname, classname, request, message, entitydata, databasetransactiontype, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> LogtraceRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column LogTraceId SqlType(INTEGER), AutoInc, PrimaryKey */
     val logtraceid: Rep[Int] = column[Int]("LogTraceId", O.AutoInc, O.PrimaryKey)
@@ -1030,7 +1030,7 @@ trait Tables {
     /** Database column DatabaseTransactionType SqlType(TEXT) */
     val databasetransactiontype: Rep[Option[String]] = column[Option[String]]("DatabaseTransactionType")
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-    val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
+    val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
   }
   /** Collection-like TableQuery object for table Logtrace */
   lazy val Logtrace = new TableQuery(tag => new Logtrace(tag))

@@ -1,5 +1,6 @@
 package shared.com.repository.traits
 
+import shared.io.extensions.TypeConvertExtensions._
 import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
 import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.manager.traits.DefaultExecutionContextManager
@@ -48,7 +49,9 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends DefaultExecutionContextM
       methodName,
       resultModel,
       resultModel.get.attributes.get.message,
-      entity = resultModel.get.data)
+      entity = resultModel.get.data,
+      entities = None,
+      databaseTransactionType = databaseActionType.value.toSome)
 
     databaseLogger.trace(logModel, logLevelType = logLevelType)
   }
@@ -68,7 +71,8 @@ trait RepositoryDatabaseTraceLogger[TRow, TKey] extends DefaultExecutionContextM
       Some(resultsModel),
       resultsModel.get.attributes.get.message,
       entity = None,
-      entities = Some(resultsModel.get.data))
+      entities = Some(resultsModel.get.data),
+      databaseTransactionType = databaseActionType.value.toSome)
 
     databaseLogger.trace(logModel, logLevelType = logLevelType)
   }
