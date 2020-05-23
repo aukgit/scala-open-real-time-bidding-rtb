@@ -11,7 +11,7 @@ import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
 class ServiceControllerPropertiesContractsImplementation
 (val serviceBaseApiController : ServiceBaseApiController, val serviceModelInstance : ServiceModel)
   extends ServiceControllerCorePropertiesContracts {
-  EmptyValidateHelper.throwOnNullOrNone(serviceModelInstance)
+  EmptyValidateHelper.throwOnNullOrNoneOrNil(serviceModelInstance)
   lazy val restWebApiOkJson = new RestWebApiOkJsonImplementation(serviceBaseApiController)
   lazy val config : ConfigModel = appManager.config
   lazy val serviceTitle : String = serviceModelInstance.title

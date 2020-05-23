@@ -1,7 +1,7 @@
 package shared.io.extensions.traits.primitiveTypes
 
-trait PrimitiveTypeBooleanConversion {
-  val b : Boolean
+trait TypeConvertBoolean {
+  protected val b : Boolean
 
   def toIntString : String = toInt.toString
 

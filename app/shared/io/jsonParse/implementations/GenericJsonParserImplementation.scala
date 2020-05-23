@@ -167,7 +167,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
    * @return
    */
   override def fromJsonToJsonString(model : Option[Json], isPrettyFormat : Boolean) : Option[String] = {
-    EmptyValidateHelper.throwOnNullOrNone(model, Some("model is empty"))
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(model, Some("model is empty"))
 
     if (isPrettyFormat) {
       return Some(model.get.spaces2)

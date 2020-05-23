@@ -90,7 +90,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
 
   def getControllerSuccessResponse[TTable, TRow, TKey]
     (httpResponseCreateRequestModel : HttpSuccessResponseCreateRequestModel[TTable, TRow, TKey]) : String = {
-    EmptyValidateHelper.throwOnNullOrNone(httpResponseCreateRequestModel)
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(httpResponseCreateRequestModel)
 
     val repositoryResponse = httpResponseCreateRequestModel.repositoryOperationResultModel
     if (EmptyValidateHelper.isDefined(repositoryResponse)) {

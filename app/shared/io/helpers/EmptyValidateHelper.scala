@@ -4,12 +4,13 @@ import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
-  def throwOnNullOrNone(
+  def throwOnNullOrNoneOrNil(
     item : Any,
     message : Option[String] = None) : Unit = {
+    lazy val valueOf = String.valueOf(item)
     val isEmpty = item == null ||
-      String.valueOf(item) == "None" ||
-      isEmptyAny(item, None)
+      valueOf == "None" ||
+      valueOf == "Nil"
 
     if (isEmpty && isOptionStringDefinedWithoutMessage(message)) {
       throw new NullPointerException(message.get)

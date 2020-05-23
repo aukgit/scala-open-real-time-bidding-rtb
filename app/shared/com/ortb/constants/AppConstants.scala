@@ -64,14 +64,17 @@ object AppConstants {
 
   lazy val Space4 : String = s"$DoubleSpace${ DoubleSpace }"
 
-  val EqualSign = "="
+  lazy val EqualSign = "="
 
-  val Colon = ":"
+  lazy val Colon = ":"
 
-  val NewRecordIntId : Int = -1
-  val TrueInteger : Int = 1
-  val FalseInteger : Int = 0
-  val NewRecordStringId : String = ""
+  lazy val NewRecordIntId : Int = -1
+  lazy val TrueInteger : Int = 1
+  lazy val FalseInteger : Int = 0
+  lazy val NewRecordStringId : String = ""
+
+  lazy val DefaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
+  lazy val DefaultDateFormatPattern = "MM/dd/yyyy"
 
   /**
    * "=${NewLine}"

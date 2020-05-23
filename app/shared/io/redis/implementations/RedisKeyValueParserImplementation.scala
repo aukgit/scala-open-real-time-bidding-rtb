@@ -17,7 +17,7 @@ class RedisKeyValueParserImplementation @Inject()(
     with RedisClientCorePropertiesContracts {
 
   override def set(key : String, value : Any, whenSet : StringApi.SetBehaviour, expire : Duration) : Unit = {
-    EmptyValidateHelper.throwOnNullOrNone(key)
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(key)
 
     try {
       redisClient.set(key, value, whenSet, expire)
@@ -28,7 +28,7 @@ class RedisKeyValueParserImplementation @Inject()(
   }
 
   override def appendItemToList(listKey : String, value : Any) : Unit = {
-    EmptyValidateHelper.throwOnNullOrNone(listKey)
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(listKey)
 
     try {
       redisClient.lpush(listKey, value)
@@ -48,7 +48,7 @@ class RedisKeyValueParserImplementation @Inject()(
   }
 
   override def clearList(listKey : String) : Unit = {
-    EmptyValidateHelper.throwOnNullOrNone(listKey)
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(listKey)
 
     try {
       redisClient.del(listKey)
@@ -59,7 +59,7 @@ class RedisKeyValueParserImplementation @Inject()(
   }
 
   override def setStringList(listKey : String, items : Iterable[String]) : Unit = {
-    EmptyValidateHelper.throwOnNullOrNone(listKey)
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(listKey)
 
     try {
       if (EmptyValidateHelper.isItemsEmpty(Some(items))) {
