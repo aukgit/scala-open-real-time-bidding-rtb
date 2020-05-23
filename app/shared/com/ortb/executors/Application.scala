@@ -9,11 +9,16 @@ import com.github.dwickern.macros.NameOf._
 
 object Application {
   def main(args : Array[String]) : Unit = {
-    println("wwww")
+    println("Start")
     val appManager = new AppManager
     println(appManager.config)
+    println("Manager Complete")
 
-    val repos = new Repositories(appManager)
+  }
+
+  /**
+   *
+  val repos = new Repositories(appManager)
     val campaignsResponse = repos.campaignRepository.getAllAsResponse
     campaignsResponse.logResults()
 
@@ -47,5 +52,5 @@ object Application {
 
     AppLogger.debug(response.toString)
 
-  }
+   */
 }
