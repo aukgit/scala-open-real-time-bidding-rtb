@@ -2,10 +2,14 @@ package shared.io.extensions.traits.primitiveTypes
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.manager.AppManager
+import shared.com.ortb.manager.traits.{ CreateDefaultContext, DefaultExecutionContextManager }
 import shared.com.ortb.persistent.repositories.LogTraceRepository
 import shared.io.helpers.EmptyValidateHelper
 
-trait TypeConvertGenericIterable[T] extends TypeConvertGenericIterableJson[T] {
+import scala.concurrent.ExecutionContext
+
+trait TypeConvertGenericIterable[T]
+  extends TypeConvertGenericIterableJson[T] with CreateDefaultContext {
   protected val anyItems : Iterable[T]
 
   lazy val isEmpty : Boolean = !hasItem
@@ -27,4 +31,8 @@ trait TypeConvertGenericIterable[T] extends TypeConvertGenericIterableJson[T] {
       anyItems,
       Some(s"Undefined object given for json parsing."))
   }
+
+  override def createDefaultContext() : ExecutionContext = appManager
+    .executionContextManager
+    .createDefaultContext()
 }

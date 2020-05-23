@@ -12,9 +12,44 @@ import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper, ReflectionHelper }
 import shared.io.loggers.AppLogger
 
+import scala.concurrent.Future
+
 trait TypeConvertGenericIterableLogToDatabase[T] {
   this : TypeConvertGenericIterable[T] =>
   lazy private val logConfiguration : LogConfigurationModel = appManager.config.logConfiguration
+
+  /**
+   *
+   * @param methodName
+   * @param databaseActionType
+   * @param request
+   * @param message
+   * @param overrideTypeClass
+   * @param isForceLog : If true then log regardless of the configuration or else only log if appManager.config.logConfiguration.isLogToDatabaseTrace
+   * @param logLevelType
+   * @param decoder
+   * @param encoder
+   */
+  def logToDatabaseAsJsonAsync(
+    methodName : String,
+    databaseActionType : DatabaseActionType = DatabaseActionType.None,
+    request : String = "",
+    message : String = "",
+    overrideTypeClass : String = null,
+    isForceLog : Boolean = false,
+    logLevelType : LogLevelType = LogLevelType.DEBUG)(
+    implicit decoder : Lazy[DerivedDecoder[T]],
+    encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
+    Future {
+      logToDatabaseAsJson(
+        methodName,
+        databaseActionType,
+        request,
+        message, overrideTypeClass,
+        isForceLog,
+        logLevelType)
+    }
+  }
 
   /**
    *
@@ -61,8 +96,8 @@ trait TypeConvertGenericIterableLogToDatabase[T] {
         maybeModel = logTrace.toSome)
     }
 
-    if (logConfiguration.isLogToDatabaseTrace) {
-      logTraceRepository.addAsync(logTrace)
+    if (logConfiguration.isLogToDatabaseTrace || isForceLog) {
+      logTraceRepository.add(logTrace)
     }
   }
 }

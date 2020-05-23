@@ -1,9 +1,5 @@
 package shared.com.ortb.executors
 
-import io.circe.derivation._
-import io.circe.generic.semiauto._
-import io.circe._
-import io.circe.generic.auto._
 import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
@@ -28,18 +24,20 @@ object Application {
 
     val bidResponseRepository = repos
       .bidResponseRepository
-    println(nameOf(bidResponseRepository))
 
     val allRows = bidResponseRepository.getAll
-    // AppLogger.logEntities(allRows, "all rows")
+    allRows.logToDatabaseAsJson("main")
+    AppLogger.logEntities(allRows, "all rows")
     val row = BidresponseRow(
       -1,
       createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
+
     val response = bidResponseRepository
       .add(row)
 
     bidResponseRepository
       .add(row)
+
     bidResponseRepository.addEntities(Seq(row, row))
     val res = response.data.get
 
