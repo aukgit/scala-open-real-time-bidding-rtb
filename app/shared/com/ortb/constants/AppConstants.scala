@@ -70,6 +70,8 @@ object AppConstants {
   lazy val EqualSign = "="
 
   lazy val Colon = ":"
+  lazy val Comma = ","
+  lazy val CommaSpace = ", "
 
   lazy val NewRecordIntId : Int = -1
   lazy val TrueInteger : Int = 1

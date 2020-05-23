@@ -24,6 +24,8 @@ object Application {
     val json = campaignsResponse.rows.toPrettyJsonString
     println(json)
 
+    campaignsResponse.rows.logToDatabaseAsJson(nameOf(main _))
+
     val bidResponseRepository = repos
       .bidResponseRepository
     println(nameOf(bidResponseRepository))

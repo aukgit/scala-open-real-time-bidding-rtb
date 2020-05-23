@@ -54,7 +54,7 @@ trait DatabaseLogTracer extends ConfigurationExpansion {
       Some(log.message),
       entityString,
       log.databaseTransactionType,
-      JodaDateTimeHelper.nowUtcJavaInstantOption)
+      JodaDateTimeHelper.nowUtcJavaInstant)
 
     if (logConfiguration.isPrintDuringLogDatabaseActionsToDatabase) {
       AppLogger.logAsJson(

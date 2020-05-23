@@ -13,8 +13,8 @@ case class RepositoryOperationResultsModel[TRow, TKey](
   attributes : Option[GenericResponseAttributesModel],
   data : Iterable[EntityWrapperModel[TRow, TKey]]) {
   lazy val rows : Iterable[TRow] = data.map(w => w.entity)
-  lazy val keys : Iterable[TKey] = data.map(w => w.entityId)
-
+  lazy val ids : Iterable[TKey] = data.map(w => w.entityId)
+  lazy val map : Map[TKey, TRow] = data.map(w => w.entityId -> w.entity).toMap
   lazy val hasItems : Boolean = EmptyValidateHelper.hasAnyItemDirect(data)
   lazy val basicEncoderForGenericResponseAttributesModel =
     new BasicJsonEncoderImplementation[GenericResponseAttributesModel]

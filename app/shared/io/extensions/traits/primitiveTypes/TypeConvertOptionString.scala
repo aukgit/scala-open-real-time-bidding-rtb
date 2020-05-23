@@ -5,6 +5,6 @@ import shared.io.helpers.EmptyValidateHelper
 trait TypeConvertOptionString {
   lazy val hasCharacter : Boolean = EmptyValidateHelper.isOptionStringDefined(s)
   lazy val isEmpty : Boolean = !hasCharacter
-  lazy val getDefinedString : String = if (hasCharacter) s.get else ""
+  lazy val getDefinedOrEmptyString : String = if (hasCharacter) s.get else ""
   protected val s : Option[String]
 }
