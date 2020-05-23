@@ -1,5 +1,8 @@
 package shared.com.ortb.constants
 
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.persistent.Repositories
+
 object AppConstants {
 
   /**
@@ -85,4 +88,8 @@ object AppConstants {
    * "=${NewLine}${DoubleSpace}"
    */
   lazy val LogEqualNewLineWithIndent : String = s"${ LogEqualNewLine }${ DoubleSpace }"
+
+  lazy val appManager : AppManager = new AppManager
+
+  lazy val repositories : Repositories = new Repositories(appManager)
 }

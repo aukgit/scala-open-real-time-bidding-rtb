@@ -4,6 +4,7 @@ import io.circe.Json
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
+import shared.com.ortb.constants.AppConstants
 import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
@@ -71,10 +72,11 @@ trait TypeConvertGenericIterable[T] {
     maybeJson.getDefinedString
   }
 
-  def logAsJson(message : String = "")(
+  def logToDatabaseAsJson(message : String = "")(
     implicit decoder : Lazy[DerivedDecoder[T]],
     encoder : Lazy[DerivedAsObjectEncoder[T]]) : Unit = {
     val json = toPrettyJsonString
+    AppConstants.repositories.logTraceRepository.addAsync(Logtr)
     AppLogger.log(json, message)
   }
 }
