@@ -20,13 +20,13 @@ object Application {
     val json = campaignsResponse.rows.toPrettyJsonString
     println(json)
 
-    campaignsResponse.rows.logToDatabaseAsJson(nameOf(main _))
+    campaignsResponse.rows.logToDatabaseAsJsonAsync(nameOf(main _))
 
     val bidResponseRepository = repos
       .bidResponseRepository
 
     val allRows = bidResponseRepository.getAll
-    allRows.logToDatabaseAsJson("main")
+    allRows.logToDatabaseAsJsonAsync("main")
     AppLogger.logEntities(allRows, "all rows")
     val row = BidresponseRow(
       -1,
