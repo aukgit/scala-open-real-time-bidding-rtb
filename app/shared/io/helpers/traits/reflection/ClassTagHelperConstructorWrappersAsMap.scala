@@ -1,5 +1,7 @@
 package shared.io.helpers.traits.reflection
 
+import java.lang.reflect.Constructor
+
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.ConstructorWrapperModel
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
@@ -17,11 +19,12 @@ trait ClassTagHelperConstructorWrappersAsMap {
 
   def getConstructorWrapperModelsAsMap(classRefection : Class[_]) :
   ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]] = {
-    val constructors = classRefection.getConstructors
+    val publicConstructors = classRefection.getConstructors
+    val otherConstructors = classRefection.getDeclaredConstructors
     val typeName = classRefection.getTypeName
-    val length = constructors.length
+
     val classHeader = s"[${ typeName.toString }] "
-    if (EmptyValidateHelper.isItemsEmptyDirect(constructors)) {
+    if (EmptyValidateHelper.isItemsEmptyDirect(publicConstructors)) {
       return ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]](
         Some(Map.empty[Int, ArrayBuffer[ConstructorWrapperModel]]),
         0,
@@ -30,12 +33,14 @@ trait ClassTagHelperConstructorWrappersAsMap {
       )
     }
 
+    val length = publicConstructors.length + otherConstructors.length
     val map = new collection.mutable.HashMap[Int, ArrayBuffer[ConstructorWrapperModel]](
       length + 1,
       1.2)
 
     var index = 0
-    constructors.foreach(constructor => {
+
+    def addConstructor(constructor : Constructor[_]) : Unit = {
       val fieldWrapperModel = reflection.ConstructorWrapperModel(constructor)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
@@ -44,7 +49,10 @@ trait ClassTagHelperConstructorWrappersAsMap {
         defaultCapacity = 1)
 
       index += 1
-    })
+    }
+
+    publicConstructors.foreach(addConstructor)
+    otherConstructors.foreach(addConstructor)
 
     val finalMap = Some(map.toMap)
     ResultWithCountSuccessModel[Map[Int, ArrayBuffer[ConstructorWrapperModel]]](
