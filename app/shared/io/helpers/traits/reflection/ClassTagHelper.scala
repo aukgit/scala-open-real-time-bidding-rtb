@@ -4,7 +4,7 @@ import java.lang.reflect.Member
 
 import shared.com.ortb.enumeration.ReflectionModifier
 import shared.com.ortb.manager.traits.CreateDefaultContext
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 
 import scala.reflect.ClassTag
 

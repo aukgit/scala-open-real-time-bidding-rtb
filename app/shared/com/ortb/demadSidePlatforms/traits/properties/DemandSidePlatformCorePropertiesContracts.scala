@@ -1,6 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
-import controllers.rtb.traits.properties.ServiceControllerCorePropertiesContracts
+import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, RangeModel, ServiceModel }
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository
@@ -13,13 +13,13 @@ trait DemandSidePlatformCorePropertiesContracts
   extends ServiceControllerCorePropertiesContracts
     with BiddingDefaultProperties
     with DemandSidePlatformBiddingProperties {
-  val demandSideId : Int
+  lazy val randomNumberIncrementerGuessRange : RangeModel =
+    demandSidePlatformConfiguration.randomNumberIncrementerGuessRange
 
   lazy override val databaseLogger : DatabaseLogTracer = new DatabaseLogTracerImplementation(
     appManager,
     this.getClass.getName)
 
-  val repositories : Repositories
   lazy override val currentServiceModel : ServiceModel =
     services.demandSidePlatForms(demandSideId - 1)
 
@@ -32,6 +32,5 @@ trait DemandSidePlatformCorePropertiesContracts
 
   lazy val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     config.server.demandSidePlatformConfiguration
-
-  lazy val randomNumberIncrementerGuessRange : RangeModel = demandSidePlatformConfiguration.randomNumberIncrementerGuessRange
+  val repositories : Repositories
 }

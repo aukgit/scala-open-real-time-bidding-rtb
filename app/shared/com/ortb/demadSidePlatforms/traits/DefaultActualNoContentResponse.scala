@@ -13,7 +13,7 @@ trait DefaultActualNoContentResponse {
     val dspBidderResultModel =
       DemandSidePlatformBidResponseModel(
         request,
-        request.bidRequestModel,
+        request.bidRequest,
         isNoContent = true, bidResponseWrapper = null)
 
     val callStackModel = CallStackModel(

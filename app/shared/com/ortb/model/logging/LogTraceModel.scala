@@ -6,5 +6,5 @@ case class LogTraceModel(
   message : String = "",
   entity : Option[Any] = None,
   entities : Option[Iterable[Any]] = None,
-  databaseTransactionId : Option[Int] = None
+  databaseTransactionType : Option[String] = None
 )

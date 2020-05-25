@@ -2,7 +2,7 @@ package shared.io.helpers.traits.reflection
 
 import shared.com.ortb.model.reflection.ClassMembersInfoModel
 import shared.com.ortb.model.reflection.implementations.ClassMembersInfoBaseConcreteImplementationModel
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.{ EmptyValidateHelper, ExtractHelper }
 
 import scala.concurrent.Future

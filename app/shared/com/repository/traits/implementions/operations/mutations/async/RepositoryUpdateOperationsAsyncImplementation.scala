@@ -39,7 +39,7 @@ trait RepositoryUpdateOperationsAsyncImplementation[TTable, TRow, TKey]
         )
 
         traceFutureResult(
-          isLogDatabaseActionsToDatabase,
+          isDatabaseTraceEnabled,
           "updateAsync",
           Some(result),
           actionType)

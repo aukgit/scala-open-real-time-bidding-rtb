@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
+import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid._
 import shared.com.ortb.model.logging.LogTraceModel
@@ -12,11 +13,10 @@ import slick.jdbc.SQLiteProfile.api._
 trait FailedBidsGetter {
   this : DemandSidePlatformBiddingAgent =>
 
-  def getLastFailedDealsAsBidFailedInfoWithRowsModel(
+  def getLastFailedDealsAsBidFailedInfoWithRows(
     request : DemandSidePlatformBiddingRequestWrapperModel,
     limit : Int = defaultLimit) : BidFailedInfoWithRowsModel = {
-    val methodName = "getLastFailedDealsAsBidFailedInfoWithRowsModel"
-
+    lazy val methodName = nameOf(getLastFailedDealsAsBidFailedInfoWithRows _)
     val repositories = coreProperties.repositories
     val lostBids = repositories.lostBids
 
@@ -34,11 +34,13 @@ trait FailedBidsGetter {
     )
 
     val logTraceModel = LogTraceModel(
-      methodName,
-      Some(request),
+      methodName = methodName,
+      request = Some(request),
       entity = Some(bidFailedInfoWithRowsModel))
 
-    coreProperties.databaseLogger.trace(logTraceModel)
+    coreProperties
+      .databaseLogger
+      .trace(logTraceModel)
 
     bidFailedInfoWithRowsModel
   }

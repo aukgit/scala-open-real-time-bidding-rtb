@@ -1,6 +1,8 @@
 package shared.com.ortb.demadSidePlatforms.traits.getters
 
+import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
+import shared.com.ortb.enumeration.DatabaseActionType
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.auctionbid.{ ImpressionBiddableAttributesModel, ImpressionBiddableInfoModel }
 import shared.com.ortb.model.logging.LogTraceModel
@@ -17,62 +19,58 @@ import scala.concurrent.Future
 trait BiddableInfoModelsGetter {
   this : DemandSidePlatformBiddingAgent =>
 
-  def getImpressionBiddableInfoModel(
+  def getImpressionBiddableInfo(
     advertisesTable : TableQuery[Tables.Advertise],
     advertiseRepository : AdvertiseRepository,
     impression : ImpressionModel,
     limit : Int = defaultAdvertiseLimit) : Option[ImpressionBiddableInfoModel] = {
-    val methodName = "getImpressionBiddableInfoModel"
+    val methodName = nameOf(getImpressionBiddableInfo _)
 
-    if (EmptyValidateHelper.isEmpty(impression.banner)) {
-      // no banner
-      val model = ImpressionBiddableInfoModel(
-        impression,
-        None,
-        None,
-        ImpressionBiddableAttributesModel(
-          isBiddable = false,
-          hasBanner = false,
-          0))
+    val isEmptyBannerAndVideo = EmptyValidateHelper.isEmpty(impression.banner) &&
+      EmptyValidateHelper.isEmpty(impression.video)
 
-      return Some(model)
+    if (isEmptyBannerAndVideo) {
+      return EmptyImpressionBiddableInfoFor(impression)
     }
 
-    val banner = impression.banner.get
-    val advertisesQueryIn = advertisesTable.filter(advertise =>
-      advertise.isvideo === 0)
-
-    val advertisesQuery = appendQueryForBanner(advertisesQueryIn, banner)
+    val maybeBanner = impression.banner
+    val maybeVideo = impression.video
+    // TODO improve logic here
+    val advertisesBannerQuery = appendQueryForBanner(advertisesTable, maybeBanner)
+    val advertisesQuery = appendQueryForVideo(advertisesBannerQuery, maybeVideo)
     val countQuery = advertisesQuery.length.result
-    val query = advertisesQuery.take(limit).result
-    val exactQueryRows = getExactHeightWidthQueryRows(
-      advertiseRepository,
-      advertisesQuery,
-      banner)
-
     val totalCount = advertiseRepository.count(countQuery)
-    val rows = advertiseRepository.run(query)
-    val isBiddable = rows.nonEmpty
+    val rows = advertiseRepository.run(advertisesQuery, limit)
 
     val impressionAttributes = ImpressionBiddableAttributesModel(
-      isBiddable,
-      hasBanner = true,
+      hasBanner = maybeBanner.isDefined,
+      hasVideo = maybeVideo.isDefined,
       totalCount.get)
 
     val model = ImpressionBiddableInfoModel(
       impression,
-      Some(rows.toArray),
-      exactQueryRows,
+      Some(rows),
       impressionAttributes)
 
     val logModel = LogTraceModel(
       methodName,
       request = Some(impression),
-      entity = Some(model))
+      entity = Some(model),
+      databaseTransactionType = Some(DatabaseActionType.Read.toString))
 
     coreProperties.databaseLogger.trace(logModel)
 
     Some(model)
+  }
+
+  private def EmptyImpressionBiddableInfoFor(impression : ImpressionModel) = {
+    Some(ImpressionBiddableInfoModel(
+      impression,
+      None,
+      ImpressionBiddableAttributesModel(
+        hasBanner = false,
+        hasVideo = false,
+        0)))
   }
 
   def getBiddableImpressionInfoModels(
@@ -81,12 +79,12 @@ trait BiddableInfoModelsGetter {
     val repositories = coreProperties.repositories
     val advertiseRepository = repositories.advertiseRepository
     val advertises : TableQuery[Tables.Advertise] = repositories.advertises
-    val impressions = request.bidRequestModel.imp.get
+    val impressions = request.bidRequest.imp
 
     val futureTasks : Seq[Future[ImpressionBiddableInfoModel]] =
       impressions.map(impression => {
         Future(
-          getImpressionBiddableInfoModel(
+          getImpressionBiddableInfo(
             advertises,
             advertiseRepository,
             impression,

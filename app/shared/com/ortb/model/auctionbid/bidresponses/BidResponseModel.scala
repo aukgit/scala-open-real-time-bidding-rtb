@@ -6,7 +6,7 @@ case class BidResponseModel(
   /**
    * Array of seatbid objects; 1+ required if a bid is to be made.
    */
-  seatbid : Option[SeatBidModel],
+  seatbid : Option[List[SeatBidModel]],
 
   /**
    * Bidder generated response ID to assist with logging/tracking.

@@ -2,7 +2,7 @@ package shared.io.helpers.traits.reflection
 
 import java.lang.reflect.Method
 
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.{ EmptyValidateHelper, MapHelper }
 
 import scala.collection.mutable.ArrayBuffer

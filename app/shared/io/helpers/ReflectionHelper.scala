@@ -1,6 +1,6 @@
 package shared.io.helpers
 
-import shared.io.helpers.implementation.NiceObject
+import shared.io.helpers.implementations.NiceObject
 import shared.io.helpers.traits._
 import shared.io.helpers.traits.reflection.{ ClassTagHelper, ReflectionHelperBase }
 

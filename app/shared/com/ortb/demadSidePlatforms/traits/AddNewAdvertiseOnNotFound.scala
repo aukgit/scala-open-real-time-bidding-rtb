@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits
 
+import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.ImpressionBiddableInfoModel
@@ -12,7 +13,19 @@ import slick.jdbc.SQLiteProfile.api._
 trait AddNewAdvertiseOnNotFound {
   this : DemandSidePlatformBiddingAgent =>
 
-  def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
+  def addNewAdvertiseIfNoAdvertiseInTheGivenCriteriaAsync(
+    request : DemandSidePlatformBiddingRequestWrapperModel,
+    isEmpty : Boolean,
+    impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {
+    val thread = new Thread(() => addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
+      request : DemandSidePlatformBiddingRequestWrapperModel,
+      isEmpty : Boolean,
+      impressionBiddableInfoModel : ImpressionBiddableInfoModel))
+
+    thread.start()
+  }
+
+  private def addNewAdvertiseIfNoAdvertiseInTheGivenCriteria(
     request : DemandSidePlatformBiddingRequestWrapperModel,
     isEmpty : Boolean,
     impressionBiddableInfoModel : ImpressionBiddableInfoModel) : Unit = {
@@ -21,8 +34,8 @@ trait AddNewAdvertiseOnNotFound {
     }
 
     // create DSP -> campaign -> Advertise
-    val methodName = "addNewAdvertiseIfNoAdvertiseInTheGivenCriteria"
-    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${ request.bidRequestModel.toString }")
+    val methodName = nameOf(addNewAdvertiseIfNoAdvertiseInTheGivenCriteria _)
+    AppLogger.debug(methodName, s"Adding Advertise as per configuration, ${ request.bidRequest.toString }")
 
     val demandSideId = coreProperties.demandSideId
     val repositories = coreProperties.repositories
@@ -37,7 +50,7 @@ trait AddNewAdvertiseOnNotFound {
       .result
 
     val impressionModel = impressionBiddableInfoModel.impression
-    val bidReq = request.bidRequestModel
+    val bidReq = request.bidRequest
     val site = bidReq.site
     val publisher = publishersRepository
       .getFirstOrDefaultFromQuery(publisherByDspQuery)
@@ -92,7 +105,7 @@ trait AddNewAdvertiseOnNotFound {
       hasagerestriction = 0,
       minage = Some(0),
       maxage = Some(0),
-      createddatetimestamp=JodaDateTimeHelper.nowUtcJavaInstant)
+      createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
 
     advertiseRepository.add(advertise)
     AppLogger.debug("Advertise added")
