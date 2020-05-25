@@ -267,6 +267,11 @@ object EmptyValidateHelper {
     !hasAnyItem(Some(items), message)
   }
 
+  def isItemsEmptyOnAllDirect[A](
+    items : Iterable[A]*) : Boolean = {
+    items.forall(w => !hasAnyItem(Some(w)))
+  }
+
   def isDefinedDoublePlusPositive[A](
     item : Option[Double]) : Boolean = {
     item.isDefined && item.get > 0

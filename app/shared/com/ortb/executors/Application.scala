@@ -16,7 +16,6 @@ object Application {
     println("Manager Complete")
     val repos = new Repositories(appManager)
     val campaignsResponse = repos.campaignRepository.getAllAsResponse
-
     val json = campaignsResponse.rows.toPrettyJsonString
     println(json)
 
@@ -26,7 +25,6 @@ object Application {
       .bidResponseRepository
 
     val allRows = bidResponseRepository.getAll
-    allRows.logToDatabaseAsJsonAsync("main")
     AppLogger.logEntities(allRows, "all rows")
     val row = BidresponseRow(
       -1,
