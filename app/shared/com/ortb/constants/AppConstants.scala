@@ -1,5 +1,8 @@
 package shared.com.ortb.constants
 
+import shared.com.ortb.manager.AppManager
+import shared.com.ortb.persistent.Repositories
+
 object AppConstants {
 
   /**
@@ -62,19 +65,33 @@ object AppConstants {
 
   lazy val Space2 : String = DoubleSpace
 
-  lazy val Space4 : String = s"$DoubleSpace${DoubleSpace}"
+  lazy val Space4 : String = s"$DoubleSpace${ DoubleSpace }"
 
-  val EqualSign = "="
+  lazy val EqualSign = "="
 
-  val Colon = ":"
+  lazy val Colon = ":"
+  lazy val Comma = ","
+  lazy val CommaSpace = ", "
+
+  lazy val NewRecordIntId : Int = -1
+  lazy val TrueInteger : Int = 1
+  lazy val FalseInteger : Int = 0
+  lazy val NewRecordStringId : String = ""
+
+  lazy val DefaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
+  lazy val DefaultDateFormatPattern = "MM/dd/yyyy"
 
   /**
    * "=${NewLine}"
    */
-  lazy val LogEqualNewLine : String = s"${EqualSign}${NewLine}"
+  lazy val LogEqualNewLine : String = s"${ EqualSign }${ NewLine }"
 
   /**
    * "=${NewLine}${DoubleSpace}"
    */
-  lazy val LogEqualNewLineWithIndent : String = s"${LogEqualNewLine}${DoubleSpace}"
+  lazy val LogEqualNewLineWithIndent : String = s"${ LogEqualNewLine }${ DoubleSpace }"
+
+  lazy val AppManager : AppManager = new AppManager
+
+  lazy val Repositories : Repositories = new Repositories(AppManager)
 }

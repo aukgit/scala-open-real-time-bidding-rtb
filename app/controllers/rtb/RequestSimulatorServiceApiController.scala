@@ -1,8 +1,8 @@
 package controllers.rtb
 
-import controllers.rtb.core.AbstractBaseSimulatorServiceApiController
 import javax.inject.Inject
 import play.api.mvc._
+import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
 import shared.com.ortb.persistent.Repositories
@@ -16,7 +16,6 @@ class RequestSimulatorServiceApiController @Inject()(
   extends AbstractBaseSimulatorServiceApiController(repositories, appManager, components) {
 
   lazy val currentServiceModel : ServiceModel = services.requestSimulatorService
-
   lazy val jsonDirectory = "jsonRequestSamples"
 
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>

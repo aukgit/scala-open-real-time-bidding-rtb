@@ -1,15 +1,18 @@
 package shared.com.ortb.model.reflection
 
-import shared.com.ortb.types.BasicTypeTester
+import java.lang.reflect.Field
+
+import shared.io.helpers.ReflectionHelper
 
 case class ProductFieldModel(
   name : String,
   value : Any,
+  field : Field,
   index : Int) {
-  lazy val typeTester = new BasicTypeTester(value)
+  lazy val fieldType : Class[_] = field.getType
 
   def toStringField : String = {
-    val typeClassName = typeTester.typeClassName()
+    val typeClassName = ReflectionHelper.getTypeName(fieldType)
 
     s"${ name } : ${ typeClassName }"
   }

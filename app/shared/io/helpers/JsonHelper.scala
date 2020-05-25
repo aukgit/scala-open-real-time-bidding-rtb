@@ -30,7 +30,7 @@ object JsonHelper extends CirceJsonSupport {
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", jsonString)
+        AppLogger.logMaybeItem("Json parsing failed for ", jsonString)
     }
 
     None

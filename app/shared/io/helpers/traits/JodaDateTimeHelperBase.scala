@@ -10,8 +10,8 @@ import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 
 trait JodaDateTimeHelperBase {
-  lazy val defaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
-  lazy val defaultDateFormatPattern = "MM/dd/yyyy"
+  lazy val defaultDateTimeFormatPattern : String = AppConstants.DefaultDateTimeFormatPattern
+  lazy val defaultDateFormatPattern : String = AppConstants.DefaultDateFormatPattern
 
   implicit def nowUtc : DateTime = DateTime.now(DateTimeZone.UTC)
 
@@ -34,7 +34,9 @@ trait JodaDateTimeHelperBase {
     null
   }
 
-  def toStringWithPattern(dateTime : DateTime, pattern : String = defaultDateTimeFormatPattern) : String = {
+  def toStringWithPattern(
+    dateTime : DateTime,
+    pattern : String = defaultDateTimeFormatPattern) : String = {
     try {
       return dateTime.toString(pattern)
     } catch {
@@ -80,7 +82,7 @@ trait JodaDateTimeHelperBase {
     getDifferenceBetween(earlier, later).getDayOfYear - 1
 
   def millisStringToDateTime(millis : String) : DateTime = {
-    EmptyValidateHelper.throwOnNullOrNone(millis)
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(millis)
     val asLong = NumberHelper.isLong(millis)
 
     if (asLong.isSuccess) {

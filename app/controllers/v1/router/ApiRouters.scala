@@ -1,6 +1,6 @@
 package controllers.v1.router
 
-import controllers.controllerRoutes.router.core.AbstractGenericRouter
+import shared.com.ortb.routes.router.core.AbstractGenericRouter
 import controllers.v1.apis._
 import javax.inject.Inject
 import shared.com.ortb.persistent.schema.Tables._

@@ -1,9 +1,11 @@
 package shared.io.helpers.traits.reflection
 
+import java.lang.reflect.Field
+
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.FieldWrapperModel
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.{ EmptyValidateHelper, MapHelper }
 
 import scala.collection.mutable.ArrayBuffer
@@ -18,11 +20,14 @@ trait ClassTagHelperFieldWrappersAsMap {
 
   def getFieldWrapperModelsAsMap(classRefection : Class[_]) :
   ResultWithCountSuccessModel[Map[String, ArrayBuffer[FieldWrapperModel]]] = {
-    val fields = classRefection.getFields
+    val privateFields = classRefection.getDeclaredFields
+    val publicFields = classRefection.getFields
     val typeName = classRefection.getTypeName
-    val length = fields.length
     val classHeader = s"[${ typeName.toString }] "
-    if (EmptyValidateHelper.isItemsEmptyDirect(fields)) {
+    val isEmpty = EmptyValidateHelper.isItemsEmptyDirect(publicFields) &&
+      EmptyValidateHelper.isItemsEmptyDirect(privateFields)
+
+    if (isEmpty) {
       return ResultWithCountSuccessModel[Map[String, ArrayBuffer[FieldWrapperModel]]](
         Some(Map.empty[String, ArrayBuffer[FieldWrapperModel]]),
         0,
@@ -31,18 +36,22 @@ trait ClassTagHelperFieldWrappersAsMap {
       )
     }
 
+    val length = publicFields.length + privateFields.length
     val map = new collection.mutable.HashMap[String, ArrayBuffer[FieldWrapperModel]](
       length + 1,
       1.2)
 
-    fields.foreach(f => {
-      val fieldWrapperModel = reflection.FieldWrapperModel(f)
+    def addField(field : Field) : Unit = {
+      val fieldWrapperModel = reflection.FieldWrapperModel(field)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
         key = fieldWrapperModel.name,
         value = fieldWrapperModel,
         defaultCapacity = 1)
-    })
+    }
+
+    publicFields.foreach(addField)
+    privateFields.foreach(addField)
 
     val finalMap = Some(map.toMap)
     ResultWithCountSuccessModel[Map[String, ArrayBuffer[FieldWrapperModel]]](

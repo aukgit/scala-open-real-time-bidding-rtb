@@ -1,6 +1,6 @@
 package shared.io.helpers.traits
 
-import controllers.webapi.core.traits.GenericControllerResponse
+import shared.com.ortb.webapi.core.traits.GenericControllerResponse
 
 trait ResponseHelperBase {
   val genericControllerResponse : GenericControllerResponse

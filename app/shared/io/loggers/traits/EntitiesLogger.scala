@@ -81,9 +81,9 @@ trait EntitiesLogger {
 
     val headers = caseInfoModel
       .get
-      .productFieldModel
+      .productFieldModels
       .map(w => w.toStringField)
-    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), "|") }${ AppConstants.NewLine }"
+    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), " , ") }${ AppConstants.NewLine }"
   }
 
   def getLogMessageForEntities[T](
@@ -95,7 +95,7 @@ trait EntitiesLogger {
       return ""
     }
 
-    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }"
+    val additional = if (additionalMessage.isEmpty) "" else s" Additional : ${ additionalMessage }\n"
 
     if (entities == null || entities.isEmpty) {
       return s"Empty -> No item present in the entities for logging. $additional"
@@ -107,7 +107,7 @@ trait EntitiesLogger {
     //        for recreation of string builder is always costly.
     //        ON simple search I have found that string builder performs better than ArrayBuffer in scala
 
-    val header = s"\n[$logLevelType]: Printing Entities ($typeName):\n"
+    val header = s"[$logLevelType] - Printing Entities ($typeName):\n${additional}"
     var count = 0
     val caseInfoModel = ReflectionHelper.getProductInfoModel(first)
     val productFieldNamesHeader = getProductFieldHeader(caseInfoModel)
@@ -122,8 +122,8 @@ trait EntitiesLogger {
       }
     }).mkString(AppConstants.NewLine)
 
-    val footer = s"\n[Complete] Total entities printed : [${ count }]"
-    val returningResult = s"${header}${productFieldNamesHeader}${items}${footer}"
+    val footer = s"\n[Complete] Total entities printed : [${ count }]\n"
+    val returningResult = s"${ header }${ productFieldNamesHeader }${ items }${ footer }"
 
     returningResult
   }

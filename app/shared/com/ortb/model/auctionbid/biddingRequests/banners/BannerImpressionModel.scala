@@ -1,5 +1,8 @@
 package shared.com.ortb.model.auctionbid.biddingRequests.banners
 
+import shared.com.ortb.model.HeightWidthBaseModel
+import shared.io.helpers.EmptyValidateHelper
+
 /**
  * Banner Details inside the BidRequest -> Impression[] -> Impression -> banner
  *
@@ -100,4 +103,4 @@ case class BannerImpressionModel(
   /**
    * Blocked creative attributes. Refer to List 5.3.
    */
-  battr : Option[List[Int]])
+  battr : Option[List[Int]]) extends HeightWidthBaseModel(h, w)

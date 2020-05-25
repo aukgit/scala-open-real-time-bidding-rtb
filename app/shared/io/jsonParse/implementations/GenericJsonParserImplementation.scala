@@ -46,7 +46,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", jsonString)
+        AppLogger.logMaybeItem("Json parsing failed for ", jsonString)
     }
 
     None
@@ -73,7 +73,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", jsonString)
+        AppLogger.logMaybeItem("Json parsing failed for ", jsonString)
     }
 
     None
@@ -167,7 +167,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
    * @return
    */
   override def fromJsonToJsonString(model : Option[Json], isPrettyFormat : Boolean) : Option[String] = {
-    EmptyValidateHelper.throwOnNullOrNone(model, Some("model is empty"))
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(model, Some("model is empty"))
 
     if (isPrettyFormat) {
       return Some(model.get.spaces2)
@@ -213,7 +213,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     } catch {
       case e : Exception =>
         AppLogger.error(e)
-        AppLogger.logNullable("Json parsing failed for ", model)
+        AppLogger.logMaybeItem("Json parsing failed for ", model)
     }
 
     None

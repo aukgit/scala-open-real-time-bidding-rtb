@@ -1,8 +1,5 @@
 package shared.io.jsonParse.implementations
 
-import io.circe.generic.semiauto._
-import io.circe._
-import io.circe.generic.auto._
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }

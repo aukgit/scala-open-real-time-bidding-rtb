@@ -32,6 +32,7 @@ object AkkaHttpClientJsonSample extends App
   import shared.com.ortb.serverAkka.framework.restClient.jsonParser.spray.JsonModel._
 
   implicit lazy val system           : ActorSystem      = ActorSystem()
+  //noinspection ScalaDeprecation,SpellCheckingInspection
   implicit lazy val materializer     : Materializer     = ActorMaterializer()
   implicit lazy val executionContext : ExecutionContext = system.dispatcher
 

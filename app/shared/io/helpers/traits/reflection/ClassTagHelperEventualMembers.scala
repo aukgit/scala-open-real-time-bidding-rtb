@@ -6,8 +6,8 @@ import shared.com.ortb.model.reflection.traits.ClassMembersInfoBaseModel
 import shared.com.ortb.model.reflection.{ MemberWrapperBaseModel, MemberWrapperConcreteModel }
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
 import shared.io.helpers.ParallelTaskHelper
-import shared.io.helpers.implementation.ConcurrentArrayBufferWrapper
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.ConcurrentArrayBufferWrapper
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.traits.ParallelTaskHelperBase
 
 import scala.collection.mutable.ArrayBuffer

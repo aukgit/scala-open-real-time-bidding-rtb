@@ -1,6 +1,9 @@
 package shared.com.ortb.model.auctionbid.biddingRequests
 
+import shared.com.ortb.demadSidePlatforms.HeightWidthExtractorFromImpression
+import shared.com.ortb.model.MinMaxHeightWidthModel
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
+import shared.io.helpers.EmptyValidateHelper
 
 /**
  *
@@ -42,5 +45,10 @@ case class ImpressionModel(
    * Private market place deals
    */
   pmp : Option[PrivateMarketPlaceModel] = None
-)
-
+) {
+  lazy val hasBanner : Boolean = EmptyValidateHelper.isDefined(banner)
+  lazy val hasVideo : Boolean = EmptyValidateHelper.isDefined(video)
+  lazy val hasBidFloor : Boolean = EmptyValidateHelper.isDefined(bidfloor)
+  lazy val hasBidFloorCurrency : Boolean = EmptyValidateHelper.isOptionStringDefined(bidfloorcur)
+  lazy val minMaxHeightWidth : MinMaxHeightWidthModel = HeightWidthExtractorFromImpression.getMinMaxHeightWidths(this)
+}

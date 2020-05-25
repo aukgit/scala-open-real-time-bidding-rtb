@@ -4,7 +4,7 @@ import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.{ ProductFieldModel, ProductInfoModel }
 import shared.io.helpers.CastingHelper
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.loggers.AppLogger
 
 import scala.reflect.runtime.universe._
@@ -40,9 +40,30 @@ trait ReflectionHelperBase {
       return ""
     }
 
+    getDisplayTypeName(item.get.getClass.getTypeName)
+  }
+
+  def getDisplayTypeName(typeName : String) : String = {
+    if (typeName.isEmpty || typeName.isBlank) {
+      return ""
+    }
+
     try {
-      val classEntity = item.get.getClass
-      return classEntity.getTypeName.replace("$", AppConstants.Dot)
+      return typeName.replace("$", AppConstants.Dot)
+    } catch {
+      case e : Exception => AppLogger.error(e)
+    }
+
+    ""
+  }
+
+  def getTypeName(classType : Class[_]) : String = {
+    if (classType == null) {
+      return ""
+    }
+
+    try {
+      return getDisplayTypeName(classType.getTypeName)
     } catch {
       case e : Exception => AppLogger.error(e)
     }
@@ -90,21 +111,23 @@ trait ReflectionHelperBase {
     val product = maybeProduct.get
 
     if (product.productArity == 0) {
-      Some(ProductInfoModel(List.empty))
+      Some(ProductInfoModel(Array.empty))
     }
 
+    val fieldsMap = product.getClass.getDeclaredFields.map(w => w.getName -> w).toMap
     val array = new Array[ProductFieldModel](product.productArity)
     val it = product.productIterator
-    var i = 0
+    var index = 0
 
     while (it.hasNext) {
-      val name = product.productElementName(i)
+      val name = product.productElementName(index)
       val value = it.next()
-      array(i) = ProductFieldModel(name, value, i)
-      i += 1
+      val field = fieldsMap(name)
+      array(index) = ProductFieldModel(name, value, field, index)
+      index += 1
     }
 
-    Some(reflection.ProductInfoModel(array.toList))
+    Some(ProductInfoModel(array))
   }
 
   def getFieldsNamesOfProductOrCaseClass(caseModel : Any) : Option[Iterable[String]] = {

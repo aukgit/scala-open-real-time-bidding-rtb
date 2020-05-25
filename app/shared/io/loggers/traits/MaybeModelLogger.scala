@@ -23,7 +23,7 @@ trait MaybeModelLogger {
       }
 
       if (maybeAny.isDefined) {
-        logNullable(message = messageFinal, maybeAny, logLevelType, stackIndex, isPrintStack = false)
+        logMaybeItem(message = messageFinal, maybeAny, logLevelType, stackIndex, isPrintStack = false)
       }
 
       val isExecute = maybeModels.isDefined && maybeModels.get.nonEmpty

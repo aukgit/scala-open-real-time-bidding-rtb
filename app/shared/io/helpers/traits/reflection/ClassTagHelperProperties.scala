@@ -1,7 +1,7 @@
 package shared.io.helpers.traits.reflection
 
 import shared.com.ortb.manager.traits.DefaultExecutionContextManagerConcreteImplementation
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 
 import scala.concurrent.ExecutionContext
 

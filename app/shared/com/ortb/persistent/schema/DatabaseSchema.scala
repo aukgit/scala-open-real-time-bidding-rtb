@@ -1,21 +1,13 @@
 package shared.com.ortb.persistent.schema
 
 import com.google.inject.Inject
+import shared.com.ortb.configuration.ConfigurationExpansion
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.schema.Tables.{ profile, _ }
 import slick.lifted.TableQuery
 
-class DatabaseSchema @Inject()(appManager : AppManager) {
-  /**
-   * Determinate weather to log queries or not.
-   */
-  lazy val isLogDatabaseQueryLogs : Boolean = appManager.config.isLogDatabaseQueryLogs
-
-  /**
-   * Determinate weather to log queries to database or not
-   */
-  lazy val isLogDatabaseActionsToDatabase : Boolean = appManager.config.isLogDatabaseActionsToDatabase
-
+class DatabaseSchema @Inject()(val appManager : AppManager)
+  extends ConfigurationExpansion {
   /**
    * Advertise available in the system
    */

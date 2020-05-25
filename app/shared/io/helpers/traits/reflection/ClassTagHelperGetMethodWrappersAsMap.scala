@@ -1,9 +1,11 @@
 package shared.io.helpers.traits.reflection
 
+import java.lang.reflect.Method
+
 import shared.com.ortb.model.reflection
 import shared.com.ortb.model.reflection.MethodWrapperModel
 import shared.com.ortb.model.results.ResultWithCountSuccessModel
-import shared.io.helpers.implementation.reflection.ClassTagHelperConcreteImplementation
+import shared.io.helpers.implementations.reflection.ClassTagHelperConcreteImplementation
 import shared.io.helpers.{ EmptyValidateHelper, MapHelper }
 
 import scala.collection.mutable.ArrayBuffer
@@ -18,11 +20,14 @@ trait ClassTagHelperGetMethodWrappersAsMap {
 
   def getMethodWrapperModelsAsMap(classRefection : Class[_]) :
   ResultWithCountSuccessModel[Map[String, ArrayBuffer[MethodWrapperModel]]] = {
-    val methods = classRefection.getMethods
+    val publicMethods = classRefection.getMethods
+    val staticMethods = classRefection.getDeclaredMethods
     val typeName = classRefection.getTypeName
-    val length = methods.length
     val classHeader = s"[${ typeName.toString }] "
-    if (EmptyValidateHelper.isItemsEmptyDirect(methods)) {
+    val isEmpty = EmptyValidateHelper.isItemsEmptyDirect(publicMethods) &&
+      EmptyValidateHelper.isItemsEmptyDirect(staticMethods)
+
+    if (isEmpty) {
       return ResultWithCountSuccessModel[Map[String, ArrayBuffer[MethodWrapperModel]]](
         Some(Map.empty[String, ArrayBuffer[MethodWrapperModel]]),
         0,
@@ -31,18 +36,22 @@ trait ClassTagHelperGetMethodWrappersAsMap {
       )
     }
 
+    val length = publicMethods.length + staticMethods.length
     val map = new collection.mutable.HashMap[String, ArrayBuffer[MethodWrapperModel]](
       length + 1,
       1.2)
 
-    methods.foreach(w => {
-      val methodWrapper = reflection.MethodWrapperModel(w)
+    def addMethod(method : Method) : Unit = {
+      val methodWrapper = reflection.MethodWrapperModel(method)
       MapHelper.hashMapWithArrayBufferAdder.addToArrayBuffer(
         hashMap = map,
         key = methodWrapper.name,
         value = methodWrapper,
         defaultCapacity = 1)
-    })
+    }
+
+    publicMethods.foreach(addMethod)
+    staticMethods.foreach(addMethod)
 
     val finalMap = Some(map.toMap)
     ResultWithCountSuccessModel[Map[String, ArrayBuffer[MethodWrapperModel]]](
