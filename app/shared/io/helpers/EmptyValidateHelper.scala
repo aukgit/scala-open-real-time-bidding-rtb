@@ -267,8 +267,27 @@ object EmptyValidateHelper {
     !hasAnyItem(Some(items), message)
   }
 
+  def isItemsEmptyOnAnyDirect[A](
+    items : Iterable[A]*) : Boolean = {
+    if (isItemsEmptyDirect(items)) {
+      return true
+    }
+
+    for (item <- items) {
+      if (isItemsEmptyDirect(item)) {
+        return true
+      }
+    }
+
+    false
+  }
+
   def isItemsEmptyOnAllDirect[A](
     items : Iterable[A]*) : Boolean = {
+    if (isItemsEmptyDirect(items)) {
+      return true
+    }
+
     items.forall(w => !hasAnyItem(Some(w)))
   }
 

@@ -3,12 +3,13 @@ package shared.com.ortb.demadSidePlatforms
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
-import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
+import shared.com.ortb.model.auctionbid.biddingRequests.{ BidRequestModel, ImpressionModel }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
+import shared.com.ortb.persistent.schema
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.helpers.JodaDateTimeHelper
 import shared.io.extensions.TypeConvertExtensions._
@@ -137,6 +138,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     //
     //    Some(dspBidderResultModel)
     throw new NotImplementedError()
-
   }
+
+  override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : schema.Tables.BidrequestRow = ???
 }

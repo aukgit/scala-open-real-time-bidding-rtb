@@ -18,6 +18,11 @@ object TypeConvertExtensions {
   implicit class IntConverter(val i : Int) extends TypeConvertInteger
 
   /**
+   * Convert an integer to the related value
+   */
+  implicit class IntOptionConverter(val i : Option[Int]) extends TypeConvertIntegerOption
+
+  /**
    * Convert an string to the related values
    */
   implicit class StringConverter(val s : String) extends TypeConvertString

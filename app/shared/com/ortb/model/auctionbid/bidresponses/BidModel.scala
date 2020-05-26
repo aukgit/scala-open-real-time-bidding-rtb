@@ -60,7 +60,7 @@ case class BidModel(
   /**
    * ID of a preloaded ad to be served if the bid wins.
    */
-  adid : Option[String],
+  adid : Option[String] = None,
 
 
   /**
@@ -76,28 +76,28 @@ case class BidModel(
    * simple in the sense that wherever a legal macro is found,
    * it will be replaced without regard for syntax correctness.
    */
-  nurl : Option[String],
+  nurl : Option[String] = None,
 
   /**
    * Optional means of conveying ad markup in
    * case the bid wins; supersedes the
    * win notice if markup is included in both.
    */
-  adm : Option[String],
+  adm : Option[String] = None,
 
   /**
    * Advertiser domain for block list checking (e.g., “ford.com”).
    * This can be an array of for the case of rotating creatives.
    * Exchanges can mandate that only one domain is allowed.
    */
-  adomain : Option[List[String]],
+  adomain : Option[List[String]] = None,
 
   /**
    * URL without cache-busting to an image that is
    * representative of the content of the
    * campaign for ad quality/safety checking.
    */
-  iurl : Option[String],
+  iurl : Option[String] = None,
 
 
   /**
@@ -105,28 +105,27 @@ case class BidModel(
    * he collection of creatives for which iurl
    * should be representative.
    */
-  cid : Option[String],
+  cid : Option[String] = None,
 
 
   /**
    * IAB content categories
    */
-  cat : Option[List[String]],
+  cat : Option[List[String]] = None,
 
   /**
    * Reference to the deal.id from the bid request
    * if this bid pertains to a private marketplace direct deal.
    */
-  dealid : Option[String],
+  dealid : Option[String] = None,
 
   /**
    * Height of the creative in pixels.
    */
-  h : Option[Int],
+  h : Option[Int] = None,
 
   /**
    * Width of the creative in pixels.
    */
-  w : Option[Int]
-
+  w : Option[Int] = None
 )

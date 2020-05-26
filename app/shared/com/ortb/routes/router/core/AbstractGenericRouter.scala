@@ -51,7 +51,7 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
   }
 
   private def performAddTimes(addTimes : String) : Action[AnyContent] = {
-    val addTimesAsInt = NumberHelper.isInt(addTimes)
+    val addTimesAsInt = NumberHelper.getIntResult(addTimes)
     if (addTimesAsInt.isSuccess) {
       controller.addEntitiesBySinge(addTimesAsInt.result.get)
     }
@@ -71,7 +71,7 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
   }
 
   protected def performGetByIdAsInteger(id : String) : Action[AnyContent] = {
-    val idAsInt = NumberHelper.isInt(id)
+    val idAsInt = NumberHelper.getIntResult(id)
 
     if (idAsInt.isSuccess) {
       controller.byId(idAsInt.result.get.asInstanceOf[TKey])
@@ -82,7 +82,7 @@ abstract class AbstractGenericRouter[TTable, TRow, TKey : TypeTag](
   }
 
   protected def performUpdateByIdAsInteger(id : String) : Action[AnyContent] = {
-    val idAsInt = NumberHelper.isInt(id)
+    val idAsInt = NumberHelper.getIntResult(id)
     // TODO make it more DRY
     if (idAsInt.isSuccess) {
       controller.update(idAsInt.result.get.asInstanceOf[TKey])

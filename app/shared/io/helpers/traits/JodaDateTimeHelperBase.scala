@@ -83,7 +83,7 @@ trait JodaDateTimeHelperBase {
 
   def millisStringToDateTime(millis : String) : DateTime = {
     EmptyValidateHelper.throwOnNullOrNoneOrNil(millis)
-    val asLong = NumberHelper.isLong(millis)
+    val asLong = NumberHelper.getLongResult(millis)
 
     if (asLong.isSuccess) {
       return millisToDateTime(asLong.result.get)
