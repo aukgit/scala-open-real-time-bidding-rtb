@@ -4,7 +4,6 @@ import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, Heig
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 
 trait HeightWidthExtractorFromImpression {
-
   def getMinMaxHeightWidths(impression : ImpressionModel) : MinMaxHeightWidthModel = {
     val heightWidth = getHeightWidth(impression)
     val maxHeightWidth = getMaxHeightWidth(impression)

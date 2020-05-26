@@ -42,7 +42,6 @@ object Application {
 
     AppLogger.debug(res.toString)
 
-    val core = new DemandSidePlatformCorePropertiesContractsImplementation
   }
 
   /**

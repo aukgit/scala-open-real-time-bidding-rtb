@@ -9,10 +9,12 @@ import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, De
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.enumeration.NoBidResponseType
 import shared.com.ortb.manager.traits.CreateDefaultContext
+import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.auctionbid.bidresponses.{ BidModel, BidResponseModel, BidResponseModelWrapper, SeatBidModel }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
+import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
 import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper }
@@ -242,4 +244,9 @@ class DemandSidePlatformBiddingAgent(
 
     bidResponseRepository.addAsync(bidResponseRow)
   }
+
+  override def getActualBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = ???
+
+  override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow =
+    demandSidePlatformStaticBidResponseLogic.getStaticBidRequestToBidRequestRow(bidRequest)
 }

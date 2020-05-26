@@ -1,5 +1,9 @@
 package shared.com.ortb.demadSidePlatforms
 
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.derivation._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
@@ -8,13 +12,12 @@ import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, Im
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
-import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
-import shared.com.ortb.persistent.schema
-import shared.com.ortb.persistent.schema.Tables
-import shared.io.helpers.JodaDateTimeHelper
+import shared.com.ortb.persistent.schema._
 import shared.io.extensions.TypeConvertExtensions._
+import shared.io.helpers.JodaDateTimeHelper
 
 import scala.collection.mutable.ArrayBuffer
+import scala.util.Try
 
 class DemandSidePlatformStaticBidResponseLogicImplementation(
   val demandSideId : Int,
@@ -81,12 +84,12 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     val hasBanner = impression
       .banner
       .isDefined
-      .toInt
+      .toBoolInt
 
     val hasVideo = impression
       .video
       .isDefined
-      .toInt
+      .toBoolInt
 
     val minMaxHeightWidth = impression.minMaxHeightWidth
     val impressionToString = s"impression(${ impression.toString })"
@@ -110,9 +113,9 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       minMaxHeightWidth.minWidth,
       minMaxHeightWidth.maxHeight,
       minMaxHeightWidth.maxWidth,
-      Some(minMaxHeightWidth.isEmptyHeightWidth.toInt),
-      Some(minMaxHeightWidth.isMaxHeightWithEmpty.toInt),
-      Some(minMaxHeightWidth.isMinHeightWithEmpty.toInt),
+      minMaxHeightWidth.isEmptyHeightWidth.toBoolIntSome,
+      minMaxHeightWidth.isMaxHeightWithEmpty.toBoolIntSome,
+      minMaxHeightWidth.isMinHeightWithEmpty.toBoolIntSome,
       0,
       Some(0),
       Some(0),
@@ -135,10 +138,31 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     //    )
     //
     //    dspBidderResultModel.addCallStack(callStackModel)
-    //
     //    Some(dspBidderResultModel)
     throw new NotImplementedError()
   }
 
-  override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : schema.Tables.BidrequestRow = ???
+  override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = {
+    val f = bidRequest.imp.head
+    val minMaxHeightWidths = f.minMaxHeightWidth
+    val tryCountries = Try(bidRequest.device.get.geo.get.country)
+    val countries = if (tryCountries.isSuccess) tryCountries.get else None
+    val tryCity = Try(bidRequest.device.get.geo.get.city)
+    val city = if (tryCity.isSuccess) tryCity.get else None
+    val json = bidRequest.toJsonString
+
+    Tables.BidrequestRow(
+      bidrequestid = bidRequest.id.toInt,
+      demandsideplatformid = demandSideId,
+      isbanner = f.hasBanner.toBoolInt,
+      isvideo = f.hasVideo.toBoolInt,
+      auctionid = None,
+      height = minMaxHeightWidths.maybeHeight,
+      width = minMaxHeightWidths.maybeWidth,
+      countries = countries,
+      cities = city, targetedcities = city,
+      rawbidrequestjson = json,
+      createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
+    )
+  }
 }
