@@ -22,7 +22,7 @@ case class ImpressionModel(
   /**
    * Minimum bid for this impression expressed in CPM.
    */
-  bidfloor : Option[Double],
+  bidfloor : Option[Double] = Some(0),
 
   /**
    * Currency specified using ISO-4217 alpha codes.
