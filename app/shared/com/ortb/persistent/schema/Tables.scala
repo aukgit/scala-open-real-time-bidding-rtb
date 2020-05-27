@@ -533,7 +533,7 @@ trait Tables {
    *  @param minheight Database column MinHeight SqlType(INTEGER)
    *  @param width Database column Width SqlType(INTEGER)
    *  @param height Database column Height SqlType(INTEGER)
-   *  @param `createddatetimestamp:1` Database column CreatedDateTimestamp:1 SqlType(TIMESTAMP)
+   *  @param createddatetimestampimpression Database column CreatedDateTimestampImpression SqlType(TIMESTAMP)
    *  @param ismaxheightwidthempty Database column IsMaxHeightWidthEmpty SqlType(INTEGER), Length(1,false)
    *  @param advertisedisplayeddate Database column AdvertiseDisplayedDate SqlType(TIMESTAMP)
    *  @param impressionid Database column ImpressionId SqlType(INTEGER)
@@ -544,7 +544,7 @@ trait Tables {
    *  @param isimpressionwonbyauction Database column IsImpressionWonByAuction SqlType(INTEGER), Length(1,false)
    *  @param rawimpressionjson Database column RawImpressionJson SqlType(TEXT)
    *  @param bidresponseid Database column BidResponseId SqlType(INTEGER) */
-  case class BidrequestimpressionwithplaceholderviewRow(bidrequestid: Option[Int], createddatetimestamp: Option[java.time.Instant], iswontheauction: Option[Int], contentcontextid: Option[Int], currency: Option[String], rawbidrequestjson: Option[String], targetedcities: Option[String], targetedsites: Option[String], cities: Option[String], countries: Option[String], isvideo: Option[Int], isbanner: Option[Int], auctionid: Option[Int], demandsideplatformid: Option[Int], contentcontext: Option[String], isnativeplaceholder: Option[Int], isvideoplaceholder: Option[Int], isbannnerplaceholder: Option[Int], createddatetimestampimpressionplaceholder: Option[java.time.Instant], istopframe: Option[Int], position: Option[Int], mimes: Option[String], isminheightwidthempty: Option[Int], isheightwidthempty: Option[Int], maxwidth: Option[Int], maxheight: Option[Int], minwidth: Option[Int], minheight: Option[Int], width: Option[Int], height: Option[Int], `createddatetimestamp:1`: Option[java.time.Instant], ismaxheightwidthempty: Option[Int], advertisedisplayeddate: Option[java.time.Instant], impressionid: Option[Int], hash: Option[String], bidfloorcur: Option[String], bidfloor: Option[Double], isimpressionserved: Option[Int], isimpressionwonbyauction: Option[Int], rawimpressionjson: Option[String], bidresponseid: Option[Int])
+  case class BidrequestimpressionwithplaceholderviewRow(bidrequestid: Option[Int], createddatetimestamp: Option[java.time.Instant], iswontheauction: Option[Int], contentcontextid: Option[Int], currency: Option[String], rawbidrequestjson: Option[String], targetedcities: Option[String], targetedsites: Option[String], cities: Option[String], countries: Option[String], isvideo: Option[Int], isbanner: Option[Int], auctionid: Option[Int], demandsideplatformid: Option[Int], contentcontext: Option[String], isnativeplaceholder: Option[Int], isvideoplaceholder: Option[Int], isbannnerplaceholder: Option[Int], createddatetimestampimpressionplaceholder: Option[java.time.Instant], istopframe: Option[Int], position: Option[Int], mimes: Option[String], isminheightwidthempty: Option[Int], isheightwidthempty: Option[Int], maxwidth: Option[Int], maxheight: Option[Int], minwidth: Option[Int], minheight: Option[Int], width: Option[Int], height: Option[Int], createddatetimestampimpression: Option[java.time.Instant], ismaxheightwidthempty: Option[Int], advertisedisplayeddate: Option[java.time.Instant], impressionid: Option[Int], hash: Option[String], bidfloorcur: Option[String], bidfloor: Option[Double], isimpressionserved: Option[Int], isimpressionwonbyauction: Option[Int], rawimpressionjson: Option[String], bidresponseid: Option[Int])
   /** GetResult implicit for fetching BidrequestimpressionwithplaceholderviewRow objects using plain SQL queries */
   implicit def GetResultBidrequestimpressionwithplaceholderviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[java.time.Instant]], e2: GR[Option[String]], e3: GR[Option[Double]]): GR[BidrequestimpressionwithplaceholderviewRow] = GR{
     prs => import prs._
@@ -552,7 +552,7 @@ trait Tables {
   }
   /** Table description of table BidRequestImpressionWithPlaceholderView. Objects of this class serve as prototypes for rows in queries. */
   class Bidrequestimpressionwithplaceholderview(_tableTag: Tag) extends profile.api.Table[BidrequestimpressionwithplaceholderviewRow](_tableTag, "BidRequestImpressionWithPlaceholderView") {
-    def * = (bidrequestid :: createddatetimestamp :: iswontheauction :: contentcontextid :: currency :: rawbidrequestjson :: targetedcities :: targetedsites :: cities :: countries :: isvideo :: isbanner :: auctionid :: demandsideplatformid :: contentcontext :: isnativeplaceholder :: isvideoplaceholder :: isbannnerplaceholder :: createddatetimestampimpressionplaceholder :: istopframe :: position :: mimes :: isminheightwidthempty :: isheightwidthempty :: maxwidth :: maxheight :: minwidth :: minheight :: width :: height :: `createddatetimestamp:1` :: ismaxheightwidthempty :: advertisedisplayeddate :: impressionid :: hash :: bidfloorcur :: bidfloor :: isimpressionserved :: isimpressionwonbyauction :: rawimpressionjson :: bidresponseid :: HNil).mapTo[BidrequestimpressionwithplaceholderviewRow]
+    def * = (bidrequestid :: createddatetimestamp :: iswontheauction :: contentcontextid :: currency :: rawbidrequestjson :: targetedcities :: targetedsites :: cities :: countries :: isvideo :: isbanner :: auctionid :: demandsideplatformid :: contentcontext :: isnativeplaceholder :: isvideoplaceholder :: isbannnerplaceholder :: createddatetimestampimpressionplaceholder :: istopframe :: position :: mimes :: isminheightwidthempty :: isheightwidthempty :: maxwidth :: maxheight :: minwidth :: minheight :: width :: height :: createddatetimestampimpression :: ismaxheightwidthempty :: advertisedisplayeddate :: impressionid :: hash :: bidfloorcur :: bidfloor :: isimpressionserved :: isimpressionwonbyauction :: rawimpressionjson :: bidresponseid :: HNil).mapTo[BidrequestimpressionwithplaceholderviewRow]
 
     /** Database column BidRequestId SqlType(INTEGER) */
     val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId")
@@ -614,8 +614,8 @@ trait Tables {
     val width: Rep[Option[Int]] = column[Option[Int]]("Width")
     /** Database column Height SqlType(INTEGER) */
     val height: Rep[Option[Int]] = column[Option[Int]]("Height")
-    /** Database column CreatedDateTimestamp:1 SqlType(TIMESTAMP) */
-    val `createddatetimestamp:1`: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp:1")
+    /** Database column CreatedDateTimestampImpression SqlType(TIMESTAMP) */
+    val createddatetimestampimpression: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestampImpression")
     /** Database column IsMaxHeightWidthEmpty SqlType(INTEGER), Length(1,false) */
     val ismaxheightwidthempty: Rep[Option[Int]] = column[Option[Int]]("IsMaxHeightWidthEmpty", O.Length(1,varying=false))
     /** Database column AdvertiseDisplayedDate SqlType(TIMESTAMP) */
