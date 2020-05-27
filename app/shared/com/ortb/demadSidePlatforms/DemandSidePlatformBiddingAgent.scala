@@ -255,7 +255,7 @@ class DemandSidePlatformBiddingAgent(
     val impressionRepository = coreProperties.repositories.impressionRepository
     val impressionPlaceholderRepository = coreProperties.repositories.impressionPlaceholderRepository
 
-    bidRequest.imp.foreach(impression => {
+    bidRequest.imp.forEachAsync(impression => {
       val impressionJson = impression.toJsonString
       if (impression.hasBannerOrVideo) {
         val hasBanner = impression.hasBanner.toBoolInt
