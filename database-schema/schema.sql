@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 18:40:50
+ Date: 27/05/2020 18:44:17
 */
 
 PRAGMA foreign_keys = false;
@@ -527,8 +527,7 @@ FROM
 	Impression
 	LEFT JOIN
 	Bid
-	ON 
-		Impression.BidId = Bid.BidId AND
+	ON 		
 		Impression.ImpressionId = Bid.ImpressionId
 	LEFT JOIN
 	SeatBid

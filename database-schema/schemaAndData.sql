@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 18:40:57
+ Date: 27/05/2020 18:44:11
 */
 
 PRAGMA foreign_keys = false;
@@ -684,8 +684,7 @@ FROM
 	Impression
 	LEFT JOIN
 	Bid
-	ON 
-		Impression.BidId = Bid.BidId AND
+	ON 		
 		Impression.ImpressionId = Bid.ImpressionId
 	LEFT JOIN
 	SeatBid
@@ -695,5 +694,194 @@ FROM
 	Auction
 	ON 
 		SeatBid.AuctionId = Auction.AuctionId;
+
+-- ----------------------------
+-- View structure for BidRequestImpressionWithPlaceholderView
+-- ----------------------------
+DROP VIEW IF EXISTS "BidRequestImpressionWithPlaceholderView";
+CREATE VIEW "BidRequestImpressionWithPlaceholderView" AS SELECT DISTINCT
+	BidRequest.BidRequestId, 
+	BidRequest.CreatedDateTimestamp, 
+	BidRequest.IsWonTheAuction, 
+	BidRequest.ContentContextId, 
+	BidRequest.Currency, 
+	BidRequest.RawBidRequestJson, 
+	BidRequest.TargetedCities, 
+	BidRequest.TargetedSites, 
+	BidRequest.Cities, 
+	BidRequest.Countries, 
+	BidRequest.IsVideo, 
+	BidRequest.IsBanner, 
+	BidRequest.AuctionId, 
+	BidRequest.DemandSidePlatformId, 
+	ContentContext.Context AS ContentContext, 
+	ImpressionPlaceholder.IsNative AS IsNativePlaceHolder, 
+	ImpressionPlaceholder.IsVideo AS IsVideoPlaceHolder, 
+	ImpressionPlaceholder.IsBanner AS IsBannnerPlaceHolder, 
+	ImpressionPlaceholder.CreatedDateTimestamp AS CreatedDateTimestampImpressionPlaceholder, 
+	ImpressionPlaceholder.IsTopFrame, 
+	ImpressionPlaceholder.Position, 
+	ImpressionPlaceholder.Mimes, 
+	ImpressionPlaceholder.IsMinHeightWidthEmpty, 
+	ImpressionPlaceholder.IsHeightWidthEmpty, 
+	ImpressionPlaceholder.MaxWidth, 
+	ImpressionPlaceholder.MaxHeight, 
+	ImpressionPlaceholder.MinWidth, 
+	ImpressionPlaceholder.MinHeight, 
+	ImpressionPlaceholder.Width, 
+	ImpressionPlaceholder.Height, 
+	Impression.CreatedDateTimestamp, 
+	ImpressionPlaceholder.IsMaxHeightWidthEmpty, 
+	Impression.AdvertiseDisplayedDate, 
+	Impression.ImpressionId, 
+	Impression.Hash, 
+	Impression.BidfloorCur, 
+	Impression.Bidfloor, 
+	Impression.IsImpressionServedOrWonByAuction, 
+	Impression.ImpressionPlaceholderId, 
+	Impression.RawImpressionJson, 
+	Impression.BidResponseId
+FROM
+	BidRequest
+	LEFT JOIN
+	Impression
+	ON 
+		BidRequest.BidRequestId = Impression.BidRequestId
+	LEFT JOIN
+	ImpressionPlaceholder
+	ON 
+		Impression.ImpressionPlaceholderId = ImpressionPlaceholder.ImpressionPlaceholderId
+	LEFT JOIN
+	ContentContext
+	ON 
+		BidRequest.ContentContextId = ContentContext.ContentContextId;
+
+-- ----------------------------
+-- View structure for KeywordAdvertiseMappingIdsView
+-- ----------------------------
+DROP VIEW IF EXISTS "KeywordAdvertiseMappingIdsView";
+CREATE VIEW "KeywordAdvertiseMappingIdsView" AS SELECT
+	Keyword.KeywordId,
+	Keyword.Keyword,
+	KeywordAdvertiseMapping.KeywordAdvertiseMappingId,
+	Advertise.AdvertiseId,
+	Advertise.CampaignId,
+	Advertise.BannerAdvertiseTypeId,
+	Advertise.IsVideo,
+	Advertise.IsBanner,
+	Advertise.IsNative,
+	Advertise.ContentContextId 
+FROM
+	Advertise
+	INNER JOIN KeywordAdvertiseMapping ON Advertise.AdvertiseId = KeywordAdvertiseMapping.AdvertiseId
+	JOIN Keyword ON KeywordAdvertiseMapping.KeywordId = Keyword.KeywordId;
+
+-- ----------------------------
+-- View structure for WinningPriceInfoView
+-- ----------------------------
+DROP VIEW IF EXISTS "WinningPriceInfoView";
+CREATE VIEW "WinningPriceInfoView" AS SELECT
+	Bid.BidId, 
+	Bid.IsImpressionServedOrWonByAuction AS IsWon, 
+	Bid.SeatBidId, 
+	Bid.CampaignId, 
+	Bid.AdvertiseId, 
+	Bid.DealBiddingPrice, 
+	Bid.ActualWiningPrice, 
+	Bid.CreatedDateTimestamp AS BiddingCreatedDateTimestamp, 
+	Impression.ImpressionId, 
+	SeatBid.BidRequestId, 
+	SeatBid.BidResponseId, 
+	SeatBid.DemandSidePlatformId, 
+	Auction.AuctionId, 
+	Auction.WinningPrice AS AuctionWinningPrice, 
+	Auction.CreatedDateTimestamp AS AuctionCreatedDateTimestamp, 
+	Impression.CreatedDateTimestamp AS ImpressionCreatedDateTimestamp, 
+	SeatBid.IsGroupBid, 
+	Impression.BidfloorCur, 
+	Impression.Bidfloor
+FROM
+	Impression
+	LEFT JOIN
+	Bid
+	ON 
+		Impression.ImpressionId = Bid.ImpressionId
+	LEFT JOIN
+	SeatBid
+	ON 
+		Bid.SeatBidId = SeatBid.SeatBidId
+	LEFT JOIN
+	Auction
+	ON 
+		SeatBid.AuctionId = Auction.AuctionId;
+
+-- ----------------------------
+-- Auto increment value for Advertise
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BannerAdvertiseType
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
+
+-- ----------------------------
+-- Auto increment value for BidRequest
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for BidResponse
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for Campaign
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
+
+-- ----------------------------
+-- Auto increment value for ContentContext
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
+
+-- ----------------------------
+-- Auto increment value for CreativeAttribute
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
+
+-- ----------------------------
+-- Auto increment value for DemandSidePlatform
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
+
+-- ----------------------------
+-- Auto increment value for Impression
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for ImpressionPlaceholder
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for LogTrace
+-- ----------------------------
+
+-- ----------------------------
+-- Auto increment value for NoBidResponseType
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
+
+-- ----------------------------
+-- Auto increment value for Publisher
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
+
+-- ----------------------------
+-- Auto increment value for VideoPlaybackMethod
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'VideoPlaybackMethod';
+
+-- ----------------------------
+-- Auto increment value for VideoResponseProtocol
+-- ----------------------------
+UPDATE "sqlite_sequence" SET seq = 6 WHERE name = 'VideoResponseProtocol';
 
 PRAGMA foreign_keys = true;
