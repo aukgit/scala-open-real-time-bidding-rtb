@@ -1,6 +1,6 @@
 package shared.com.ortb.model.auctionbid.biddingRequests.banners
 
-import shared.com.ortb.model.HeightWidthBaseModel
+import shared.com.ortb.model.dimensions.HeightWidthBaseModel
 
 /**
  * Banner Details inside the BidRequest -> Impression[] -> Impression -> banner

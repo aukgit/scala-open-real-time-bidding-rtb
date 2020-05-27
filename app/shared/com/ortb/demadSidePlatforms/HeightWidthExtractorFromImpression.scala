@@ -1,7 +1,8 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.model.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
+import shared.com.ortb.model.MinMaxHeightWidthModel
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
+import shared.com.ortb.model.dimensions.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
 
 trait HeightWidthExtractorFromImpression {
   def getMinMaxHeightWidths(impression : ImpressionModel) : MinMaxHeightWidthModel = {

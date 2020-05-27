@@ -1,8 +1,8 @@
 package shared.com.ortb.model.auctionbid.biddingRequests
 
 import shared.com.ortb.demadSidePlatforms.HeightWidthExtractorFromImpression
-import shared.com.ortb.model.MinMaxHeightWidthModel
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
+import shared.com.ortb.model.dimensions.MinMaxHeightWidthModel
 import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.EmptyValidateHelper
 

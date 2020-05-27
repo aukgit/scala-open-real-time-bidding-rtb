@@ -1,9 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
-import io.circe.generic.semiauto._
-import io.circe._
 import io.circe.generic.auto._
-import io.circe.derivation._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.getters._
 import shared.com.ortb.demadSidePlatforms.traits.logics._
@@ -255,46 +252,56 @@ class DemandSidePlatformBiddingAgent(
       .bidRequestRepository
       .add(bidRequestRow)
 
+    val impressionRepository  = coreProperties.repositories.impressionRepository
+    val impressionRepository  = coreProperties.repositories.impressionRepository
+
     bidRequest.imp.foreach(impression => {
       val impressionJson = impression.toJsonString
-      if(impression.hasBannerOrVideo){
+      if (impression.hasBannerOrVideo) {
         val hasBanner = impression.hasBanner.toBoolInt
         val hasVideo = impression.hasVideo.toBoolInt
         val minMaxHeightWidth = impression.minMaxHeightWidth
-        val position = if(impression.hasBanner) impression.banner.get.pos else None
-//        val placeHolder = ImpressionplaceholderRow(
-//          -1,
-//          hasBanner,
-//          hasVideo,
-//          isnative = 0,
-//          minMaxHeightWidth.height,
-//          minMaxHeightWidth.width,
-//          minMaxHeightWidth.minHeight,
-//          minMaxHeightWidth.minWidth,
-//          minMaxHeightWidth.maxHeight,
-//          minMaxHeightWidth.maxWidth,
-//          minMaxHeightWidth.isEmptyHeightWidth.toBoolInt,
-//          minMaxHeightWidth.isMaxHeightWidthEmpty.toBoolInt,
-//          minMaxHeightWidth.isMinHeightWidthEmpty.toBoolInt,
-//          impression.mimes,
-//          position,
-//          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
-//        )
+        val position = if (impression.hasBanner) impression.banner.get.pos else None
 
-//        var impressionRow = ImpressionRow(
-//          -1,
-//          bidrequestid = response.idOption,
-//          bidresponseid = None,
-//          rawimpressionjson = impressionJson,isimpressionwonbyauction = 0, isimpressionserved = 0,
-//          bidfloor = impression.bidfloor.get,
-//          bidfloorcur =  impression.bidfloorcur.getOrElseDefault(),
-//          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant, advertisedisplayeddate = )
+        val impressionRow = ImpressionRow(
+          -1,
+          bidrequestid = response.idOption,
+          bidresponseid = None,
+          rawimpressionjson = impressionJson,
+          isimpressionwonbyauction = 0,
+          isimpressionserved = 0,
+          bidfloor = impression.bidfloor.get,
+          bidfloorcur = impression.bidfloorcur.getOrElseDefault(),
+          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant,
+          advertisedisplayeddate = None)
+
+        val impressionCreatedResponse = impressionRepository.add(impressionRow)
+
+        val placeHolder = ImpressionplaceholderRow(
+          -1,
+          impressionCreatedResponse.id,
+          hasBanner,
+          hasVideo,
+          isnative = 0,
+          minMaxHeightWidth.height,
+          minMaxHeightWidth.width,
+          minMaxHeightWidth.minHeight,
+          minMaxHeightWidth.minWidth,
+          minMaxHeightWidth.maxHeight,
+          minMaxHeightWidth.maxWidth,
+          minMaxHeightWidth.isEmptyHeightWidth.toBoolInt,
+          minMaxHeightWidth.isMaxHeightWidthEmpty.toBoolInt,
+          minMaxHeightWidth.isMinHeightWidthEmpty.toBoolInt,
+          impression.mimes,
+          position,
+          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
+        )
       }
 
     })
 
 
-???
+    ???
   }
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow =

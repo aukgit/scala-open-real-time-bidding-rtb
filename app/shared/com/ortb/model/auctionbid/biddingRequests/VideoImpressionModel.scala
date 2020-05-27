@@ -1,6 +1,6 @@
 package shared.com.ortb.model.auctionbid.biddingRequests
 
-import shared.com.ortb.model.HeightWidthBaseModel
+import shared.com.ortb.model.dimensions.HeightWidthBaseModel
 
 /**
  * Video Request(for Bid) Details inside the BidRequest -> Impression[] -> Impression -> video

@@ -1,4 +1,4 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.dimensions
 
 case class MinMaxHeightWidthModel(
   minHeightWidth : HeightWidthBaseModel,
