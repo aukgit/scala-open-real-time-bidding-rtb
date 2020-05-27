@@ -253,7 +253,7 @@ class DemandSidePlatformBiddingAgent(
       .add(bidRequestRow)
 
     val impressionRepository  = coreProperties.repositories.impressionRepository
-    val impressionRepository  = coreProperties.repositories.impressionRepository
+    // val impressionRepository  = coreProperties.repositories.impressionRepository
 
     bidRequest.imp.foreach(impression => {
       val impressionJson = impression.toJsonString

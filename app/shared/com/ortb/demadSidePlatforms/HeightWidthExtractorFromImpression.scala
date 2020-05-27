@@ -1,6 +1,5 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.com.ortb.model.MinMaxHeightWidthModel
 import shared.com.ortb.model.auctionbid.biddingRequests.ImpressionModel
 import shared.com.ortb.model.dimensions.{ EmptyHeightWidthModel, HeightWidthBaseModel, HeightWidthModel, MinMaxHeightWidthModel }
 
