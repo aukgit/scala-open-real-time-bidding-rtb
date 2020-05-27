@@ -1,12 +1,17 @@
-package shared.io.extensions.traits.primitiveTypes
+package shared.io.extensions.traits.genericTypes
 
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.{ Encoder, Json }
 import shapeless.Lazy
+import shared.com.repository.traits.FutureToRegular
 import shared.io.helpers.JsonHelper
 import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
 import shared.io.jsonParse.traits.{ BasicJsonEncoder, GenericJsonParser }
+
+import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+
 
 trait TypeConvertGenericJson[T] {
   protected val anyItem : T

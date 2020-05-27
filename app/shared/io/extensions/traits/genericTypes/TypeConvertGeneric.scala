@@ -1,4 +1,4 @@
-package shared.io.extensions.traits.primitiveTypes
+package shared.io.extensions.traits.genericTypes
 
 import shared.io.helpers.EmptyValidateHelper
 

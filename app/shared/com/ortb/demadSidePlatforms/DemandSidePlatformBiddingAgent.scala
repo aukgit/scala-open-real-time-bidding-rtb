@@ -252,8 +252,8 @@ class DemandSidePlatformBiddingAgent(
       .bidRequestRepository
       .add(bidRequestRow)
 
-    val impressionRepository  = coreProperties.repositories.impressionRepository
-    // val impressionRepository  = coreProperties.repositories.impressionRepository
+    val impressionRepository = coreProperties.repositories.impressionRepository
+    val impressionPlaceholderRepository = coreProperties.repositories.impressionPlaceholderRepository
 
     bidRequest.imp.foreach(impression => {
       val impressionJson = impression.toJsonString
@@ -296,12 +296,12 @@ class DemandSidePlatformBiddingAgent(
           position,
           createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
         )
-      }
 
+        impressionPlaceholderRepository.addAsync(placeHolder)
+      }
     })
 
-
-    ???
+    bidRequestRow
   }
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow =

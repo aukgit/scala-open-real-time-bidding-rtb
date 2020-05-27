@@ -1,6 +1,5 @@
-package shared.io.extensions.traits.primitiveTypes
+package shared.io.extensions.traits.genericTypes
 
-import shared.io.extensions.TypeConvertExtensions._
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
@@ -9,6 +8,7 @@ import shared.com.ortb.enumeration.LogLevelType.LogLevelType
 import shared.com.ortb.enumeration.{ DatabaseActionType, LogLevelType }
 import shared.com.ortb.model.config.LogConfigurationModel
 import shared.com.ortb.persistent.schema.Tables
+import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper, ReflectionHelper }
 import shared.io.loggers.AppLogger
 
