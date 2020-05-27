@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 23:02:52
+ Date: 27/05/2020 23:10:04
 */
 
 PRAGMA foreign_keys = false;
@@ -292,7 +292,7 @@ CREATE TABLE "Impression" (
   "Bidfloor" REAL NOT NULL DEFAULT 0,
   "BidfloorCur" TEXT NOT NULL DEFAULT 'USD',
   "Hash" TEXT DEFAULT NULL,
-  "AdvertiseDisplayedDate" TIMESTAMP NOT NULL,
+  "AdvertiseDisplayedDate" TIMESTAMP DEFAULT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION

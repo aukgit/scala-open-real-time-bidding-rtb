@@ -262,33 +262,38 @@ class DemandSidePlatformBiddingAgent(
         val hasVideo = impression.hasVideo.toBoolInt
         val minMaxHeightWidth = impression.minMaxHeightWidth
         val position = if(impression.hasBanner) impression.banner.get.pos else None
-        val placeHolder = ImpressionplaceholderRow(
-          -1,
-          hasBanner,
-          hasVideo,
-          isnative = 0,
-          minMaxHeightWidth.height,
-          minMaxHeightWidth.width,
-          minMaxHeightWidth.minHeight,
-          minMaxHeightWidth.minWidth,
-          minMaxHeightWidth.maxHeight,
-          minMaxHeightWidth.maxWidth,
-          minMaxHeightWidth.isEmptyHeightWidth.toBoolInt,
-          minMaxHeightWidth.isMaxHeightWidthEmpty.toBoolInt,
-          minMaxHeightWidth.isMinHeightWidthEmpty.toBoolInt,
-          impression.mimes,
-          position,
-          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
-        )
+//        val placeHolder = ImpressionplaceholderRow(
+//          -1,
+//          hasBanner,
+//          hasVideo,
+//          isnative = 0,
+//          minMaxHeightWidth.height,
+//          minMaxHeightWidth.width,
+//          minMaxHeightWidth.minHeight,
+//          minMaxHeightWidth.minWidth,
+//          minMaxHeightWidth.maxHeight,
+//          minMaxHeightWidth.maxWidth,
+//          minMaxHeightWidth.isEmptyHeightWidth.toBoolInt,
+//          minMaxHeightWidth.isMaxHeightWidthEmpty.toBoolInt,
+//          minMaxHeightWidth.isMinHeightWidthEmpty.toBoolInt,
+//          impression.mimes,
+//          position,
+//          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
+//        )
+
+//        var impressionRow = ImpressionRow(
+//          -1,
+//          bidrequestid = response.idOption,
+//          bidresponseid = None,
+//          rawimpressionjson = impressionJson,isimpressionwonbyauction = 0, isimpressionserved = 0,
+//          bidfloor = impression.bidfloor.get,
+//          bidfloorcur =  impression.bidfloorcur.getOrElseDefault(),
+//          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant, advertisedisplayeddate = )
       }
-//      var impressionRow = ImpressionRow(
-//        -1,
-//        bidrequestid = response.idOption,
-//        bidresponseid = None,
-//        rawimpressionjson = impressionJson, impressionplaceholderid =
-//
-//      )
+
     })
+
+
 ???
   }
 

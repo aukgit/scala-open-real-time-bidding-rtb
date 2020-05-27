@@ -13,6 +13,9 @@ trait TypeConvertOptionString {
   lazy val getIntResult : ResultWithSuccessModel[Int] = NumberHelper.getIntResult(self)
   lazy val getDoubleResult : ResultWithSuccessModel[Double] = NumberHelper.getDoubleResult(self)
   lazy val getFloatResult : ResultWithSuccessModel[Float] = NumberHelper.getFloatResult(self)
+
+  def getOrElseDefault(default : String = "") : String = s.getOrElse(default)
+
   protected val self : String = if (hasCharacter) s.get else ""
 
   def toInt(default : Int = 0) : Int = if (getIntResult.isSuccess) getIntResult.result.get else default

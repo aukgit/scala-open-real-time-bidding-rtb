@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 23:02:47
+ Date: 27/05/2020 23:09:58
 */
 
 PRAGMA foreign_keys = false;
@@ -392,7 +392,7 @@ CREATE TABLE "Impression" (
   "Bidfloor" REAL NOT NULL DEFAULT 0,
   "BidfloorCur" TEXT NOT NULL DEFAULT 'USD',
   "Hash" TEXT DEFAULT NULL,
-  "AdvertiseDisplayedDate" TIMESTAMP NOT NULL,
+  "AdvertiseDisplayedDate" TIMESTAMP DEFAULT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -640,8 +640,8 @@ INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('ImpressionPlaceholder', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
