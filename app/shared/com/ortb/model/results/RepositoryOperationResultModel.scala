@@ -1,5 +1,6 @@
 package shared.com.ortb.model.results
 
+import shared.io.extensions.TypeConvertExtensions._
 import shared.com.ortb.model.attributes.GenericResponseAttributesModel
 import shared.com.ortb.model.wrappers.persistent.EntityWrapperModel
 import shared.io.helpers.{ EmptyValidateHelper, ReflectionHelper }
@@ -12,16 +13,17 @@ case class RepositoryOperationResultModel[TRow, TKey](
   data : Option[EntityWrapperModel[TRow, TKey]] = None) {
   lazy val row : TRow = data.get.entity
   lazy val id : TKey = data.get.entityId
+  lazy val idOption : Option[TKey] = data.get.entityId.toSome
   lazy val hasItem : Boolean = EmptyValidateHelper.isDefined(data)
 
   def getIdAsInt : Option[Int] = {
-    val typeTag : ru.TypeTag[Int] = typeTag[Int]
-    getIdAs[Int](typeTag)
+    val tt : ru.TypeTag[Int] = typeTag[Int]
+    getIdAs[Int](tt)
   }
 
   def getIdAsString : Option[String] = {
-    val typeTag : ru.TypeTag[String] = typeTag[String]
-    getIdAs[String](typeTag)
+    val tt : ru.TypeTag[String] = typeTag[String]
+    getIdAs[String](tt)
   }
 
   def getIdAs[T](implicit T : ru.TypeTag[T]) : Option[T] = {

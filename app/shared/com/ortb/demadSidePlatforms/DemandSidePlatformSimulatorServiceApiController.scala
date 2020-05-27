@@ -11,11 +11,9 @@ import shared.com.ortb.persistent.Repositories
 import shared.io.helpers.JsonHelper
 
 class DemandSidePlatformSimulatorServiceApiController @Inject()(
-  repositories : Repositories,
   appManager : AppManager,
   components : ControllerComponents)
   extends AbstractBaseSimulatorServiceApiController(
-    repositories,
     appManager,
     components) with DemandSidePlatformCorePropertiesContracts {
 

@@ -12,10 +12,9 @@ import shared.com.ortb.persistent.Repositories
 import shared.io.loggers.AppLogger
 
 abstract class AbstractBaseSimulatorServiceApiController @Inject()(
-  repositories : Repositories,
   appManager   : AppManager,
   components   : ControllerComponents)
-  extends ServiceBaseApiController(repositories, appManager, components)
+  extends ServiceBaseApiController(appManager, components)
     with ServiceControllerCorePropertiesContracts {
   val currentServiceModel : ServiceModel
   lazy override val restWebApiOkJson : RestWebApiOkJsonImplementation = selfProperties.restWebApiOkJson

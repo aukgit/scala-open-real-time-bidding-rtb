@@ -1,9 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
-import io.circe.generic.semiauto._
-import io.circe._
 import io.circe.generic.auto._
-import io.circe.derivation._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
@@ -146,22 +143,21 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
   }
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = {
-    bidRequest.imp.foreach(impression => {
-
-    })
-    val firstImpression = bidRequest.imp.head
-    val minMaxHeightWidths = firstImpression.minMaxHeightWidth
     val tryCountries = Try(bidRequest.device.get.geo.get.country)
     val countries = if (tryCountries.isSuccess) tryCountries.get else None
     val tryCity = Try(bidRequest.device.get.geo.get.city)
     val city = if (tryCity.isSuccess) tryCity.get else None
     val json = bidRequest.toJsonString
+    val impressions = bidRequest.imp
+    val hasBannerHasVideoArray = impressions.forAnyGroup(w => w.hasBanner, y => y.hasVideo)
+    val hasBanner = hasBannerHasVideoArray(0).toBoolInt
+    val hasVideo = hasBannerHasVideoArray(1).toBoolInt
 
     Tables.BidrequestRow(
       bidrequestid = bidRequest.id.toInt,
       demandsideplatformid = demandSideId,
-      isbanner = firstImpression.hasBanner.toBoolInt,
-      isvideo = firstImpression.hasVideo.toBoolInt,
+      isbanner = hasBanner,
+      isvideo = hasVideo,
       auctionid = None,
       countries = countries,
       cities = city, targetedcities = city,

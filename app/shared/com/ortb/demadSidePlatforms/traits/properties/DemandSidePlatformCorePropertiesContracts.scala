@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, RangeModel, ServiceModel }
 import shared.com.ortb.persistent.Repositories
@@ -32,5 +33,5 @@ trait DemandSidePlatformCorePropertiesContracts
 
   lazy val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     config.server.demandSidePlatformConfiguration
-  val repositories : Repositories
+  lazy val repositories : Repositories = AppConstants.Repositories
 }

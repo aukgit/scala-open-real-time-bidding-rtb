@@ -1,6 +1,9 @@
 package shared.com.ortb.demadSidePlatforms
 
-import shared.io.extensions.TypeConvertExtensions._
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.derivation._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.getters._
 import shared.com.ortb.demadSidePlatforms.traits.logics._
@@ -245,7 +248,49 @@ class DemandSidePlatformBiddingAgent(
     bidResponseRepository.addAsync(bidResponseRow)
   }
 
-  override def getActualBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = ???
+  override def getActualBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = {
+    val bidRequestRow = getStaticBidRequestToBidRequestRow(bidRequest)
+    val response = coreProperties
+      .repositories
+      .bidRequestRepository
+      .add(bidRequestRow)
+
+    bidRequest.imp.foreach(impression => {
+      val impressionJson = impression.toJsonString
+      if(impression.hasBannerOrVideo){
+        val hasBanner = impression.hasBanner.toBoolInt
+        val hasVideo = impression.hasVideo.toBoolInt
+        val minMaxHeightWidth = impression.minMaxHeightWidth
+        val position = if(impression.hasBanner) impression.banner.get.pos else None
+        val placeHolder = ImpressionplaceholderRow(
+          -1,
+          hasBanner,
+          hasVideo,
+          isnative = 0,
+          minMaxHeightWidth.height,
+          minMaxHeightWidth.width,
+          minMaxHeightWidth.minHeight,
+          minMaxHeightWidth.minWidth,
+          minMaxHeightWidth.maxHeight,
+          minMaxHeightWidth.maxWidth,
+          minMaxHeightWidth.isEmptyHeightWidth.toBoolInt,
+          minMaxHeightWidth.isMaxHeightWidthEmpty.toBoolInt,
+          minMaxHeightWidth.isMinHeightWidthEmpty.toBoolInt,
+          impression.mimes,
+          position,
+          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
+        )
+      }
+//      var impressionRow = ImpressionRow(
+//        -1,
+//        bidrequestid = response.idOption,
+//        bidresponseid = None,
+//        rawimpressionjson = impressionJson, impressionplaceholderid =
+//
+//      )
+    })
+???
+  }
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow =
     demandSidePlatformStaticBidResponseLogic.getStaticBidRequestToBidRequestRow(bidRequest)
