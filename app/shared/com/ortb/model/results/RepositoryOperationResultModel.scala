@@ -15,13 +15,13 @@ case class RepositoryOperationResultModel[TRow, TKey](
   lazy val hasItem : Boolean = EmptyValidateHelper.isDefined(data)
 
   def getIdAsInt : Option[Int] = {
-    val tt : ru.TypeTag[Int] = typeTag[Int]
-    getIdAs[Int](tt)
+    val typeTag : ru.TypeTag[Int] = typeTag[Int]
+    getIdAs[Int](typeTag)
   }
 
   def getIdAsString : Option[String] = {
-    val tt : ru.TypeTag[String] = typeTag[String]
-    getIdAs[String](tt)
+    val typeTag : ru.TypeTag[String] = typeTag[String]
+    getIdAs[String](typeTag)
   }
 
   def getIdAs[T](implicit T : ru.TypeTag[T]) : Option[T] = {
