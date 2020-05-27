@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 18:44:11
+ Date: 27/05/2020 21:05:09
 */
 
 PRAGMA foreign_keys = false;
@@ -45,7 +45,7 @@ CREATE TABLE "Advertise" (
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
   "Duration" INTEGER NOT NULL DEFAULT 0,
-  "Protolcol" INTEGER NOT NULL DEFAULT 0,
+  "Protocol" INTEGER NOT NULL DEFAULT 0,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
@@ -639,8 +639,8 @@ INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('ImpressionPlaceholder', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1

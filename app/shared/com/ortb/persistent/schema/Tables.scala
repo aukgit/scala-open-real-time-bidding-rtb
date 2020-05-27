@@ -48,9 +48,9 @@ trait Tables {
    *  @param minage Database column MinAge SqlType(INTEGER), Default(Some(0))
    *  @param maxage Database column MaxAge SqlType(INTEGER), Default(Some(0))
    *  @param duration Database column Duration SqlType(INTEGER), Default(0)
-   *  @param protolcol Database column Protolcol SqlType(INTEGER), Default(0)
+   *  @param protocol Database column Protocol SqlType(INTEGER), Default(0)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Option[Int], bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isbanner: Int = 0, isvideo: Int = 0, isnative: Int = 0, impressioncount: Int = 0, height: Int = 0, width: Int = 0, minheight: Int = 0, minwidth: Int = 0, maxheight: Int = 0, maxwidth: Int = 0, isheightwidthempty: Int = 1, ismaxheightwidthempty: Int = 1, isminheightwidthempty: Int = 1, hasagerestriction: Int = 0, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), duration: Int = 0, protolcol: Int = 0, createddatetimestamp: java.time.Instant)
+  case class AdvertiseRow(advertiseid: Int, campaignid: Int, banneradvertisetypeid: Int, advertisetitle: String, contentcontextid: Option[Int], bidurl: String, iframehtml: Option[String], iscountryspecific: Int = 0, isbanner: Int = 0, isvideo: Int = 0, isnative: Int = 0, impressioncount: Int = 0, height: Int = 0, width: Int = 0, minheight: Int = 0, minwidth: Int = 0, maxheight: Int = 0, maxwidth: Int = 0, isheightwidthempty: Int = 1, ismaxheightwidthempty: Int = 1, isminheightwidthempty: Int = 1, hasagerestriction: Int = 0, minage: Option[Int] = Some(0), maxage: Option[Int] = Some(0), duration: Int = 0, protocol: Int = 0, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching AdvertiseRow objects using plain SQL queries */
   implicit def GetResultAdvertiseRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[String]], e4: GR[java.time.Instant]): GR[AdvertiseRow] = GR{
     prs => import prs._
@@ -58,9 +58,9 @@ trait Tables {
   }
   /** Table description of table Advertise. Objects of this class serve as prototypes for rows in queries. */
   class Advertise(_tableTag: Tag) extends profile.api.Table[AdvertiseRow](_tableTag, "Advertise") {
-    def * = (advertiseid :: campaignid :: banneradvertisetypeid :: advertisetitle :: contentcontextid :: bidurl :: iframehtml :: iscountryspecific :: isbanner :: isvideo :: isnative :: impressioncount :: height :: width :: minheight :: minwidth :: maxheight :: maxwidth :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: hasagerestriction :: minage :: maxage :: duration :: protolcol :: createddatetimestamp :: HNil).mapTo[AdvertiseRow]
+    def * = (advertiseid :: campaignid :: banneradvertisetypeid :: advertisetitle :: contentcontextid :: bidurl :: iframehtml :: iscountryspecific :: isbanner :: isvideo :: isnative :: impressioncount :: height :: width :: minheight :: minwidth :: maxheight :: maxwidth :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: hasagerestriction :: minage :: maxage :: duration :: protocol :: createddatetimestamp :: HNil).mapTo[AdvertiseRow]
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(advertiseid) :: Rep.Some(campaignid) :: Rep.Some(banneradvertisetypeid) :: Rep.Some(advertisetitle) :: contentcontextid :: Rep.Some(bidurl) :: iframehtml :: Rep.Some(iscountryspecific) :: Rep.Some(isbanner) :: Rep.Some(isvideo) :: Rep.Some(isnative) :: Rep.Some(impressioncount) :: Rep.Some(height) :: Rep.Some(width) :: Rep.Some(minheight) :: Rep.Some(minwidth) :: Rep.Some(maxheight) :: Rep.Some(maxwidth) :: Rep.Some(isheightwidthempty) :: Rep.Some(ismaxheightwidthempty) :: Rep.Some(isminheightwidthempty) :: Rep.Some(hasagerestriction) :: minage :: maxage :: Rep.Some(duration) :: Rep.Some(protolcol) :: Rep.Some(createddatetimestamp) :: HNil).shaped.<>(r => AdvertiseRow(r(0).asInstanceOf[Option[Int]].get, r(1).asInstanceOf[Option[Int]].get, r(2).asInstanceOf[Option[Int]].get, r(3).asInstanceOf[Option[String]].get, r(4).asInstanceOf[Option[Int]], r(5).asInstanceOf[Option[String]].get, r(6).asInstanceOf[Option[String]], r(7).asInstanceOf[Option[Int]].get, r(8).asInstanceOf[Option[Int]].get, r(9).asInstanceOf[Option[Int]].get, r(10).asInstanceOf[Option[Int]].get, r(11).asInstanceOf[Option[Int]].get, r(12).asInstanceOf[Option[Int]].get, r(13).asInstanceOf[Option[Int]].get, r(14).asInstanceOf[Option[Int]].get, r(15).asInstanceOf[Option[Int]].get, r(16).asInstanceOf[Option[Int]].get, r(17).asInstanceOf[Option[Int]].get, r(18).asInstanceOf[Option[Int]].get, r(19).asInstanceOf[Option[Int]].get, r(20).asInstanceOf[Option[Int]].get, r(21).asInstanceOf[Option[Int]].get, r(22).asInstanceOf[Option[Int]], r(23).asInstanceOf[Option[Int]], r(24).asInstanceOf[Option[Int]].get, r(25).asInstanceOf[Option[Int]].get, r(26).asInstanceOf[Option[java.time.Instant]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(advertiseid) :: Rep.Some(campaignid) :: Rep.Some(banneradvertisetypeid) :: Rep.Some(advertisetitle) :: contentcontextid :: Rep.Some(bidurl) :: iframehtml :: Rep.Some(iscountryspecific) :: Rep.Some(isbanner) :: Rep.Some(isvideo) :: Rep.Some(isnative) :: Rep.Some(impressioncount) :: Rep.Some(height) :: Rep.Some(width) :: Rep.Some(minheight) :: Rep.Some(minwidth) :: Rep.Some(maxheight) :: Rep.Some(maxwidth) :: Rep.Some(isheightwidthempty) :: Rep.Some(ismaxheightwidthempty) :: Rep.Some(isminheightwidthempty) :: Rep.Some(hasagerestriction) :: minage :: maxage :: Rep.Some(duration) :: Rep.Some(protocol) :: Rep.Some(createddatetimestamp) :: HNil).shaped.<>(r => AdvertiseRow(r(0).asInstanceOf[Option[Int]].get, r(1).asInstanceOf[Option[Int]].get, r(2).asInstanceOf[Option[Int]].get, r(3).asInstanceOf[Option[String]].get, r(4).asInstanceOf[Option[Int]], r(5).asInstanceOf[Option[String]].get, r(6).asInstanceOf[Option[String]], r(7).asInstanceOf[Option[Int]].get, r(8).asInstanceOf[Option[Int]].get, r(9).asInstanceOf[Option[Int]].get, r(10).asInstanceOf[Option[Int]].get, r(11).asInstanceOf[Option[Int]].get, r(12).asInstanceOf[Option[Int]].get, r(13).asInstanceOf[Option[Int]].get, r(14).asInstanceOf[Option[Int]].get, r(15).asInstanceOf[Option[Int]].get, r(16).asInstanceOf[Option[Int]].get, r(17).asInstanceOf[Option[Int]].get, r(18).asInstanceOf[Option[Int]].get, r(19).asInstanceOf[Option[Int]].get, r(20).asInstanceOf[Option[Int]].get, r(21).asInstanceOf[Option[Int]].get, r(22).asInstanceOf[Option[Int]], r(23).asInstanceOf[Option[Int]], r(24).asInstanceOf[Option[Int]].get, r(25).asInstanceOf[Option[Int]].get, r(26).asInstanceOf[Option[java.time.Instant]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column AdvertiseId SqlType(INTEGER), AutoInc, PrimaryKey */
     val advertiseid: Rep[Int] = column[Int]("AdvertiseId", O.AutoInc, O.PrimaryKey)
@@ -112,8 +112,8 @@ trait Tables {
     val maxage: Rep[Option[Int]] = column[Option[Int]]("MaxAge", O.Default(Some(0)))
     /** Database column Duration SqlType(INTEGER), Default(0) */
     val duration: Rep[Int] = column[Int]("Duration", O.Default(0))
-    /** Database column Protolcol SqlType(INTEGER), Default(0) */
-    val protolcol: Rep[Int] = column[Int]("Protolcol", O.Default(0))
+    /** Database column Protocol SqlType(INTEGER), Default(0) */
+    val protocol: Rep[Int] = column[Int]("Protocol", O.Default(0))
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 
@@ -153,10 +153,10 @@ trait Tables {
    *  @param minage Database column MinAge SqlType(INTEGER)
    *  @param maxage Database column MaxAge SqlType(INTEGER)
    *  @param duration Database column Duration SqlType(INTEGER)
-   *  @param protolcol Database column Protolcol SqlType(INTEGER)
+   *  @param protocol Database column Protocol SqlType(INTEGER)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP)
    *  @param isrunning Database column IsRunning SqlType(INTEGER), Length(1,false) */
-  case class AdvertiseisrunningviewRow(advertiseid: Option[Int], campaignid: Option[Int], banneradvertisetypeid: Option[Int], advertisetitle: Option[String], contentcontextid: Option[Int], bidurl: Option[String], iframehtml: Option[String], iscountryspecific: Option[Int], isbanner: Option[Int], isvideo: Option[Int], isnative: Option[Int], impressioncount: Option[Int], height: Option[Int], width: Option[Int], minheight: Option[Int], minwidth: Option[Int], maxheight: Option[Int], maxwidth: Option[Int], isheightwidthempty: Option[Int], ismaxheightwidthempty: Option[Int], isminheightwidthempty: Option[Int], hasagerestriction: Option[Int], minage: Option[Int], maxage: Option[Int], duration: Option[Int], protolcol: Option[Int], createddatetimestamp: Option[java.time.Instant], isrunning: Option[Int])
+  case class AdvertiseisrunningviewRow(advertiseid: Option[Int], campaignid: Option[Int], banneradvertisetypeid: Option[Int], advertisetitle: Option[String], contentcontextid: Option[Int], bidurl: Option[String], iframehtml: Option[String], iscountryspecific: Option[Int], isbanner: Option[Int], isvideo: Option[Int], isnative: Option[Int], impressioncount: Option[Int], height: Option[Int], width: Option[Int], minheight: Option[Int], minwidth: Option[Int], maxheight: Option[Int], maxwidth: Option[Int], isheightwidthempty: Option[Int], ismaxheightwidthempty: Option[Int], isminheightwidthempty: Option[Int], hasagerestriction: Option[Int], minage: Option[Int], maxage: Option[Int], duration: Option[Int], protocol: Option[Int], createddatetimestamp: Option[java.time.Instant], isrunning: Option[Int])
   /** GetResult implicit for fetching AdvertiseisrunningviewRow objects using plain SQL queries */
   implicit def GetResultAdvertiseisrunningviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[String]], e2: GR[Option[java.time.Instant]]): GR[AdvertiseisrunningviewRow] = GR{
     prs => import prs._
@@ -164,7 +164,7 @@ trait Tables {
   }
   /** Table description of table AdvertiseIsRunningView. Objects of this class serve as prototypes for rows in queries. */
   class Advertiseisrunningview(_tableTag: Tag) extends profile.api.Table[AdvertiseisrunningviewRow](_tableTag, "AdvertiseIsRunningView") {
-    def * = (advertiseid :: campaignid :: banneradvertisetypeid :: advertisetitle :: contentcontextid :: bidurl :: iframehtml :: iscountryspecific :: isbanner :: isvideo :: isnative :: impressioncount :: height :: width :: minheight :: minwidth :: maxheight :: maxwidth :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: hasagerestriction :: minage :: maxage :: duration :: protolcol :: createddatetimestamp :: isrunning :: HNil).mapTo[AdvertiseisrunningviewRow]
+    def * = (advertiseid :: campaignid :: banneradvertisetypeid :: advertisetitle :: contentcontextid :: bidurl :: iframehtml :: iscountryspecific :: isbanner :: isvideo :: isnative :: impressioncount :: height :: width :: minheight :: minwidth :: maxheight :: maxwidth :: isheightwidthempty :: ismaxheightwidthempty :: isminheightwidthempty :: hasagerestriction :: minage :: maxage :: duration :: protocol :: createddatetimestamp :: isrunning :: HNil).mapTo[AdvertiseisrunningviewRow]
 
     /** Database column AdvertiseId SqlType(INTEGER) */
     val advertiseid: Rep[Option[Int]] = column[Option[Int]]("AdvertiseId")
@@ -216,8 +216,8 @@ trait Tables {
     val maxage: Rep[Option[Int]] = column[Option[Int]]("MaxAge")
     /** Database column Duration SqlType(INTEGER) */
     val duration: Rep[Option[Int]] = column[Option[Int]]("Duration")
-    /** Database column Protolcol SqlType(INTEGER) */
-    val protolcol: Rep[Option[Int]] = column[Option[Int]]("Protolcol")
+    /** Database column Protocol SqlType(INTEGER) */
+    val protocol: Rep[Option[Int]] = column[Option[Int]]("Protocol")
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("CreatedDateTimestamp")
     /** Database column IsRunning SqlType(INTEGER), Length(1,false) */
