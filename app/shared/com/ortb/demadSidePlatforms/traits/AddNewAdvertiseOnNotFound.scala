@@ -96,7 +96,7 @@ trait AddNewAdvertiseOnNotFound {
       isvideo = 0,
       impressioncount = 0,
       height = simpleBanner.h,
-      isbanner = Some(1),
+      isbanner = 1,
       width = simpleBanner.w,
       minheight = simpleBanner.hmin,
       minwidth = simpleBanner.wmin,

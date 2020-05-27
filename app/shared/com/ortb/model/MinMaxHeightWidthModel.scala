@@ -7,9 +7,9 @@ case class MinMaxHeightWidthModel(
 ) extends HeightWidthBaseModel(heightWidth.maybeHeight, heightWidth.maybeWidth) {
   lazy val minHeight : Int = minHeightWidth.height
   lazy val minWidth : Int = minHeightWidth.width
-  lazy val isMinHeightWithEmpty : Boolean = minHeightWidth.isEmptyHeightWidth
+  lazy val isMinHeightWidthEmpty : Boolean = minHeightWidth.isEmptyHeightWidth
 
   lazy val maxHeight : Int = maxHeightWidth.height
   lazy val maxWidth : Int = maxHeightWidth.width
-  lazy val isMaxHeightWithEmpty : Boolean = maxHeightWidth.isEmptyHeightWidth
+  lazy val isMaxHeightWidthEmpty : Boolean = maxHeightWidth.isEmptyHeightWidth
 }
