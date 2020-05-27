@@ -88,3 +88,62 @@ FROM
 	Auction
 	ON 
 		SeatBid.AuctionId = Auction.AuctionId ;
+
+DROP VIEW "main"."BidRequestImpressionWithPlaceholderView";
+
+CREATE VIEW "main"."BidRequestImpressionWithPlaceholderView" AS SELECT DISTINCT
+	BidRequest.BidRequestId, 
+	BidRequest.CreatedDateTimestamp, 
+	BidRequest.IsWonTheAuction, 
+	BidRequest.ContentContextId, 
+	BidRequest.Currency, 
+	BidRequest.RawBidRequestJson, 
+	BidRequest.TargetedCities, 
+	BidRequest.TargetedSites, 
+	BidRequest.Cities, 
+	BidRequest.Countries, 
+	BidRequest.IsVideo, 
+	BidRequest.IsBanner, 
+	BidRequest.AuctionId, 
+	BidRequest.DemandSidePlatformId, 
+	ContentContext.Context AS ContentContext, 
+	ImpressionPlaceholder.IsNative AS IsNativePlaceHolder, 
+	ImpressionPlaceholder.IsVideo AS IsVideoPlaceHolder, 
+	ImpressionPlaceholder.IsBanner AS IsBannnerPlaceHolder, 
+	ImpressionPlaceholder.CreatedDateTimestamp AS CreatedDateTimestampImpressionPlaceholder, 
+	ImpressionPlaceholder.IsTopFrame, 
+	ImpressionPlaceholder.Position, 
+	ImpressionPlaceholder.Mimes, 
+	ImpressionPlaceholder.IsMinHeightWidthEmpty, 
+	ImpressionPlaceholder.IsHeightWidthEmpty, 
+	ImpressionPlaceholder.MaxWidth, 
+	ImpressionPlaceholder.MaxHeight, 
+	ImpressionPlaceholder.MinWidth, 
+	ImpressionPlaceholder.MinHeight, 
+	ImpressionPlaceholder.Width, 
+	ImpressionPlaceholder.Height, 
+	Impression.CreatedDateTimestamp, 
+	ImpressionPlaceholder.IsMaxHeightWidthEmpty, 
+	Impression.AdvertiseDisplayedDate, 
+	Impression.ImpressionId, 
+	Impression.Hash, 
+	Impression.BidfloorCur, 
+	Impression.Bidfloor, 
+	Impression.IsImpressionServedOrWonByAuction, 
+	Impression.ImpressionPlaceholderId, 
+	Impression.RawImpressionJson, 
+	Impression.BidResponseId
+FROM
+	BidRequest
+	LEFT JOIN
+	Impression
+	ON 
+		BidRequest.BidRequestId = Impression.BidRequestId
+	LEFT JOIN
+	ImpressionPlaceholder
+	ON 
+		Impression.ImpressionPlaceholderId = ImpressionPlaceholder.ImpressionPlaceholderId
+	LEFT JOIN
+	ContentContext
+	ON 
+		BidRequest.ContentContextId = ContentContext.ContentContextId ;

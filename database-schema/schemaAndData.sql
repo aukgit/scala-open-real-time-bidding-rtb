@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 13:58:19
+ Date: 27/05/2020 18:40:57
 */
 
 PRAGMA foreign_keys = false;
@@ -44,6 +44,8 @@ CREATE TABLE "Advertise" (
   "HasAgeRestriction" INTEGER(1) NOT NULL DEFAULT 0,
   "MinAge" INTEGER DEFAULT 0,
   "MaxAge" INTEGER DEFAULT 0,
+  "Duration" INTEGER NOT NULL DEFAULT 0,
+  "Protolcol" INTEGER NOT NULL DEFAULT 0,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
   CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
@@ -382,8 +384,9 @@ CREATE TABLE "GeoMapping" (
 DROP TABLE IF EXISTS "Impression";
 CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "RawImpressionJson" TEXT NOT NULL DEFAULT "",
-  "BidId" INTEGER DEFAULT NULL,
+  "BidResponseId" INTEGER DEFAULT NULL,
+  "BidRequestId" INTEGER DEFAULT NULL,
+  "RawImpressionJson" TEXT NOT NULL DEFAULT '',
   "ImpressionPlaceholderId" INTEGER DEFAULT NULL,
   "IsImpressionServedOrWonByAuction" INTEGER(1) NOT NULL DEFAULT 0,
   "Bidfloor" REAL NOT NULL DEFAULT 0,
@@ -391,8 +394,9 @@ CREATE TABLE "Impression" (
   "Hash" TEXT DEFAULT NULL,
   "AdvertiseDisplayedDate" TIMESTAMP NOT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
-  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT "ImpressionPlaceholderIdFK" FOREIGN KEY ("ImpressionPlaceholderId") REFERENCES "ImpressionPlaceholder" ("ImpressionPlaceholderId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT "ImpressionPlaceholderIdFK" FOREIGN KEY ("ImpressionPlaceholderId") REFERENCES "ImpressionPlaceholder" ("ImpressionPlaceholderId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -413,6 +417,9 @@ CREATE TABLE "ImpressionPlaceholder" (
   "IsHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
   "IsMaxHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
   "IsMinHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
+  "Mimes" TEXT DEFAULT NULL,
+  "Position" INTEGER DEFAULT NULL,
+  "IsTopFrame" INTEGER(1) NOT NULL DEFAULT 0,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL
 );
 
@@ -608,62 +615,6 @@ INSERT INTO "VideoResponseProtocol" VALUES (5, 'VAST 2.0 Wrapper');
 INSERT INTO "VideoResponseProtocol" VALUES (6, 'VAST 3.0 Wrapper');
 
 -- ----------------------------
--- Table structure for _Advertise_old_20200527
--- ----------------------------
-DROP TABLE IF EXISTS "_Advertise_old_20200527";
-CREATE TABLE "_Advertise_old_20200527" (
-  "AdvertiseId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "CampaignId" INTEGER NOT NULL,
-  "BannerAdvertiseTypeId" INTEGER NOT NULL,
-  "AdvertiseTitle" TEXT NOT NULL,
-  "ContentContextId" INTEGER,
-  "BidUrl" TEXT NOT NULL,
-  "IFrameHtml" TEXT,
-  "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
-  "IsBanner" INTEGER(1) DEFAULT 0,
-  "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
-  "IsNative" INTEGER(1) NOT NULL DEFAULT 0,
-  "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
-  "Height" INTEGER NOT NULL DEFAULT 0,
-  "Width" INTEGER NOT NULL DEFAULT 0,
-  "MinHeight" INTEGER NOT NULL DEFAULT 0,
-  "MinWidth" INTEGER NOT NULL DEFAULT 0,
-  "MaxHeight" INTEGER NOT NULL DEFAULT 0,
-  "MaxWidth" INTEGER NOT NULL DEFAULT 0,
-  "IsHeightWidthEmpty" INTEGER(1) DEFAULT 1,
-  "IsMaxHeightWidthEmpty" INTEGER(1) DEFAULT 1,
-  "IsMinHeightWidthEmpty" INTEGER(1) DEFAULT 1,
-  "HasAgeRestriction" INTEGER(1) NOT NULL DEFAULT 0,
-  "MinAge" INTEGER DEFAULT 0,
-  "MaxAge" INTEGER DEFAULT 0,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
-  CONSTRAINT "CampaignFK" FOREIGN KEY ("CampaignId") REFERENCES "Campaign" ("CampaignId") ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT "BannerAdvertiseTypeIdFK" FOREIGN KEY ("BannerAdvertiseTypeId") REFERENCES "BannerAdvertiseType" ("BannerAdvertiseTypeId") ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT "ContentContextIdFK" FOREIGN KEY ("ContentContextId") REFERENCES "ContentContext" ("ContentContextId") ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- ----------------------------
--- Table structure for _ImpressionPlaceholder_old_20200527
--- ----------------------------
-DROP TABLE IF EXISTS "_ImpressionPlaceholder_old_20200527";
-CREATE TABLE "_ImpressionPlaceholder_old_20200527" (
-  "ImpressionPlaceholderId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "IsBanner" INTEGER(1) DEFAULT 0,
-  "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
-  "IsNative" INTEGER(1) NOT NULL DEFAULT 0,
-  "Height" INTEGER NOT NULL DEFAULT 0,
-  "Width" INTEGER NOT NULL DEFAULT 0,
-  "MinHeight" INTEGER NOT NULL DEFAULT 0,
-  "MinWidth" INTEGER NOT NULL DEFAULT 0,
-  "MaxHeight" INTEGER NOT NULL DEFAULT 0,
-  "MaxWidth" INTEGER NOT NULL DEFAULT 0,
-  "IsHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
-  "IsMaxHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
-  "IsMinHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL
-);
-
--- ----------------------------
 -- Table structure for sqlite_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS "sqlite_sequence";
@@ -686,11 +637,10 @@ INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
-INSERT INTO "sqlite_sequence" VALUES ('_Advertise_old_20200527', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
-INSERT INTO "sqlite_sequence" VALUES ('ImpressionPlaceholder', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
+INSERT INTO "sqlite_sequence" VALUES ('ImpressionPlaceholder', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
@@ -745,141 +695,5 @@ FROM
 	Auction
 	ON 
 		SeatBid.AuctionId = Auction.AuctionId;
-
--- ----------------------------
--- View structure for KeywordAdvertiseMappingIdsView
--- ----------------------------
-DROP VIEW IF EXISTS "KeywordAdvertiseMappingIdsView";
-CREATE VIEW "KeywordAdvertiseMappingIdsView" AS SELECT
-	Keyword.KeywordId, 
-	Keyword.Keyword, 
-	KeywordAdvertiseMapping.KeywordAdvertiseMappingId, 
-	Advertise.AdvertiseId, 
-	Advertise.CampaignId, 
-	Advertise.BannerAdvertiseTypeId, 
-	Advertise.IsVideo, 
-	Advertise.IsBanner, 
-	Advertise.ContentContextId
-FROM
-	Advertise
-	INNER JOIN
-	KeywordAdvertiseMapping
-	ON 
-		Advertise.AdvertiseId = KeywordAdvertiseMapping.AdvertiseId
-	INNER JOIN
-	Keyword
-	ON 
-		KeywordAdvertiseMapping.KeywordId = Keyword.KeywordId;
-
--- ----------------------------
--- View structure for WinningPriceInfoView
--- ----------------------------
-DROP VIEW IF EXISTS "WinningPriceInfoView";
-CREATE VIEW "WinningPriceInfoView" AS SELECT
-	Bid.BidId, 
-	Impression.ImpressionId, 	
-	Bid.SeatBidId, 
-	Bid.CampaignId, 	
-	Auction.AuctionId, 
-	SeatBid.BidRequestId, 
-	SeatBid.BidResponseId, 	
-	Bid.AdvertiseId, 
-	SeatBid.DemandSidePlatformId,
-	Auction.WinningPrice as AuctionWinningPrice, 	
-	Bid.DealBiddingPrice, 
-	Bid.ActualWiningPrice, 
-	Auction.CreatedDateTimestamp AS AuctionCreatedDateTimestamp, 
-	Bid.CreatedDateTimestamp AS BiddingCreatedDateTimestamp, 
-	Impression.CreatedDateTimestamp AS ImpressionCreatedDateTimestamp, 
-	Bid.IsImpressionServedOrWonByAuction AS IsWon, 
-	SeatBid.IsGroupBid	
-FROM
-	Impression
-	INNER JOIN
-	Bid
-	ON 
-		Impression.BidId = Bid.BidId AND
-		Impression.ImpressionId = Bid.ImpressionId
-	INNER JOIN
-	SeatBid
-	ON 
-		Bid.SeatBidId = SeatBid.SeatBidId
-	INNER JOIN
-	Auction
-	ON 
-		SeatBid.AuctionId = Auction.AuctionId;
-
--- ----------------------------
--- Auto increment value for Advertise
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for BannerAdvertiseType
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
-
--- ----------------------------
--- Auto increment value for BidRequest
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for BidResponse
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for Campaign
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 2 WHERE name = 'Campaign';
-
--- ----------------------------
--- Auto increment value for ContentContext
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 7 WHERE name = 'ContentContext';
-
--- ----------------------------
--- Auto increment value for CreativeAttribute
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
-
--- ----------------------------
--- Auto increment value for DemandSidePlatform
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
-
--- ----------------------------
--- Auto increment value for Impression
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for ImpressionPlaceholder
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for LogTrace
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for NoBidResponseType
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 8 WHERE name = 'NoBidResponseType';
-
--- ----------------------------
--- Auto increment value for Publisher
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'Publisher';
-
--- ----------------------------
--- Auto increment value for VideoPlaybackMethod
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'VideoPlaybackMethod';
-
--- ----------------------------
--- Auto increment value for VideoResponseProtocol
--- ----------------------------
-UPDATE "sqlite_sequence" SET seq = 6 WHERE name = 'VideoResponseProtocol';
-
--- ----------------------------
--- Auto increment value for _Advertise_old_20200527
--- ----------------------------
 
 PRAGMA foreign_keys = true;
