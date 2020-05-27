@@ -143,8 +143,11 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
   }
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = {
-    val f = bidRequest.imp.head
-    val minMaxHeightWidths = f.minMaxHeightWidth
+    bidRequest.imp.foreach(impression => {
+
+    })
+    val firstImpression = bidRequest.imp.head
+    val minMaxHeightWidths = firstImpression.minMaxHeightWidth
     val tryCountries = Try(bidRequest.device.get.geo.get.country)
     val countries = if (tryCountries.isSuccess) tryCountries.get else None
     val tryCity = Try(bidRequest.device.get.geo.get.city)
@@ -154,8 +157,8 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     Tables.BidrequestRow(
       bidrequestid = bidRequest.id.toInt,
       demandsideplatformid = demandSideId,
-      isbanner = f.hasBanner.toBoolInt,
-      isvideo = f.hasVideo.toBoolInt,
+      isbanner = firstImpression.hasBanner.toBoolInt,
+      isvideo = firstImpression.hasVideo.toBoolInt,
       auctionid = None,
       height = minMaxHeightWidths.maybeHeight,
       width = minMaxHeightWidths.maybeWidth,
