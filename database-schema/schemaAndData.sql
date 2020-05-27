@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 21:05:09
+ Date: 27/05/2020 23:02:47
 */
 
 PRAGMA foreign_keys = false;
@@ -387,14 +387,13 @@ CREATE TABLE "Impression" (
   "BidResponseId" INTEGER DEFAULT NULL,
   "BidRequestId" INTEGER DEFAULT NULL,
   "RawImpressionJson" TEXT NOT NULL DEFAULT '',
-  "ImpressionPlaceholderId" INTEGER DEFAULT NULL,
-  "IsImpressionServedOrWonByAuction" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsImpressionWonByAuction" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsImpressionServed" INTEGER(1) NOT NULL DEFAULT 0,
   "Bidfloor" REAL NOT NULL DEFAULT 0,
   "BidfloorCur" TEXT NOT NULL DEFAULT 'USD',
   "Hash" TEXT DEFAULT NULL,
   "AdvertiseDisplayedDate" TIMESTAMP NOT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
-  CONSTRAINT "ImpressionPlaceholderIdFK" FOREIGN KEY ("ImpressionPlaceholderId") REFERENCES "ImpressionPlaceholder" ("ImpressionPlaceholderId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidResponseIdFK" FOREIGN KEY ("BidResponseId") REFERENCES "BidResponse" ("BidResponseId") ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT "BidRequestIdFK" FOREIGN KEY ("BidRequestId") REFERENCES "BidRequest" ("BidRequestId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
@@ -405,6 +404,7 @@ CREATE TABLE "Impression" (
 DROP TABLE IF EXISTS "ImpressionPlaceholder";
 CREATE TABLE "ImpressionPlaceholder" (
   "ImpressionPlaceholderId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "ImpressionId" INTEGER NOT NULL,
   "IsBanner" INTEGER(1) NOT NULL DEFAULT 0,
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
   "IsNative" INTEGER(1) NOT NULL DEFAULT 0,
@@ -420,7 +420,8 @@ CREATE TABLE "ImpressionPlaceholder" (
   "Mimes" TEXT DEFAULT NULL,
   "Position" INTEGER DEFAULT NULL,
   "IsTopFrame" INTEGER(1) NOT NULL DEFAULT 0,
-  "CreatedDateTimestamp" TIMESTAMP NOT NULL
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL,
+  CONSTRAINT "ImpressionIdFK" FOREIGN KEY ("ImpressionId") REFERENCES "Impression" ("ImpressionId") ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- ----------------------------
@@ -638,9 +639,9 @@ INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
 INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 INSERT INTO "sqlite_sequence" VALUES ('ImpressionPlaceholder', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
@@ -737,8 +738,8 @@ CREATE VIEW "BidRequestImpressionWithPlaceholderView" AS SELECT DISTINCT
 	Impression.Hash, 
 	Impression.BidfloorCur, 
 	Impression.Bidfloor, 
-	Impression.IsImpressionServedOrWonByAuction, 
-	Impression.ImpressionPlaceholderId, 
+	Impression.IsImpressionServed, 
+	Impression.IsImpressionWonByAuction, 
 	Impression.RawImpressionJson, 
 	Impression.BidResponseId
 FROM
@@ -750,7 +751,7 @@ FROM
 	LEFT JOIN
 	ImpressionPlaceholder
 	ON 
-		Impression.ImpressionPlaceholderId = ImpressionPlaceholder.ImpressionPlaceholderId
+		Impression.ImpressionId = ImpressionPlaceholder.ImpressionId
 	LEFT JOIN
 	ContentContext
 	ON 

@@ -540,11 +540,11 @@ trait Tables {
    *  @param hash Database column Hash SqlType(TEXT)
    *  @param bidfloorcur Database column BidfloorCur SqlType(TEXT)
    *  @param bidfloor Database column Bidfloor SqlType(REAL)
-   *  @param isimpressionservedorwonbyauction Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false)
-   *  @param impressionplaceholderid Database column ImpressionPlaceholderId SqlType(INTEGER)
+   *  @param isimpressionserved Database column IsImpressionServed SqlType(INTEGER), Length(1,false)
+   *  @param isimpressionwonbyauction Database column IsImpressionWonByAuction SqlType(INTEGER), Length(1,false)
    *  @param rawimpressionjson Database column RawImpressionJson SqlType(TEXT)
    *  @param bidresponseid Database column BidResponseId SqlType(INTEGER) */
-  case class BidrequestimpressionwithplaceholderviewRow(bidrequestid: Option[Int], createddatetimestamp: Option[java.time.Instant], iswontheauction: Option[Int], contentcontextid: Option[Int], currency: Option[String], rawbidrequestjson: Option[String], targetedcities: Option[String], targetedsites: Option[String], cities: Option[String], countries: Option[String], isvideo: Option[Int], isbanner: Option[Int], auctionid: Option[Int], demandsideplatformid: Option[Int], contentcontext: Option[String], isnativeplaceholder: Option[Int], isvideoplaceholder: Option[Int], isbannnerplaceholder: Option[Int], createddatetimestampimpressionplaceholder: Option[java.time.Instant], istopframe: Option[Int], position: Option[Int], mimes: Option[String], isminheightwidthempty: Option[Int], isheightwidthempty: Option[Int], maxwidth: Option[Int], maxheight: Option[Int], minwidth: Option[Int], minheight: Option[Int], width: Option[Int], height: Option[Int], `createddatetimestamp:1`: Option[java.time.Instant], ismaxheightwidthempty: Option[Int], advertisedisplayeddate: Option[java.time.Instant], impressionid: Option[Int], hash: Option[String], bidfloorcur: Option[String], bidfloor: Option[Double], isimpressionservedorwonbyauction: Option[Int], impressionplaceholderid: Option[Int], rawimpressionjson: Option[String], bidresponseid: Option[Int])
+  case class BidrequestimpressionwithplaceholderviewRow(bidrequestid: Option[Int], createddatetimestamp: Option[java.time.Instant], iswontheauction: Option[Int], contentcontextid: Option[Int], currency: Option[String], rawbidrequestjson: Option[String], targetedcities: Option[String], targetedsites: Option[String], cities: Option[String], countries: Option[String], isvideo: Option[Int], isbanner: Option[Int], auctionid: Option[Int], demandsideplatformid: Option[Int], contentcontext: Option[String], isnativeplaceholder: Option[Int], isvideoplaceholder: Option[Int], isbannnerplaceholder: Option[Int], createddatetimestampimpressionplaceholder: Option[java.time.Instant], istopframe: Option[Int], position: Option[Int], mimes: Option[String], isminheightwidthempty: Option[Int], isheightwidthempty: Option[Int], maxwidth: Option[Int], maxheight: Option[Int], minwidth: Option[Int], minheight: Option[Int], width: Option[Int], height: Option[Int], `createddatetimestamp:1`: Option[java.time.Instant], ismaxheightwidthempty: Option[Int], advertisedisplayeddate: Option[java.time.Instant], impressionid: Option[Int], hash: Option[String], bidfloorcur: Option[String], bidfloor: Option[Double], isimpressionserved: Option[Int], isimpressionwonbyauction: Option[Int], rawimpressionjson: Option[String], bidresponseid: Option[Int])
   /** GetResult implicit for fetching BidrequestimpressionwithplaceholderviewRow objects using plain SQL queries */
   implicit def GetResultBidrequestimpressionwithplaceholderviewRow(implicit e0: GR[Option[Int]], e1: GR[Option[java.time.Instant]], e2: GR[Option[String]], e3: GR[Option[Double]]): GR[BidrequestimpressionwithplaceholderviewRow] = GR{
     prs => import prs._
@@ -552,7 +552,7 @@ trait Tables {
   }
   /** Table description of table BidRequestImpressionWithPlaceholderView. Objects of this class serve as prototypes for rows in queries. */
   class Bidrequestimpressionwithplaceholderview(_tableTag: Tag) extends profile.api.Table[BidrequestimpressionwithplaceholderviewRow](_tableTag, "BidRequestImpressionWithPlaceholderView") {
-    def * = (bidrequestid :: createddatetimestamp :: iswontheauction :: contentcontextid :: currency :: rawbidrequestjson :: targetedcities :: targetedsites :: cities :: countries :: isvideo :: isbanner :: auctionid :: demandsideplatformid :: contentcontext :: isnativeplaceholder :: isvideoplaceholder :: isbannnerplaceholder :: createddatetimestampimpressionplaceholder :: istopframe :: position :: mimes :: isminheightwidthempty :: isheightwidthempty :: maxwidth :: maxheight :: minwidth :: minheight :: width :: height :: `createddatetimestamp:1` :: ismaxheightwidthempty :: advertisedisplayeddate :: impressionid :: hash :: bidfloorcur :: bidfloor :: isimpressionservedorwonbyauction :: impressionplaceholderid :: rawimpressionjson :: bidresponseid :: HNil).mapTo[BidrequestimpressionwithplaceholderviewRow]
+    def * = (bidrequestid :: createddatetimestamp :: iswontheauction :: contentcontextid :: currency :: rawbidrequestjson :: targetedcities :: targetedsites :: cities :: countries :: isvideo :: isbanner :: auctionid :: demandsideplatformid :: contentcontext :: isnativeplaceholder :: isvideoplaceholder :: isbannnerplaceholder :: createddatetimestampimpressionplaceholder :: istopframe :: position :: mimes :: isminheightwidthempty :: isheightwidthempty :: maxwidth :: maxheight :: minwidth :: minheight :: width :: height :: `createddatetimestamp:1` :: ismaxheightwidthempty :: advertisedisplayeddate :: impressionid :: hash :: bidfloorcur :: bidfloor :: isimpressionserved :: isimpressionwonbyauction :: rawimpressionjson :: bidresponseid :: HNil).mapTo[BidrequestimpressionwithplaceholderviewRow]
 
     /** Database column BidRequestId SqlType(INTEGER) */
     val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId")
@@ -628,10 +628,10 @@ trait Tables {
     val bidfloorcur: Rep[Option[String]] = column[Option[String]]("BidfloorCur")
     /** Database column Bidfloor SqlType(REAL) */
     val bidfloor: Rep[Option[Double]] = column[Option[Double]]("Bidfloor")
-    /** Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false) */
-    val isimpressionservedorwonbyauction: Rep[Option[Int]] = column[Option[Int]]("IsImpressionServedOrWonByAuction", O.Length(1,varying=false))
-    /** Database column ImpressionPlaceholderId SqlType(INTEGER) */
-    val impressionplaceholderid: Rep[Option[Int]] = column[Option[Int]]("ImpressionPlaceholderId")
+    /** Database column IsImpressionServed SqlType(INTEGER), Length(1,false) */
+    val isimpressionserved: Rep[Option[Int]] = column[Option[Int]]("IsImpressionServed", O.Length(1,varying=false))
+    /** Database column IsImpressionWonByAuction SqlType(INTEGER), Length(1,false) */
+    val isimpressionwonbyauction: Rep[Option[Int]] = column[Option[Int]]("IsImpressionWonByAuction", O.Length(1,varying=false))
     /** Database column RawImpressionJson SqlType(TEXT) */
     val rawimpressionjson: Rep[Option[String]] = column[Option[String]]("RawImpressionJson")
     /** Database column BidResponseId SqlType(INTEGER) */
@@ -1006,24 +1006,24 @@ trait Tables {
    *  @param bidresponseid Database column BidResponseId SqlType(INTEGER), Default(None)
    *  @param bidrequestid Database column BidRequestId SqlType(INTEGER), Default(None)
    *  @param rawimpressionjson Database column RawImpressionJson SqlType(TEXT), Default()
-   *  @param impressionplaceholderid Database column ImpressionPlaceholderId SqlType(INTEGER), Default(None)
-   *  @param isimpressionservedorwonbyauction Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false), Default(0)
+   *  @param isimpressionwonbyauction Database column IsImpressionWonByAuction SqlType(INTEGER), Length(1,false), Default(0)
+   *  @param isimpressionserved Database column IsImpressionServed SqlType(INTEGER), Length(1,false), Default(0)
    *  @param bidfloor Database column Bidfloor SqlType(REAL), Default(0.0)
    *  @param bidfloorcur Database column BidfloorCur SqlType(TEXT), Default(USD)
    *  @param hash Database column Hash SqlType(TEXT), Default(None)
    *  @param advertisedisplayeddate Database column AdvertiseDisplayedDate SqlType(TIMESTAMP)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class ImpressionRow(impressionid: Int, bidresponseid: Option[Int] = None, bidrequestid: Option[Int] = None, rawimpressionjson: String = "", impressionplaceholderid: Option[Int] = None, isimpressionservedorwonbyauction: Int = 0, bidfloor: Double = 0.0, bidfloorcur: String = "USD", hash: Option[String] = None, advertisedisplayeddate: java.time.Instant, createddatetimestamp: java.time.Instant)
+  case class ImpressionRow(impressionid: Int, bidresponseid: Option[Int] = None, bidrequestid: Option[Int] = None, rawimpressionjson: String = "", isimpressionwonbyauction: Int = 0, isimpressionserved: Int = 0, bidfloor: Double = 0.0, bidfloorcur: String = "USD", hash: Option[String] = None, advertisedisplayeddate: java.time.Instant, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching ImpressionRow objects using plain SQL queries */
   implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[String], e3: GR[Double], e4: GR[Option[String]], e5: GR[java.time.Instant]): GR[ImpressionRow] = GR{
     prs => import prs._
-    ImpressionRow.tupled((<<[Int], <<?[Int], <<?[Int], <<[String], <<?[Int], <<[Int], <<[Double], <<[String], <<?[String], <<[java.time.Instant], <<[java.time.Instant]))
+    ImpressionRow.tupled((<<[Int], <<?[Int], <<?[Int], <<[String], <<[Int], <<[Int], <<[Double], <<[String], <<?[String], <<[java.time.Instant], <<[java.time.Instant]))
   }
   /** Table description of table Impression. Objects of this class serve as prototypes for rows in queries. */
   class Impression(_tableTag: Tag) extends profile.api.Table[ImpressionRow](_tableTag, "Impression") {
-    def * = (impressionid, bidresponseid, bidrequestid, rawimpressionjson, impressionplaceholderid, isimpressionservedorwonbyauction, bidfloor, bidfloorcur, hash, advertisedisplayeddate, createddatetimestamp) <> (ImpressionRow.tupled, ImpressionRow.unapply)
+    def * = (impressionid, bidresponseid, bidrequestid, rawimpressionjson, isimpressionwonbyauction, isimpressionserved, bidfloor, bidfloorcur, hash, advertisedisplayeddate, createddatetimestamp) <> (ImpressionRow.tupled, ImpressionRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(impressionid), bidresponseid, bidrequestid, Rep.Some(rawimpressionjson), impressionplaceholderid, Rep.Some(isimpressionservedorwonbyauction), Rep.Some(bidfloor), Rep.Some(bidfloorcur), hash, Rep.Some(advertisedisplayeddate), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2, _3, _4.get, _5, _6.get, _7.get, _8.get, _9, _10.get, _11.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(impressionid), bidresponseid, bidrequestid, Rep.Some(rawimpressionjson), Rep.Some(isimpressionwonbyauction), Rep.Some(isimpressionserved), Rep.Some(bidfloor), Rep.Some(bidfloorcur), hash, Rep.Some(advertisedisplayeddate), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8.get, _9, _10.get, _11.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey */
     val impressionid: Rep[Int] = column[Int]("ImpressionId", O.AutoInc, O.PrimaryKey)
@@ -1033,10 +1033,10 @@ trait Tables {
     val bidrequestid: Rep[Option[Int]] = column[Option[Int]]("BidRequestId", O.Default(None))
     /** Database column RawImpressionJson SqlType(TEXT), Default() */
     val rawimpressionjson: Rep[String] = column[String]("RawImpressionJson", O.Default(""))
-    /** Database column ImpressionPlaceholderId SqlType(INTEGER), Default(None) */
-    val impressionplaceholderid: Rep[Option[Int]] = column[Option[Int]]("ImpressionPlaceholderId", O.Default(None))
-    /** Database column IsImpressionServedOrWonByAuction SqlType(INTEGER), Length(1,false), Default(0) */
-    val isimpressionservedorwonbyauction: Rep[Int] = column[Int]("IsImpressionServedOrWonByAuction", O.Length(1,varying=false), O.Default(0))
+    /** Database column IsImpressionWonByAuction SqlType(INTEGER), Length(1,false), Default(0) */
+    val isimpressionwonbyauction: Rep[Int] = column[Int]("IsImpressionWonByAuction", O.Length(1,varying=false), O.Default(0))
+    /** Database column IsImpressionServed SqlType(INTEGER), Length(1,false), Default(0) */
+    val isimpressionserved: Rep[Int] = column[Int]("IsImpressionServed", O.Length(1,varying=false), O.Default(0))
     /** Database column Bidfloor SqlType(REAL), Default(0.0) */
     val bidfloor: Rep[Double] = column[Double]("Bidfloor", O.Default(0.0))
     /** Database column BidfloorCur SqlType(TEXT), Default(USD) */
@@ -1052,14 +1052,13 @@ trait Tables {
     lazy val bidrequestFk = foreignKey("BidRequest_FK_1", bidrequestid, Bidrequest)(r => Rep.Some(r.bidrequestid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Bidresponse (database name BidResponse_FK_2) */
     lazy val bidresponseFk = foreignKey("BidResponse_FK_2", bidresponseid, Bidresponse)(r => Rep.Some(r.bidresponseid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-    /** Foreign key referencing Impressionplaceholder (database name ImpressionPlaceholder_FK_3) */
-    lazy val impressionplaceholderFk = foreignKey("ImpressionPlaceholder_FK_3", impressionplaceholderid, Impressionplaceholder)(r => Rep.Some(r.impressionplaceholderid), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Impression */
   lazy val Impression = new TableQuery(tag => new Impression(tag))
 
   /** Entity class storing rows of table Impressionplaceholder
    *  @param impressionplaceholderid Database column ImpressionPlaceholderId SqlType(INTEGER), AutoInc, PrimaryKey
+   *  @param impressionid Database column ImpressionId SqlType(INTEGER)
    *  @param isbanner Database column IsBanner SqlType(INTEGER), Length(1,false), Default(0)
    *  @param isvideo Database column IsVideo SqlType(INTEGER), Length(1,false), Default(0)
    *  @param isnative Database column IsNative SqlType(INTEGER), Length(1,false), Default(0)
@@ -1076,20 +1075,22 @@ trait Tables {
    *  @param position Database column Position SqlType(INTEGER), Default(None)
    *  @param istopframe Database column IsTopFrame SqlType(INTEGER), Length(1,false), Default(0)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class ImpressionplaceholderRow(impressionplaceholderid: Int, isbanner: Int = 0, isvideo: Int = 0, isnative: Int = 0, height: Int = 0, width: Int = 0, minheight: Int = 0, minwidth: Int = 0, maxheight: Int = 0, maxwidth: Int = 0, isheightwidthempty: Int = 1, ismaxheightwidthempty: Int = 1, isminheightwidthempty: Int = 1, mimes: Option[String] = None, position: Option[Int] = None, istopframe: Int = 0, createddatetimestamp: java.time.Instant)
+  case class ImpressionplaceholderRow(impressionplaceholderid: Int, impressionid: Int, isbanner: Int = 0, isvideo: Int = 0, isnative: Int = 0, height: Int = 0, width: Int = 0, minheight: Int = 0, minwidth: Int = 0, maxheight: Int = 0, maxwidth: Int = 0, isheightwidthempty: Int = 1, ismaxheightwidthempty: Int = 1, isminheightwidthempty: Int = 1, mimes: Option[String] = None, position: Option[Int] = None, istopframe: Int = 0, createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching ImpressionplaceholderRow objects using plain SQL queries */
   implicit def GetResultImpressionplaceholderRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[java.time.Instant]): GR[ImpressionplaceholderRow] = GR{
     prs => import prs._
-    ImpressionplaceholderRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[String], <<?[Int], <<[Int], <<[java.time.Instant]))
+    ImpressionplaceholderRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[String], <<?[Int], <<[Int], <<[java.time.Instant]))
   }
   /** Table description of table ImpressionPlaceholder. Objects of this class serve as prototypes for rows in queries. */
   class Impressionplaceholder(_tableTag: Tag) extends profile.api.Table[ImpressionplaceholderRow](_tableTag, "ImpressionPlaceholder") {
-    def * = (impressionplaceholderid, isbanner, isvideo, isnative, height, width, minheight, minwidth, maxheight, maxwidth, isheightwidthempty, ismaxheightwidthempty, isminheightwidthempty, mimes, position, istopframe, createddatetimestamp) <> (ImpressionplaceholderRow.tupled, ImpressionplaceholderRow.unapply)
+    def * = (impressionplaceholderid, impressionid, isbanner, isvideo, isnative, height, width, minheight, minwidth, maxheight, maxwidth, isheightwidthempty, ismaxheightwidthempty, isminheightwidthempty, mimes, position, istopframe, createddatetimestamp) <> (ImpressionplaceholderRow.tupled, ImpressionplaceholderRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(impressionplaceholderid), Rep.Some(isbanner), Rep.Some(isvideo), Rep.Some(isnative), Rep.Some(height), Rep.Some(width), Rep.Some(minheight), Rep.Some(minwidth), Rep.Some(maxheight), Rep.Some(maxwidth), Rep.Some(isheightwidthempty), Rep.Some(ismaxheightwidthempty), Rep.Some(isminheightwidthempty), mimes, position, Rep.Some(istopframe), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionplaceholderRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14, _15, _16.get, _17.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(impressionplaceholderid), Rep.Some(impressionid), Rep.Some(isbanner), Rep.Some(isvideo), Rep.Some(isnative), Rep.Some(height), Rep.Some(width), Rep.Some(minheight), Rep.Some(minwidth), Rep.Some(maxheight), Rep.Some(maxwidth), Rep.Some(isheightwidthempty), Rep.Some(ismaxheightwidthempty), Rep.Some(isminheightwidthempty), mimes, position, Rep.Some(istopframe), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionplaceholderRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15, _16, _17.get, _18.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ImpressionPlaceholderId SqlType(INTEGER), AutoInc, PrimaryKey */
     val impressionplaceholderid: Rep[Int] = column[Int]("ImpressionPlaceholderId", O.AutoInc, O.PrimaryKey)
+    /** Database column ImpressionId SqlType(INTEGER) */
+    val impressionid: Rep[Int] = column[Int]("ImpressionId")
     /** Database column IsBanner SqlType(INTEGER), Length(1,false), Default(0) */
     val isbanner: Rep[Int] = column[Int]("IsBanner", O.Length(1,varying=false), O.Default(0))
     /** Database column IsVideo SqlType(INTEGER), Length(1,false), Default(0) */
@@ -1122,6 +1123,9 @@ trait Tables {
     val istopframe: Rep[Int] = column[Int]("IsTopFrame", O.Length(1,varying=false), O.Default(0))
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
+
+    /** Foreign key referencing Impression (database name Impression_FK_1) */
+    lazy val impressionFk = foreignKey("Impression_FK_1", impressionid, Impression)(r => r.impressionid, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Impressionplaceholder */
   lazy val Impressionplaceholder = new TableQuery(tag => new Impressionplaceholder(tag))
