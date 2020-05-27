@@ -1,8 +1,6 @@
 package shared.io.extensions.traits.asyncTypes
 
-import shared.io.extensions.TypeConvertExtensions._
 import shared.com.repository.traits.FutureToRegular
-import shared.io.helpers.EmptyValidateHelper
 
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration

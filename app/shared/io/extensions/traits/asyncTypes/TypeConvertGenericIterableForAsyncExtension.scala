@@ -10,7 +10,7 @@ trait TypeConvertGenericIterableForAsyncExtension[T] {
   this : TypeConvertGenericIterable[T] =>
   def forEachAsyncCompleted(f : T => Unit, defaultCapacity : Int = 50) : Unit = {
     val allFutures = forEachAsync(f, defaultCapacity)
-    allFutures.waitUntilComplete()
+    allFutures.waitUntilCompleted()
   }
 
   def forEachAsync(f : T => Unit, defaultCapacity : Int = 50) : ArrayBuffer[Future[Unit]] = {

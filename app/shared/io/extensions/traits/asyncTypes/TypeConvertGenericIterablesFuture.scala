@@ -11,7 +11,7 @@ trait TypeConvertGenericIterablesFuture[T] {
   lazy val isEmpty : Boolean = EmptyValidateHelper.isItemsEmptyDirect(eventualRequests)
   val eventualRequests : Iterable[Future[T]]
 
-  def waitUntilComplete(wait : Duration = Inf) : Unit = {
+  def waitUntilCompleted(wait : Duration = Inf) : Unit = {
     if (isEmpty) {
       return
     }
