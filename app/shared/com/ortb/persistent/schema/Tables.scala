@@ -1013,17 +1013,17 @@ trait Tables {
    *  @param hash Database column Hash SqlType(TEXT), Default(None)
    *  @param advertisedisplayeddate Database column AdvertiseDisplayedDate SqlType(TIMESTAMP)
    *  @param createddatetimestamp Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
-  case class ImpressionRow(impressionid: Int, bidresponseid: Option[Int] = None, bidrequestid: Option[Int] = None, rawimpressionjson: String = "", isimpressionwonbyauction: Int = 0, isimpressionserved: Int = 0, bidfloor: Double = 0.0, bidfloorcur: String = "USD", hash: Option[String] = None, advertisedisplayeddate: java.time.Instant, createddatetimestamp: java.time.Instant)
+  case class ImpressionRow(impressionid: Int, bidresponseid: Option[Int] = None, bidrequestid: Option[Int] = None, rawimpressionjson: String = "", isimpressionwonbyauction: Int = 0, isimpressionserved: Int = 0, bidfloor: Double = 0.0, bidfloorcur: String = "USD", hash: Option[String] = None, advertisedisplayeddate: Option[java.time.Instant], createddatetimestamp: java.time.Instant)
   /** GetResult implicit for fetching ImpressionRow objects using plain SQL queries */
-  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[String], e3: GR[Double], e4: GR[Option[String]], e5: GR[java.time.Instant]): GR[ImpressionRow] = GR{
+  implicit def GetResultImpressionRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[String], e3: GR[Double], e4: GR[Option[String]], e5: GR[Option[java.time.Instant]], e6: GR[java.time.Instant]): GR[ImpressionRow] = GR{
     prs => import prs._
-    ImpressionRow.tupled((<<[Int], <<?[Int], <<?[Int], <<[String], <<[Int], <<[Int], <<[Double], <<[String], <<?[String], <<[java.time.Instant], <<[java.time.Instant]))
+    ImpressionRow.tupled((<<[Int], <<?[Int], <<?[Int], <<[String], <<[Int], <<[Int], <<[Double], <<[String], <<?[String], <<?[java.time.Instant], <<[java.time.Instant]))
   }
   /** Table description of table Impression. Objects of this class serve as prototypes for rows in queries. */
   class Impression(_tableTag: Tag) extends profile.api.Table[ImpressionRow](_tableTag, "Impression") {
     def * = (impressionid, bidresponseid, bidrequestid, rawimpressionjson, isimpressionwonbyauction, isimpressionserved, bidfloor, bidfloorcur, hash, advertisedisplayeddate, createddatetimestamp) <> (ImpressionRow.tupled, ImpressionRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(impressionid), bidresponseid, bidrequestid, Rep.Some(rawimpressionjson), Rep.Some(isimpressionwonbyauction), Rep.Some(isimpressionserved), Rep.Some(bidfloor), Rep.Some(bidfloorcur), hash, Rep.Some(advertisedisplayeddate), Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8.get, _9, _10.get, _11.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(impressionid), bidresponseid, bidrequestid, Rep.Some(rawimpressionjson), Rep.Some(isimpressionwonbyauction), Rep.Some(isimpressionserved), Rep.Some(bidfloor), Rep.Some(bidfloorcur), hash, advertisedisplayeddate, Rep.Some(createddatetimestamp))).shaped.<>({r=>import r._; _1.map(_=> ImpressionRow.tupled((_1.get, _2, _3, _4.get, _5.get, _6.get, _7.get, _8.get, _9, _10, _11.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ImpressionId SqlType(INTEGER), AutoInc, PrimaryKey */
     val impressionid: Rep[Int] = column[Int]("ImpressionId", O.AutoInc, O.PrimaryKey)
@@ -1044,7 +1044,7 @@ trait Tables {
     /** Database column Hash SqlType(TEXT), Default(None) */
     val hash: Rep[Option[String]] = column[Option[String]]("Hash", O.Default(None))
     /** Database column AdvertiseDisplayedDate SqlType(TIMESTAMP) */
-    val advertisedisplayeddate: Rep[java.time.Instant] = column[java.time.Instant]("AdvertiseDisplayedDate")
+    val advertisedisplayeddate: Rep[Option[java.time.Instant]] = column[Option[java.time.Instant]]("AdvertiseDisplayedDate")
     /** Database column CreatedDateTimestamp SqlType(TIMESTAMP) */
     val createddatetimestamp: Rep[java.time.Instant] = column[java.time.Instant]("CreatedDateTimestamp")
 
