@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 23/05/2020 16:35:39
+ Date: 27/05/2020 13:45:28
 */
 
 PRAGMA foreign_keys = false;
@@ -30,6 +30,7 @@ CREATE TABLE "Advertise" (
   "IsCountrySpecific" INTEGER(1) NOT NULL DEFAULT 0,
   "IsBanner" INTEGER(1) DEFAULT 0,
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsNative" INTEGER(1) NOT NULL DEFAULT 0,
   "ImpressionCount" INTEGER NOT NULL DEFAULT 0,
   "Height" INTEGER NOT NULL DEFAULT 0,
   "Width" INTEGER NOT NULL DEFAULT 0,
@@ -130,8 +131,6 @@ CREATE TABLE "BidRequest" (
   "AuctionId" INTEGER DEFAULT NULL,
   "IsBanner" INTEGER(1) NOT NULL DEFAULT 0,
   "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
-  "Height" INTEGER DEFAULT NULL,
-  "Width" INTEGER DEFAULT NULL,
   "Countries" TEXT DEFAULT NULL,
   "Cities" TEXT DEFAULT NULL,
   "TargetedSites" TEXT DEFAULT NULL,
@@ -385,13 +384,36 @@ CREATE TABLE "Impression" (
   "ImpressionId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "RawImpressionJson" TEXT NOT NULL DEFAULT "",
   "BidId" INTEGER DEFAULT NULL,
-  "IsImpressionServedOrWonByAuction" INTEGER(1) DEFAULT 0,
-  "Bidfloor" REAL DEFAULT 0,
-  "BidfloorCur" TEXT DEFAULT "USD",
+  "ImpressionPlaceholderId" INTEGER DEFAULT NULL,
+  "IsImpressionServedOrWonByAuction" INTEGER(1) NOT NULL DEFAULT 0,
+  "Bidfloor" REAL NOT NULL DEFAULT 0,
+  "BidfloorCur" TEXT NOT NULL DEFAULT 'USD',
   "Hash" TEXT DEFAULT NULL,
-  "DisplayDate" TIMESTAMP NOT NULL,
+  "AdvertiseDisplayedDate" TIMESTAMP NOT NULL,
   "CreatedDateTimestamp" TIMESTAMP NOT NULL,
-  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT "BidIdFK" FOREIGN KEY ("BidId") REFERENCES "Bid" ("BidId") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT "ImpressionPlaceholderIdFK" FOREIGN KEY ("ImpressionPlaceholderId") REFERENCES "ImpressionPlaceholder" ("ImpressionPlaceholderId") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- ----------------------------
+-- Table structure for ImpressionPlaceholder
+-- ----------------------------
+DROP TABLE IF EXISTS "ImpressionPlaceholder";
+CREATE TABLE "ImpressionPlaceholder" (
+  "ImpressionPlaceholderId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "IsBanner" INTEGER(1) DEFAULT 0,
+  "IsVideo" INTEGER(1) NOT NULL DEFAULT 0,
+  "IsNative" INTEGER(1) NOT NULL DEFAULT 0,
+  "Height" INTEGER NOT NULL DEFAULT 0,
+  "Width" INTEGER NOT NULL DEFAULT 0,
+  "MinHeight" INTEGER NOT NULL DEFAULT 0,
+  "MinWidth" INTEGER NOT NULL DEFAULT 0,
+  "MaxHeight" INTEGER NOT NULL DEFAULT 0,
+  "MaxWidth" INTEGER NOT NULL DEFAULT 0,
+  "IsHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
+  "IsMaxHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
+  "IsMinHeightWidthEmpty" INTEGER(1) NOT NULL DEFAULT 1,
+  "CreatedDateTimestamp" TIMESTAMP NOT NULL
 );
 
 -- ----------------------------
@@ -607,8 +629,10 @@ INSERT INTO "sqlite_sequence" VALUES ('Publisher', 3);
 INSERT INTO "sqlite_sequence" VALUES ('VideoPlaybackMethod', 4);
 INSERT INTO "sqlite_sequence" VALUES ('VideoResponseProtocol', 6);
 INSERT INTO "sqlite_sequence" VALUES ('BidResponse', 0);
-INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
 INSERT INTO "sqlite_sequence" VALUES ('LogTrace', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Advertise', 0);
+INSERT INTO "sqlite_sequence" VALUES ('BidRequest', 0);
+INSERT INTO "sqlite_sequence" VALUES ('Impression', 0);
 
 -- ----------------------------
 -- Table structure for sqlite_stat1
@@ -737,6 +761,10 @@ FROM
 UPDATE "sqlite_sequence" SET seq = 4 WHERE name = 'BannerAdvertiseType';
 
 -- ----------------------------
+-- Auto increment value for BidRequest
+-- ----------------------------
+
+-- ----------------------------
 -- Auto increment value for BidResponse
 -- ----------------------------
 
@@ -759,6 +787,10 @@ UPDATE "sqlite_sequence" SET seq = 16 WHERE name = 'CreativeAttribute';
 -- Auto increment value for DemandSidePlatform
 -- ----------------------------
 UPDATE "sqlite_sequence" SET seq = 3 WHERE name = 'DemandSidePlatform';
+
+-- ----------------------------
+-- Auto increment value for Impression
+-- ----------------------------
 
 -- ----------------------------
 -- Auto increment value for LogTrace
