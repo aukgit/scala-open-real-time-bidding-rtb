@@ -1,17 +1,10 @@
 package shared.com.ortb.model.config
 
-import scala.util.Random
-
-case class RangeModel(
-  start : Double,
-  end : Double
-) {
+abstract class RangeModel[T : Numeric] {
+  val start : T
+  val end : T
   /**
    * Get a number inclusive of start and exclusive of end
    */
-  lazy val guessRandomInBetween : Double = {
-    Random.between(
-      start,
-      end)
-  }
+  val guessRandomInBetween : T
 }
