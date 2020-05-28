@@ -12,32 +12,32 @@
 ->         /admin/v1/bidResponses                           controllers.v1.router.BidResponseApiRouter
 ->         /admin/v1/campaignTargetCities                   controllers.v1.router.CampaignTargetCityApiRouter
 ->         /admin/v1/ctc                                    controllers.v1.router.CampaignTargetCityApiRouter
-->         /admin/v1/CampaignTargetOperatingSystems         controllers.v1.router.CampaignTargetOperatingSystemApiRouter
-->         /admin/v1/ctos                                   controllers.v1.router.CampaignTargetOperatingSystemApiRouter
-->         /admin/v1/CampaignTargetSiteSystems              controllers.v1.router.CampaignTargetSiteSystemApiRouter
-->         /admin/v1/ctss                                   controllers.v1.router.CampaignTargetSiteSystemApiRouter
-->         /admin/v1/ContentCategories                      controllers.v1.router.ContentCategoryApiRouter
-->         /admin/v1/contentContexts                        controllers.v1.router.ContentContextApiRouter
-->         /admin/v1/demandSidePlatforms                    controllers.v1.router.DemandSidePlatformApiRouter
-->         /admin/v1/dsps                                   controllers.v1.router.DemandSidePlatformApiRouter
-->         /admin/v1/geoMappings                            controllers.v1.router.GeoMappingApiRouter
-->         /admin/v1/impressions                            controllers.v1.router.ImpressionApiRouter
-->         /admin/v1/KeywordAdvertiseMappings               controllers.v1.router.KeywordAdvertiseMappingApiRouter
-->         /admin/v1/kam                                    controllers.v1.router.KeywordAdvertiseMappingApiRouter
-->         /admin/v1/keywords                               controllers.v1.router.KeywordApiRouter
-->         /admin/v1/lostBids                               controllers.v1.router.LostBidApiRouter
-->         /admin/v1/noBidResponses                         controllers.v1.router.NoBidResponseTypeApiRouter
-->         /admin/v1/nbr                                    controllers.v1.router.NoBidResponseTypeApiRouter
-->         /admin/v1/publishers                             controllers.v1.router.PublisherApiRouter
-->         /admin/v1/transactions                           controllers.v1.router.TransactionApiRouter
+->         /admin/v1/CampaignTargetOperatingSystems        controllers.v1.router.CampaignTargetOperatingSystemApiRouter
+->         /admin/v1/ctos                                  controllers.v1.router.CampaignTargetOperatingSystemApiRouter
+->         /admin/v1/CampaignTargetSiteSystems             controllers.v1.router.CampaignTargetSiteSystemApiRouter
+->         /admin/v1/ctss                                  controllers.v1.router.CampaignTargetSiteSystemApiRouter
+->         /admin/v1/ContentCategories                     controllers.v1.router.ContentCategoryApiRouter
+->         /admin/v1/contentContexts                       controllers.v1.router.ContentContextApiRouter
+->         /admin/v1/demandSidePlatforms                   controllers.v1.router.DemandSidePlatformApiRouter
+->         /admin/v1/dsps                                  controllers.v1.router.DemandSidePlatformApiRouter
+->         /admin/v1/geoMappings                           controllers.v1.router.GeoMappingApiRouter
+->         /admin/v1/impressions                           controllers.v1.router.ImpressionApiRouter
+->         /admin/v1/KeywordAdvertiseMappings              controllers.v1.router.KeywordAdvertiseMappingApiRouter
+->         /admin/v1/kam                                   controllers.v1.router.KeywordAdvertiseMappingApiRouter
+->         /admin/v1/keywords                              controllers.v1.router.KeywordApiRouter
+->         /admin/v1/lostBids                              controllers.v1.router.LostBidApiRouter
+->         /admin/v1/noBidResponses                        controllers.v1.router.NoBidResponseTypeApiRouter
+->         /admin/v1/nbr                                   controllers.v1.router.NoBidResponseTypeApiRouter
+->         /admin/v1/publishers                            controllers.v1.router.PublisherApiRouter
+->         /admin/v1/transactions                          controllers.v1.router.TransactionApiRouter
 
 
-->         /services/v1/rtbSimulateService                  controllers.controllerRoutes.routerGeneric.RtbServiceBasicRouter
-->         /services/v1/demansideplantformservice           controllers.controllerRoutes.routerGeneric.DemandSidePlatformServiceRouter
-->         /services/v1/dspService                          controllers.controllerRoutes.routerGeneric.DemandSidePlatformServiceRouter
+->         /services/v1/rtbSimulateService                 shared.com.ortb.routes.router.core.RtbServiceBasicRouter
+->         /services/v1/demansideplantformservice          shared.com.ortb.routes.router.DemandSidePlatformServiceRouter
+->         /services/v1/dspService                         shared.com.ortb.routes.router.DemandSidePlatformServiceRouter
 
 
 # Map static resources from the /public folder to the /assets URL path
 
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET        /assets/*file                                   controllers.Assets.at(path="/public", file)
 

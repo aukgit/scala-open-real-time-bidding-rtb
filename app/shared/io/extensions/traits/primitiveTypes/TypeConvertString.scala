@@ -1,6 +1,5 @@
 package shared.io.extensions.traits.primitiveTypes
 
-import shared.io.extensions.TypeConvertExtensions._
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import org.joda.time.DateTime
