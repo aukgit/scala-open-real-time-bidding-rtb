@@ -24,7 +24,7 @@ trait DemandSidePlatformBiddingLogic
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
 
     if (isStatic) {
-      return getBidStatic(request)
+      return getStaticBid(request)
     }
 
     getBidActual(request)

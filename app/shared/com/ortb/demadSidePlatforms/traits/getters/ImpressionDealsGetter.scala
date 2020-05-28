@@ -3,7 +3,7 @@ package shared.com.ortb.demadSidePlatforms.traits.getters
 import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, ImpressionBiddableInfoModel, ImpressionDealModel }
-import shared.com.ortb.model.config.RangeModel
+import shared.com.ortb.model.ranges.RangeDoubleModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.repository.traits.FutureToRegular
@@ -17,7 +17,7 @@ import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
-  lazy val randomNumberIncrementerGuessRange : RangeModel = coreProperties.randomNumberIncrementerGuessRange
+  lazy val randomNumberIncrementerGuessRange : RangeDoubleModel = coreProperties.globalRandomRange
 
   def getImpressionInfosFromImpressionBiddableInfos(
     request : DemandSidePlatformBiddingRequestWrapperModel,
@@ -91,7 +91,7 @@ trait ImpressionDealsGetter {
       return null
     }
 
-    val randomIncrements = randomNumberIncrementerGuessRange.guessRandomInBetween
+    val randomIncrements = randomNumberIncrementerGuessRange.randomInBetweenRange
     val bidFloor = NumberHelper.getAsDouble(impressionBiddableInfo.impression.bidfloor)
     val randomInBetweenAvgWinAndLoss = bidFailedReasons
       .randomNumberBetweenAverageLosingAndWinningPriceOrStaticIncrementIfNoDifference

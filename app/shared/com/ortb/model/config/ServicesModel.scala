@@ -9,5 +9,5 @@ case class ServicesModel(
   bidderService : ServiceModel,
   preCachedBidService : ServiceModel,
   supplySidePlatformService : ServiceModel,
-  demandSidePlatForms : Array[ServiceModel]
+  demandSidePlatforms : Array[DemandSideServiceModel]
 )

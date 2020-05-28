@@ -19,7 +19,7 @@ class RequestSimulatorServiceApiController @Inject()(
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
     try {
       val jsonString = JsonHelper.toJson(selfProperties.currentServiceModel.routing).get.toString()
-      selfProperties.restWebApiOkJson.okJson(jsonString)
+      selfProperties.webApiResult.okJson(jsonString)
     } catch {
       case e : Exception =>
         AppLogger.error(e)
@@ -34,7 +34,7 @@ class RequestSimulatorServiceApiController @Inject()(
         "requests",
         s"${ bannerSuffix }-bid-request.json")
 
-      selfProperties.restWebApiOkJson.okJson(jsonString)
+      selfProperties.webApiResult.okJson(jsonString)
     } catch {
       case e : Exception =>
         AppLogger.error(e)
