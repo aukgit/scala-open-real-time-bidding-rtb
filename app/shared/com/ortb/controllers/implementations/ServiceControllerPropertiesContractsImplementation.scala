@@ -12,7 +12,7 @@ class ServiceControllerPropertiesContractsImplementation
 (val serviceBaseApiController : ServiceBaseApiController, val serviceModelInstance : ServiceModel)
   extends ServiceControllerCorePropertiesContracts {
   EmptyValidateHelper.throwOnNullOrNoneOrNil(serviceModelInstance)
-  lazy val restWebApiOkJson = new RestWebApiOkJsonImplementation(serviceBaseApiController)
+  lazy val restWebApiOkJson = new RestWebApiOkImplementation(serviceBaseApiController)
   lazy val config : ConfigModel = appManager.config
   lazy val serviceTitle : String = serviceModelInstance.title
   lazy override val appManager : AppManager = serviceBaseApiController.appManager

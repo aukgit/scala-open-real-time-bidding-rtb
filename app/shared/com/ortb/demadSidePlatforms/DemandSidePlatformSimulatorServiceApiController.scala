@@ -39,18 +39,24 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       )
 
       val maybeDemandSidePlatformBidResponseModel = agent.getBid(requestWrapperModel)
-      val bidRequestToString = bidRequest.toString
-      val entityJson = demandSidePlatformJson.get
-      val message = s"""
-                       | BidRequest:$bidRequestToString
-                       | BidRequestRow:${ bidRequestRow.toString }
-                       | EntityJson:$entityJson
-                       | DemandSidePlatformBidResponseModel:$maybeDemandSidePlatformBidResponseModel"""
-      AppLogger.debug("BidProcessedData(Raw)", message)
 
-      selfProperties
-        .restWebApiOkJson
-        .OkJson(response)
+      if (maybeDemandSidePlatformBidResponseModel.isDefined) {
+        val bidRequestToString = bidRequest.toString
+        val entityJson = demandSidePlatformJson.get
+        val message = s"""
+                         | BidRequest:$bidRequestToString
+                         | BidRequestRow:${ bidRequestRow.toString }
+                         | EntityJson:$entityJson
+                         | DemandSidePlatformBidResponseModel:$maybeDemandSidePlatformBidResponseModel"""
+        AppLogger.debug("BidProcessedData(Raw)", message)
+
+        selfProperties
+          .restWebApiOkJson
+          .okHtmlWithStatus(maybeDemandSidePlatformBidResponseModel.)
+      }
+      else {
+        return controller.noContent()
+      }
     } catch {
       case e : Exception =>
         handleError(e)
