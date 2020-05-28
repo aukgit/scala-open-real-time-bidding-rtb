@@ -100,7 +100,7 @@
           "port": 0,
           "routing": [],
           "demandSidePlatformId": 1,
-          "bidIncrementRangeModel": {
+          "biddingRandomRange": {
             "start": 0.00010,
             "end": 0.0015
           }
@@ -112,8 +112,37 @@
           "domain": "",
           "port": 0,
           "routing": [],
-          "bidIncrementRangeModel": {
-            "start": 0.00010,
+          "biddingLogicConfig": {
+            "staticPrice": {
+              "bidFloorExistLogic": [
+                "bidFloor",
+                "randomInBetweenBiddingRandomRange",
+                "defaultBidStaticDeal",
+                "defaultIncrementNumber"
+              ],
+              "bidFloorNonExistLogic": [
+                "randomInBetweenBiddingRandomRange",
+                "defaultBidStaticDeal",
+                "defaultIncrementNumber/2"
+              ]
+            },
+            "dynamicPrice": {
+              "bidFloorExistLogic": [
+                "bidFloor",
+                "lastFiveAverageOfFailingAndWinningPricesDifference",
+                "randomInBetweenBiddingRandomRange",
+                "defaultBidStaticDeal",
+                "defaultIncrementNumber/3"
+              ],
+              "bidFloorNonExistLogic": [
+                "randomInBetweenBiddingRandomRange",
+                "defaultBidStaticDeal",
+                "defaultIncrementNumber/2"
+              ]
+            }
+          },
+          "biddingRandomRange": {
+            "start": 0.00015,
             "end": 0.0015
           }
         },
@@ -124,8 +153,8 @@
           "domain": "",
           "port": 0,
           "routing": [],
-          "bidIncrementRangeModel": {
-            "start": 0.00010,
+          "biddingRandomRange": {
+            "start": 0.00014,
             "end": 0.0015
           }
         }
@@ -167,5 +196,7 @@
     "pkg": "shared.com.ortb.persistent.schema"
   },
   "defaultTimeout": 5000,
-  "defaultParallelProcessing": 5
+  "defaultParallelProcessing": 5,
+  "definitions": {
+  }
 }

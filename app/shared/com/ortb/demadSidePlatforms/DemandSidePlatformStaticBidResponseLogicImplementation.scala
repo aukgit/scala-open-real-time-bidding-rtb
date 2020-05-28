@@ -28,9 +28,9 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     coreProperties.demandSidePlatformConfiguration
 
-  override def getBidStatic(
+  override def getStaticBid(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val methodName = nameOf(getBidStatic _)
+    val methodName = nameOf(getStaticBid _)
     val impressions : Seq[ImpressionModel] = request.bidRequest.imp
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
@@ -40,52 +40,31 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       .biddingConstants
       .staticBidModel
 
+
     for (impression <- impressions) {
       val minMaxHeightWidth = impression.minMaxHeightWidth
+      val deal : Double = getStaticBidPrice(impression)
+      val callStackModel = CallStackModel(
+        deal = deal,
+        performingAction = methodName,
+        message = s"[$methodName] -> adding deals($defaultStaticDeal) for given bid request.",
+        isServedAnyDeal = true
+      )
 
-      if (impression.bidfloor.isDefined) {
-        val deal : Double = impression.bidfloor.get + defaultIncrementNumber
-        val advertise = createStaticAdvertise(impression, deal, "Title")
-        val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
-        deals.addOne(impressionDealModel)
+      callStacks.addOne(callStackModel)
+      val advertise = createStaticAdvertise(impression, deal, "Title")
+      val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
+      deals.addOne(impressionDealModel)
 
-        val callStackModel = CallStackModel(
-          deal = deal,
-          performingAction = methodName,
-          message = s"[$methodName] -> -> adding deals($deal) for given bid request.",
-          isServedAnyDeal = true
-        )
+      val bidModel = staticBidModel.copy(
+        impid = impression.id,
+        price = deal,
+        adid = advertise.advertiseid.toStringSome,
+        nurl = s"http://adserver.com/winnotice?impid=${ impression.id }".toSome,
+        h = minMaxHeightWidth.maybeHeight,
+        w = minMaxHeightWidth.maybeWidth)
 
-        callStacks.addOne(callStackModel)
-        val bidModel = staticBidModel.copy(
-          impid = impression.id,
-          price = deal,
-          nurl = s"http://adserver.com/winnotice?impid=${ impression.id }".toSome,
-          h = minMaxHeightWidth.maybeHeight,
-          w = minMaxHeightWidth.maybeWidth)
-
-        bidModels.addOne(bidModel)
-      } else {
-        val advertise = createStaticAdvertise(impression, defaultStaticDeal, "Title")
-        deals.addOne(ImpressionDealModel(impression, advertise, defaultStaticDeal))
-
-        val callStackModel = CallStackModel(
-          deal = defaultStaticDeal,
-          performingAction = methodName,
-          message = s"[$methodName] -> adding deals($defaultStaticDeal) for given bid request.",
-          isServedAnyDeal = true
-        )
-
-        callStacks.addOne(callStackModel)
-        val bidModel = staticBidModel.copy(
-          impid = impression.id,
-          price = defaultStaticDeal,
-          nurl = s"http://adserver.com/winnotice?impid=${ impression.id }".toSome,
-          h = minMaxHeightWidth.maybeHeight,
-          w = minMaxHeightWidth.maybeWidth)
-
-        bidModels.addOne(bidModel)
-      }
+      bidModels.addOne(bidModel)
     }
 
     val seatBidModel = SeatBidModel(
@@ -93,7 +72,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       seat = s"SeatBidID/DSP ID : $demandSideId".toSome)
 
     val bidResponse = BidResponseModel(
-      "_",
+      "static : BidResponse Id",
       seatBidModel.toMakeListSome,
       None,
       nbr = Some(NoBidResponseType.UnknownError.value))
@@ -105,11 +84,27 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
         request,
         request.bidRequest,
         bidResponseWrapper = bidResponseWrapper,
-        Some(deals.toList))
+        deals.toList.toSome)
 
     dspBidderResultModel.addCallStacks(callStacks)
 
-    Some(dspBidderResultModel)
+    dspBidderResultModel.toSome
+  }
+
+  def getStaticBidPrice(impression : ImpressionModel) : Double = {
+    val randomGuess = coreProperties
+      .currentServiceModel
+      .biddingRandomRange
+      .randomInBetweenRange
+
+    var deal : Double = randomGuess + defaultIncrementNumber
+    if (impression.bidfloor.isDefined) {
+      deal += impression.bidfloor.get
+    } else {
+      deal += defaultStaticDeal - defaultIncrementNumber / 2
+    }
+
+    deal
   }
 
   def createStaticAdvertise(
@@ -161,7 +156,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       JodaDateTimeHelper.nowUtcJavaInstant)
   }
 
-  override def getBidStaticNoContent(
+  override def getStaticBidNoContent(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
     //    val dspBidderResultModel =
     //      model.DemandSidePlatformBidResponseModel(

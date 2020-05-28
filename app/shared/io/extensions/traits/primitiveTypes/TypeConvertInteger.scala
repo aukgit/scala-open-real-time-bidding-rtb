@@ -5,7 +5,7 @@ import shared.io.helpers.EmptyValidateHelper
 trait TypeConvertInteger {
   protected val i : Int
 
-  lazy val toStringOption : Option[String] = Some(i.toString)
+  lazy val toStringSome : Option[String] = Some(i.toString)
 
   def toBoolString : String = toBoolean.toString
 

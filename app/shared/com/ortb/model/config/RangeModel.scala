@@ -6,5 +6,5 @@ abstract class RangeModel[T : Numeric] {
   /**
    * Get a number inclusive of start and exclusive of end
    */
-  val guessRandomInBetween : T
+  val randomInBetweenRange : T
 }

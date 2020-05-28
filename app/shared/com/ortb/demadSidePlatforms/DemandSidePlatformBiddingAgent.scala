@@ -10,7 +10,7 @@ import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, De
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.enumeration.NoBidResponseType
 import shared.com.ortb.manager.traits.CreateDefaultContext
-import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
+import shared.com.ortb.model.auctionbid.biddingRequests.{ BidRequestModel, ImpressionModel }
 import shared.com.ortb.model.auctionbid.bidresponses.{ BidModel, BidResponseModel, BidResponseModelWrapper, SeatBidModel }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
@@ -44,12 +44,12 @@ class DemandSidePlatformBiddingAgent(
   lazy override val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     coreProperties.demandSidePlatformConfiguration
 
-  def getBidStatic(request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] =
-    demandSidePlatformStaticBidResponseLogic.getBidStatic(request)
+  def getStaticBid(request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] =
+    demandSidePlatformStaticBidResponseLogic.getStaticBid(request)
 
-  override def getBidStaticNoContent(request : DemandSidePlatformBiddingRequestWrapperModel) :
+  override def getStaticBidNoContent(request : DemandSidePlatformBiddingRequestWrapperModel) :
   Option[DemandSidePlatformBidResponseModel] =
-    demandSidePlatformStaticBidResponseLogic.getBidStaticNoContent(request)
+    demandSidePlatformStaticBidResponseLogic.getStaticBidNoContent(request)
 
   override def getBidPrices(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = ???
@@ -179,7 +179,7 @@ class DemandSidePlatformBiddingAgent(
     val bidResponse2 = BidResponseModel(
       bidResponseId.toString,
       seatBids,
-      coreProperties.demandSideId.toStringOption,
+      coreProperties.demandSideId.toStringSome,
       nbr = None)
 
     val bidResponseWrapper = BidResponseModelWrapper(Some(bidResponse2))
@@ -313,4 +313,7 @@ class DemandSidePlatformBiddingAgent(
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow =
     demandSidePlatformStaticBidResponseLogic.getStaticBidRequestToBidRequestRow(bidRequest)
+
+  override def getStaticBidPrice(impression : ImpressionModel) : Double =
+    demandSidePlatformStaticBidResponseLogic.getStaticBidPrice(impression)
 }

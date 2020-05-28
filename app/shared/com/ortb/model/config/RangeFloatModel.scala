@@ -9,7 +9,7 @@ case class RangeFloatModel(
   /**
    * Get a number inclusive of start and exclusive of end
    */
-  lazy override val guessRandomInBetween : Float = Random.between(
+  lazy override val randomInBetweenRange : Float = Random.between(
     start,
     end)
 }
