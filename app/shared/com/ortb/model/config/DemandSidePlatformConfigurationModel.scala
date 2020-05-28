@@ -3,6 +3,7 @@ package shared.com.ortb.model.config
 import shared.com.ortb.model.ranges.RangeDoubleModel
 
 case class DemandSidePlatformConfigurationModel(
+  winNoticeUrlWithPlaceholder : String,
   defaultBidIncrementNumber : Double,
   defaultBidStaticDeal : Double,
   isStaticSimulate : Boolean,

@@ -37,9 +37,15 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     val callStacks = new ArrayBuffer[CallStackModel](length)
     val bidModels = new ArrayBuffer[BidModel](length)
     val staticBidModel = AppConstants
-      .biddingConstants
+      .BiddingConstants
       .staticBidModel
 
+    val winNoticeUrlWithPlaceholder = coreProperties
+      .demandSidePlatformConfiguration
+      .winNoticeUrlWithPlaceholder
+    val winNoticePlaceholder = AppConstants
+      .BiddingConstants
+      .winNoticePlaceHolderName
 
     for (impression <- impressions) {
       val minMaxHeightWidth = impression.minMaxHeightWidth
@@ -55,12 +61,13 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       val advertise = createStaticAdvertise(impression, deal, "Title")
       val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
       deals.addOne(impressionDealModel)
+      val nurl = winNoticeUrlWithPlaceholder.replace(winNoticePlaceholder, impression.id)
 
       val bidModel = staticBidModel.copy(
         impid = impression.id,
         price = deal,
         adid = advertise.advertiseid.toStringSome,
-        nurl = s"http://adserver.com/winnotice?impid=${ impression.id }".toSome,
+        nurl = nurl.toSome,
         h = minMaxHeightWidth.maybeHeight,
         w = minMaxHeightWidth.maybeWidth)
 

@@ -5,6 +5,7 @@
     "commonDomain": "localhost",
     "isUseDefaultDomainForAll": true,
     "demandSidePlatformConfiguration": {
+      "winNoticeUrlWithPlaceholder": "http://localhost/services/v1/adserver/win-notice/impression/$impressionId",
       "defaultBidIncrementNumber": 0.1,
       "defaultBidStaticDeal": 0.3,
       "defaultAdvertiseLimit": 5,
@@ -165,10 +166,6 @@
       ]
     },
     "requestDefaultHeaders": [
-      {
-        "key": "Content-Type",
-        "value": "application/json"
-      },
       {
         "key": "x-openrtb-version",
         "value": "2.3"

@@ -22,6 +22,8 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
     appManager,
     components) with DemandSidePlatformCorePropertiesContracts {
 
+  lazy val defaultResponseHeader : ResponseHeader =
+    ResponseHeader(200, headers = coreProperties.commonHeaders)
   lazy val demandSideId = 1
   lazy override val coreProperties : DemandSidePlatformCorePropertiesContracts = this
   lazy val agent = new DemandSidePlatformBiddingAgent(
@@ -64,11 +66,11 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         if (bidResponseJsonTry.isSuccess) {
           selfProperties
             .webApiResult
-            .okJsonWithStatus(bidResponseJsonTry.get)
+            .okJsonWithHeader(bidResponseJsonTry.get, defaultResponseHeader)
         }
         else {
           val noBid = AppConstants
-            .biddingConstants
+            .BiddingConstants
             .emptyStaticBidResponse
 
           selfProperties
