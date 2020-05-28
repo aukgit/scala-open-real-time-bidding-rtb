@@ -48,14 +48,14 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
 
       if (maybeDemandSidePlatformBidResponseModel.isDefined) {
         val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
-        val bidRequestToString = bidRequest.toString
-        val entityJson = demandSidePlatformJson.get
-        val message = s"""
-                         | $bidRequestToString
-                         | ${ bidRequestRow.toString }
-                         | EntityJson:$entityJson
-                         | DemandSidePlatformBidResponseModel:$dspBidResponseModel""".stripMargin
-        AppLogger.debug("BidProcessedData(Raw)", message)
+        //        val bidRequestToString = bidRequest.toString
+        //        val entityJson = demandSidePlatformJson.get
+        //        val message = s"""
+        //                         | $bidRequestToString
+        //                         | ${ bidRequestRow.toString }
+        //                         | EntityJson:$entityJson
+        //                         | DemandSidePlatformBidResponseModel:$dspBidResponseModel""".stripMargin
+        //        AppLogger.debug("BidProcessedData(Raw)", message)
 
         val bidResponseJsonTry = Try(dspBidResponseModel
           .bidResponseWrapper
