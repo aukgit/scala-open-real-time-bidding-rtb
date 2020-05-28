@@ -17,11 +17,11 @@
         "end": 0.005
       },
       "biddingLogicConfig": {
+        "randomSumOfRanges": [
+          "ownRandomBiddingRange",
+          "globalRandomRange"
+        ],
         "staticPrice": {
-          "randomSumOfRanges": [
-            "ownRandomBiddingRange",
-            "globalRandomRange"
-          ],
           "bidFloorExistLogic": [
             "bidFloor",
             "randomSumOfRanges",

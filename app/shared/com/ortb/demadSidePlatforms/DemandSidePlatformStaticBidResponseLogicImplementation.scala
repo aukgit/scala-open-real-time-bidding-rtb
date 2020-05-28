@@ -92,12 +92,19 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
   }
 
   def getStaticBidPrice(impression : ImpressionModel) : Double = {
-    val randomGuess = coreProperties
+    val ownRandomGuess = coreProperties
       .currentServiceModel
       .ownBiddingRandomRange
-      .staticRandomInBetweenRange
+      .randomInBetweenRange
 
-    var deal : Double = randomGuess + defaultIncrementNumber
+    val globalRandomGuess = coreProperties
+      .demandSidePlatformConfiguration
+      .globalRandomRange
+      .randomInBetweenRange
+
+    val randomGuess = ownRandomGuess + globalRandomGuess
+    var deal : Double = randomGuess + defaultIncrementNumber + randomGuess / 2
+
     if (impression.bidfloor.isDefined) {
       deal += impression.bidfloor.get
     } else {
