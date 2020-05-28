@@ -1,7 +1,9 @@
 package shared.com.ortb.demadSidePlatforms
 
+import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType
@@ -10,6 +12,8 @@ import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.io.extensions.TypeConvertExtensions._
 import shared.io.loggers.AppLogger
+
+import scala.util.Try
 
 class DemandSidePlatformSimulatorServiceApiController @Inject()(
   appManager : AppManager,
@@ -41,22 +45,37 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       val maybeDemandSidePlatformBidResponseModel = agent.getBid(requestWrapperModel)
 
       if (maybeDemandSidePlatformBidResponseModel.isDefined) {
+        val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
         val bidRequestToString = bidRequest.toString
         val entityJson = demandSidePlatformJson.get
         val message = s"""
                          | BidRequest:$bidRequestToString
                          | BidRequestRow:${ bidRequestRow.toString }
                          | EntityJson:$entityJson
-                         | DemandSidePlatformBidResponseModel:$maybeDemandSidePlatformBidResponseModel"""
+                         | DemandSidePlatformBidResponseModel:$dspBidResponseModel"""
         AppLogger.debug("BidProcessedData(Raw)", message)
 
-        selfProperties
-          .restWebApiOkJson
-          .okHtmlWithStatus(maybeDemandSidePlatformBidResponseModel.)
+        val bidResponseJsonTry = Try(dspBidResponseModel
+          .bidResponseWrapper
+          .bidResponse
+          .get
+          .toJsonString)
+
+        if (bidResponseJsonTry.isSuccess) {
+          selfProperties
+            .restWebApiOkJson
+            .okHtmlWithStatus(bidResponseJsonTry.get)
+        }
+        else {
+          selfProperties
+            .restWebApiOkJson
+            .okHtmlWithStatus(AppConstants.biddingConstants.emptyStaticBidResponse)
+        }
       }
-      else {
-        return controller.noContent()
-      }
+
+      selfProperties
+        .restWebApiOkJson
+        .noContent
     } catch {
       case e : Exception =>
         handleError(e)

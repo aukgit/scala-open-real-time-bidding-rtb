@@ -1,7 +1,7 @@
 package shared.com.ortb.constants
 
-import shared.io.extensions.TypeConvertExtensions._
 import shared.com.ortb.model.auctionbid.bidresponses.BidModel
+import shared.io.extensions.TypeConvertExtensions._
 
 sealed class BiddingConstants {
   lazy val aDomains = List(
@@ -25,4 +25,20 @@ sealed class BiddingConstants {
     h = None,
     w = None
   )
+
+  /**
+   * HTTP 204 “No Content” from the bidder (most economical in terms of bandwidth).
+   *  An empty JSON object: {}
+   *  A well-formed no bid response: {"id": "1234567890", "seatbid": []}
+   *  A well-formed no bid response with a reason code: {"id": "1234567890", "seatbid": [], "nbr": 2}
+   */
+  lazy val emptyStaticBidResponse = "{\"id\": \"\", \"seatbid\": []}"
+
+  /**
+   * HTTP 204 “No Content” from the bidder (most economical in terms of bandwidth).
+   *  An empty JSON object: {}
+   *  A well-formed no bid response: {"id": "1234567890", "seatbid": []}
+   *  A well-formed no bid response with a reason code: {"id": "1234567890", "seatbid": [], "nbr": 2}
+   */
+  lazy val emptyStaticBidResponseWithNoBidResponseCodeUnknown = "{\"id\": \"\", \"seatbid\": [], \"nbr\": 0}"
 }

@@ -1,13 +1,15 @@
 package shared.com.ortb.controllers.implementations
 
 import akka.util.ByteString
-import shared.io.extensions.TypeConvertExtensions._
-import play.api.http.{ HttpEntity, Status, Writeable }
+import play.api.http.{ HttpEntity, Status }
 import play.api.mvc.{ AbstractController, ResponseHeader, Result }
 import play.mvc.Http.MimeTypes
+import shared.io.extensions.TypeConvertExtensions._
 
 class RestWebApiOkImplementation(controller : AbstractController) {
   def okJson(jsonString : String) : Result = controller.Ok(jsonString).as(MimeTypes.JSON)
+
+  lazy val noContent : Result = controller.NoContent.as(MimeTypes.JSON)
 
   def okJsonWithStatus(
     jsonString : String,
