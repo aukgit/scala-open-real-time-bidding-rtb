@@ -7,9 +7,14 @@ case class RangeDoubleModel(
   end : Double
 ) extends RangeModel[Double] {
   /**
-   * Get a number inclusive of start and exclusive of end
+   * Get a static random number inclusive of start and exclusive of end
    */
-  lazy override val randomInBetweenRange : Double = Random.between(
+  lazy override val staticRandomInBetweenRange : Double = randomInBetweenRange
+
+  /**
+   * Get a random number inclusive of start and exclusive of end
+   */
+  override def randomInBetweenRange : Double = Random.between(
     start,
     end)
 }

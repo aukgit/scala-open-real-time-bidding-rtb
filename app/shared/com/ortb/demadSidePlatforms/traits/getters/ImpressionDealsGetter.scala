@@ -91,7 +91,7 @@ trait ImpressionDealsGetter {
       return null
     }
 
-    val randomIncrements = randomNumberIncrementerGuessRange.randomInBetweenRange
+    val randomIncrements = randomNumberIncrementerGuessRange.staticRandomInBetweenRange
     val bidFloor = NumberHelper.getAsDouble(impressionBiddableInfo.impression.bidfloor)
     val randomInBetweenAvgWinAndLoss = bidFailedReasons
       .randomNumberBetweenAverageLosingAndWinningPriceOrStaticIncrementIfNoDifference
