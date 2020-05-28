@@ -10,7 +10,7 @@
  Target Server Version : 3030001
  File Encoding         : 65001
 
- Date: 27/05/2020 23:10:04
+ Date: 28/05/2020 18:01:54
 */
 
 PRAGMA foreign_keys = false;
@@ -574,7 +574,7 @@ CREATE VIEW "BidRequestImpressionWithPlaceholderView" AS SELECT DISTINCT
 	ImpressionPlaceholder.MinHeight, 
 	ImpressionPlaceholder.Width, 
 	ImpressionPlaceholder.Height, 
-	Impression.CreatedDateTimestamp, 
+	Impression.CreatedDateTimestamp as CreatedDateTimestampImpression, 
 	ImpressionPlaceholder.IsMaxHeightWidthEmpty, 
 	Impression.AdvertiseDisplayedDate, 
 	Impression.ImpressionId, 
