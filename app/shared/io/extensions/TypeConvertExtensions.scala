@@ -1,6 +1,10 @@
 package shared.io.extensions
 
+import shared.io.extensions.traits.asyncTypes.{ TypeConvertGenericFuture, TypeConvertGenericIterablesFuture }
+import shared.io.extensions.traits.genericTypes._
 import shared.io.extensions.traits.primitiveTypes._
+
+import scala.concurrent.Future
 
 /**
  * Reference: https://github.com/Powerspace/scala-openrtb
@@ -18,6 +22,11 @@ object TypeConvertExtensions {
   implicit class IntConverter(val i : Int) extends TypeConvertInteger
 
   /**
+   * Convert an integer to the related value
+   */
+  implicit class IntOptionConverter(val i : Option[Int]) extends TypeConvertIntegerOption
+
+  /**
    * Convert an string to the related values
    */
   implicit class StringConverter(val s : String) extends TypeConvertString
@@ -26,7 +35,19 @@ object TypeConvertExtensions {
 
   implicit class GenericConverter[T](val anyItem : T) extends TypeConvertGeneric[T]
 
+  implicit class GenericArrayConverter[T](val array : Array[T]) extends TypeConvertGenericArray[T]
+
+  implicit class GenericListConverter[T](val list : List[T]) extends TypeConvertGenericList[T]
+
+  implicit class GenericVectorConverter[T](val vector : Vector[T]) extends TypeConvertGenericVector[T]
+
   implicit class GenericIterableConverter[T](val anyItems : Iterable[T]) extends TypeConvertGenericIterable[T]
 
   implicit class GenericJsonConverter[T](val anyItem : T) extends TypeConvertGenericJson[T]
+
+  implicit class GenericFutureConverter[T](val eventualRequest : Future[T]) extends TypeConvertGenericFuture[T]
+
+  implicit class GenericIterableFutureConverter[T](val eventualRequests : Iterable[Future[T]])
+    extends TypeConvertGenericIterablesFuture[T]
+
 }

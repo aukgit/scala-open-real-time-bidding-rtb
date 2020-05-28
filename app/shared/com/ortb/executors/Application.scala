@@ -1,6 +1,7 @@
 package shared.com.ortb.executors
 
 import com.github.dwickern.macros.NameOf._
+import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.schema.Tables._
@@ -40,6 +41,7 @@ object Application {
     val res = response.data.get
 
     AppLogger.debug(res.toString)
+
   }
 
   /**

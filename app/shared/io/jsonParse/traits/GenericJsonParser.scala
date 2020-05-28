@@ -24,13 +24,17 @@ trait GenericJsonParser[T] {
 
   def toModels(jsonString : Option[String]) : Option[ArrayBuffer[T]]
 
+  def toModelsDirect(jsonString : String) : ArrayBuffer[T]
+
   def toJsonObject(model : Option[T]) : Option[Json]
 
   def toJsonObjects(models : Option[Iterable[T]]) : Option[Iterable[Json]]
 
   /**
    * Usages 2 space json String format.
+   *
    * @param models
+   *
    * @return
    */
   def toJsonStringPrettyFormatForModels(models : Option[Iterable[T]]) : Option[String]

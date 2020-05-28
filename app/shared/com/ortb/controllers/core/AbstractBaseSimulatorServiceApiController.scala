@@ -1,6 +1,6 @@
 package shared.com.ortb.controllers.core
 
-import shared.com.ortb.controllers.implementations.{ RestWebApiOkJsonImplementation, ServiceControllerPropertiesContractsImplementation }
+import shared.com.ortb.controllers.implementations.{ RestWebApiOkImplementation, ServiceControllerPropertiesContractsImplementation }
 import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import javax.inject.Inject
 import play.api.Logger
@@ -12,13 +12,12 @@ import shared.com.ortb.persistent.Repositories
 import shared.io.loggers.AppLogger
 
 abstract class AbstractBaseSimulatorServiceApiController @Inject()(
-  repositories : Repositories,
   appManager   : AppManager,
   components   : ControllerComponents)
-  extends ServiceBaseApiController(repositories, appManager, components)
+  extends ServiceBaseApiController(appManager, components)
     with ServiceControllerCorePropertiesContracts {
   val currentServiceModel : ServiceModel
-  lazy override val restWebApiOkJson : RestWebApiOkJsonImplementation = selfProperties.restWebApiOkJson
+  lazy override val restWebApiOkJson : RestWebApiOkImplementation = selfProperties.restWebApiOkJson
   lazy override val serviceTitle : String = currentServiceModel.title
   lazy val config : ConfigModel = appManager.config
   lazy val services : ServicesModel = config.server.services
@@ -28,7 +27,7 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     try {
-      selfProperties.restWebApiOkJson.OkJson(selfProperties.serviceTitle)
+      selfProperties.restWebApiOkJson.okJson(selfProperties.serviceTitle)
     } catch {
       case e : Exception =>
         handleError(e)

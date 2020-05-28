@@ -40,7 +40,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
       Seq(entityWrapper.entityId.toString))
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributes), Seq(entityWrapper.entity))
     val encoder = service.serviceEncoders.controllerSuccessEncoder
-    val finalJson = encoder.getJsonGenericParser
+    val finalJson = encoder.genericJsonParser
       .toJsonString(Some(response))
     finalJson.get
   }
@@ -63,7 +63,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
       Some(attributes),
       rows)
     val encoder = service.serviceEncoders.controllerSuccessEncoder
-    val finalJson = encoder.getJsonGenericParser
+    val finalJson = encoder.genericJsonParser
       .toJsonString(Some(response))
     finalJson.get
   }
@@ -83,7 +83,7 @@ class GenericControllerResponseImplementation extends GenericControllerResponse 
 
     val response = ControllerSuccessResultsModel[TRow, TKey](Some(attributesModel), Seq(entityWrapper.entity.get))
     val encoder = service.serviceEncoders.controllerSuccessEncoder
-    val finalJson = encoder.getJsonGenericParser
+    val finalJson = encoder.genericJsonParser
       .toJsonString(Some(response))
     finalJson.get
   }

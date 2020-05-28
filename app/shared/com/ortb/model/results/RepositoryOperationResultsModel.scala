@@ -39,7 +39,7 @@ case class RepositoryOperationResultsModel[TRow, TKey](
 
     val message = AppLogger.getLogMessageForEntities(isExecute = true, data, additionalMessage)
     val attributesToJson = basicEncoderForGenericResponseAttributesModel
-      .getJsonGenericParser
+      .genericJsonParser
       .toJsonStringPrettyFormatDirect(attributes.get)
 
     s"""

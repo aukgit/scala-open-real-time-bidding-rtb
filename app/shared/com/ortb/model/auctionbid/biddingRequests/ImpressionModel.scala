@@ -1,8 +1,9 @@
 package shared.com.ortb.model.auctionbid.biddingRequests
 
-import shared.com.ortb.demadSidePlatforms.HeightWidthExtractorFromImpression
-import shared.com.ortb.model.MinMaxHeightWidthModel
+import shared.com.ortb.demadSidePlatforms.traits.HeightWidthExtractorFromImpression
 import shared.com.ortb.model.auctionbid.biddingRequests.banners.BannerImpressionModel
+import shared.com.ortb.model.dimensions.MinMaxHeightWidthModel
+import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.EmptyValidateHelper
 
 /**
@@ -22,7 +23,7 @@ case class ImpressionModel(
   /**
    * Minimum bid for this impression expressed in CPM.
    */
-  bidfloor : Option[Double],
+  bidfloor : Option[Double] = Some(0),
 
   /**
    * Currency specified using ISO-4217 alpha codes.
@@ -48,7 +49,21 @@ case class ImpressionModel(
 ) {
   lazy val hasBanner : Boolean = EmptyValidateHelper.isDefined(banner)
   lazy val hasVideo : Boolean = EmptyValidateHelper.isDefined(video)
+  lazy val hasBannerOrVideo : Boolean = hasBanner || hasVideo
   lazy val hasBidFloor : Boolean = EmptyValidateHelper.isDefined(bidfloor)
-  lazy val hasBidFloorCurrency : Boolean = EmptyValidateHelper.isOptionStringDefined(bidfloorcur)
-  lazy val minMaxHeightWidth : MinMaxHeightWidthModel = HeightWidthExtractorFromImpression.getMinMaxHeightWidths(this)
+  lazy val hasBidFloorCurrency : Boolean =
+    EmptyValidateHelper.isOptionStringDefined(bidfloorcur)
+  lazy val minMaxHeightWidth : MinMaxHeightWidthModel =
+    HeightWidthExtractorFromImpression.getMinMaxHeightWidths(this)
+
+  lazy private val hasBannerMimes = hasBanner &&
+    EmptyValidateHelper.hasAnyItem(banner.get.mimes)
+  lazy private val videoMimes = video.get.mimes.toCsv.toSome
+  lazy private val bannerMimes = banner.get.mimes.get.toCsv.toSome
+
+  lazy val mimes : Option[String] =
+    if (hasVideo) videoMimes
+    else if (hasBannerMimes)
+           bannerMimes
+         else None
 }

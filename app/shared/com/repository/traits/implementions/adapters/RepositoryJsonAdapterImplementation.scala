@@ -107,7 +107,7 @@ trait RepositoryJsonAdapterImplementation[TTable, TRow, TKey]
     }
 
     try {
-      val possibleEntities = this.encoders.getJsonGenericParser.toModels(jsonContent)
+      val possibleEntities = this.encoders.genericJsonParser.toModels(jsonContent)
 
       if (!EmptyValidateHelper.isItemsEmpty(possibleEntities)) {
         return toEntitiesWrapperWithOptions(possibleEntities)

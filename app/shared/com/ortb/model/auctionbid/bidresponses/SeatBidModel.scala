@@ -25,7 +25,7 @@ case class SeatBidModel(
    * https://bit.ly/2LRwlr2
    * https://bit.ly/2LN018Q
    */
-  seat : Option[String],
+  seat : Option[String] = None,
 
   /**
    * 0 = impressions can be won individually;

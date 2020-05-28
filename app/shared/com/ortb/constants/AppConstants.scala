@@ -3,6 +3,7 @@ package shared.com.ortb.constants
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 
+
 object AppConstants {
 
   /**
@@ -59,7 +60,17 @@ object AppConstants {
   /**
    * System.lineSeparator
    */
-  lazy val NewLine : String = System.lineSeparator
+  lazy val SystemNewLine : String = System.lineSeparator
+
+  /**
+   * '\n'
+   */
+  lazy val NewLine : Char = '\n'
+
+  /**
+   * '\t'
+   */
+  lazy val Tab : Char = '\t'
 
   lazy val DoubleSpace : String = "  "
 
@@ -80,11 +91,12 @@ object AppConstants {
 
   lazy val DefaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
   lazy val DefaultDateFormatPattern = "MM/dd/yyyy"
+  lazy val IsThrownOnFailed = true
 
   /**
    * "=${NewLine}"
    */
-  lazy val LogEqualNewLine : String = s"${ EqualSign }${ NewLine }"
+  lazy val LogEqualNewLine : String = s"${ EqualSign }${ SystemNewLine }"
 
   /**
    * "=${NewLine}${DoubleSpace}"
@@ -94,4 +106,5 @@ object AppConstants {
   lazy val AppManager : AppManager = new AppManager
 
   lazy val Repositories : Repositories = new Repositories(AppManager)
+  lazy val biddingConstants = new BiddingConstants
 }

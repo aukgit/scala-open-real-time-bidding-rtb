@@ -25,10 +25,10 @@ class ControllerSuccessResultsModelCustomCodecImplementation[TRow, TKey](
   override def getEncoder : Encoder[ControllerSuccessResultsModel[TRow, TKey]] =
     (a : ControllerSuccessResultsModel[TRow, TKey]) => {
       //noinspection DuplicatedCode
-      val attributesJsonObject = attributesEncoder.getJsonGenericParser
+      val attributesJsonObject = attributesEncoder.genericJsonParser
         .toJsonObjectDirect(a.attributes.get)
       val rows = a.data
-      val genericJsonParser = jsonCirceDefaultEncoders.getJsonGenericParser
+      val genericJsonParser = jsonCirceDefaultEncoders.genericJsonParser
       val iterableJsonObjects = genericJsonParser.fromModelsToJsonObjects(Some(rows))
       val dataToJson = Json.fromValues(iterableJsonObjects.get)
 

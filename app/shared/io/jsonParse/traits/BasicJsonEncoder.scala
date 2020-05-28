@@ -8,5 +8,5 @@ trait BasicJsonEncoder[T] {
 
   def getDecoder : Decoder[T]
 
-  def getJsonGenericParser : GenericJsonParser[T] = new GenericJsonParserImplementation[T](this)
+  def genericJsonParser : GenericJsonParser[T] = new GenericJsonParserImplementation[T](this)
 }
