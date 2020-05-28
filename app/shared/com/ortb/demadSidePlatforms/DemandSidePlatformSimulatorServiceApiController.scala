@@ -12,6 +12,7 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.io.extensions.TypeConvertExtensions._
+import shared.io.loggers.AppLogger
 
 class DemandSidePlatformSimulatorServiceApiController @Inject()(
   appManager : AppManager,
@@ -43,7 +44,8 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       val bidResponse = agent.getBid(requestWrapperModel)
       val bidRequestToString = bidRequest.toString
       val entityJson = demandSidePlatformJson.get
-      val response = s"$bidRequestToString \n $entityJson \n $bidResponse"
+      val response = s"BidRequest:$bidRequestToString \nEntityJson:$entityJson \nBidResponse:$bidResponse"
+      AppLogger.debug("BidResponse(Raw)", response)
 
       selfProperties.restWebApiOkJson.OkJson(response)
     } catch {
