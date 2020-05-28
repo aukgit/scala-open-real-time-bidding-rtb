@@ -32,6 +32,16 @@ trait TypeConvertString {
     JodaDateTimeHelper.getDateTimeFrom(s, datePattern)
   }
 
+  lazy val getLines : Array[String] = s.split(AppConstants.NewLine)
+
+  def getLinesWithLineNumbers(lineJoiner : String = " . ") : Array[String] = {
+    var lineNumber = 0
+    getLines.map(line => {
+      lineNumber += 1
+      s"$lineNumber$lineJoiner$line"
+    })
+  }
+
   /**
    * Parse a json to object
    *

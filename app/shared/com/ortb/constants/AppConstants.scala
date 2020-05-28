@@ -59,7 +59,17 @@ object AppConstants {
   /**
    * System.lineSeparator
    */
-  lazy val NewLine : String = System.lineSeparator
+  lazy val SystemNewLine : String = System.lineSeparator
+
+  /**
+   * '\n'
+   */
+  lazy val NewLine : Char = '\n'
+
+  /**
+   * '\t'
+   */
+  lazy val Tab : Char = '\t'
 
   lazy val DoubleSpace : String = "  "
 
@@ -80,11 +90,12 @@ object AppConstants {
 
   lazy val DefaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
   lazy val DefaultDateFormatPattern = "MM/dd/yyyy"
+  lazy val IsThrownOnFailed = false
 
   /**
    * "=${NewLine}"
    */
-  lazy val LogEqualNewLine : String = s"${ EqualSign }${ NewLine }"
+  lazy val LogEqualNewLine : String = s"${ EqualSign }${ SystemNewLine }"
 
   /**
    * "=${NewLine}${DoubleSpace}"

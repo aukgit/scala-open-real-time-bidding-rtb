@@ -1,6 +1,8 @@
 package shared.io.jsonParse.implementations
 
+import shared.io.extensions.TypeConvertExtensions._
 import com.fasterxml.jackson.databind.JsonNode
+import io.circe
 import io.circe.Json
 import io.circe.parser.decode
 import shared.com.ortb.constants.AppConstants
@@ -15,6 +17,7 @@ import scala.collection.mutable.ArrayBuffer
 class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   extends GenericJsonParser[T] {
   lazy val quote : String = AppConstants.Quote
+  lazy val isThrowOnFail : Boolean = AppConstants.IsThrownOnFailed
 
   override def fromJsonStringToModels(jsonString : Option[String]) : Option[Iterable[T]] = {
     val models = toModels(jsonString)
@@ -122,7 +125,11 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
 
   override def toModelDirect(jsonString : String) : T = {
     val toModelOption = toModel(Some(jsonString))
-    toModelOption.get
+    if (toModelOption.isDefined) {
+      return toModelOption.get
+    }
+
+    null.asInstanceOf[T]
   }
 
   override def toModel(jsonString : Option[String]) : Option[T] = {
@@ -140,12 +147,26 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
 
         return model
       }
+
+      handleExceptionCaseFor(json, modelEither)
     }
     catch {
       case e : Exception => AppLogger.error(e)
     }
 
     None
+  }
+
+  def handleExceptionCaseFor(
+    json : String,
+    modelEither : Either[circe.Error, T]) : Unit = {
+    val left = modelEither.left.getOrElse(null)
+    val jsonWithLines = json.getLinesWithLineNumbers()
+    val message = s"Failed JSON Parse :\n$jsonWithLines\nErrorMessage:${ left.getMessage }\nFullError:$left"
+    AppLogger.error(message)
+    if (isThrowOnFail) {
+      throw left
+    }
   }
 
   override def toJsonStringDirect(model : T) : String = {
@@ -170,19 +191,19 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
 
   /**
    *
-   * @param model
+   * @param jsonOption
    * @param isPrettyFormat : if true then returns string using space2
    *
    * @return
    */
-  override def fromJsonToJsonString(model : Option[Json], isPrettyFormat : Boolean) : Option[String] = {
-    EmptyValidateHelper.throwOnNullOrNoneOrNil(model, Some("model is empty"))
+  override def fromJsonToJsonString(jsonOption : Option[Json], isPrettyFormat : Boolean) : Option[String] = {
+    EmptyValidateHelper.throwOnNullOrNoneOrNil(jsonOption, Some("model is empty"))
 
     if (isPrettyFormat) {
-      return Some(model.get.spaces2)
+      return Some(jsonOption.get.spaces2)
     }
 
-    Some(model.get.noSpaces)
+    Some(jsonOption.get.noSpaces)
   }
 
   override def fromModelsToJsonString(models : Option[Iterable[T]]) : Option[String] = {
@@ -340,7 +361,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   override def toJsonStringPrettyFormatForModelsDirect(models : Iterable[T]) : String = {
     val jsonString = toJsonStringPrettyFormatForModels(Some(models))
 
-    if(EmptyValidateHelper.isOptionStringDefined(jsonString)){
+    if (EmptyValidateHelper.isOptionStringDefined(jsonString)) {
       return jsonString.get
     }
 
@@ -358,7 +379,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
   override def toJsonStringPrettyFormatDirect(model : T) : String = {
     val jsonString = toJsonStringPrettyFormat(Some(model))
 
-    if(EmptyValidateHelper.isOptionStringDefined(jsonString)){
+    if (EmptyValidateHelper.isOptionStringDefined(jsonString)) {
       return jsonString.get
     }
 

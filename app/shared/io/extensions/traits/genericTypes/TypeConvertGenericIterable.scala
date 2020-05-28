@@ -14,6 +14,10 @@ trait TypeConvertGenericIterable[T]
     with CreateDefaultContext
     with TypeConvertGenericIterableForExtension[T]
     with TypeConvertGenericIterableForAsyncExtension[T] {
+  lazy protected val logTraceRepository : LogTraceRepository = AppConstants
+    .Repositories
+    .logTraceRepository
+
   lazy val isEmpty : Boolean = !hasItem
   lazy val hasItem : Boolean = EmptyValidateHelper.hasAnyItemDirect(anyItems)
   lazy val toSome : Option[Iterable[T]] = Some(anyItems)
@@ -21,7 +25,6 @@ trait TypeConvertGenericIterable[T]
   lazy val toMaybe : Option[Iterable[T]] = Some(anyItems)
   lazy val toCsv : String = anyItems.mkString(AppConstants.Comma)
   lazy protected val appManager : AppManager = AppConstants.AppManager
-  lazy protected val logTraceRepository : LogTraceRepository = AppConstants.Repositories.logTraceRepository
   protected val anyItems : Iterable[T]
 
   def toJoinString(separator : String) : String = anyItems.mkString(separator)

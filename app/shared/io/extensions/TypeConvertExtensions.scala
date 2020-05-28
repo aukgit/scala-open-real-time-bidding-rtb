@@ -1,7 +1,7 @@
 package shared.io.extensions
 
 import shared.io.extensions.traits.asyncTypes.{ TypeConvertGenericFuture, TypeConvertGenericIterablesFuture }
-import shared.io.extensions.traits.genericTypes.{ TypeConvertGeneric, TypeConvertGenericIterable, TypeConvertGenericJson }
+import shared.io.extensions.traits.genericTypes._
 import shared.io.extensions.traits.primitiveTypes._
 
 import scala.concurrent.Future
@@ -34,6 +34,12 @@ object TypeConvertExtensions {
   implicit class StringOptionConverter(val s : Option[String]) extends TypeConvertOptionString
 
   implicit class GenericConverter[T](val anyItem : T) extends TypeConvertGeneric[T]
+
+  implicit class GenericArrayConverter[T](val array : Array[T]) extends TypeConvertGenericArray[T]
+
+  implicit class GenericListConverter[T](val list : List[T]) extends TypeConvertGenericList[T]
+
+  implicit class GenericVectorConverter[T](val vector : Vector[T]) extends TypeConvertGenericVector[T]
 
   implicit class GenericIterableConverter[T](val anyItems : Iterable[T]) extends TypeConvertGenericIterable[T]
 
