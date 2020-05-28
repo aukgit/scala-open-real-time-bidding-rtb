@@ -4,7 +4,6 @@ import shared.io.helpers.implementations.NiceObject
 import shared.io.helpers.traits._
 import shared.io.helpers.traits.reflection.{ ClassTagHelper, ReflectionHelperBase }
 
-
 object ReflectionHelper extends ReflectionHelperBase {
   implicit def toNiceObject[T <: AnyRef](x : T) : NiceObject[T] = new NiceObject(x)
 }

@@ -1,4 +1,4 @@
-package shared.com.ortb.model
+package shared.com.ortb.model.dimensions
 
 case class HeightWidthModel(
   override val maybeHeight : Option[Int],

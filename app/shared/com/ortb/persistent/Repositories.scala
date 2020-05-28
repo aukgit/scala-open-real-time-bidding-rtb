@@ -3,7 +3,7 @@ package shared.com.ortb.persistent
 import com.google.inject.Inject
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.views.{ BidRelatedIdsViewRepository, KeywordAdvertiseMappingIdsViewRepository, WinningPriceInfoViewRepository }
-import shared.com.ortb.persistent.repositories.{ BidContentCategoriesMappingRepository, BidRepository, CreativeAttributeRepository, DeviceTypeRepository, PrivateMarketPlaceDealRepository, SeatBidRepository, UserClassificationRepository, VideoPlaybackMethodRepository, VideoResponseProtocolRepository, _ }
+import shared.com.ortb.persistent.repositories.{ BidContentCategoriesMappingRepository, BidRepository, CreativeAttributeRepository, DeviceTypeRepository, ImpressionPlaceholderRepository, PrivateMarketPlaceDealRepository, SeatBidRepository, UserClassificationRepository, VideoPlaybackMethodRepository, VideoResponseProtocolRepository, _ }
 import shared.com.ortb.persistent.schema.{ DatabaseSchema, DatabaseSchemaViews }
 
 class Repositories @Inject()(appManager: AppManager)
@@ -36,6 +36,7 @@ class Repositories @Inject()(appManager: AppManager)
     new DeviceTypeRepository(appManager)
   lazy val geoMappingRepository = new GeoMappingRepository(appManager)
   lazy val impressionRepository = new ImpressionRepository(appManager)
+  lazy val impressionPlaceholderRepository = new ImpressionPlaceholderRepository(appManager)
   lazy val keywordAdvertiseMappingRepository =
     new KeywordAdvertiseMappingRepository(appManager)
   lazy val keywordRepository = new KeywordRepository(appManager)
@@ -76,6 +77,7 @@ class Repositories @Inject()(appManager: AppManager)
     deviceTypeTableName -> deviceTypeRepository,
     geoMappingTableName -> geoMappingRepository,
     impressionTableName -> impressionRepository,
+    impressionPlaceholderTableName -> impressionPlaceholderRepository,
     keywordTableName -> keywordRepository,
     keywordAdvertiseMappingTableName -> keywordAdvertiseMappingRepository,
     logTraceTableName -> logTraceRepository,

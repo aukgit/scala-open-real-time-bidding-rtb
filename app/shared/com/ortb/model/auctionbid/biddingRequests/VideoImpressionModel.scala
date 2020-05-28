@@ -1,6 +1,6 @@
 package shared.com.ortb.model.auctionbid.biddingRequests
 
-import shared.com.ortb.model.HeightWidthBaseModel
+import shared.com.ortb.model.dimensions.HeightWidthBaseModel
 
 /**
  * Video Request(for Bid) Details inside the BidRequest -> Impression[] -> Impression -> video
@@ -42,12 +42,12 @@ case class VideoImpressionModel(
   /**
    * Minimum video ad duration in seconds.
    */
-  minduration : Option[Int],
+  minduration : Option[Int] = None,
 
   /**
    * Maximum video ad duration in seconds.
    */
-  maxduration : Option[Int],
+  maxduration : Option[Int] = None,
 
   /**
    * Array of supported video bid response protocols.
@@ -55,17 +55,17 @@ case class VideoImpressionModel(
    * At least one supported protocol
    * must be specified in either the protocol or protocols attribute.
    */
-  protocols : Option[Int],
+  protocols : Option[Int] = None,
 
   /**
    * Width of the video player in pixels.
    */
-  w : Option[Int],
+  w : Option[Int] = None,
 
   /**
    * Height of the video player in pixels.
    */
-  h : Option[Int],
+  h : Option[Int] = None,
 
   /**
    * Indicates the start delay in
@@ -73,12 +73,12 @@ case class VideoImpressionModel(
    * or post-roll ad placements.
    * Refer to List 5.10 for additional generic values.
    */
-  startdelay : Option[Int],
+  startdelay : Option[Int] = None,
 
   /**
    * Indicates if the impression must be linear, nonlinear, etc. If none specified, assume all are allowed. Refer to List 5.7.
    */
-  linearity : Option[Int],
+  linearity : Option[Int] = None,
 
   /**
    * default 1

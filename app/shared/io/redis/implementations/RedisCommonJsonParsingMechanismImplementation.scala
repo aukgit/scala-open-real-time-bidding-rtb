@@ -42,7 +42,7 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
       }
 
       val jsonParser = getBasicJsonEncoder[T]
-      val toJson = jsonParser.getJsonGenericParser.toJsonObject(value)
+      val toJson = jsonParser.genericJsonParser.toJsonObject(value)
 
       if(EmptyValidateHelper.isDefined(toJson)){
         redisClient.set(key, toJson.get.noSpaces, whenSet, expire)
@@ -63,7 +63,7 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
     try {
       val value = redisClient.get(key)
       val jsonParser = getBasicJsonEncoder[T]
-      return jsonParser.getJsonGenericParser.toModel(value)
+      return jsonParser.genericJsonParser.toModel(value)
     }
     catch {
       case e : Exception =>
@@ -88,7 +88,7 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
 
       val jsonParser = getBasicJsonEncoder[T]
       val parser = jsonParser
-        .getJsonGenericParser
+        .genericJsonParser
       val toJsons = parser
         .fromModelsToJsonObjects(Some(items))
 
@@ -121,7 +121,7 @@ class RedisCommonJsonParsingMechanismImplementation @Inject()(
       }
 
       val jsonParser = getBasicJsonEncoder[T]
-      val models = jsonParser.getJsonGenericParser
+      val models = jsonParser.genericJsonParser
         .toModels(valuesAsJsonString)
 
       return models

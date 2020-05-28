@@ -60,8 +60,7 @@ case class BidModel(
   /**
    * ID of a preloaded ad to be served if the bid wins.
    */
-  adid : Option[String],
-
+  adid : Option[String] = None,
 
   /**
    * Win notice URL called by the exchange if the bid wins;
@@ -75,58 +74,68 @@ case class BidModel(
    * them with the appropriate data. Note that the substitution is
    * simple in the sense that wherever a legal macro is found,
    * it will be replaced without regard for syntax correctness.
+   * Eg. "http://adserver.com/winnotice?impid=102"
    */
-  nurl : Option[String],
+  nurl : Option[String] = None,
 
   /**
    * Optional means of conveying ad markup in
    * case the bid wins; supersedes the
    * win notice if markup is included in both.
+   *
+   * Note that since there both a win notice URL and
+   * an inline VAST document in the adm attribute,
+   * which constitutes the ad markup. The win notice
+   * is still called, but if it were to return markup
+   * it would be ignored in favor of the contents of the adm attribute.
    */
-  adm : Option[String],
+  adm : Option[String] = None,
 
   /**
    * Advertiser domain for block list checking (e.g., “ford.com”).
    * This can be an array of for the case of rotating creatives.
    * Exchanges can mandate that only one domain is allowed.
+   * Eg. [ "advertiserdomain.com" ]
    */
-  adomain : Option[List[String]],
+  adomain : Option[List[String]] = None,
 
   /**
    * URL without cache-busting to an image that is
    * representative of the content of the
    * campaign for ad quality/safety checking.
+   * Eg. "http://adserver.com/pathtosampleimage"
    */
-  iurl : Option[String],
+  iurl : Option[String] = None,
 
 
   /**
    * Campaign ID to assist with ad quality checking; t
    * he collection of creatives for which iurl
    * should be representative.
+   * Eg. "campaign111"
    */
-  cid : Option[String],
+  cid : Option[String] = None,
 
 
   /**
    * IAB content categories
+   * can also be like "creative112"
    */
-  cat : Option[List[String]],
+  cat : Option[List[String]] = None,
 
   /**
    * Reference to the deal.id from the bid request
    * if this bid pertains to a private marketplace direct deal.
    */
-  dealid : Option[String],
+  dealid : Option[String] = None,
 
   /**
    * Height of the creative in pixels.
    */
-  h : Option[Int],
+  h : Option[Int] = None,
 
   /**
    * Width of the creative in pixels.
    */
-  w : Option[Int]
-
+  w : Option[Int] = None
 )

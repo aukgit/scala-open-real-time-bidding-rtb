@@ -30,14 +30,14 @@ trait JsonLogger {
         lazy val basicJsonEncoder = new BasicJsonEncoderImplementation[T]()(decoder, encoder)
 
         if (maybeModel.isDefined) {
-          val logJson = basicJsonEncoder.getJsonGenericParser.toLogStringForEntity(maybeModel)
+          val logJson = basicJsonEncoder.genericJsonParser.toLogStringForEntity(maybeModel)
           additionalLogging(logJson, logLevelType, stackIndex)
         }
 
         val isExecute = maybeModels.isDefined && maybeModels.get.nonEmpty
 
         if (isExecute) {
-          val logJson = basicJsonEncoder.getJsonGenericParser.toLogStringForEntities(maybeModels)
+          val logJson = basicJsonEncoder.genericJsonParser.toLogStringForEntities(maybeModels)
           additionalLogging(logJson, logLevelType, stackIndex)
         }
       }

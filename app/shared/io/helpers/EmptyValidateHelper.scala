@@ -1,6 +1,5 @@
 package shared.io.helpers
 
-import shared.com.ortb.constants.AppConstants
 import shared.io.loggers.AppLogger
 
 object EmptyValidateHelper {
@@ -49,14 +48,33 @@ object EmptyValidateHelper {
 
   def isRightDefinedOnEither[A, B](
     item : Either[A, B],
-    message : Option[String] = defaultNoContentMessage) : Boolean = {
+    message : Option[String] = defaultNoContentMessage,
+    isThrowOnLeft : Boolean = false) : Boolean = {
     val hasItem = item != null && item.getOrElse(null) != null
-
     //noinspection DuplicatedCode
     val hasMessage = isOptionStringDefinedWithoutMessage(message)
 
     if (!hasItem && hasMessage) {
       AppLogger.debug(message.get)
+
+    }
+
+    val isLeft = !hasItem && item.isLeft
+
+    if (isLeft) {
+      AppLogger.error(item.left.toString)
+    }
+
+    if (isLeft && isThrowOnLeft) {
+      val left = item.left
+      if (left.isInstanceOf[Throwable]) {
+        val throwX = left.asInstanceOf[Throwable]
+        throw throwX
+      }
+      else {
+        val message = item.left.toString
+        throw new Error(message)
+      }
     }
 
     hasItem
@@ -265,6 +283,30 @@ object EmptyValidateHelper {
     items : Iterable[A],
     message : Option[String] = None) : Boolean = {
     !hasAnyItem(Some(items), message)
+  }
+
+  def isItemsEmptyOnAnyDirect[A](
+    items : Iterable[A]*) : Boolean = {
+    if (isItemsEmptyDirect(items)) {
+      return true
+    }
+
+    for (item <- items) {
+      if (isItemsEmptyDirect(item)) {
+        return true
+      }
+    }
+
+    false
+  }
+
+  def isItemsEmptyOnAllDirect[A](
+    items : Iterable[A]*) : Boolean = {
+    if (isItemsEmptyDirect(items)) {
+      return true
+    }
+
+    items.forall(w => !hasAnyItem(Some(w)))
   }
 
   def isDefinedDoublePlusPositive[A](

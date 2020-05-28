@@ -62,6 +62,9 @@ class DatabaseSchema @Inject()(val appManager : AppManager)
    * Winning bid info
    */
   lazy val impressions = TableQuery[Impression]
+
+  lazy val impressionPlaceholder = TableQuery[Impressionplaceholder]
+
   /**
    * Keywords in the system
    */
@@ -116,6 +119,7 @@ class DatabaseSchema @Inject()(val appManager : AppManager)
     deviceTypeTableName -> deviceTypes,
     geoMappingTableName -> geoMappings,
     impressionTableName -> impressions,
+    impressionPlaceholderTableName -> impressionPlaceholder,
     keywordTableName -> keywords,
     keywordAdvertiseMappingTableName -> keywordAdvertiseMappings,
     logTraceTableName -> logTraces,
@@ -148,6 +152,7 @@ class DatabaseSchema @Inject()(val appManager : AppManager)
   lazy val deviceTypeTableName = "DeviceType"
   lazy val geoMappingTableName = "GeoMapping"
   lazy val impressionTableName = "Impression"
+  lazy val impressionPlaceholderTableName = "ImpressionPlaceholder"
   lazy val keywordTableName = "Keyword"
   lazy val keywordAdvertiseMappingTableName = "KeywordAdvertiseMapping"
   lazy val logTraceTableName = "LogTrace"
@@ -180,6 +185,7 @@ class DatabaseSchema @Inject()(val appManager : AppManager)
     deviceTypeTableName,
     geoMappingTableName,
     impressionTableName,
+    impressionPlaceholderTableName,
     keywordTableName,
     keywordAdvertiseMappingTableName,
     logTraceTableName,

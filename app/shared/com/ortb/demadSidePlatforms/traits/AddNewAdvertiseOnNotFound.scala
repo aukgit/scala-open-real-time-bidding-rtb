@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits
 
+import shared.io.extensions.TypeConvertExtensions._
 import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
@@ -89,14 +90,14 @@ trait AddNewAdvertiseOnNotFound {
       campaignid = campaignId.get,
       1,
       s"Generated Banner Advertise($bannerString)",
-      Some(contextTextId),
+      contextTextId.toSome,
       s"BidUrl for $bannerString",
-      Some(s"IFrame for $bannerString"),
+      "IFrame for $bannerString".toSome,
       0,
+      isbanner = 1,
       isvideo = 0,
       impressioncount = 0,
       height = simpleBanner.h,
-      isbanner = Some(1),
       width = simpleBanner.w,
       minheight = simpleBanner.hmin,
       minwidth = simpleBanner.wmin,
@@ -107,8 +108,8 @@ trait AddNewAdvertiseOnNotFound {
       maxage = Some(0),
       createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant)
 
-    advertiseRepository.add(advertise)
-    AppLogger.debug("Advertise added")
+    val response = advertiseRepository.add(advertise).attributes.get.message
+    AppLogger.debug(s"Advertise added : $response")
     //    throw new NotImplementedError()
   }
 }

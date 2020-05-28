@@ -83,7 +83,7 @@ trait EntitiesLogger {
       .get
       .productFieldModels
       .map(w => w.toStringField)
-    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), " , ") }${ AppConstants.NewLine }"
+    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), " , ") }${ AppConstants.SystemNewLine }"
   }
 
   def getLogMessageForEntities[T](
@@ -120,7 +120,7 @@ trait EntitiesLogger {
       else {
         s"  ${ count }. null"
       }
-    }).mkString(AppConstants.NewLine)
+    }).mkString(AppConstants.SystemNewLine)
 
     val footer = s"\n[Complete] Total entities printed : [${ count }]\n"
     val returningResult = s"${ header }${ productFieldNamesHeader }${ items }${ footer }"

@@ -1,5 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
 
+import com.github.dwickern.macros.NameOf._
+import io.circe.generic.auto._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.getters._
 import shared.com.ortb.demadSidePlatforms.traits.logics._
@@ -8,11 +10,14 @@ import shared.com.ortb.demadSidePlatforms.traits.{ AddNewAdvertiseOnNotFound, De
 import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType.DemandSidePlatformBiddingAlgorithmType
 import shared.com.ortb.enumeration.NoBidResponseType
 import shared.com.ortb.manager.traits.CreateDefaultContext
-import shared.com.ortb.model.auctionbid.bidresponses.{ BidResponseModel, BidResponseModelWrapper }
+import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
+import shared.com.ortb.model.auctionbid.bidresponses.{ BidModel, BidResponseModel, BidResponseModelWrapper, SeatBidModel }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
+import shared.com.ortb.persistent.schema.Tables
 import shared.com.ortb.persistent.schema.Tables._
+import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.{ EmptyValidateHelper, JodaDateTimeHelper }
 
 import scala.concurrent.ExecutionContext
@@ -108,7 +113,7 @@ class DemandSidePlatformBiddingAgent(
       bidRequestId,
       bidResponseId,
       auctionId,
-      Some(coreProperties.demandSideId),
+      coreProperties.demandSideId.toSome,
       createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
     )
 
@@ -127,11 +132,12 @@ class DemandSidePlatformBiddingAgent(
     val bidRepository = coreProperties
       .repositories
       .bidRepository
-    impressionDeals.get.foreach(impressionDeal => {
+
+    val bids = impressionDeals.get.map(impressionDeal => {
       // TODO : create bid
       val impressionId = impressionDeal.impression.id.toInt
       val impressionToString = s", ImpressionDealModel(${ ImpressionDealModel.toString() })"
-      val advertiseId = Some(impressionDeal.advertise.advertiseid)
+      val advertiseId = impressionDeal.advertise.advertiseid.toSome
       val campaignId = 5
       val minMaxHeightWidth = impressionDeal
         .impression
@@ -139,26 +145,42 @@ class DemandSidePlatformBiddingAgent(
 
       val bid = BidRow(
         AppConstants.NewRecordIntId,
-        dealbiddingprice = Some(impressionDeal.deal),
+        dealbiddingprice = impressionDeal.deal.toSome,
         seatbidid = seatBidId.get,
-        campaignid = Some(campaignId),
-        impressionid = Some(impressionId),
+        campaignid = campaignId.toSome,
+        impressionid = impressionId.toSome,
         advertiseid = advertiseId,
-        adm = Some(s"adm $impressionToString"),
-        iurl = Some(s"iurl $impressionToString"),
+        adm = s"adm $impressionToString".toSome,
+        iurl = s"iurl $impressionToString".toSome,
         height = minMaxHeightWidth.maybeHeight,
         width = minMaxHeightWidth.maybeWidth,
         createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
       )
 
-      bidRepository.addAsync(bid)
+      val createdBid = bidRepository.add(bid).row
+
+      BidModel(
+        createdBid.bidid.toString,
+        impressionDeal.impression.id,
+        impressionDeal.deal,
+        bid.advertiseid.toStringOption,
+        bid.nurl,
+        bid.adm,
+        None,
+        bid.iurl, bid.campaignid.toStringOption,
+        None,
+        None,
+        None,
+        None)
     })
+
+    val seatBids = Some(List(SeatBidModel(bids, seatBidId.toStringOption)))
 
     val bidResponse2 = BidResponseModel(
       bidResponseId.toString,
-      None,
-      None,
-      nbr = Some(NoBidResponseType.UnknownError.value))
+      seatBids,
+      coreProperties.demandSideId.toStringOption,
+      nbr = None)
 
     val bidResponseWrapper = BidResponseModelWrapper(Some(bidResponse2))
     val demandSidePlatformBidResponse = DemandSidePlatformBidResponseModel(
@@ -200,16 +222,22 @@ class DemandSidePlatformBiddingAgent(
   }
 
   def addBidResponseAsync(response : DemandSidePlatformBidResponseModel) : Unit = {
+    if (isStatic) {
+      // Don't perform database transaction during static mode
+      return
+    }
+
+    val methodName = nameOf(addBidResponseAsync _)
     if (EmptyValidateHelper.isEmptyDirect(
       response,
-      Some("addBidResponse, given response is empty. Nothing to save."))) {
+      Some(s"$methodName, given response is empty. Nothing to save."))) {
       return
     }
 
     val bidResponse = response.bidResponseWrapper.bidResponse
     if (EmptyValidateHelper.isEmpty(
       bidResponse,
-      Some("addBidResponse, given bidResponse is empty. Nothing to save."))) {
+      Some(s"$methodName, given bidResponse is empty. Nothing to save."))) {
       // create no bid response
       createNoBidResponseToDbAsync()
       return
@@ -223,4 +251,66 @@ class DemandSidePlatformBiddingAgent(
 
     bidResponseRepository.addAsync(bidResponseRow)
   }
+
+  override def getActualBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = {
+    val bidRequestRow = getStaticBidRequestToBidRequestRow(bidRequest)
+    val response = coreProperties
+      .repositories
+      .bidRequestRepository
+      .add(bidRequestRow)
+
+    val impressionRepository = coreProperties.repositories.impressionRepository
+    val impressionPlaceholderRepository = coreProperties.repositories.impressionPlaceholderRepository
+
+    bidRequest.imp.forEachAsync(impression => {
+      val impressionJson = impression.toJsonString
+      if (impression.hasBannerOrVideo) {
+        val hasBanner = impression.hasBanner.toBoolInt
+        val hasVideo = impression.hasVideo.toBoolInt
+        val minMaxHeightWidth = impression.minMaxHeightWidth
+        val position = if (impression.hasBanner) impression.banner.get.pos else None
+
+        val impressionRow = ImpressionRow(
+          -1,
+          bidrequestid = response.idOption,
+          bidresponseid = None,
+          rawimpressionjson = impressionJson,
+          isimpressionwonbyauction = 0,
+          isimpressionserved = 0,
+          bidfloor = impression.bidfloor.get,
+          bidfloorcur = impression.bidfloorcur.getOrElseDefault(),
+          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant,
+          advertisedisplayeddate = None)
+
+        val impressionCreatedResponse = impressionRepository.add(impressionRow)
+
+        val placeHolder = ImpressionplaceholderRow(
+          -1,
+          impressionCreatedResponse.id,
+          hasBanner,
+          hasVideo,
+          isnative = 0,
+          minMaxHeightWidth.height,
+          minMaxHeightWidth.width,
+          minMaxHeightWidth.minHeight,
+          minMaxHeightWidth.minWidth,
+          minMaxHeightWidth.maxHeight,
+          minMaxHeightWidth.maxWidth,
+          minMaxHeightWidth.isEmptyHeightWidth.toBoolInt,
+          minMaxHeightWidth.isMaxHeightWidthEmpty.toBoolInt,
+          minMaxHeightWidth.isMinHeightWidthEmpty.toBoolInt,
+          impression.mimes,
+          position,
+          createddatetimestamp = JodaDateTimeHelper.nowUtcJavaInstant
+        )
+
+        impressionPlaceholderRepository.addAsync(placeHolder)
+      }
+    })
+
+    bidRequestRow
+  }
+
+  override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow =
+    demandSidePlatformStaticBidResponseLogic.getStaticBidRequestToBidRequestRow(bidRequest)
 }
