@@ -39,7 +39,6 @@ trait TypeConvertGenericIterableForExtension[T] {
     val predicatesLength = predicates.length
     val array = new Array[Boolean](predicatesLength)
     var trueFound = 0
-    val it = anyItems.iterator
 
     for (item <- anyItems) {
       var index = 0
@@ -57,6 +56,6 @@ trait TypeConvertGenericIterableForExtension[T] {
       }
     }
 
-    Array.empty
+    array
   }
 }

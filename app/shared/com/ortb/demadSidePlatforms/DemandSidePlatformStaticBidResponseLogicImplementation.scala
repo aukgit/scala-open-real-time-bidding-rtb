@@ -154,7 +154,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     val hasVideo = hasBannerHasVideoArray(1).toBoolInt
 
     Tables.BidrequestRow(
-      bidrequestid = bidRequest.id.toInt,
+      bidrequestid = bidRequest.id.toIntOrDefault(),
       demandsideplatformid = demandSideId,
       isbanner = hasBanner,
       isvideo = hasVideo,

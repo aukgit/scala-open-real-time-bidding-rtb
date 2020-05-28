@@ -22,6 +22,15 @@ trait TypeConvertString {
       isYesString
   lazy private val isYesString = hasCharacter && s.equalsIgnoreCase("yes")
 
+  def toIntOrDefault(default : Int = 0) : Int = {
+    if (isEmpty) {
+      return default
+    }
+
+    val intResult = s.toIntOption
+    intResult.getOrElse(default)
+  }
+
   def toDateTime(dateTimePattern : String = AppConstants.DefaultDateTimeFormatPattern) : DateTime = {
     EmptyValidateHelper.throwOnNullOrNoneOrNil(s, Some(s"Given string is Empty cannot be converted to Joda DateTime(pattern:$dateTimePattern)"))
     JodaDateTimeHelper.getDateTimeFrom(s, dateTimePattern)
