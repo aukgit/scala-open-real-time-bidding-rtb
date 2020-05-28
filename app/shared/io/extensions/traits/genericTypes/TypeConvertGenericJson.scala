@@ -19,7 +19,7 @@ trait TypeConvertGenericJson[T] {
   def jsonGenericParser(
                          implicit decoder : Lazy[DerivedDecoder[T]],
                          encoder : Lazy[DerivedAsObjectEncoder[T]]) : GenericJsonParser[T] =
-    basicJsonEncoder(decoder, encoder).getJsonGenericParser
+    basicJsonEncoder(decoder, encoder).genericJsonParser
 
   def basicJsonEncoder(
                         implicit decoder : Lazy[DerivedDecoder[T]],

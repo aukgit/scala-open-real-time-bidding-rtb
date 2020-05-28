@@ -21,6 +21,15 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     models
   }
 
+  override def toModelsDirect(jsonString : String) : ArrayBuffer[T] = {
+    val results = toModels(Some(jsonString))
+    if (EmptyValidateHelper.hasAnyItem(results)) {
+      return results.get
+    }
+
+    ArrayBuffer.empty
+  }
+
   override def toModels(jsonString : Option[String]) : Option[ArrayBuffer[T]] = {
     try {
       val decoder = basicJsonEncoder.getDecoder

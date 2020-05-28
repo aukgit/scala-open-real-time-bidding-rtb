@@ -1,5 +1,7 @@
 package shared.com.ortb.demadSidePlatforms
 
+import shared.io.extensions.TypeConvertExtensions._
+
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import io.circe.generic.auto._
 import javax.inject.Inject
@@ -18,14 +20,15 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
     components) with DemandSidePlatformCorePropertiesContracts {
 
   lazy val demandSideId = 1
+  lazy override val coreProperties : DemandSidePlatformCorePropertiesContracts = this
 
   def makeBidRequest : Action[AnyContent] = Action { implicit request =>
     try {
       val bodyRaw = request.body.asText.get
       logger.debug(bodyRaw)
 
-      val bidRequest = JsonHelper.toObjectUsingParser[BidRequestModel](bodyRaw)
-      val bidRequestToString = bidRequest.get.toString
+      val bidRequest = bodyRaw.asFromJson[BidRequestModel]
+      val bidRequestToString = bidRequest.toString
       val entityJson = demandSidePlatformJson.get
       val response = s"$bidRequestToString \n $entityJson"
       selfProperties.restWebApiOkJson.OkJson(response)
@@ -34,6 +37,4 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         handleError(e)
     }
   }
-
-  override val coreProperties : DemandSidePlatformCorePropertiesContracts = this
 }

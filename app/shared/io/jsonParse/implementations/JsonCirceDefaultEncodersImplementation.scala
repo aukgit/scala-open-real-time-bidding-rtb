@@ -39,7 +39,7 @@ class JsonCirceDefaultEncodersImplementation[T](
 
   def toJsonString(entities : Iterable[T],
                    additionalAnnotationForItems : String = null) : String = {
-    getJsonGenericParser.toJsonString(entities, additionalAnnotationForItems)
+    genericJsonParser.toJsonString(entities, additionalAnnotationForItems)
   }
 
   def toIterableJson(entities : Iterable[T]) : Iterable[Json] = {
