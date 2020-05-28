@@ -1,8 +1,5 @@
 package shared.com.ortb.demadSidePlatforms
 
-import io.circe.generic.semiauto._
-import io.circe._
-import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
@@ -41,13 +38,19 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         demandSideId
       )
 
-      val bidResponse = agent.getBid(requestWrapperModel)
+      val maybeDemandSidePlatformBidResponseModel = agent.getBid(requestWrapperModel)
       val bidRequestToString = bidRequest.toString
       val entityJson = demandSidePlatformJson.get
-      val response = s"BidRequest:$bidRequestToString \nEntityJson:$entityJson \nBidResponse:$bidResponse"
-      AppLogger.debug("BidResponse(Raw)", response)
+      val message = s"""
+                       | BidRequest:$bidRequestToString
+                       | BidRequestRow:${ bidRequestRow.toString }
+                       | EntityJson:$entityJson
+                       | DemandSidePlatformBidResponseModel:$maybeDemandSidePlatformBidResponseModel"""
+      AppLogger.debug("BidProcessedData(Raw)", message)
 
-      selfProperties.restWebApiOkJson.OkJson(response)
+      selfProperties
+        .restWebApiOkJson
+        .OkJson(response)
     } catch {
       case e : Exception =>
         handleError(e)

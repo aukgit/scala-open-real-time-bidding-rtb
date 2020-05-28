@@ -51,8 +51,8 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
         val callStackModel = CallStackModel(
           deal = deal,
-          performingAction =
-            s"[$methodName] -> adding deals($deal) for given bid request.",
+          performingAction = methodName,
+          message = s"[$methodName] -> -> adding deals($deal) for given bid request.",
           isServedAnyDeal = true
         )
 
@@ -71,8 +71,8 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
         val callStackModel = CallStackModel(
           deal = defaultStaticDeal,
-          performingAction =
-            s"[$methodName] -> adding deals($defaultStaticDeal) for given bid request.",
+          performingAction = methodName,
+          message = s"[$methodName] -> adding deals($defaultStaticDeal) for given bid request.",
           isServedAnyDeal = true
         )
 
