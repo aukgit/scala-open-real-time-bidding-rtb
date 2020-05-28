@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms.traits
 
+import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.DemandSidePlatformBidResponseModel
 import shared.com.ortb.model.logging.CallStackModel
@@ -10,6 +11,7 @@ trait DefaultActualNoContentResponse {
 
   def getBidActualNoContent(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
+    val methodName = nameOf(getBidActualNoContent _)
     val dspBidderResultModel =
       DemandSidePlatformBidResponseModel(
         request,
@@ -18,7 +20,7 @@ trait DefaultActualNoContentResponse {
 
     val callStackModel = CallStackModel(
       deal = coreProperties.noDealPrice,
-      performingAction = s"[getBidActualNoContent] -> No deals."
+      performingAction = s"[$methodName] -> No deals."
     )
 
     // save no bid response

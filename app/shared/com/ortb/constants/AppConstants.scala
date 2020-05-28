@@ -3,6 +3,7 @@ package shared.com.ortb.constants
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.Repositories
 
+
 object AppConstants {
 
   /**
@@ -105,4 +106,5 @@ object AppConstants {
   lazy val AppManager : AppManager = new AppManager
 
   lazy val Repositories : Repositories = new Repositories(AppManager)
+  lazy val biddingConstants = new BiddingConstants
 }

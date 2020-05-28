@@ -1,5 +1,6 @@
 package shared.com.ortb.demadSidePlatforms
 
+import com.github.dwickern.macros.NameOf._
 import io.circe.generic.auto._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.getters._
@@ -221,16 +222,22 @@ class DemandSidePlatformBiddingAgent(
   }
 
   def addBidResponseAsync(response : DemandSidePlatformBidResponseModel) : Unit = {
+    if (isStatic) {
+      // Don't perform database transaction during static mode
+      return
+    }
+
+    val methodName = nameOf(addBidResponseAsync _)
     if (EmptyValidateHelper.isEmptyDirect(
       response,
-      Some("addBidResponse, given response is empty. Nothing to save."))) {
+      Some(s"$methodName, given response is empty. Nothing to save."))) {
       return
     }
 
     val bidResponse = response.bidResponseWrapper.bidResponse
     if (EmptyValidateHelper.isEmpty(
       bidResponse,
-      Some("addBidResponse, given bidResponse is empty. Nothing to save."))) {
+      Some(s"$methodName, given bidResponse is empty. Nothing to save."))) {
       // create no bid response
       createNoBidResponseToDbAsync()
       return

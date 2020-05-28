@@ -1,10 +1,13 @@
 package shared.com.ortb.demadSidePlatforms
 
+import com.github.dwickern.macros.NameOf._
 import io.circe.generic.auto._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.demadSidePlatforms.traits.properties.{ DemandSidePlatformBiddingProperties, DemandSidePlatformCorePropertiesContracts }
+import shared.com.ortb.enumeration.NoBidResponseType
 import shared.com.ortb.model.auctionbid.biddingRequests.{ BidRequestModel, ImpressionModel }
+import shared.com.ortb.model.auctionbid.bidresponses.{ BidModel, BidResponseModel, BidResponseModelWrapper, SeatBidModel }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
 import shared.com.ortb.model.logging.CallStackModel
@@ -27,12 +30,19 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
   override def getBidStatic(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
+    val methodName = nameOf(getBidStatic _)
     val impressions : Seq[ImpressionModel] = request.bidRequest.imp
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
     val callStacks = new ArrayBuffer[CallStackModel](length)
+    val bidModels = new ArrayBuffer[BidModel](length)
+    val staticBidModel = AppConstants
+      .biddingConstants
+      .staticBidModel
 
     for (impression <- impressions) {
+      val minMaxHeightWidth = impression.minMaxHeightWidth
+
       if (impression.bidfloor.isDefined) {
         val deal : Double = impression.bidfloor.get + defaultIncrementNumber
         val advertise = createStaticAdvertise(impression, deal, "Title")
@@ -42,11 +52,19 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
         val callStackModel = CallStackModel(
           deal = deal,
           performingAction =
-            s"[getBidStatic] -> adding deals($deal) for given bid request.",
+            s"[$methodName] -> adding deals($deal) for given bid request.",
           isServedAnyDeal = true
         )
 
         callStacks.addOne(callStackModel)
+        val bidModel = staticBidModel.copy(
+          impid = impression.id,
+          price = deal,
+          nurl = s"http://adserver.com/winnotice?impid=${ impression.id }".toSome,
+          h = minMaxHeightWidth.maybeHeight,
+          w = minMaxHeightWidth.maybeWidth)
+
+        bidModels.addOne(bidModel)
       } else {
         val advertise = createStaticAdvertise(impression, defaultStaticDeal, "Title")
         deals.addOne(ImpressionDealModel(impression, advertise, defaultStaticDeal))
@@ -54,20 +72,41 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
         val callStackModel = CallStackModel(
           deal = defaultStaticDeal,
           performingAction =
-            s"[getBidStatic] -> adding deals($defaultStaticDeal) for given bid request.",
+            s"[$methodName] -> adding deals($defaultStaticDeal) for given bid request.",
           isServedAnyDeal = true
         )
 
         callStacks.addOne(callStackModel)
+        val bidModel = staticBidModel.copy(
+          impid = impression.id,
+          price = defaultStaticDeal,
+          nurl = s"http://adserver.com/winnotice?impid=${ impression.id }".toSome,
+          h = minMaxHeightWidth.maybeHeight,
+          w = minMaxHeightWidth.maybeWidth)
+
+        bidModels.addOne(bidModel)
       }
     }
+
+    val seatBidModel = SeatBidModel(
+      bidModels.toList,
+      seat = s"SeatBidID/DSP ID : $demandSideId".toSome)
+
+    val bidResponse = BidResponseModel(
+      "_",
+      seatBidModel.toMakeListSome,
+      None,
+      nbr = Some(NoBidResponseType.UnknownError.value))
+
+    val bidResponseWrapper = BidResponseModelWrapper(Some(bidResponse))
 
     val dspBidderResultModel =
       DemandSidePlatformBidResponseModel(
         request,
         request.bidRequest,
-        bidResponseWrapper = null,
+        bidResponseWrapper = bidResponseWrapper,
         Some(deals.toList))
+
     dspBidderResultModel.addCallStacks(callStacks)
 
     Some(dspBidderResultModel)

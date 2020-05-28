@@ -32,12 +32,13 @@ trait TypeConvertGenericIterableForExtension[T] {
   }
 
   def forAnyGroup(predicates : (T => Boolean)*) : Array[Boolean] = {
-    if (isEmpty) {
-      return Array.empty
-    }
-
     val predicatesLength = predicates.length
     val array = new Array[Boolean](predicatesLength)
+
+    if (isEmpty) {
+      return array
+    }
+
     var trueFound = 0
 
     for (item <- anyItems) {
