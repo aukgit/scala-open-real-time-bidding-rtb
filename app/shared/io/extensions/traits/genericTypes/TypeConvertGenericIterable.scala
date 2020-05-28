@@ -27,6 +27,8 @@ trait TypeConvertGenericIterable[T]
   lazy protected val appManager : AppManager = AppConstants.AppManager
   protected val anyItems : Iterable[T]
 
+  lazy val toJoinStringLineSeparator : Any = anyItems.mkString(AppConstants.SystemNewLine)
+
   def toJoinString(separator : String) : String = anyItems.mkString(separator)
 
   def toJoinString(start : String, separator : String, end : String) : String =

@@ -151,7 +151,7 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
       handleExceptionCaseFor(json, modelEither)
     }
     catch {
-      case e : Exception => AppLogger.error(e)
+      case e : Exception => AppLogger.errorCaptureAndThrow(e)
     }
 
     None
@@ -161,11 +161,14 @@ class GenericJsonParserImplementation[T](basicJsonEncoder : BasicJsonEncoder[T])
     json : String,
     modelEither : Either[circe.Error, T]) : Unit = {
     val left = modelEither.left.getOrElse(null)
-    val jsonWithLines = json.getLinesWithLineNumbers()
-    val message = s"Failed JSON Parse :\n$jsonWithLines\nErrorMessage:${ left.getMessage }\nFullError:$left"
-    AppLogger.error(message)
+    val jsonWithLines = json.getLinesWithLineNumbers().toJoinStringLineSeparator
+    val message = s"Failed JSON Parse :\n$jsonWithLines\nError Message:${ left.getMessage }\nFull Error:$left"
+
     if (isThrowOnFail) {
-      throw left
+      throw new Error(message)
+    }
+    else {
+      AppLogger.error(message)
     }
   }
 

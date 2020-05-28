@@ -90,7 +90,7 @@ object AppConstants {
 
   lazy val DefaultDateTimeFormatPattern = "MM/dd/yyyy HH:mm:ss"
   lazy val DefaultDateFormatPattern = "MM/dd/yyyy"
-  lazy val IsThrownOnFailed = false
+  lazy val IsThrownOnFailed = true
 
   /**
    * "=${NewLine}"
