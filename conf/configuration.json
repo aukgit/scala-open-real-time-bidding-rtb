@@ -112,7 +112,6 @@
           "domain": "",
           "port": 0,
           "routing": [],
-          "demandSidePlatformId": 2,
           "bidIncrementRangeModel": {
             "start": 0.00010,
             "end": 0.0015
@@ -125,7 +124,6 @@
           "domain": "",
           "port": 0,
           "routing": [],
-          "demandSidePlatformId": 3,
           "bidIncrementRangeModel": {
             "start": 0.00010,
             "end": 0.0015

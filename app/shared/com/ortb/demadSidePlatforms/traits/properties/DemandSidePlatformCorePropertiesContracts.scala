@@ -26,6 +26,7 @@ trait DemandSidePlatformCorePropertiesContracts
     repositories.demandSidePlatformRepository
   lazy val demandSidePlatformEntity : Option[Tables.DemandsideplatformRow] = demandSidePlatformRepository
     .getById(demandSideId)
+
   lazy val demandSidePlatformJson : Option[String] = demandSidePlatformRepository
     .fromEntityToJson(demandSidePlatformEntity)
 
