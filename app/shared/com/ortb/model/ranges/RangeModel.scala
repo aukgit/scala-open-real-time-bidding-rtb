@@ -1,4 +1,4 @@
-package shared.com.ortb.model.config
+package shared.com.ortb.model.ranges
 
 abstract class RangeModel[T : Numeric] {
   val start : T

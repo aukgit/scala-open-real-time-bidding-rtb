@@ -1,5 +1,6 @@
 package shared.com.ortb.manager
 
+import io.circe.generic.semiauto._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.model.config.ConfigModel
 import shared.com.ortb.model.error.FileErrorModel

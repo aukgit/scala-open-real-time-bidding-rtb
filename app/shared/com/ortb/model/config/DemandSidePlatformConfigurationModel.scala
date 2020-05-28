@@ -1,5 +1,7 @@
 package shared.com.ortb.model.config
 
+import shared.com.ortb.model.ranges.RangeDoubleModel
+
 case class DemandSidePlatformConfigurationModel(
   defaultBidIncrementNumber : Double,
   defaultBidStaticDeal : Double,
@@ -8,5 +10,6 @@ case class DemandSidePlatformConfigurationModel(
   defaultGenericLimit : Int,
   isAddNewAdvertiseOnNotFound : Boolean,
   isRedisCacheEnabled : Boolean,
-  randomNumberIncrementerGuessRange : RangeDoubleModel
+  globalRandomRange : RangeDoubleModel,
+  biddingLogicConfig : BiddingLogicConfigModel
 )

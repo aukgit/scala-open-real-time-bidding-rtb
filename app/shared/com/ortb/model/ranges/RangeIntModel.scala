@@ -5,11 +5,11 @@ import scala.util.Random
 case class RangeIntModel(
   start : Int,
   end : Int
-) {
+) extends RangeModel[Int] {
   /**
    * Get a number inclusive of start and exclusive of end
    */
-  lazy val randomInBetweenRange : Int = Random.between(
+  lazy override val randomInBetweenRange : Int = Random.between(
     start,
     end)
 }

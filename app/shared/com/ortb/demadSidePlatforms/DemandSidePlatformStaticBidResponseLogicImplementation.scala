@@ -94,7 +94,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
   def getStaticBidPrice(impression : ImpressionModel) : Double = {
     val randomGuess = coreProperties
       .currentServiceModel
-      .biddingRandomRange
+      .ownBiddingRandomRange
       .randomInBetweenRange
 
     var deal : Double = randomGuess + defaultIncrementNumber

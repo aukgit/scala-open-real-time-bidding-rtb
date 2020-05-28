@@ -3,7 +3,7 @@ package shared.com.ortb.demadSidePlatforms.traits.getters
 import com.github.dwickern.macros.NameOf._
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformBiddingAgent
 import shared.com.ortb.model.auctionbid.{ BidFailedInfoModel, ImpressionBiddableInfoModel, ImpressionDealModel }
-import shared.com.ortb.model.config.RangeDoubleModel
+import shared.com.ortb.model.ranges.RangeDoubleModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.schema.Tables
 import shared.com.repository.traits.FutureToRegular
@@ -17,7 +17,7 @@ import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
-  lazy val randomNumberIncrementerGuessRange : RangeDoubleModel = coreProperties.randomNumberIncrementerGuessRange
+  lazy val randomNumberIncrementerGuessRange : RangeDoubleModel = coreProperties.globalRandomRange
 
   def getImpressionInfosFromImpressionBiddableInfos(
     request : DemandSidePlatformBiddingRequestWrapperModel,

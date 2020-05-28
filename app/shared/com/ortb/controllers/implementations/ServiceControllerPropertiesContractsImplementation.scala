@@ -4,7 +4,8 @@ import shared.com.ortb.controllers.core.ServiceBaseApiController
 import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import play.api.Logger
 import shared.com.ortb.manager.AppManager
-import shared.com.ortb.model.config.{ ConfigModel, ServiceBaseModel, ServiceModel, ServicesModel }
+import shared.com.ortb.model.config.core.ServiceBaseModel
+import shared.com.ortb.model.config.{ ConfigModel, ServiceModel, ServicesModel }
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
 

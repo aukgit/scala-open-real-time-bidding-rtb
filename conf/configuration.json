@@ -12,9 +12,42 @@
       "isStaticSimulate": true,
       "isAddNewAdvertiseOnNotFound": true,
       "isRedisCacheEnabled": true,
-      "randomNumberIncrementerGuessRange": {
-        "start" : 0.012,
-        "end" : 0.015
+      "globalRandomRange": {
+        "start": 0.00012,
+        "end": 0.005
+      },
+      "biddingLogicConfig": {
+        "staticPrice": {
+          "randomSumOfRanges": [
+            "ownRandomBiddingRange",
+            "globalRandomRange"
+          ],
+          "bidFloorExistLogic": [
+            "bidFloor",
+            "randomSumOfRanges",
+            "defaultBidStaticDeal",
+            "defaultIncrementNumber"
+          ],
+          "bidFloorNonExistLogic": [
+            "randomSumOfRanges",
+            "defaultBidStaticDeal",
+            "defaultIncrementNumber/2"
+          ]
+        },
+        "dynamicPrice": {
+          "bidFloorExistLogic": [
+            "bidFloor",
+            "lastFiveAverageOfFailingAndWinningPricesDifference",
+            "randomSumOfRanges",
+            "defaultBidStaticDeal",
+            "defaultIncrementNumber/3"
+          ],
+          "bidFloorNonExistLogic": [
+            "randomSumOfRanges",
+            "defaultBidStaticDeal",
+            "defaultIncrementNumber/2"
+          ]
+        }
       }
     },
     "services": {
@@ -100,7 +133,7 @@
           "port": 0,
           "routing": [],
           "demandSidePlatformId": 1,
-          "biddingRandomRange": {
+          "ownBiddingRandomRange": {
             "start": 0.00010,
             "end": 0.0015
           }
@@ -112,36 +145,7 @@
           "domain": "",
           "port": 0,
           "routing": [],
-          "biddingLogicConfig": {
-            "staticPrice": {
-              "bidFloorExistLogic": [
-                "bidFloor",
-                "randomInBetweenBiddingRandomRange",
-                "defaultBidStaticDeal",
-                "defaultIncrementNumber"
-              ],
-              "bidFloorNonExistLogic": [
-                "randomInBetweenBiddingRandomRange",
-                "defaultBidStaticDeal",
-                "defaultIncrementNumber/2"
-              ]
-            },
-            "dynamicPrice": {
-              "bidFloorExistLogic": [
-                "bidFloor",
-                "lastFiveAverageOfFailingAndWinningPricesDifference",
-                "randomInBetweenBiddingRandomRange",
-                "defaultBidStaticDeal",
-                "defaultIncrementNumber/3"
-              ],
-              "bidFloorNonExistLogic": [
-                "randomInBetweenBiddingRandomRange",
-                "defaultBidStaticDeal",
-                "defaultIncrementNumber/2"
-              ]
-            }
-          },
-          "biddingRandomRange": {
+          "ownBiddingRandomRange": {
             "start": 0.00015,
             "end": 0.0015
           }
@@ -153,7 +157,7 @@
           "domain": "",
           "port": 0,
           "routing": [],
-          "biddingRandomRange": {
+          "ownBiddingRandomRange": {
             "start": 0.00014,
             "end": 0.0015
           }

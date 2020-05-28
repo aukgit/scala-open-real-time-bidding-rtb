@@ -1,6 +1,8 @@
 package shared.com.ortb.model.config.core
 
+import shared.com.ortb.model.config.BidPriceConfigModel
+
 abstract class BiddingLogicBaseConfigModel {
-  val staticPrice : BidPriceConfigBaseModel
-  val dynamicPrice : BidPriceConfigBaseModel
+  val staticPrice : BidPriceConfigModel
+  val dynamicPrice : BidPriceConfigModel
 }

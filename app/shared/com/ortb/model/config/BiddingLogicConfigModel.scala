@@ -1,8 +1,8 @@
 package shared.com.ortb.model.config
 
-import shared.com.ortb.model.config.core.{ BidPriceConfigBaseModel, BiddingLogicBaseConfigModel }
+import shared.com.ortb.model.config.core.BiddingLogicBaseConfigModel
 
 case class BiddingLogicConfigModel(
-  staticPrice : BidPriceConfigBaseModel,
-  dynamicPrice : BidPriceConfigBaseModel
+  staticPrice : BidPriceConfigModel,
+  dynamicPrice : BidPriceConfigModel
 ) extends BiddingLogicBaseConfigModel
