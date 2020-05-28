@@ -49,10 +49,10 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         val bidRequestToString = bidRequest.toString
         val entityJson = demandSidePlatformJson.get
         val message = s"""
-                         | BidRequest:$bidRequestToString
-                         | BidRequestRow:${ bidRequestRow.toString }
+                         | $bidRequestToString
+                         | ${ bidRequestRow.toString }
                          | EntityJson:$entityJson
-                         | DemandSidePlatformBidResponseModel:$dspBidResponseModel"""
+                         | DemandSidePlatformBidResponseModel:$dspBidResponseModel""".stripMargin
         AppLogger.debug("BidProcessedData(Raw)", message)
 
         val bidResponseJsonTry = Try(dspBidResponseModel
@@ -64,18 +64,22 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         if (bidResponseJsonTry.isSuccess) {
           selfProperties
             .restWebApiOkJson
-            .okHtmlWithStatus(bidResponseJsonTry.get)
+            .okJsonWithStatus(bidResponseJsonTry.get)
         }
         else {
+          val noBid = AppConstants.biddingConstants.emptyStaticBidResponse
+
           selfProperties
             .restWebApiOkJson
-            .okHtmlWithStatus(AppConstants.biddingConstants.emptyStaticBidResponse)
+            .okJsonWithStatus(noBid)
         }
       }
+      else {
+        selfProperties
+          .restWebApiOkJson
+          .noContent
+      }
 
-      selfProperties
-        .restWebApiOkJson
-        .noContent
     } catch {
       case e : Exception =>
         handleError(e)
