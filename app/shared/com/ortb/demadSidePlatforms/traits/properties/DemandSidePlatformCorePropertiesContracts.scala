@@ -19,9 +19,7 @@ trait DemandSidePlatformCorePropertiesContracts
     appManager,
     this.getClass.getName)
 
-  lazy override val currentServiceModel : ServiceBaseModel = demandSideServiceModel
-
-  lazy val demandSideServiceModel : DemandSideServiceModel =
+  lazy override val currentServiceModel : DemandSideServiceModel =
     services.demandSidePlatforms(demandSideId - 1)
 
   lazy val demandSidePlatformRepository : DemandSidePlatformRepository =
