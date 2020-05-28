@@ -63,23 +63,24 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
 
         if (bidResponseJsonTry.isSuccess) {
           selfProperties
-            .restWebApiOkJson
+            .webApiResult
             .okJsonWithStatus(bidResponseJsonTry.get)
         }
         else {
-          val noBid = AppConstants.biddingConstants.emptyStaticBidResponse
+          val noBid = AppConstants
+            .biddingConstants
+            .emptyStaticBidResponse
 
           selfProperties
-            .restWebApiOkJson
+            .webApiResult
             .okJsonWithStatus(noBid)
         }
       }
       else {
         selfProperties
-          .restWebApiOkJson
+          .webApiResult
           .noContent
       }
-
     } catch {
       case e : Exception =>
         handleError(e)

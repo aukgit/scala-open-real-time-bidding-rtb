@@ -2,13 +2,11 @@ package shared.com.ortb.demadSidePlatforms.traits.properties
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
-import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, RangeDoubleModel, ServiceModel }
+import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, DemandSideServiceModel, RangeDoubleModel, ServiceBaseModel }
 import shared.com.ortb.persistent.Repositories
 import shared.com.ortb.persistent.repositories.DemandSidePlatformRepository
 import shared.com.ortb.persistent.schema.Tables
 import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
-
-import scala.util.Random
 
 trait DemandSidePlatformCorePropertiesContracts
   extends ServiceControllerCorePropertiesContracts
@@ -21,8 +19,10 @@ trait DemandSidePlatformCorePropertiesContracts
     appManager,
     this.getClass.getName)
 
-  lazy override val currentServiceModel : ServiceModel =
-    services.demandSidePlatForms(demandSideId - 1)
+  lazy override val currentServiceModel : ServiceBaseModel = demandSideServiceModel
+
+  lazy val demandSideServiceModel : DemandSideServiceModel =
+    services.demandSidePlatforms(demandSideId - 1)
 
   lazy val demandSidePlatformRepository : DemandSidePlatformRepository =
     repositories.demandSidePlatformRepository

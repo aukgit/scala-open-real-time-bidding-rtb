@@ -2,7 +2,7 @@
   "applicationName": "RealTime Bidding Using OpenRTB and Akka",
   "displayVersion": "1.0",
   "server": {
-    "commonDomain": "",
+    "commonDomain": "localhost",
     "isUseDefaultDomainForAll": true,
     "demandSidePlatformConfiguration": {
       "defaultBidIncrementNumber": 0.1,
@@ -91,14 +91,19 @@
         "description": "",
         "routing": []
       },
-      "demandSidePlatForms": [
+      "demandSidePlatforms": [
         {
           "title": "DSP - Demand Side Platform - 1",
           "description": "Final stage where bidding happens, agent 1",
           "prefix": "",
           "domain": "",
           "port": 0,
-          "routing": []
+          "routing": [],
+          "demandSidePlatformId": 1,
+          "bidIncrementRangeModel": {
+            "start": 0.00010,
+            "end": 0.0015
+          }
         },
         {
           "title": "DSP - Demand Side Platform - 2",
@@ -106,7 +111,12 @@
           "prefix": "",
           "domain": "",
           "port": 0,
-          "routing": []
+          "routing": [],
+          "demandSidePlatformId": 2,
+          "bidIncrementRangeModel": {
+            "start": 0.00010,
+            "end": 0.0015
+          }
         },
         {
           "title": "DSP - Demand Side Platform - 3",
@@ -114,7 +124,12 @@
           "prefix": "",
           "domain": "",
           "port": 0,
-          "routing": []
+          "routing": [],
+          "demandSidePlatformId": 3,
+          "bidIncrementRangeModel": {
+            "start": 0.00010,
+            "end": 0.0015
+          }
         }
       ]
     },
@@ -147,9 +162,9 @@
   "databaseGenerate": {
     "profile": "slick.jdbc.SQLiteProfile",
     "jdbcDriver": "org.sqlite.JDBC",
-    "databaseUrl": "jdbc:sqlite:${WorkingDirectory}*:conf*:openRTBSample.db",
+    "databaseUrl": "jdbc:sqlite:${WorkingDirectory}/conf/openRTBSample.db",
     "compiledDatabaseUrl": "",
-    "outputDir": "${WorkingDirectory}*:app",
+    "outputDir": "${WorkingDirectory}/app",
     "compiledOutputDir": "",
     "pkg": "shared.com.ortb.persistent.schema"
   },

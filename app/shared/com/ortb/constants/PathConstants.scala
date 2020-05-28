@@ -10,7 +10,7 @@ sealed class PathConstants {
   lazy val WorkingDirectory : String = new java.io.File(AppConstants.Dot).getCanonicalPath
 
   lazy val DirectorySeparator : String = File.separator
-  lazy val GenericPathSeparator : String = "*:"
+  lazy val GenericPathSeparator : String = "/"
 
   lazy val ResourcePath : String = PathHelper.getResourcePath
 
