@@ -42,6 +42,21 @@ Taking part in RTB auction requires the submission of the reply to the bid reque
 
 Ad Exchange will match any Deal IDs for you with the Seat ID assigned to you in the system. On the other side of the system, publishers also have “seats”.
 
+# How advertise is served to the client with Bid Response?
+
+### 4.3.1 Markup Served on the Win Notice
+In this method, ad markup is returned to the exchange is via the win notice. 
+In this case, the response body of the win notice call 
+(i.e., invoking the bid.nurl attribute) contains the ad markup 
+and only the ad markup; there must be no other-structured data 
+in the response body. Using this method, the bid.adm attribute must be omitted.
+
+### 4.3.2 Markup Served in the Bid
+In this method, ad markup is returned directly in the bid itself. 
+This is accomplished via the bid.adm attribute.
+ If both the adm attribute and win notice return data, 
+ the adm contents will take precedence.
+
 # Links
 
 - Reference : https://protocol.bidswitch.com/index.html
@@ -73,6 +88,7 @@ Ad Exchange will match any Deal IDs for you with the Seat ID assigned to you in 
 - Which is better, SSP or DSP? https://bit.ly/2xmo3nw
 - How does SSP work with DSP? https://bit.ly/3d1dsgR
 - What does it mean to have a seat on an ad exchange? https://bit.ly/2LQaDDY
+- RTB Steps ? https://bit.ly/2zz72rx | https://www.quora.com/What-is-real-time-bidding-RTB/answer/Gareth-Paul-Jones
 
 
 >To start the process SSP sends a bid request to DSP (it occurs in real-time bidding environments). It's a signal out to a DSP indicating that SSP has an impression for sale, along with the inventory parameters.
