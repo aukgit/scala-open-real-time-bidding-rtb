@@ -12,13 +12,13 @@ import shared.io.loggers.AppLogger
 abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   appManager : AppManager,
   components : ControllerComponents)
-  extends ServiceBaseApiController(appManager, components)
+  extends ServiceCoreApiController(appManager, components)
     with ServiceControllerCorePropertiesContracts {
-  lazy override val webApiResponse : WebApiResponseImplementation = selfProperties.webApiResponse
+  lazy override val webApiResponse : WebApiResponseImplementation = serviceControllerProperties.webApiResponse
   lazy override val serviceTitle : String = currentServiceModel.title
   lazy val config : ConfigModel = appManager.config
   lazy val services : ServicesModel = config.server.services
-  lazy val selfProperties : ServiceControllerCorePropertiesContracts =
+  lazy val serviceControllerProperties : ServiceControllerCorePropertiesContracts =
     new ServiceControllerPropertiesContractsImplementation(
       this,
       components,
@@ -26,9 +26,9 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     try {
-      return selfProperties
+      serviceControllerProperties
         .webApiResponse
-        .okJson(selfProperties.serviceTitle)
+        .okJson(serviceControllerProperties.serviceTitle)
     } catch {
       case e : Exception =>
         handleError(e)

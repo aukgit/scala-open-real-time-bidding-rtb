@@ -10,11 +10,10 @@ import shared.io.loggers.DatabaseLogTracer
 trait ServiceControllerCorePropertiesContracts {
   val config : ConfigModel
   val services : ServicesModel
-  val selfProperties : ServiceControllerCorePropertiesContracts
+  val serviceControllerProperties : ServiceControllerCorePropertiesContracts
   val currentServiceModel : ServiceBaseModel
   val appManager : AppManager
   val webApiResponse : WebApiResponseImplementation
   val serviceTitle : String
-  val logger : Logger
   val databaseLogger : DatabaseLogTracer
 }

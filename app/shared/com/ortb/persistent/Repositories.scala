@@ -1,11 +1,13 @@
 package shared.com.ortb.persistent
 
 import com.google.inject.Inject
+import javax.inject.Singleton
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.persistent.repositories.views.{ BidRelatedIdsViewRepository, KeywordAdvertiseMappingIdsViewRepository, WinningPriceInfoViewRepository }
 import shared.com.ortb.persistent.repositories.{ BidContentCategoriesMappingRepository, BidRepository, CreativeAttributeRepository, DeviceTypeRepository, ImpressionPlaceholderRepository, PrivateMarketPlaceDealRepository, SeatBidRepository, UserClassificationRepository, VideoPlaybackMethodRepository, VideoResponseProtocolRepository, _ }
 import shared.com.ortb.persistent.schema.{ DatabaseSchema, DatabaseSchemaViews }
 
+@Singleton
 class Repositories @Inject()(appManager: AppManager)
     extends DatabaseSchema(appManager: AppManager) {
   lazy val advertiseRepository = new AdvertiseRepository(appManager)

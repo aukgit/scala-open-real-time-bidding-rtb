@@ -18,7 +18,7 @@ class RequestSimulatorServiceApiController @Inject()(
 
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
     try {
-      val routing = selfProperties
+      val routing = serviceControllerProperties
         .currentServiceModel
         .routing
 
@@ -27,7 +27,7 @@ class RequestSimulatorServiceApiController @Inject()(
         .get
         .toString()
 
-      return selfProperties
+      serviceControllerProperties
         .webApiResponse
         .okJson(jsonString)
     } catch {
@@ -44,7 +44,7 @@ class RequestSimulatorServiceApiController @Inject()(
         "requests",
         s"${ bannerSuffix }-bid-request.json")
 
-      return selfProperties
+      serviceControllerProperties
         .webApiResponse
         .okJson(jsonString)
     } catch {

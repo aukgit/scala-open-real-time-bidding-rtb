@@ -25,7 +25,6 @@ class ConfigurationManagerImplementation extends ConfigurationManager {
         AppConstants.PathConstants.ConfigDefaultPath,
         decoder)
 
-
       if (result.isEmpty) {
         val fileError = FileErrorModel(
           title = "Config Model Failed to Read",

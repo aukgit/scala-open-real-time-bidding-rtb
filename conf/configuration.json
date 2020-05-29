@@ -179,6 +179,9 @@
   "databaseRelativePath": "openRTBSample.db",
   "logConfiguration": {
     "isDebug": true,
+    "isPlayFrameworkActionLogUsingAkkaLogger": true,
+    "isPlayFrameworkActionLogUsingAppLogger": true,
+    "isPlayFrameworkLogUsingAkkaLogger": true,
     "isLogError": true,
     "isLogDatabaseQueryLogs": true,
     "isLogToDatabaseTrace": true,
