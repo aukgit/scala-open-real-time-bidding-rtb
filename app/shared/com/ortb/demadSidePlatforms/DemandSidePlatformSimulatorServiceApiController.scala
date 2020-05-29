@@ -3,8 +3,6 @@ package shared.com.ortb.demadSidePlatforms
 import io.circe.generic.auto._
 import javax.inject.{ Inject, Singleton }
 import play.api.mvc._
-import play.libs.Json
-import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
 import shared.com.ortb.enumeration.{ DemandSidePlatformBiddingAlgorithmType, NoBidResponseType }

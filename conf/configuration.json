@@ -6,7 +6,7 @@
     "isUseDefaultDomainForAll": true,
     "demandSidePlatformConfiguration": {
       "noBiddingResponseConfig": {
-        "isWellFormedBidRequest": true,
+        "isWellFormedBidRequest": false,
         "wellFormedBidRequestSample": {
           "id": "",
           "seatbid": [],
