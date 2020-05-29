@@ -1,21 +1,19 @@
 package shared.com.ortb.manager
 
-import io.circe.generic.semiauto._
-import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.model.config.ConfigModel
-import shared.com.ortb.model.error.FileErrorModel
-import shared.io.helpers.PathHelper._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
+import javax.inject.Singleton
+import shared.com.ortb.constants.AppConstants
+import shared.com.ortb.manager.traits.ConfigurationManager
+import shared.com.ortb.model.config.ConfigModel
+import shared.com.ortb.model.error.FileErrorModel
 import shared.io.helpers.JsonHelper
+import shared.io.helpers.PathHelper._
 import shared.io.loggers.AppLogger
 
-trait ConfigurationManagerType {
-  def getConfig(path : String) : ConfigModel
-}
-
-class ConfigurationManager extends ConfigurationManagerType {
+@Singleton
+class ConfigurationManagerImplementation extends ConfigurationManager {
   def getConfig(path : String) : ConfigModel = {
     try {
 
@@ -34,13 +32,13 @@ class ConfigurationManager extends ConfigurationManagerType {
           filePath = path,
           cause = "Result came as empty",
           content = ""
-          )
+        )
 
         val errorMessage = AppLogger.getFileErrorMessage(fileError)
         throw new Exception(errorMessage)
       }
 
-      val returningResult  = result.get
+      val returningResult = result.get
       val databaseGenerate = returningResult.databaseGenerate;
 
       databaseGenerate.compiledDatabaseUrl = getExpendedPath(databaseGenerate.databaseUrl)

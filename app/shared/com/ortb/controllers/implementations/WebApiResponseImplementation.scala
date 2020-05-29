@@ -2,12 +2,14 @@ package shared.com.ortb.controllers.implementations
 
 import akka.util.ByteString
 import play.api.http.{ HttpEntity, Status }
-import play.api.mvc._
+import play.api.mvc.{ Action, _ }
 import play.mvc.Http.MimeTypes
 import shared.io.extensions.TypeConvertExtensions._
 
-class WebApiResultImplementation(val controller : AbstractController) {
-  def okJson(jsonString : String) : Action[AnyContent] = controller.Action.apply(w =>
+class WebApiResponseImplementation(
+  val controller : AbstractController,
+  val components : ControllerComponents) {
+  def okJson(jsonString : String) : Action[AnyContent] = components.actionBuilder(
     controller
       .Ok(jsonString)
       .as(MimeTypes.JSON)
@@ -26,12 +28,12 @@ class WebApiResultImplementation(val controller : AbstractController) {
     jsonString : String,
     responseHeader : ResponseHeader = ResponseHeader(Status.OK),
     contentType : String = MimeTypes.JSON
-  ) : Action[AnyContent] = controller.Action.apply(w => {
+  ) : Action[AnyContent] = controller.Action {
     Result(
       header = responseHeader,
       body = HttpEntity.Strict(ByteString(jsonString), contentType.toSome)
     )
-  })
+  }
 
   def okTextWithStatus(
     jsonString : String,

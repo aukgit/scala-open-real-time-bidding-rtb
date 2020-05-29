@@ -1,19 +1,22 @@
 package shared.com.ortb.controllers.implementations
 
+import play.api.Logger
+import play.api.mvc.ControllerComponents
 import shared.com.ortb.controllers.core.ServiceBaseApiController
 import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
-import play.api.Logger
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.core.ServiceBaseModel
-import shared.com.ortb.model.config.{ ConfigModel, ServiceModel, ServicesModel }
+import shared.com.ortb.model.config.{ ConfigModel, ServicesModel }
 import shared.io.helpers.EmptyValidateHelper
 import shared.io.loggers.{ DatabaseLogTracer, DatabaseLogTracerImplementation }
 
-class ServiceControllerPropertiesContractsImplementation
-(val serviceBaseApiController : ServiceBaseApiController, val serviceModelInstance : ServiceBaseModel)
+class ServiceControllerPropertiesContractsImplementation(
+  val serviceBaseApiController : ServiceBaseApiController,
+  val components : ControllerComponents,
+  val serviceModelInstance : ServiceBaseModel)
   extends ServiceControllerCorePropertiesContracts {
   EmptyValidateHelper.throwOnNullOrNoneOrNil(serviceModelInstance)
-  lazy val webApiResult = new WebApiResultImplementation(serviceBaseApiController)
+  lazy val webApiResponse = new WebApiResponseImplementation(serviceBaseApiController, components)
   lazy val config : ConfigModel = appManager.config
   lazy val serviceTitle : String = serviceModelInstance.title
   lazy override val appManager : AppManager = serviceBaseApiController.appManager

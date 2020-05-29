@@ -1,11 +1,14 @@
 package shared.com.ortb.manager
 
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
+import javax.inject.Singleton
 
+import scala.concurrent.{ ExecutionContext, ExecutionContextExecutor }
+
+@Singleton
 class ExecutionContextManager(appManager : AppManager) {
-  lazy val globalExecutionContext    : ExecutionContextExecutor = ExecutionContext.global
-  lazy val defaultParallelProcessing : Int                      = appManager.config.defaultParallelProcessing
-  lazy val globalContext             : ExecutionContext         = concurrent.ExecutionContext.Implicits.global
+  lazy val globalExecutionContext : ExecutionContextExecutor = ExecutionContext.global
+  lazy val defaultParallelProcessing : Int = appManager.config.defaultParallelProcessing
+  lazy val globalContext : ExecutionContext = concurrent.ExecutionContext.Implicits.global
 
   def createDefaultContext() : ExecutionContext = createDefault().prepare()
 

@@ -1,15 +1,10 @@
 package controllers.rtb
 
-import io.circe.derivation._
-import io.circe.generic.semiauto._
-import io.circe._
-import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
-import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.{ FileHelper, JsonHelper }
 import shared.io.loggers._
 
@@ -33,7 +28,7 @@ class RequestSimulatorServiceApiController @Inject()(
         .toString()
 
       return selfProperties
-        .webApiResult
+        .webApiResponse
         .okJson(jsonString)
     } catch {
       case e : Exception =>
@@ -50,7 +45,7 @@ class RequestSimulatorServiceApiController @Inject()(
         s"${ bannerSuffix }-bid-request.json")
 
       return selfProperties
-        .webApiResult
+        .webApiResponse
         .okJson(jsonString)
     } catch {
       case e : Exception =>

@@ -1,33 +1,33 @@
 package shared.com.ortb.controllers.core
 
-import shared.com.ortb.controllers.implementations.{ WebApiResultImplementation, ServiceControllerPropertiesContractsImplementation }
-import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import javax.inject.Inject
-import play.api.Logger
 import play.api.mvc._
+import shared.com.ortb.controllers.implementations.{ ServiceControllerPropertiesContractsImplementation, WebApiResponseImplementation }
+import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
-import shared.com.ortb.persistent.Repositories
 import shared.io.loggers.AppLogger
 
 abstract class AbstractBaseSimulatorServiceApiController @Inject()(
-  appManager   : AppManager,
-  components   : ControllerComponents)
+  appManager : AppManager,
+  components : ControllerComponents)
   extends ServiceBaseApiController(appManager, components)
     with ServiceControllerCorePropertiesContracts {
-  lazy override val webApiResult : WebApiResultImplementation = selfProperties.webApiResult
+  lazy override val webApiResponse : WebApiResponseImplementation = selfProperties.webApiResponse
   lazy override val serviceTitle : String = currentServiceModel.title
   lazy val config : ConfigModel = appManager.config
   lazy val services : ServicesModel = config.server.services
-  lazy val selfProperties : ServiceControllerCorePropertiesContracts = new ServiceControllerPropertiesContractsImplementation(
-    this,
-    currentServiceModel)
+  lazy val selfProperties : ServiceControllerCorePropertiesContracts =
+    new ServiceControllerPropertiesContractsImplementation(
+      this,
+      components,
+      currentServiceModel)
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     try {
       return selfProperties
-        .webApiResult
+        .webApiResponse
         .okJson(selfProperties.serviceTitle)
     } catch {
       case e : Exception =>
@@ -43,12 +43,11 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
   }
 
   def handleError(
-    exception                      : Exception,
+    exception : Exception,
     controllerGenericActionWrapper : ControllerGenericActionWrapper
   ) : Result = {
     val message = controllerGenericActionWrapper.toString
     AppLogger.error(exception)
-    AppLogger.error(message)
     BadRequest(message)
   }
 

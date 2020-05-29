@@ -58,7 +58,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       }
 
       return selfProperties
-        .webApiResult
+        .webApiResponse
         .okJsonWithHeader(
           bidResponseJsonTry.get,
           defaultOkResponseHeader)
@@ -74,7 +74,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       .emptyStaticBidResponse
 
     selfProperties
-      .webApiResult
+      .webApiResponse
       .okJsonWithHeader(
         noBid,
         defaultNoResponseHeader)
