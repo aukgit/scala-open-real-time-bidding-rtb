@@ -22,6 +22,16 @@ trait TypeConvertGenericIterableJson[T]
       .fromModelsToJsonObjects(toSome)
   }
 
+  def jsonGenericParser(
+                         implicit decoder : Lazy[DerivedDecoder[T]],
+                         encoder : Lazy[DerivedAsObjectEncoder[T]]) : GenericJsonParser[T] =
+    basicJsonEncoder(decoder, encoder).genericJsonParser
+
+  def basicJsonEncoder(
+                        implicit decoder : Lazy[DerivedDecoder[T]],
+                        encoder : Lazy[DerivedAsObjectEncoder[T]]) : BasicJsonEncoder[T] =
+    new BasicJsonEncoderImplementation[T]()(decoder, encoder)
+
   def toJsonString(implicit decoder : Lazy[DerivedDecoder[T]],
                    encoder : Lazy[DerivedAsObjectEncoder[T]]) : String = {
     throwOnNullOrNoneOrNil()
@@ -47,14 +57,4 @@ trait TypeConvertGenericIterableJson[T]
 
     maybeJson.getDefinedOrEmptyString
   }
-
-  def jsonGenericParser(
-                         implicit decoder : Lazy[DerivedDecoder[T]],
-                         encoder : Lazy[DerivedAsObjectEncoder[T]]) : GenericJsonParser[T] =
-    basicJsonEncoder(decoder, encoder).genericJsonParser
-
-  def basicJsonEncoder(
-                        implicit decoder : Lazy[DerivedDecoder[T]],
-                        encoder : Lazy[DerivedAsObjectEncoder[T]]) : BasicJsonEncoder[T] =
-    new BasicJsonEncoderImplementation[T]()(decoder, encoder)
 }

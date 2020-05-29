@@ -106,5 +106,5 @@ object AppConstants {
   lazy val AppManager : AppManager = new AppManager
 
   lazy val Repositories : Repositories = new Repositories(AppManager)
-  lazy val biddingConstants = new BiddingConstants
+  lazy val BiddingConstants = new BiddingConstants
 }

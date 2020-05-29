@@ -7,9 +7,15 @@ case class RangeFloatModel(
   end : Float
 ) extends RangeModel[Float] {
   /**
-   * Get a number inclusive of start and exclusive of end
+   * Get a static random number inclusive of start and exclusive of end
    */
-  lazy override val randomInBetweenRange : Float = Random.between(
+  lazy override val staticRandomInBetweenRange : Float =
+    randomInBetweenRange
+
+  /**
+   * Get a random number inclusive of start and exclusive of end
+   */
+  override def randomInBetweenRange : Float = Random.between(
     start,
     end)
 }

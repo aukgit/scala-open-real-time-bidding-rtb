@@ -1,6 +1,7 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
 import shared.com.ortb.adapters.traits.{ BannerModelAdapter, ModelsAdapters, SiteModelAdapter }
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.DemandSidePlatformStaticBidResponseLogicImplementation
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
 import shared.com.ortb.manager.traits.DefaultExecutionContextManagerConcreteImplementation
@@ -24,6 +25,13 @@ trait DemandSidePlatformBiddingProperties {
   lazy val executionContextManager = new DefaultExecutionContextManagerConcreteImplementation
   lazy val demandSidePlatformStaticBidResponseLogic : DemandSidePlatformStaticBidResponseLogic = new
       DemandSidePlatformStaticBidResponseLogicImplementation(demandSideId, coreProperties)
+
   def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
+
+  lazy val commonResponseHeaders : Map[String, String] = coreProperties
+    .config
+    .server
+    .requestDefaultHeaders
+    .map(w => w.key -> w.value).toMap
 }
 

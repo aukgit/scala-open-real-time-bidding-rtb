@@ -20,7 +20,7 @@ object DatabaseEngineCodeGenerator extends App with DefaultExecutionContextManag
   // "D:\\PersonalWork\\Github\\scala-rtb-example\\src\\main\\scala\\com\\ortb\\persistent\\schema",
   lazy val outputDir = databaseGenerateConfig.compiledOutputDir
   lazy val compilingPackage = databaseGenerateConfig.pkg
-  lazy val db = appManager.getDb
+  lazy val db = appManager.db
   lazy val mTables = MTable.getTables(
     None,
     None,

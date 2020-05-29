@@ -1,29 +1,28 @@
 package shared.com.ortb.demadSidePlatforms
 
 import io.circe.generic.auto._
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 import play.api.mvc._
-import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
-import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType
+import shared.com.ortb.enumeration.{ DemandSidePlatformBiddingAlgorithmType, NoBidResponseType }
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.io.extensions.TypeConvertExtensions._
-import shared.io.loggers.AppLogger
 
 import scala.util.Try
 
+@Singleton
 class DemandSidePlatformSimulatorServiceApiController @Inject()(
   appManager : AppManager,
   components : ControllerComponents)
-  extends AbstractBaseSimulatorServiceApiController(
-    appManager,
-    components) with DemandSidePlatformCorePropertiesContracts {
+  extends AbstractBaseSimulatorServiceApiController(appManager, components)
+    with DemandSidePlatformCorePropertiesContracts {
 
   lazy val demandSideId = 1
-  lazy override val coreProperties : DemandSidePlatformCorePropertiesContracts = this
+  lazy override val coreProperties : DemandSidePlatformCorePropertiesContracts =
+    this
   lazy val agent = new DemandSidePlatformBiddingAgent(
     coreProperties,
     demandSideId,
@@ -32,8 +31,8 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
   def makeBidRequest : Action[AnyContent] = Action { implicit request =>
     try {
       val bodyRaw = request.body.asText.get
-      logger.debug(bodyRaw)
-
+      log(bodyRaw)
+      var isFailed = false
       val bidRequest = bodyRaw.asFromJson[BidRequestModel]
       val bidRequestRow = agent.getBidRequestToBidRequestRow(bidRequest)
       val requestWrapperModel = DemandSidePlatformBiddingRequestWrapperModel(
@@ -42,48 +41,57 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         demandSideId
       )
 
-      val maybeDemandSidePlatformBidResponseModel = agent.getBid(requestWrapperModel)
+      val maybeDemandSidePlatformBidResponseModel =
+        agent.getBid(requestWrapperModel)
+      maybeDemandSidePlatformBidResponseModel
+        .isEmpty
+        .dosOnTrue(() => isFailed = true)
 
-      if (maybeDemandSidePlatformBidResponseModel.isDefined) {
-        val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
-        val bidRequestToString = bidRequest.toString
-        val entityJson = demandSidePlatformJson.get
-        val message = s"""
-                         | $bidRequestToString
-                         | ${ bidRequestRow.toString }
-                         | EntityJson:$entityJson
-                         | DemandSidePlatformBidResponseModel:$dspBidResponseModel""".stripMargin
-        AppLogger.debug("BidProcessedData(Raw)", message)
+      val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
+      val bidResponseJsonTry =
+        Try({
+          throw new Exception("Hello")
+          dspBidResponseModel
+            .bidResponseWrapper
+            .bidResponse
+            .get
+            .toJsonString
+        })
 
-        val bidResponseJsonTry = Try(dspBidResponseModel
-          .bidResponseWrapper
-          .bidResponse
-          .get
-          .toJsonString)
+      bidResponseJsonTry
+        .isFailure
+        .doOnTrue(() => isFailed = true)
 
-        if (bidResponseJsonTry.isSuccess) {
-          selfProperties
-            .webApiResult
-            .okJsonWithStatus(bidResponseJsonTry.get)
-        }
-        else {
-          val noBid = AppConstants
-            .biddingConstants
-            .emptyStaticBidResponse
-
-          selfProperties
-            .webApiResult
-            .okJsonWithStatus(noBid)
-        }
+      if (isFailed) {
+        noBidResponse()
       }
       else {
-        selfProperties
-          .webApiResult
-          .noContent
+        serviceControllerProperties
+          .webApiResponse
+          .okJsonWithHeader(
+            bidResponseJsonTry.get,
+            defaultOkResponseHeader)
       }
     } catch {
       case e : Exception =>
         handleError(e)
+    }
+  }
+
+  private def noBidResponse(noBidResponseCode : Int = NoBidResponseType.UnknownError.value) : Result = {
+    val noBidResponseConfig = demandSidePlatformConfiguration
+      .noBiddingResponseConfig
+
+    if (noBidResponseConfig.isWellFormedBidRequest) {
+      val noBidResponse = noBidResponseConfig.wellFormedBidRequestSample.copy(nbr = noBidResponseCode)
+      serviceControllerProperties
+        .webApiResponse
+        .okJsonWithHeader(noBidResponse.toJsonString, defaultOkResponseHeader)
+    }
+    else {
+      serviceControllerProperties
+        .webApiResponse
+        .okJsonWithHeader("", defaultNoResponseHeader)
     }
   }
 }

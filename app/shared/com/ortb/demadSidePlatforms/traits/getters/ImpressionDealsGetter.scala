@@ -11,13 +11,12 @@ import shared.io.helpers.{ EmptyValidateHelper, NumberHelper }
 import shared.io.loggers.AppLogger
 
 import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 import scala.util.Random
 
 trait ImpressionDealsGetter {
   this : DemandSidePlatformBiddingAgent =>
-  lazy val randomNumberIncrementerGuessRange : RangeDoubleModel = coreProperties.globalRandomRange
+  lazy val globalRandomRange : RangeDoubleModel = coreProperties.globalRandomRange
 
   def getImpressionInfosFromImpressionBiddableInfos(
     request : DemandSidePlatformBiddingRequestWrapperModel,
@@ -91,7 +90,7 @@ trait ImpressionDealsGetter {
       return null
     }
 
-    val randomIncrements = randomNumberIncrementerGuessRange.randomInBetweenRange
+    val randomIncrements = globalRandomRange.staticRandomInBetweenRange
     val bidFloor = NumberHelper.getAsDouble(impressionBiddableInfo.impression.bidfloor)
     val randomInBetweenAvgWinAndLoss = bidFailedReasons
       .randomNumberBetweenAverageLosingAndWinningPriceOrStaticIncrementIfNoDifference

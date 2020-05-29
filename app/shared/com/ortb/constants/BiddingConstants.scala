@@ -5,7 +5,7 @@ import shared.io.extensions.TypeConvertExtensions._
 
 sealed class BiddingConstants {
   lazy val aDomains = List(
-    "Advertiser  blocked domains list",
+    "Advertiser blocked domains list",
     "Sample-Site-blocked.com",
     "Sample-Site2-blocked.com",
     "Sample-Site3-blocked.com")
@@ -41,4 +41,6 @@ sealed class BiddingConstants {
    *  A well-formed no bid response with a reason code: {"id": "1234567890", "seatbid": [], "nbr": 2}
    */
   lazy val emptyStaticBidResponseWithNoBidResponseCodeUnknown = "{\"id\": \"\", \"seatbid\": [], \"nbr\": 0}"
+
+  lazy val winNoticePlaceHolderName = "$impressionId"
 }

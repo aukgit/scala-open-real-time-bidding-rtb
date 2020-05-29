@@ -200,6 +200,6 @@ class DatabaseSchema @Inject()(val appManager : AppManager)
     videoResponseProtocolTableName
   )
 
-  lazy val db = appManager.getDb
+  lazy val db = appManager.db
   lazy val views = new DatabaseSchemaViews
 }

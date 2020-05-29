@@ -4,7 +4,7 @@ import play.api.http.Status
 import play.api.mvc.{ AbstractController, ResponseHeader, Result }
 import play.mvc.Http.MimeTypes
 
-trait WebApiResult {
+trait WebApiResponse {
   lazy val noContent : Result = controller.NoContent.as(MimeTypes.JSON)
   val controller : AbstractController
 

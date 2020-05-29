@@ -27,8 +27,8 @@ trait TypeConvertGenericJson[T] {
     new BasicJsonEncoderImplementation[T]()(decoder, encoder)
 
   def toJsonString(implicit encoder : Encoder[T]) : String =
-    if (toJson.isDefined) toJson.get.noSpaces else ""
+    if (toJsonObject.isDefined) toJsonObject.get.noSpaces else ""
 
-  def toJson(implicit encoder : Encoder[T]) : Option[Json] =
+  def toJsonObject(implicit encoder : Encoder[T]) : Option[Json] =
     JsonHelper.toJson(anyItem)
 }

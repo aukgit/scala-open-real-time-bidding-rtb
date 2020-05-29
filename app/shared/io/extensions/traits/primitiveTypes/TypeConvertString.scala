@@ -11,7 +11,7 @@ import shared.io.jsonParse.implementations.BasicJsonEncoderImplementation
 trait TypeConvertString {
   protected val s : String
   lazy val hasCharacter : Boolean = EmptyValidateHelper.isStringDefined(s)
-  lazy val isEmpty : Boolean = !hasCharacter
+  lazy val isStringEmpty : Boolean = !hasCharacter
   lazy val toBoolString : String = toBoolean.toString
   lazy val toBoolean : Boolean = if (isTrue) true else false
   lazy private val isTrueString = hasCharacter && s.equalsIgnoreCase("true")
@@ -23,7 +23,7 @@ trait TypeConvertString {
   lazy private val isYesString = hasCharacter && s.equalsIgnoreCase("yes")
 
   def toIntOrDefault(default : Int = 0) : Int = {
-    if (isEmpty) {
+    if (isStringEmpty) {
       return default
     }
 
