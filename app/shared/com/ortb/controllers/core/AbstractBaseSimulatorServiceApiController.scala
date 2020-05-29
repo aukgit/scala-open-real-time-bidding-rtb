@@ -7,6 +7,7 @@ import shared.com.ortb.controllers.traits.properties.ServiceControllerCoreProper
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
 import shared.com.ortb.model.wrappers.http.ControllerGenericActionWrapper
+import shared.io.helpers.JsonHelper
 import shared.io.loggers.AppLogger
 
 abstract class AbstractBaseSimulatorServiceApiController @Inject()(
@@ -23,6 +24,27 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
       this,
       components,
       currentServiceModel)
+
+  def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
+    try {
+      val routing = serviceControllerProperties
+        .currentServiceModel
+        .routing
+
+      val jsonString = JsonHelper
+        .toJson(routing)
+        .get
+        .toString()
+
+      serviceControllerProperties
+        .webApiResponse
+        .okJson(jsonString)
+    } catch {
+      case e : Exception =>
+        AppLogger.error(e)
+        BadRequest
+    }
+  }
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     try {

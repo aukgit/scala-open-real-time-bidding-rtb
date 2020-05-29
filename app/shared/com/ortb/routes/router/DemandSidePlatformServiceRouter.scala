@@ -16,12 +16,14 @@ class DemandSidePlatformServiceRouter @Inject()(
     ControllerDefaultActionType.Routing)
 
   override def routes : Routes = {
+    //noinspection DuplicatedCode
     try {
       case GET(p"/serviceName") | GET(p"/service-name") | GET(p"/") | POST(p"/") | HEAD(p"/") =>
         controller.getServiceName()
       case POST(p"/makeBidRequest") | POST(p"/make-bid-request") =>
         controller.makeBidRequest()
-
+      case POST(p"/commands") | GET(p"/commands") =>
+        controller.getAvailableCommands()
     } catch {
       case e : Exception =>
         controller.handleError(e, routingActionWrapper)

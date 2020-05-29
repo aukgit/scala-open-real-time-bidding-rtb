@@ -16,27 +16,6 @@ class RequestSimulatorServiceApiController @Inject()(
   lazy val currentServiceModel : ServiceModel = services.requestSimulatorService
   lazy val jsonDirectory = "jsonRequestSamples"
 
-  def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
-    try {
-      val routing = serviceControllerProperties
-        .currentServiceModel
-        .routing
-
-      val jsonString = JsonHelper
-        .toJson(routing)
-        .get
-        .toString()
-
-      serviceControllerProperties
-        .webApiResponse
-        .okJson(jsonString)
-    } catch {
-      case e : Exception =>
-        AppLogger.error(e)
-        BadRequest
-    }
-  }
-
   def getBannerRequestSample(bannerSuffix : String) : Action[AnyContent] = Action { implicit request =>
     try {
       val jsonString = FileHelper.getContentsFromResourcesPaths(

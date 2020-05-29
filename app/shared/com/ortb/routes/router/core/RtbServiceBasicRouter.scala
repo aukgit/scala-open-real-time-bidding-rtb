@@ -16,8 +16,9 @@ class RtbServiceBasicRouter @Inject()(
     ControllerDefaultActionType.Routing)
 
   override def routes : Routes = {
+    //noinspection DuplicatedCode
     try {
-      case GET(p"/serviceName") | GET(p"/") | POST(p"/") | HEAD(p"/") =>
+      case GET(p"/serviceName") | GET(p"/service-name") | GET(p"/") | POST(p"/") | HEAD(p"/") =>
         controller.getServiceName()
       case GET(p"/commands") | GET(p"/available-commands") | GET(p"/routes") =>
         controller.getAvailableCommands()
