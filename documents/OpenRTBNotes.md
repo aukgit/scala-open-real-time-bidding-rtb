@@ -29,7 +29,19 @@ Bidder is also known as Demand Side Platform (DSP)
 ## Spec Change form 2.3 to 2.5
 https://bit.ly/3bTJv1l
 
+## Specs helper
+- https://bit.ly/36If4tY
+- https://bit.ly/3bTJv1l
+
 ### AdExchange Info
+
+![RTB Process](https://www.pmg.com/wp-content/uploads/2018/04/Screen-Shot-2018-04-23-at-10.20.52-AM.png)
+
+### Publisher object
+The Publisher object describes the seller of the ad space (for the App or Site) in which the ad will be displayed.
+Reference : https://bit.ly/36If4tY
+
+
 
 #### https://bit.ly/36odjSU
 Media buyers and advertising agencies can choose to “get a seat” on Ad Exchanges in order to be involved in real-time bidding marketplace. Just like in stock exchange, there are “seats” on an Ad Exchange occupied by different buyers (ad networks, independent agencies/brands). These “seats” can be viewed as a membership or direct relationships between advertisers and the ad exchange, sometimes bypassing DSPs and ATDs. Nonetheless, Ad Exchange seat holders are still not guaranteed to have a full informational control over the inventory they buy.
@@ -88,7 +100,8 @@ This is accomplished via the bid.adm attribute.
 - Which is better, SSP or DSP? https://bit.ly/2xmo3nw
 - How does SSP work with DSP? https://bit.ly/3d1dsgR
 - What does it mean to have a seat on an ad exchange? https://bit.ly/2LQaDDY
-- RTB Steps ? https://bit.ly/2zz72rx | https://www.quora.com/What-is-real-time-bidding-RTB/answer/Gareth-Paul-Jones
+- RTB Steps ? https://bit.ly/2zz72rx | https://www.quora.com/What-is-real-time-bidding-RTB/answer/Gareth-Paul-Jones | https://bit.ly/2MaOQa7
+- How does open RTB integration work between a publisher and an SSP? https://bit.ly/2XcEXPI
 
 
 >To start the process SSP sends a bid request to DSP (it occurs in real-time bidding environments). It's a signal out to a DSP indicating that SSP has an impression for sale, along with the inventory parameters.
