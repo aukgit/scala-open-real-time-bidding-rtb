@@ -47,11 +47,17 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       maybeDemandSidePlatformBidResponseModel
         .isEmpty
         .dosOnTrue(() => isFailed = true)
-      noBidResponse
 
       val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
       val bidResponseJsonTry =
-        Try(dspBidResponseModel.bidResponseWrapper.bidResponse.get.toJsonString)
+        Try({
+          throw new Exception("Hello")
+          dspBidResponseModel
+            .bidResponseWrapper
+            .bidResponse
+            .get
+            .toJsonString
+        })
 
       bidResponseJsonTry
         .isFailure
@@ -77,6 +83,6 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
     val noBid = AppConstants.BiddingConstants.emptyStaticBidResponse
 
     serviceControllerProperties.webApiResponse
-      .okJsonWithHeader(noBid, defaultNoResponseHeader)
+      .okJsonWithHeader(noBid, defaultOkResponseHeader)
   }
 }

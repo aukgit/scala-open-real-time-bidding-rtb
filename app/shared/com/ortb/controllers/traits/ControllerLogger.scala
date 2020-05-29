@@ -9,9 +9,10 @@ import shared.io.loggers.AppLogger
 
 trait ControllerLogger {
   lazy val logConfig : LogConfigurationModel = appManager.config.logConfiguration
-  lazy val isPrint : Boolean = !logConfig.isDebug &&
-    !logConfig.isPlayFrameworkActionLogUsingAkkaLogger &&
+  lazy val isPrint : Boolean = logConfig.isDebug ||
+    logConfig.isPlayFrameworkActionLogUsingAkkaLogger ||
     logConfig.isPlayFrameworkActionLogUsingAppLogger
+
   @Singleton
   lazy private val logger : Logger = Logger(this.getClass)
   val appManager : AppManager
