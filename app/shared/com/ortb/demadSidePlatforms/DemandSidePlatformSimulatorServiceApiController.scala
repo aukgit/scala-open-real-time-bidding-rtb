@@ -1,9 +1,9 @@
 package shared.com.ortb.demadSidePlatforms
 
-import io.circe.Json
 import io.circe.generic.auto._
 import javax.inject.{ Inject, Singleton }
 import play.api.mvc._
+import play.libs.Json
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
@@ -65,7 +65,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         .doOnTrue(() => isFailed = true)
 
       if (isFailed) {
-        noBidResponse
+        noBidResponse()
       }
       else {
         serviceControllerProperties
@@ -83,14 +83,17 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
   private def noBidResponse(noBidResponseCode : Int = NoBidResponseType.UnknownError.value) : Result = {
     val noBidResponseConfig = demandSidePlatformConfiguration
       .noBiddingResponseConfig
-    var responseHeader = defaultNoResponseHeader
 
     if (noBidResponseConfig.isWellFormedBidRequest) {
-      responseHeader = defaultOkResponseHeader
+      val noBidResponse = noBidResponseConfig.wellFormedBidRequestSample.copy(nbr = noBidResponseCode)
+      serviceControllerProperties
+        .webApiResponse
+        .okJsonWithHeader(noBidResponse.toJsonString, defaultOkResponseHeader)
     }
-    val json = Json.noBidResponseConfig.wellFormedBidRequestSample.toJsonObject
-    serviceControllerProperties
-      .webApiResponse
-      .okJsonWithHeader(, responseHeader)
+    else {
+      serviceControllerProperties
+        .webApiResponse
+        .okJsonWithHeader("", defaultNoResponseHeader)
+    }
   }
 }

@@ -7,7 +7,11 @@
     "demandSidePlatformConfiguration": {
       "noBiddingResponseConfig": {
         "isWellFormedBidRequest": true,
-        "wellFormedBidRequestSample": "{\"id\": \"\", \"seatbid\": [], \"nbr\": 0}"
+        "wellFormedBidRequestSample": {
+          "id": "",
+          "seatbid": [],
+          "nbr": 0
+        }
       },
       "winNoticeUrlWithPlaceholder": "http://localhost/services/v1/adserver/win-notice/impression/$impressionId",
       "defaultBidIncrementNumber": 0.1,
