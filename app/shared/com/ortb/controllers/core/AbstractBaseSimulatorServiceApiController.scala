@@ -41,8 +41,7 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
         .okJson(jsonString)
     } catch {
       case e : Exception =>
-        AppLogger.error(e)
-        BadRequest
+        handleError(e)
     }
   }
 

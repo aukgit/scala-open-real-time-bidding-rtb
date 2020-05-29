@@ -22,7 +22,7 @@ class DemandSidePlatformServiceRouter @Inject()(
         controller.getServiceName()
       case POST(p"/makeBidRequest") | POST(p"/make-bid-request") =>
         controller.makeBidRequest()
-      case POST(p"/commands") | GET(p"/commands") =>
+      case POST(p"/commands") | GET(p"/available-commands") =>
         controller.getAvailableCommands()
     } catch {
       case e : Exception =>

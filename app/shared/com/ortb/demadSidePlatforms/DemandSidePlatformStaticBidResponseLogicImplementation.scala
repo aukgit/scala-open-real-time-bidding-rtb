@@ -53,7 +53,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       val callStackModel = CallStackModel(
         deal = deal,
         performingAction = methodName,
-        message = s"[$methodName] -> adding deals($defaultStaticDeal) for given bid request.",
+        message = s"[$methodName] -> adding deals($deal) for given bid request.",
         isServedAnyDeal = true
       )
 
@@ -61,13 +61,13 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       val advertise = createStaticAdvertise(impression, deal, "Title")
       val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
       deals.addOne(impressionDealModel)
-      val nurl = winNoticeUrlWithPlaceholder.replace(winNoticePlaceholder, impression.id)
+      val nUrl = winNoticeUrlWithPlaceholder.replace(winNoticePlaceholder, impression.id)
 
       val bidModel = staticBidModel.copy(
         impid = impression.id,
         price = deal,
         adid = advertise.advertiseid.toStringSome,
-        nurl = nurl.toSome,
+        nurl = nUrl.toSome,
         h = minMaxHeightWidth.maybeHeight,
         w = minMaxHeightWidth.maybeWidth)
 
@@ -76,7 +76,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
     val seatBidModel = SeatBidModel(
       bidModels.toList,
-      seat = s"SeatBidID/DSP ID : $demandSideId".toSome)
+      seat = s"SeatBidID / DSP ID : $demandSideId".toSome)
 
     val bidResponse = BidResponseModel(
       "static : BidResponse Id",
@@ -103,14 +103,17 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       .currentServiceModel
       .ownBiddingRandomRange
       .randomInBetweenRange
-
-    val globalRandomGuess = coreProperties
+    val demandSidePlatformConfigurationModel = coreProperties
       .demandSidePlatformConfiguration
+    val globalRandomGuess = demandSidePlatformConfigurationModel
       .globalRandomRange
       .randomInBetweenRange
 
     val randomGuess = ownRandomGuess + globalRandomGuess
-    var deal : Double = randomGuess + defaultIncrementNumber + randomGuess / 2
+    var deal : Double = randomGuess +
+      defaultIncrementNumber +
+      randomGuess / 2 +
+      demandSidePlatformConfigurationModel.defaultBidStaticDeal
 
     if (impression.bidfloor.isDefined) {
       deal += impression.bidfloor.get
@@ -172,22 +175,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
   override def getStaticBidNoContent(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    //    val dspBidderResultModel =
-    //      model.DemandSidePlatformBidResponseModel(
-    //        request,
-    //        request.bidRequest,
-    //        isNoContent = true,
-    //        BidResponseModelWrapper = null)
-    //
-    //    val callStackModel = CallStackModel(
-    //      deal = demandSidePlatformCoreProperties.noDealPrice,
-    //      performingAction = s"[getBidStaticNoContent] -> No deals.",
-    //      isServedAnyDeal = false
-    //    )
-    //
-    //    dspBidderResultModel.addCallStack(callStackModel)
-    //    Some(dspBidderResultModel)
-    throw new NotImplementedError()
+    None
   }
 
   override def getStaticBidRequestToBidRequestRow(bidRequest : BidRequestModel) : Tables.BidrequestRow = {
@@ -198,8 +186,8 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     val json = bidRequest.toJsonString
     val impressions = bidRequest.imp
     val hasBannerHasVideoArray = impressions.forAnyGroup(w => w.hasBanner, y => y.hasVideo)
-    val hasBanner = hasBannerHasVideoArray(0).toBoolInt
-    val hasVideo = hasBannerHasVideoArray(1).toBoolInt
+    val hasBanner = hasBannerHasVideoArray.head.toBoolInt
+    val hasVideo = hasBannerHasVideoArray.last.toBoolInt
 
     Tables.BidrequestRow(
       bidrequestid = bidRequest.id.toIntOrDefault(),

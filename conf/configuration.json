@@ -7,9 +7,7 @@
     "demandSidePlatformConfiguration": {
       "noBiddingResponseConfig": {
         "isWellFormedBidRequest": true,
-        "performTechnicalErrorOnDsp": [
-          1
-        ],
+        "performTechnicalErrorOnDsp": [],
         "wellFormedBidRequestSample": {
           "id": "",
           "seatbid": [],
@@ -17,8 +15,8 @@
         }
       },
       "winNoticeUrlWithPlaceholder": "http://localhost/services/v1/adserver/win-notice/impression/$impressionId",
-      "defaultBidIncrementNumber": 0.1,
-      "defaultBidStaticDeal": 0.3,
+      "defaultBidIncrementNumber": 0.01,
+      "defaultBidStaticDeal": 0.03,
       "defaultAdvertiseLimit": 5,
       "defaultGenericLimit": 5,
       "isStaticSimulate": true,
