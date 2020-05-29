@@ -1,12 +1,13 @@
 package shared.com.ortb.demadSidePlatforms
 
+import io.circe.Json
 import io.circe.generic.auto._
 import javax.inject.{ Inject, Singleton }
 import play.api.mvc._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.demadSidePlatforms.traits.properties.DemandSidePlatformCorePropertiesContracts
-import shared.com.ortb.enumeration.DemandSidePlatformBiddingAlgorithmType
+import shared.com.ortb.enumeration.{ DemandSidePlatformBiddingAlgorithmType, NoBidResponseType }
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.auctionbid.biddingRequests.BidRequestModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
@@ -61,7 +62,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
 
       bidResponseJsonTry
         .isFailure
-        .dosOnTrue(() => isFailed = true)
+        .doOnTrue(() => isFailed = true)
 
       if (isFailed) {
         noBidResponse
@@ -79,10 +80,17 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
     }
   }
 
-  private def noBidResponse : Result = {
-    val noBid = AppConstants.BiddingConstants.emptyStaticBidResponse
+  private def noBidResponse(noBidResponseCode : Int = NoBidResponseType.UnknownError.value) : Result = {
+    val noBidResponseConfig = demandSidePlatformConfiguration
+      .noBiddingResponseConfig
+    var responseHeader = defaultNoResponseHeader
 
-    serviceControllerProperties.webApiResponse
-      .okJsonWithHeader(noBid, defaultOkResponseHeader)
+    if (noBidResponseConfig.isWellFormedBidRequest) {
+      responseHeader = defaultOkResponseHeader
+    }
+    val json = Json.noBidResponseConfig.wellFormedBidRequestSample.toJsonObject
+    serviceControllerProperties
+      .webApiResponse
+      .okJsonWithHeader(, responseHeader)
   }
 }

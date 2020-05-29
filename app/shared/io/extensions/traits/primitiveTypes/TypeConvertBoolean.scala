@@ -42,6 +42,18 @@ trait TypeConvertBoolean {
     null
   }
 
+  def doOnTrue[T, T2](function : () => Unit) : Unit = {
+    if (b) {
+      function()
+    }
+  }
+
+  def doOnFalse[T, T2](function : () => Unit) : Unit = {
+    if (!b) {
+      function()
+    }
+  }
+
   def dosOnTrue[T, T2](functions : (() => Unit)*) : Unit = {
     if (b) {
       functions.foreach(function => function())

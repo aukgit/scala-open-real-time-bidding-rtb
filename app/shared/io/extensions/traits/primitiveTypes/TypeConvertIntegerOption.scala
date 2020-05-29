@@ -1,10 +1,9 @@
 package shared.io.extensions.traits.primitiveTypes
 
+import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.EmptyValidateHelper
 
 trait TypeConvertIntegerOption {
-
-  import shared.io.extensions.TypeConvertExtensions._
 
   lazy val isEmpty : Boolean = EmptyValidateHelper.isEmpty(i)
   lazy val hasNumber : Boolean = !isEmpty

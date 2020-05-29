@@ -7,7 +7,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.duration.Duration.Inf
 
 trait TypeConvertGenericFuture[T] {
-  val eventualRequest : Future[T]
+  protected val eventualRequest : Future[T]
 
   def toRegular(wait : Duration = Inf) : T = FutureToRegular.toRegular(eventualRequest, wait)
 
