@@ -30,11 +30,9 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
   override def getStaticBid(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val methodName = nameOf(getStaticBid _)
     val impressions : Seq[ImpressionModel] = request.bidRequest.imp
     val length = impressions.length
     val deals = new ArrayBuffer[ImpressionDealModel](length)
-    val callStacks = new ArrayBuffer[CallStackModel](length)
     val bidModels = new ArrayBuffer[BidModel](length)
     val staticBidModel = AppConstants
       .BiddingConstants
@@ -50,14 +48,6 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
     for (impression <- impressions) {
       val minMaxHeightWidth = impression.minMaxHeightWidth
       val deal : Double = getStaticBidPrice(impression)
-      val callStackModel = CallStackModel(
-        deal = deal,
-        performingAction = methodName,
-        message = s"[$methodName] -> adding deals($deal) for given bid request.",
-        isServedAnyDeal = true
-      )
-
-      callStacks.addOne(callStackModel)
       val advertise = createStaticAdvertise(impression, deal, "Title")
       val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
       deals.addOne(impressionDealModel)
@@ -92,8 +82,6 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
         request.bidRequest,
         bidResponseWrapper = bidResponseWrapper,
         deals.toList.toSome)
-
-    dspBidderResultModel.addCallStacks(callStacks)
 
     dspBidderResultModel.toSome
   }

@@ -15,29 +15,13 @@ case class DemandSidePlatformBidResponseModel(
   deals : Option[List[ImpressionDealModel]] = None,
   isNoContent : Boolean = false
 ) {
-  private val callStacks : ArrayBuffer[CallStackModel] = new ArrayBuffer[CallStackModel](3)
-
-  def addCallStack(callStackModel : CallStackModel) : Unit = {
-    callStacks.addOne(callStackModel)
-  }
-
-  def addCallStacks(callStackModels : Iterable[CallStackModel]) : Unit = {
-    callStacks.addAll(callStackModels)
-  }
-
-  def toPrintModel : DspBidderPrintResultModel = {
-    val callStacksAsStrings = IterableHelper.toListStrings(Some(getCallStacks))
+  lazy val toPrintModel : DspBidderPrintResultModel = {
     val dealsAsStrings = IterableHelper.toListStrings(deals)
 
     DspBidderPrintResultModel(
       request.toString,
       bidRequest,
-      dealsAsStrings,
-      callStacksAsStrings
+      dealsAsStrings
     )
-  }
-
-  def getCallStacks : List[CallStackModel] = {
-    callStacks.toList
   }
 }
