@@ -50,7 +50,12 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
       val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
       val bidResponseJsonTry =
         Try({
-          throw new Exception("Hello")
+          demandSidePlatformConfiguration
+            .noBiddingResponseConfig
+            .performTechnicalErrorOnDsp
+            .contains(demandSideId)
+            .dosOnTrue(() => throw new Exception("A sample error for testing well-formed no bid response."))
+
           dspBidResponseModel
             .bidResponseWrapper
             .bidResponse
