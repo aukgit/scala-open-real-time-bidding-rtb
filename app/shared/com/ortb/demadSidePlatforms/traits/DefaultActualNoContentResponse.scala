@@ -16,17 +16,11 @@ trait DefaultActualNoContentResponse {
       DemandSidePlatformBidResponseModel(
         request,
         request.bidRequest,
-        isNoContent = true, bidResponseWrapper = null)
-
-    val callStackModel = CallStackModel(
-      deal = coreProperties.noDealPrice,
-      performingAction = s"[$methodName] -> No deals."
-    )
+        isNoContent = true,
+        bidResponseWrapper = null)
 
     // save no bid response
     addBidResponseAsync(dspBidderResultModel)
-
-    dspBidderResultModel.addCallStack(callStackModel)
 
     Some(dspBidderResultModel)
   }

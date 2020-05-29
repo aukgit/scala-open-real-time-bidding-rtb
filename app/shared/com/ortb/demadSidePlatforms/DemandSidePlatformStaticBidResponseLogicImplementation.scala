@@ -1,6 +1,5 @@
 package shared.com.ortb.demadSidePlatforms
 
-import com.github.dwickern.macros.NameOf._
 import io.circe.generic.auto._
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.demadSidePlatforms.traits.logics.DemandSidePlatformStaticBidResponseLogic
@@ -10,7 +9,6 @@ import shared.com.ortb.model.auctionbid.biddingRequests.{ BidRequestModel, Impre
 import shared.com.ortb.model.auctionbid.bidresponses.{ BidModel, BidResponseModel, BidResponseModelWrapper, SeatBidModel }
 import shared.com.ortb.model.auctionbid.{ DemandSidePlatformBidResponseModel, ImpressionDealModel }
 import shared.com.ortb.model.config.DemandSidePlatformConfigurationModel
-import shared.com.ortb.model.logging.CallStackModel
 import shared.com.ortb.model.results.DemandSidePlatformBiddingRequestWrapperModel
 import shared.com.ortb.persistent.schema._
 import shared.io.extensions.TypeConvertExtensions._
@@ -30,13 +28,16 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
 
   override def getStaticBid(
     request : DemandSidePlatformBiddingRequestWrapperModel) : Option[DemandSidePlatformBidResponseModel] = {
-    val impressions : Seq[ImpressionModel] = request.bidRequest.imp
+    val bidRequest = request.bidRequest
+    val impressions : Seq[ImpressionModel] = bidRequest.imp
     val length = impressions.length
-    val deals = new ArrayBuffer[ImpressionDealModel](length)
     val bidModels = new ArrayBuffer[BidModel](length)
+
     val staticBidModel = AppConstants
       .BiddingConstants
       .staticBidModel
+
+    val staticBidCategories = staticBidModel.cat.get
 
     val winNoticeUrlWithPlaceholder = coreProperties
       .demandSidePlatformConfiguration
@@ -45,19 +46,25 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       .BiddingConstants
       .winNoticePlaceHolderName
 
+    val requestedCategoriesTry = Try(bidRequest.site.get.cat.get)
+    val categories = if (requestedCategoriesTry.isSuccess)
+                       staticBidCategories.concat(requestedCategoriesTry.get)
+                     else staticBidCategories
+
     for (impression <- impressions) {
       val minMaxHeightWidth = impression.minMaxHeightWidth
       val deal : Double = getStaticBidPrice(impression)
       val advertise = createStaticAdvertise(impression, deal, "Title")
-      val impressionDealModel = ImpressionDealModel(impression, advertise, deal)
-      deals.addOne(impressionDealModel)
-      val nUrl = winNoticeUrlWithPlaceholder.replace(winNoticePlaceholder, impression.id)
+      val nUrl = winNoticeUrlWithPlaceholder.replace(
+        winNoticePlaceholder,
+        impression.id)
 
       val bidModel = staticBidModel.copy(
         impid = impression.id,
         price = deal,
         adid = advertise.advertiseid.toStringSome,
         nurl = nUrl.toSome,
+        cat = categories.toSome,
         h = minMaxHeightWidth.maybeHeight,
         w = minMaxHeightWidth.maybeWidth)
 
@@ -80,8 +87,7 @@ class DemandSidePlatformStaticBidResponseLogicImplementation(
       DemandSidePlatformBidResponseModel(
         request,
         request.bidRequest,
-        bidResponseWrapper = bidResponseWrapper,
-        deals.toList.toSome)
+        bidResponseWrapper = bidResponseWrapper)
 
     dspBidderResultModel.toSome
   }
