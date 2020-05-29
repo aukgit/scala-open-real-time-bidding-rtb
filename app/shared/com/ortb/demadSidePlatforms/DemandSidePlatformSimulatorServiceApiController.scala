@@ -31,6 +31,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
   def makeBidRequest : Action[AnyContent] = Action { implicit request =>
     try {
       val bodyRaw = request.body.asText.get
+      var isFailure = false
       logger.debug(bodyRaw)
       val bidRequest = bodyRaw.asFromJson[BidRequestModel]
       val bidRequestRow = agent.getBidRequestToBidRequestRow(bidRequest)
@@ -42,8 +43,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
 
       val maybeDemandSidePlatformBidResponseModel = agent.getBid(requestWrapperModel)
       if (maybeDemandSidePlatformBidResponseModel.isEmpty) {
-        noBidResponse
-        return
+        return noBidResponse
       }
 
       val dspBidResponseModel = maybeDemandSidePlatformBidResponseModel.get
@@ -54,11 +54,10 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
         .toJsonString)
 
       if (bidResponseJsonTry.isFailure) {
-        noBidResponse
-        return
+        return noBidResponse
       }
 
-      selfProperties
+      return selfProperties
         .webApiResult
         .okJsonWithHeader(
           bidResponseJsonTry.get,
@@ -69,7 +68,7 @@ class DemandSidePlatformSimulatorServiceApiController @Inject()(
     }
   }
 
-  private def noBidResponse = {
+  private def noBidResponse : Action[AnyContent] = {
     val noBid = AppConstants
       .BiddingConstants
       .emptyStaticBidResponse

@@ -1,10 +1,15 @@
 package controllers.rtb
 
+import io.circe.derivation._
+import io.circe.generic.semiauto._
+import io.circe._
+import io.circe.generic.auto._
 import javax.inject.Inject
 import play.api.mvc._
 import shared.com.ortb.controllers.core.AbstractBaseSimulatorServiceApiController
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config._
+import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.{ FileHelper, JsonHelper }
 import shared.io.loggers._
 
@@ -18,8 +23,18 @@ class RequestSimulatorServiceApiController @Inject()(
 
   def getAvailableCommands : Action[AnyContent] = Action { implicit request =>
     try {
-      val jsonString = JsonHelper.toJson(selfProperties.currentServiceModel.routing).get.toString()
-      selfProperties.webApiResult.okJson(jsonString)
+      val routing = selfProperties
+        .currentServiceModel
+        .routing
+
+      val jsonString = JsonHelper
+        .toJson(routing)
+        .get
+        .toString()
+
+      return selfProperties
+        .webApiResult
+        .okJson(jsonString)
     } catch {
       case e : Exception =>
         AppLogger.error(e)
@@ -34,7 +49,9 @@ class RequestSimulatorServiceApiController @Inject()(
         "requests",
         s"${ bannerSuffix }-bid-request.json")
 
-      selfProperties.webApiResult.okJson(jsonString)
+      return selfProperties
+        .webApiResult
+        .okJson(jsonString)
     } catch {
       case e : Exception =>
         AppLogger.error(e)

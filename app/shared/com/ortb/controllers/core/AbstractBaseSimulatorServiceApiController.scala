@@ -26,7 +26,9 @@ abstract class AbstractBaseSimulatorServiceApiController @Inject()(
 
   def getServiceName : Action[AnyContent] = Action { implicit request =>
     try {
-      selfProperties.webApiResult.okJson(selfProperties.serviceTitle)
+      return selfProperties
+        .webApiResult
+        .okJson(selfProperties.serviceTitle)
     } catch {
       case e : Exception =>
         handleError(e)
