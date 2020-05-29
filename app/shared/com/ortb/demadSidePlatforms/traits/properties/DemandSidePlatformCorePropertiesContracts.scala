@@ -1,5 +1,7 @@
 package shared.com.ortb.demadSidePlatforms.traits.properties
 
+import play.api.http
+import play.api.mvc.ResponseHeader
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.controllers.traits.properties.ServiceControllerCorePropertiesContracts
 import shared.com.ortb.model.config.{ DemandSidePlatformConfigurationModel, DemandSideServiceModel }
@@ -34,4 +36,14 @@ trait DemandSidePlatformCorePropertiesContracts
   lazy val demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel =
     config.server.demandSidePlatformConfiguration
   lazy val repositories : Repositories = AppConstants.Repositories
+
+  lazy val defaultOkResponseHeader : ResponseHeader =
+    ResponseHeader(
+      http.Status.OK,
+      headers = coreProperties.commonResponseHeaders)
+
+  lazy val defaultNoResponseHeader : ResponseHeader =
+    ResponseHeader(
+      http.Status.NO_CONTENT,
+      headers = coreProperties.commonResponseHeaders)
 }

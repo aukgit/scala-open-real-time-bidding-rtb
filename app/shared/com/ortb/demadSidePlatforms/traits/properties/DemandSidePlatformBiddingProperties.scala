@@ -28,7 +28,7 @@ trait DemandSidePlatformBiddingProperties {
 
   def isStatic : Boolean = demandSidePlatformConfiguration.isStaticSimulate
 
-  lazy val commonHeaders : Map[String, String] = coreProperties
+  lazy val commonResponseHeaders : Map[String, String] = coreProperties
     .config
     .server
     .requestDefaultHeaders
