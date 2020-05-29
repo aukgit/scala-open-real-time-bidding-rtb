@@ -19,7 +19,7 @@ class DemandSidePlatformServiceRouter @Inject()(
     try {
       case GET(p"/serviceName") | GET(p"/service-name") | GET(p"/") | POST(p"/") | HEAD(p"/") =>
         controller.getServiceName()
-      case POST(p"/makeBidRequest") | POST(p"/make-bid-requst") =>
+      case POST(p"/makeBidRequest") | POST(p"/make-bid-request") =>
         controller.makeBidRequest()
 
     } catch {
