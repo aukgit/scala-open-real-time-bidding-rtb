@@ -22,7 +22,7 @@ class AkkaMessagePostConcreteMethod(postMessage : String = "Hello World, POST") 
            | Request Body:
            | ${ str }
            | Headers:${ akkaRequest.headers.toJoinStringLineSeparator }
-           | """
+           | """.stripMargin
       ))
   }
 }
