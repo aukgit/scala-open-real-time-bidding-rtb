@@ -1,11 +1,9 @@
-package shared.com.ortb.serverAkka.framework.sampleCodes
+package shared.com.ortb.serverAkka.framework.traits
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import shared.com.ortb.controllers.traits.AdditionalConfigBasedLogger
-import shared.com.ortb.serverAkka.framework.ServerRun
 import shared.com.ortb.serverAkka.framework.restClient.softler.context.{ AkkaHttpContext, AkkaHttpRequest, AkkaHttpResponse, AkkaHttpResponseHandler }
-import shared.io.extensions.TypeConvertExtensions._
 
 import scala.concurrent.Future
 
