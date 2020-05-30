@@ -1,26 +1,61 @@
 package shared.com.ortb.serverAkka.framework.sampleCodes
 
-import akka.http.scaladsl.Http
+import akka.http.javadsl.model
 import akka.http.scaladsl.model._
 import shared.com.ortb.model.config.core.ServiceBaseModel
-import shared.io.extensions.TypeConvertExtensions._
 
 import scala.concurrent.Future
 
-class AkkaServerDefinition(val serviceModel : ServiceBaseModel)
-  extends AkkHttpServerContracts {
+case class AkkaRequest(
+  endPointPrefix : String,
+  uri : Uri,
+  headers : Seq[HttpHeader],
+  entity : model.RequestEntity) {
+  lazy val query : Uri.Query = uri.query()
+}
 
-  override def serverRunAt(port : Int = serviceModel.port) : Unit = {
-    val domain = serviceModel.domain.getOrElse(serverConfig.commonDomain)
-    val portSelected = port.getOnZeroOrNegative(serviceModel.port)
+trait AkkaGetMethod {
+  def get(akkaRequest : AkkaRequest) : HttpResponse
 
-    log(s"Server Starting (Title : ${ serviceModel.title }, Description: ${ serviceModel.description })", s"Domain: $domain, Port: $portSelected, ")
-    log("prefixRouting", endPointPrefixes)
-    Http().bindAndHandleAsync(requestHandler, domain, portSelected)
+  def getEventual(akkaRequest : AkkaRequest) : Future[HttpResponse]
+  = Future {
+    get(akkaRequest)
   }
+}
+
+
+trait AkkaPostMethod {
+  def post(akkaRequest : AkkaRequest) : HttpResponse
+
+  def postEventual(akkaRequest : AkkaRequest) : Future[HttpResponse]
+  = Future {
+    post(akkaRequest)
+  }
+}
+
+
+trait AkkaNonImplementPostMethod extends AkkaPostMethod {
+  def post(akkaRequest : AkkaRequest) : HttpResponse = throw new NotImplementedError(s"POST ${ akkaRequest.endPointPrefix } not supported.")
+}
+
+trait AkkaNonImplementGetMethod extends AkkaGetMethod {
+  def get(akkaRequest : AkkaRequest) : HttpResponse = throw new NotImplementedError(s"GET ${ akkaRequest.endPointPrefix } not supported.")
+}
+
+trait AkkaGetPostMethod {
+  val akkaPost : AkkaPostMethod
+  val akkaGet : AkkaGetMethod
+}
+
+class AkkaServerDefinition(
+  val serviceModel : ServiceBaseModel,
+  akkaGetPostMethod : AkkaGetPostMethod)
+  extends AkkHttpServerContracts {
 
   def requestHandler : HttpRequest => Future[HttpResponse] = {
     case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/api/$endPointPrefixes"), seqHeaders, entity, _) =>
+      lazy val akkaRequest = AkkaRequest(endPointPrefixes, uri, seqHeaders, entity)
+      akkaGetPostMethod.akkaPost.postEventual(akkaRequest)
       println("hello POST")
       println(seqHeaders)
       // println(entity.asJson.noSpaces)
