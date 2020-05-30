@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka.framework.sampleCodes
+package shared.com.ortb.serverAkka
 
 import akka.http.scaladsl.model._
 import shared.com.ortb.model.config.core.ServiceBaseModel
@@ -8,7 +8,7 @@ import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaGetPostMethod
 
 import scala.concurrent.Future
 
-class AkkaServerDefinition(
+class AkkaServerCore(
   val serviceModel : ServiceBaseModel,
   akkaGetPostMethod : AkkaGetPostMethod,
   val apiPrefixEndPoint : String = "/api/")
@@ -18,23 +18,10 @@ class AkkaServerDefinition(
     case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
       lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
       akkaGetPostMethod.postEventual(akkaRequest)
-    case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
-      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-      akkaGetPostMethod.postEventual(akkaRequest)
 
     case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
       lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
       akkaGetPostMethod.getEventual(akkaRequest)
-
-    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"${apiPrefixEndPoint}service-name"), seqHeaders, entity, _) =>
-      Future {
-        HttpResponse(
-          status = StatusCodes.Accepted,
-          entity = HttpEntity(
-            ContentTypes.`application/json`,
-            s"${ serviceModel.title } : ${ serviceModel.description }"
-          ))
-      }
 
     case request : HttpRequest =>
       request.discardEntityBytes()

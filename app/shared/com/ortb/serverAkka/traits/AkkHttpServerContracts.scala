@@ -1,5 +1,6 @@
 package shared.com.ortb.serverAkka.traits
 
+import shared.io.extensions.TypeConvertExtensions._
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import shared.com.ortb.controllers.traits.AdditionalConfigBasedLogger
@@ -16,6 +17,7 @@ trait AkkHttpServerContracts
     with ServiceProperties
     with ServerRun {
 
+  val apiPrefixEndPoint : String
   def requestHandler : HttpRequest => Future[HttpResponse]
 
   override def serverRunAt(port : Int = serviceModel.port) : Unit = {
@@ -23,7 +25,7 @@ trait AkkHttpServerContracts
     val portSelected = port.getOnZeroOrNegative(serviceModel.port)
 
     log(s"Server Starting (Title : ${ serviceModel.title }, Description: ${ serviceModel.description })", s"Domain: $domain, Port: $portSelected, ")
-    log("prefixRouting", endPointPrefixes)
+    log("routing", s"http://$domain:$portSelected$apiPrefixEndPoint$endPointPrefixes")
     Http().bindAndHandleAsync(requestHandler, domain, portSelected)
   }
 }

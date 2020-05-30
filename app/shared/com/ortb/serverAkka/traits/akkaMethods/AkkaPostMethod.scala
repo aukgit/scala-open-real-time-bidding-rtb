@@ -1,6 +1,7 @@
 package shared.com.ortb.serverAkka.traits.akkaMethods
 
 import akka.http.scaladsl.model.HttpResponse
+import shared.com.ortb.manager.traits.CreateDefaultContext._
 import shared.com.ortb.model.requests.AkkaRequestModel
 
 import scala.concurrent.Future
