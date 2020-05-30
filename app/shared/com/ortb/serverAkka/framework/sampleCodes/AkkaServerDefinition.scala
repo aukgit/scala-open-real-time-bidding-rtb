@@ -29,9 +29,10 @@ class AkkaServerDefinition(serviceModel : ServiceBaseModel)
 
   override def serverRunAt(port : Int = serviceModel.port) : Unit = {
     val domain = serviceModel.domain.getOrElse(serverConfig.commonDomain)
-    val portSelected = port.getOnZero(serviceModel.port)
+    val portSelected = port.getOnZeroOrNegative(serviceModel.port)
 
-    log(s"Server Starting (Title : ${ serviceModel.title })", s"Domain: $domain, Port: $portSelected, ")
+    log(s"Server Starting (Title : ${ serviceModel.title }, Description: ${ serviceModel.description })", s"Domain: $domain, Port: $portSelected, ")
+    log("prefixRouting", endPointPrefixes)
     Http().bindAndHandleAsync(requestHandler, domain, portSelected)
   }
 

@@ -9,6 +9,18 @@ trait TypeConvertInteger {
     getIf(0, onTrueInt)
   }
 
+  def getOnZeroOrNegative(onTrueInt : Int = 0) : Int = {
+    getIfEqualOrLess(0, onTrueInt)
+  }
+
+  def getIfEqualOrLess(equalsTo : Int, onTrueInt : Int = 0) : Int = {
+    if (i <= equalsTo) {
+      return onTrueInt
+    }
+
+    i
+  }
+
   def getIf(equalsTo : Int, onTrueInt : Int = 0) : Int = {
     if (i == equalsTo) {
       return onTrueInt

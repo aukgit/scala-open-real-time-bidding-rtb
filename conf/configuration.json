@@ -87,11 +87,11 @@
         ]
       },
       "monitorService": {
-        "prefixRouting": "",
+        "prefixRouting": "services/monitor",
         "domain": "",
-        "port": 0,
-        "title": "",
-        "description": "",
+        "port": 8254,
+        "title": "Monitor Service",
+        "description": "Application monitor service",
         "routing": []
       },
       "exchangeService": {
