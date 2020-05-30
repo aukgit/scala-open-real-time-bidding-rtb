@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka.framework.traits
+package shared.com.ortb.serverAkka.traits
 
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.manager.AppManager

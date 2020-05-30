@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka.framework.traits
+package shared.com.ortb.serverAkka.traits.akkaMethods
 
 trait AkkaGetPostMethod {
   val akkaPost : AkkaPostMethod

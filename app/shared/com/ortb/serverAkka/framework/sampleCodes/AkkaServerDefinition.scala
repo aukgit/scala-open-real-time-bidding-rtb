@@ -4,7 +4,8 @@ import akka.http.javadsl.model
 import akka.http.scaladsl.model._
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.requests.AkkaRequestModel
-import shared.com.ortb.serverAkka.framework.traits.{ AkkHttpServerContracts, AkkaGetPostMethod }
+import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
+import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaGetPostMethod
 
 import scala.concurrent.Future
 

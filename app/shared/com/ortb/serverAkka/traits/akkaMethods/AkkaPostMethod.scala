@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka.framework.traits
+package shared.com.ortb.serverAkka.traits.akkaMethods
 
 import akka.http.scaladsl.model.HttpResponse
 import shared.com.ortb.model.requests.AkkaRequestModel
