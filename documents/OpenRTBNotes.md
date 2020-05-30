@@ -41,8 +41,6 @@ https://bit.ly/3bTJv1l
 The Publisher object describes the seller of the ad space (for the App or Site) in which the ad will be displayed.
 Reference : https://bit.ly/36If4tY
 
-
-
 #### https://bit.ly/36odjSU
 Media buyers and advertising agencies can choose to “get a seat” on Ad Exchanges in order to be involved in real-time bidding marketplace. Just like in stock exchange, there are “seats” on an Ad Exchange occupied by different buyers (ad networks, independent agencies/brands). These “seats” can be viewed as a membership or direct relationships between advertisers and the ad exchange, sometimes bypassing DSPs and ATDs. Nonetheless, Ad Exchange seat holders are still not guaranteed to have a full informational control over the inventory they buy.
 Having a seat at the Ad Exchange allows advertisers to have a better 

@@ -169,3 +169,9 @@ object CirceSupport
 
 # Important Issue Tracking
 - https://github.com/circe/circe/issues/1442
+
+# Libraries to Explore
+
+- https://scalalandio.github.io/chimney/
+- https://www.squants.com/
+- https://github.com/fthomas/refined

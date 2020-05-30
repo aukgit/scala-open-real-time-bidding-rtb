@@ -119,7 +119,8 @@ lazy val allDependencies = Seq(
   "org.webjars" %% "webjars-play" % "2.8.0",
   "net.debasishg" %% "redisclient" % "3.20",
   "org.apache.commons" % "commons-configuration2" % "2.7",
-  "com.github.dwickern" %% "scala-nameof" % "2.0.0" % "provided"
+  "com.github.dwickern" %% "scala-nameof" % "2.0.0" % "provided",
+  "io.scalaland" %% "chimney" % "0.5.2"
 )
 
 lazy val root = (project in file("."))
