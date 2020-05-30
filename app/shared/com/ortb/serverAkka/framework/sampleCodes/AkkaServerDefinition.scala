@@ -2,30 +2,13 @@ package shared.com.ortb.serverAkka.framework.sampleCodes
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
-import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.controllers.traits.AdditionalConfigBasedLogger
-import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.core.ServiceBaseModel
-import shared.com.ortb.model.config.{ ConfigModel, ServerInfoModel }
-import shared.com.ortb.serverAkka.framework.ServerRun
-import shared.com.ortb.serverAkka.framework.restClient.softler.context.{ AkkaHttpContext, AkkaHttpRequest, AkkaHttpResponse, AkkaHttpResponseHandler }
 import shared.io.extensions.TypeConvertExtensions._
-import shared.io.loggers.AppLogger
 
 import scala.concurrent.Future
 
-class AkkaServerDefinition(serviceModel : ServiceBaseModel)
-  extends AkkaHttpRequest
-    with AkkaHttpResponse
-    with AkkaHttpResponseHandler
-    with AkkaHttpContext
-    with AdditionalConfigBasedLogger
-    with ServerRun {
-
-  lazy val appManager : AppManager = AppConstants.AppManager
-  lazy val config : ConfigModel = appManager.config
-  lazy val serverConfig : ServerInfoModel = config.server
-  lazy val endPointPrefixes : String = serviceModel.prefixRouting
+class AkkaServerDefinition(val serviceModel : ServiceBaseModel)
+  extends AkkHttpServerContracts {
 
   override def serverRunAt(port : Int = serviceModel.port) : Unit = {
     val domain = serviceModel.domain.getOrElse(serverConfig.commonDomain)
