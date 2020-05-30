@@ -4,5 +4,6 @@ import shared.com.ortb.model.config.core.DomainPortBaseModel
 
 case class DomainPortModel(
   domain : String,
-  port : Int
+  port : Int,
+  prefixRouting : String
 ) extends DomainPortBaseModel

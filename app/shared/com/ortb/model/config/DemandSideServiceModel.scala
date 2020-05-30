@@ -5,6 +5,7 @@ import shared.com.ortb.model.ranges.RangeDoubleModel
 
 case class DemandSideServiceModel(
   title : String,
+  prefixRouting : String,
   description : String,
   domain : String,
   port : Int,

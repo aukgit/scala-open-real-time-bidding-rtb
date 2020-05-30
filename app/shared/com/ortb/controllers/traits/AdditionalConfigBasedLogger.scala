@@ -7,11 +7,11 @@ import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.LogConfigurationModel
 import shared.io.loggers.AppLogger
 
-trait ControllerLogger {
+trait AdditionalConfigBasedLogger {
   lazy val logConfig : LogConfigurationModel = appManager.config.logConfiguration
   lazy val isPrint : Boolean = logConfig.isDebug ||
-    logConfig.isPlayFrameworkActionLogUsingAkkaLogger ||
-    logConfig.isPlayFrameworkActionLogUsingAppLogger
+    logConfig.isAkkaLogger ||
+    logConfig.isAppLogger
 
   @Singleton
   lazy private val logger : Logger = Logger(this.getClass)
@@ -26,11 +26,11 @@ trait ControllerLogger {
                                  s"Title : $title, $message"
                                else title
 
-    if (logConfig.isPlayFrameworkActionLogUsingAkkaLogger) {
+    if (logConfig.isAkkaLogger) {
       logger.debug(compiledMessage)
     }
 
-    if (logConfig.isPlayFrameworkActionLogUsingAppLogger) {
+    if (logConfig.isAppLogger) {
       AppLogger.debug(title, message)
     }
   }

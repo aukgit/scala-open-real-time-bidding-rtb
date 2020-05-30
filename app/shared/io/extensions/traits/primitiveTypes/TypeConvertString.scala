@@ -31,6 +31,21 @@ trait TypeConvertString {
     intResult.getOrElse(default)
   }
 
+  /**
+   * On empty string returns orElseString
+   *
+   * @param orElseString : On empty string returns orElseString
+   *
+   * @return
+   */
+  def getOrElse(orElseString : String = "") : String = {
+    if (isStringEmpty) {
+      return orElseString
+    }
+
+    s
+  }
+
   def toDateTime(dateTimePattern : String = AppConstants.DefaultDateTimeFormatPattern) : DateTime = {
     EmptyValidateHelper.throwOnNullOrNoneOrNil(s, Some(s"Given string is Empty cannot be converted to Joda DateTime(pattern:$dateTimePattern)"))
     JodaDateTimeHelper.getDateTimeFrom(s, dateTimePattern)

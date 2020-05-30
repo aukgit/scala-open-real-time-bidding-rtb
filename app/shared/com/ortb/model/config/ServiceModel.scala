@@ -4,6 +4,7 @@ import shared.com.ortb.model.config.core.ServiceBaseModel
 
 case class ServiceModel(
   title : String,
+  prefixRouting : String,
   description : String,
   domain : String,
   port : Int,
