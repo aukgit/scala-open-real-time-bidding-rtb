@@ -7,7 +7,9 @@ import shared.com.ortb.model.requests.AkkaRequestModel
 
 import scala.concurrent.Future
 
-trait AkkaGetMethod {
+
+trait AkkaGetMethod extends AkkaMethodEssentials {
+
   def get(akkaRequest : AkkaRequestModel) : HttpResponse
 
   def getEventual(akkaRequest : AkkaRequestModel) : Future[HttpResponse] =

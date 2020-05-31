@@ -7,12 +7,12 @@ import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaPostMethod
 import shared.io.extensions.TypeConvertExtensions._
 import shared.com.ortb.serverAkka.framework.restClient.softler.context.AkkaHttpContext._
 
-class AkkaMessagePostConcreteMethod(postMessage : String = "Hello World, POST") extends AkkaPostMethod {
+class AkkaMessagePostConcreteMethod(
+  postMessage : String = "Hello World, POST",
+  val additionalEndPointSuffix : String = "") extends AkkaPostMethod {
   override def post(akkaRequest : AkkaRequestModel) : HttpResponse = {
-    val x = akkaRequest.entity
-    val httpRequest = HttpRequest(HttpMethods.POST, entity = x)
-    val e = Unmarshal(httpRequest)
-    val str = e.to[String]
+    val entityString = akkaRequest.entityString
+
     HttpResponse(
       status = StatusCodes.Accepted,
       entity = HttpEntity(
@@ -20,7 +20,7 @@ class AkkaMessagePostConcreteMethod(postMessage : String = "Hello World, POST") 
         s"""
            | $postMessage
            | Request Body:
-           | ${ str }
+           | $entityString
            | Headers:${ akkaRequest.headers.toJoinStringLineSeparator }
            | """.stripMargin
       ))

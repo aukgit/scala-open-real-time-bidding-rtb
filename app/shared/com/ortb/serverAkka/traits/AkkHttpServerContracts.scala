@@ -21,7 +21,7 @@ trait AkkHttpServerContracts
   def requestHandler : HttpRequest => Future[HttpResponse]
 
   override def serverRunAt(port : Int = serviceModel.port) : Unit = {
-    val domain = serviceModel.domain.getOrElse(serverConfig.commonDomain)
+    val domain = serviceModel.domain.getOrElseDefault(serverConfig.commonDomain)
     val portSelected = port.getOnZeroOrNegative(serviceModel.port)
 
     log(s"Server Starting (Title : ${ serviceModel.title }, Description: ${ serviceModel.description })", s"Domain: $domain, Port: $portSelected, ")

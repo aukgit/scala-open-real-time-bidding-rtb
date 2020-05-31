@@ -4,5 +4,6 @@ import shared.com.ortb.serverAkka.traits.akkaMethods.{ AkkaGetMethod, AkkaGetPos
 
 class AkkaGetPostMethodConcrete(
   protected val akkaPost : AkkaPostMethod,
-  protected val akkaGet : AkkaGetMethod)
+  protected val akkaGet : AkkaGetMethod,
+  val additionalEndPointSuffix : String = "")
   extends AkkaGetPostMethod

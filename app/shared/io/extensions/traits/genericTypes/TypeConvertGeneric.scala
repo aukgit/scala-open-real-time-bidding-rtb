@@ -1,7 +1,9 @@
 package shared.io.extensions.traits.genericTypes
 
+import shared.com.ortb.manager.traits.CreateDefaultContext
 import shared.io.helpers.EmptyValidateHelper
 
+import scala.concurrent.Future
 import scala.reflect.ClassTag
 
 trait TypeConvertGeneric[T] {
@@ -18,6 +20,10 @@ trait TypeConvertGeneric[T] {
   lazy val toMakeSeqSome : Option[Seq[T]] = Some(Seq(anyItem))
   lazy val toMakeVector : Seq[T] = Vector(anyItem)
   lazy val toMakeVectorSome : Option[Seq[T]] = Some(Vector(anyItem))
+
+  lazy val toFuture : Future[T] = Future {
+    anyItem
+  }(CreateDefaultContext.createDefaultContext())
 
   def toMakeArray(implicit T : ClassTag[T]) : Array[T] = Array(anyItem)
 

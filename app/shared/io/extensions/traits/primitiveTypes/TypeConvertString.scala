@@ -34,16 +34,24 @@ trait TypeConvertString {
   /**
    * On empty string returns orElseString
    *
-   * @param orElseString : On empty string returns orElseString
+   * @param orElse : On empty string returns orElseString
    *
    * @return
    */
-  def getOrElse(orElseString : String = "") : String = {
+  def getOrElseDefault(orElse : String = "") : String = {
+    getIfExist(s, orElse)
+  }
+
+  /**
+   *
+   * @return String
+   */
+  def getIfExist(onExist : String = s, onNonExist : String = "") : String = {
     if (isStringEmpty) {
-      return orElseString
+      return onNonExist
     }
 
-    s
+    onExist
   }
 
   def toDateTime(dateTimePattern : String = AppConstants.DefaultDateTimeFormatPattern) : DateTime = {
@@ -87,6 +95,13 @@ trait TypeConvertString {
                              encoder : Lazy[DerivedAsObjectEncoder[T2]]) : Iterable[T2] = {
     val basicEncoder = new BasicJsonEncoderImplementation[T2]()(decoder, encoder)
     basicEncoder.genericJsonParser.toModelsDirect(s)
+  }
+
+  def asObjectFromJson[T2](
+                            implicit decoder : Lazy[DerivedDecoder[T2]],
+                            encoder : Lazy[DerivedAsObjectEncoder[T2]]) : T2 = {
+    val basicEncoder = new BasicJsonEncoderImplementation[T2]()(decoder, encoder)
+    basicEncoder.genericJsonParser.toModelDirect(s)
   }
 }
 

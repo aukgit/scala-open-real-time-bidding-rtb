@@ -6,11 +6,10 @@ import shared.com.ortb.model.requests.AkkaRequestModel
 
 import scala.concurrent.Future
 
-trait AkkaPostMethod {
+trait AkkaPostMethod extends AkkaMethodEssentials {
   def post(akkaRequest : AkkaRequestModel) : HttpResponse
 
-  def postEventual(akkaRequest : AkkaRequestModel) : Future[HttpResponse]
-  = Future {
+  def postEventual(akkaRequest : AkkaRequestModel) : Future[HttpResponse] = Future {
     post(akkaRequest)
   }
 }
