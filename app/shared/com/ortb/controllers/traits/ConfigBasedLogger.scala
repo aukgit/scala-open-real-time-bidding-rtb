@@ -3,11 +3,12 @@ package shared.com.ortb.controllers.traits
 import shared.io.extensions.TypeConvertExtensions._
 import javax.inject.Singleton
 import play.api.Logger
+import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.LogConfigurationModel
 import shared.io.loggers.AppLogger
 
-trait AdditionalConfigBasedLogger {
+trait ConfigBasedLogger {
   lazy val logConfig : LogConfigurationModel = appManager.config.logConfiguration
   lazy val isPrint : Boolean = logConfig.isDebug ||
     logConfig.isAkkaLogger ||
@@ -34,4 +35,8 @@ trait AdditionalConfigBasedLogger {
       AppLogger.debug(title, message)
     }
   }
+}
+
+object ConfigBasedLogger extends ConfigBasedLogger {
+  lazy override val appManager : AppManager = AppConstants.AppManager
 }

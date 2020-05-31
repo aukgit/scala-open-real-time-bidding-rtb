@@ -12,7 +12,7 @@ import scala.concurrent.Future
 class AkkaServerDefinition(
   val serviceModel : ServiceBaseModel,
   akkaGetPostMethod : AkkaGetPostMethod,
-  val apiPrefixEndPoint : String = "/api/")
+  val apiPrefixEndPoint : String = "api")
   extends AkkHttpServerContracts {
 
   lazy val additionalEndPointSuffix : String = akkaGetPostMethod
@@ -20,7 +20,7 @@ class AkkaServerDefinition(
     .getIfExist(s"/${ akkaGetPostMethod.additionalEndPointSuffix }")
 
   def requestHandler : HttpRequest => Future[HttpResponse] = {
-    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"${apiPrefixEndPoint}$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
+    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"/${apiPrefixEndPoint}/$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
       HttpResponse(
         status = StatusCodes.Accepted,
         entity = HttpEntity(
@@ -28,7 +28,7 @@ class AkkaServerDefinition(
           s"${ serviceModel.title } : ${ serviceModel.description }"
         )).toFuture
 
-    case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes$additionalEndPointSuffix"), seqHeaders, entity, _) =>
+    case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/$apiPrefixEndPoint/$endPointPrefixes$additionalEndPointSuffix"), seqHeaders, entity, _) =>
       lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
       akkaGetPostMethod.postEventual(akkaRequest)
 

@@ -3,7 +3,7 @@ package shared.com.ortb.serverAkka.traits
 import shared.io.extensions.TypeConvertExtensions._
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
-import shared.com.ortb.controllers.traits.AdditionalConfigBasedLogger
+import shared.com.ortb.controllers.traits.ConfigBasedLogger
 import shared.com.ortb.serverAkka.framework.restClient.softler.context.{ AkkaHttpContext, AkkaHttpRequest, AkkaHttpResponse, AkkaHttpResponseHandler }
 
 import scala.concurrent.Future
@@ -13,7 +13,7 @@ trait AkkHttpServerContracts
     with AkkaHttpResponse
     with AkkaHttpResponseHandler
     with AkkaHttpContext
-    with AdditionalConfigBasedLogger
+    with ConfigBasedLogger
     with ServiceProperties
     with ServerRun {
 
