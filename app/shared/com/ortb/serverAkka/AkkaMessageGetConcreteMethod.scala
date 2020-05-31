@@ -11,7 +11,6 @@ class AkkaMessageGetConcreteMethod(
   override def get(akkaRequest : AkkaRequestModel) : HttpResponse = {
     val entityString = akkaRequest.entityString
     val queryString = akkaRequest.queryStrings
-
     val content = s"""
                      |$getMessage
                      |Request Body:
