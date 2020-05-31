@@ -1,10 +1,14 @@
 package shared.com.ortb.serverAkka.traits
 
+import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.config.{ ConfigModel, ServerInfoModel, ServicesModel }
+import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaRequestHandlerGetPostMethods
 import shared.io.extensions.TypeConvertExtensions._
+
+import scala.concurrent.Future
 
 trait ServiceProperties {
   lazy val appManager : AppManager = AppConstants.AppManager
@@ -20,3 +24,5 @@ trait ServiceProperties {
 
   val serviceModel : ServiceBaseModel
 }
+
+

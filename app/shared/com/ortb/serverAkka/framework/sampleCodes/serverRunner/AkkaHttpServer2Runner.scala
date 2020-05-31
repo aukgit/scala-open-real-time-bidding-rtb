@@ -1,13 +1,15 @@
 package shared.com.ortb.serverAkka.framework.sampleCodes.serverRunner
 
-import shared.com.ortb.serverAkka.AkkaMessageGetPostConcreteMethod
+import shared.com.ortb.serverAkka.{ AkkaMessageGetPostConcreteMethod, AkkaSimpleMessagingMethods }
 import shared.com.ortb.serverAkka.framework.sampleCodes.AkkaServerDefinition
 import shared.com.ortb.serverAkka.traits.ServiceProperties
 
 object AkkaHttpServer2Runner extends App with ServiceProperties {
   lazy override val serviceModel = services.monitorService
-  lazy val akkaPostGet = new AkkaMessageGetPostConcreteMethod
-  lazy val monitorServer = new AkkaServerDefinition(serviceModel, akkaPostGet)
+  lazy val akkaSimpleMessagingMethods = new AkkaSimpleMessagingMethods
+  lazy val monitorServer = new AkkaServerDefinition(
+    serviceModel,
+    akkaSimpleMessagingMethods)
   monitorServer.serverRun()
 }
 

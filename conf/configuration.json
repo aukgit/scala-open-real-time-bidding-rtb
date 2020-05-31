@@ -3,6 +3,7 @@
   "displayVersion": "1.0",
   "server": {
     "globalDomainHost": "localhost",
+    "prefixRouting": "services",
     "isUseDefaultDomainForAll": true,
     "demandSidePlatformConfiguration": {
       "noBiddingResponseConfig": {
@@ -87,7 +88,7 @@
         ]
       },
       "monitorService": {
-        "prefixRouting": "services/monitor",
+        "prefixRouting": "monitor",
         "domainHost": "",
         "port": 8254,
         "title": "Monitor Service",

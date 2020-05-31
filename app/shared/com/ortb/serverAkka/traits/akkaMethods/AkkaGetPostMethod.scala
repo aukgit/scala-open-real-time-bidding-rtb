@@ -11,5 +11,3 @@ trait AkkaGetPostMethod extends AkkaPostMethod with AkkaGetMethod {
 
   def get(akkaRequest : AkkaRequestModel) : HttpResponse = akkaGet.get(akkaRequest)
 }
-
-

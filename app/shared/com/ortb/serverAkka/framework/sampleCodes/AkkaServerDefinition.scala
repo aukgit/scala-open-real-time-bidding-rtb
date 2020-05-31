@@ -1,50 +1,51 @@
 package shared.com.ortb.serverAkka.framework.sampleCodes
 
-import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.{ HttpRequest, _ }
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.requests.AkkaRequestModel
 import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
-import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaGetPostMethod
+import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaRequestHandlerGetPostMethods
 import shared.io.extensions.TypeConvertExtensions._
 
 import scala.concurrent.Future
 
 class AkkaServerDefinition(
   val serviceModel : ServiceBaseModel,
-  val akkaGetPostMethod : AkkaGetPostMethod,
+  val akkaGetPostMethods : AkkaRequestHandlerGetPostMethods,
   val apiPrefixEndPoint : String = "api")
   extends AkkHttpServerContracts {
 
-  def requestHandler : HttpRequest => Future[HttpResponse] = {
+  lazy val requestHandler : HttpRequest => Future[HttpResponse] = processHttpRequest
 
-    return {
-      case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"/${apiPrefixEndPoint}/$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
-        HttpResponse(
-          status = StatusCodes.Accepted,
-          entity = HttpEntity(
-            ContentTypes.`application/json`,
-            s"${ serviceModel.title } : ${ serviceModel.description }"
-          )).toFuture
+  def processHttpRequest(httpRequest : HttpRequest) : Future[HttpResponse] = {
+    lazy val akkaRequest = AkkaRequestModel(httpRequest)
+    log(s"${ akkaRequest.httpMethodName } : Requested Path", akkaRequest.fullPath)
+    val response = getMatchedAkkaMethod(akkaRequest)
 
-      case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/${apiPrefixEndPoint}/$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
-        HttpResponse(
-          status = StatusCodes.Accepted,
-          entity = HttpEntity(
-            ContentTypes.`application/json`,
-            s"${ serviceModel.title } : ${ serviceModel.description }"
-          )).toFuture
-
-      case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/$apiPrefixEndPoint/$endPointPrefixes/$additionalEndPointSuffix"), seqHeaders, entity, _) =>
-        lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-        akkaGetPostMethod.postEventual(akkaRequest)
-
-      case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"/$apiPrefixEndPoint/$endPointPrefixes/$additionalEndPointSuffix"), seqHeaders, entity, _) =>
-        lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-        akkaGetPostMethod.getEventual(akkaRequest)
-
-      case request : HttpRequest =>
-        request.discardEntityBytes()
-        HttpResponse(status = StatusCodes.NotFound).toFuture
+    if (response.isDefined) {
+      return response.get
     }
+
+    akkaRequest.fullPath match {
+      case s"/" =>
+        throw new NotImplementedError()
+    }
+  }
+
+  protected def getMatchedAkkaMethod(akkaRequest : AkkaRequestModel) : Option[Future[HttpResponse]] = {
+    val path = akkaRequest.fullPath
+    if (!methodsMapping.contains(path)) {
+      return None
+    }
+
+    val method = methodsMapping(path)
+
+    if (akkaRequest.isHttpGetMethod) {
+      return method.getEventual(akkaRequest).toSome
+    } else if (akkaRequest.isHttpPostMethod) {
+      return method.postEventual(akkaRequest).toSome
+    }
+
+    None
   }
 }

@@ -8,25 +8,26 @@ import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaGetPostMethod
 
 import scala.concurrent.Future
 
-class AkkaServerCore(
-  val serviceModel : ServiceBaseModel,
-  val akkaGetPostMethod : AkkaGetPostMethod,
-  val apiPrefixEndPoint : String = "/api/")
-  extends AkkHttpServerContracts {
-
-  def requestHandler : HttpRequest => Future[HttpResponse] = {
-    case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
-      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-      akkaGetPostMethod.postEventual(akkaRequest)
-
-    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
-      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-      akkaGetPostMethod.getEventual(akkaRequest)
-
-    case request : HttpRequest =>
-      request.discardEntityBytes()
-      Future {
-        HttpResponse(status = StatusCodes.NotFound)
-      }
-  }
-}
+//
+//class AkkaServerCore(
+//  val serviceModel : ServiceBaseModel,
+//  val akkaGetPostMethod : AkkaGetPostMethod,
+//  val apiPrefixEndPoint : String = "/api/")
+//  extends AkkHttpServerContracts {
+//
+//  def requestHandler : HttpRequest => Future[HttpResponse] = {
+//    case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
+//      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
+//      akkaGetPostMethod.postEventual(akkaRequest)
+//
+//    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes"), seqHeaders, entity, _) =>
+//      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
+//      akkaGetPostMethod.getEventual(akkaRequest)
+//
+//    case request : HttpRequest =>
+//      request.discardEntityBytes()
+//      Future {
+//        HttpResponse(status = StatusCodes.NotFound)
+//      }
+//  }
+//}
