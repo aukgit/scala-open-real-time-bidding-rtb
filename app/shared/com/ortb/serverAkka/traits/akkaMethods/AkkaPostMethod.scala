@@ -12,7 +12,7 @@ trait AkkaPostMethod extends AkkaMethodEssentials {
 
   def postEventual(akkaRequest : AkkaRequestModel) : Future[HttpResponse] = Future {
     ConfigBasedLogger.log(s"POST : ${ akkaRequest.uri.toString() }")
-    ConfigBasedLogger.log(s"Request : ${ akkaRequest.entityString }")
+    ConfigBasedLogger.log(s"POST Request : ${ akkaRequest.entityString }")
     post(akkaRequest)
   }(CreateDefaultContext.createDefaultContext())
 }

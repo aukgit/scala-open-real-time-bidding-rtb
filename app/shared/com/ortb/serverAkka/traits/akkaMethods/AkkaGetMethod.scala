@@ -14,7 +14,7 @@ trait AkkaGetMethod extends AkkaMethodEssentials {
   def getEventual(akkaRequest : AkkaRequestModel) : Future[HttpResponse] =
     Future {
       ConfigBasedLogger.log(s"GET : ${ akkaRequest.uri.path.toString() }")
-      ConfigBasedLogger.log(s"Request : ${ akkaRequest.entityString }")
+      ConfigBasedLogger.log(s"GET Request : ${ akkaRequest.entityString }")
       get(akkaRequest)
     }(CreateDefaultContext.createDefaultContext())
 }
