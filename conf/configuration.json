@@ -2,7 +2,7 @@
   "applicationName": "RealTime Bidding Using OpenRTB and Akka",
   "displayVersion": "1.0",
   "server": {
-    "commonDomain": "localhost",
+    "globalDomainHost": "localhost",
     "isUseDefaultDomainForAll": true,
     "demandSidePlatformConfiguration": {
       "noBiddingResponseConfig": {
@@ -63,7 +63,7 @@
     "services": {
       "root": {
         "prefixRouting": "",
-        "domain": "",
+        "domainHost": "",
         "port": 0,
         "title": "",
         "description": "",
@@ -71,7 +71,7 @@
       },
       "requestSimulatorService": {
         "prefixRouting": "",
-        "domain": "",
+        "domainHost": "",
         "port": 0,
         "title": "Request Simulator Service",
         "description": "Gives a JSON BID REQUEST Sample based on request.",
@@ -88,7 +88,7 @@
       },
       "monitorService": {
         "prefixRouting": "services/monitor",
-        "domain": "",
+        "domainHost": "",
         "port": 8254,
         "title": "Monitor Service",
         "description": "Application monitor service",
@@ -98,13 +98,13 @@
         "title": "Exchange Server",
         "description": "Decides to take pre-cached bid or take a bidding from DSPs and selects the final winner",
         "prefixRouting": "",
-        "domain": "",
+        "domainHost": "",
         "port": 0,
         "routing": []
       },
       "advertiserService": {
         "prefixRouting": "",
-        "domain": "First root request receiver. Like give me an advertise.",
+        "domainHost": "First root request receiver. Like give me an advertise.",
         "port": 0,
         "title": "",
         "description": "",
@@ -112,7 +112,7 @@
       },
       "bidderService": {
         "prefixRouting": "",
-        "domain": "",
+        "domainHost": "",
         "port": 0,
         "title": "",
         "description": "",
@@ -120,7 +120,7 @@
       },
       "supplySidePlatformService": {
         "prefixRouting": "",
-        "domain": "",
+        "domainHost": "",
         "port": 0,
         "title": "",
         "description": "",
@@ -128,7 +128,7 @@
       },
       "preCachedBidService": {
         "prefixRouting": "",
-        "domain": "",
+        "domainHost": "",
         "port": 0,
         "title": "",
         "description": "",
@@ -139,7 +139,7 @@
           "title": "DSP - Demand Side Platform - 1",
           "description": "Final stage where bidding happens, agent 1",
           "prefixRouting": "",
-          "domain": "",
+          "domainHost": "",
           "port": 0,
           "routing": [],
           "demandSidePlatformId": 1,
@@ -152,7 +152,7 @@
           "title": "DSP - Demand Side Platform - 2",
           "description": "Final stage where bidding happens, agent 2",
           "prefixRouting": "",
-          "domain": "",
+          "domainHost": "",
           "port": 0,
           "routing": [],
           "ownBiddingRandomRange": {
@@ -164,7 +164,7 @@
           "title": "DSP - Demand Side Platform - 3",
           "description": "Final stage where bidding happens, agent 3",
           "prefixRouting": "",
-          "domain": "",
+          "domainHost": "",
           "port": 0,
           "routing": [],
           "ownBiddingRandomRange": {
@@ -181,7 +181,7 @@
       }
     ],
     "redisServer": {
-      "domain": "localhost",
+      "domainHost": "localhost",
       "port": 6379
     }
   },

@@ -20,7 +20,7 @@ trait ErrorLogger {
   }
 
   def error(
-    exception : Exception,
+    exception : Throwable,
     additionalMessage : String = null,
     stackIndex : Int = defaultStackIndex,
     isPrintStack : Boolean = false

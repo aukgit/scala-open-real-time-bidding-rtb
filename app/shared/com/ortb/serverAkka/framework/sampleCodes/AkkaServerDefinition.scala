@@ -11,33 +11,40 @@ import scala.concurrent.Future
 
 class AkkaServerDefinition(
   val serviceModel : ServiceBaseModel,
-  akkaGetPostMethod : AkkaGetPostMethod,
+  val akkaGetPostMethod : AkkaGetPostMethod,
   val apiPrefixEndPoint : String = "api")
   extends AkkHttpServerContracts {
 
-  lazy val additionalEndPointSuffix : String = akkaGetPostMethod
-    .additionalEndPointSuffix
-    .getIfExist(s"/${ akkaGetPostMethod.additionalEndPointSuffix }")
-
   def requestHandler : HttpRequest => Future[HttpResponse] = {
-    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"/${apiPrefixEndPoint}/$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
-      HttpResponse(
-        status = StatusCodes.Accepted,
-        entity = HttpEntity(
-          ContentTypes.`application/json`,
-          s"${ serviceModel.title } : ${ serviceModel.description }"
-        )).toFuture
 
-    case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/$apiPrefixEndPoint/$endPointPrefixes$additionalEndPointSuffix"), seqHeaders, entity, _) =>
-      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-      akkaGetPostMethod.postEventual(akkaRequest)
+    return {
+      case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"/${apiPrefixEndPoint}/$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
+        HttpResponse(
+          status = StatusCodes.Accepted,
+          entity = HttpEntity(
+            ContentTypes.`application/json`,
+            s"${ serviceModel.title } : ${ serviceModel.description }"
+          )).toFuture
 
-    case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"$apiPrefixEndPoint$endPointPrefixes$additionalEndPointSuffix"), seqHeaders, entity, _) =>
-      lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
-      akkaGetPostMethod.getEventual(akkaRequest)
+      case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/${apiPrefixEndPoint}/$endPointPrefixes/service-name"), seqHeaders, entity, _) =>
+        HttpResponse(
+          status = StatusCodes.Accepted,
+          entity = HttpEntity(
+            ContentTypes.`application/json`,
+            s"${ serviceModel.title } : ${ serviceModel.description }"
+          )).toFuture
 
-    case request : HttpRequest =>
-      request.discardEntityBytes()
-      HttpResponse(status = StatusCodes.NotFound).toFuture
+      case HttpRequest(HttpMethods.POST, uri @ Uri.Path(s"/$apiPrefixEndPoint/$endPointPrefixes/$additionalEndPointSuffix"), seqHeaders, entity, _) =>
+        lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
+        akkaGetPostMethod.postEventual(akkaRequest)
+
+      case HttpRequest(HttpMethods.GET, uri @ Uri.Path(s"/$apiPrefixEndPoint/$endPointPrefixes/$additionalEndPointSuffix"), seqHeaders, entity, _) =>
+        lazy val akkaRequest = AkkaRequestModel(endPointPrefixes, uri, seqHeaders, entity)
+        akkaGetPostMethod.getEventual(akkaRequest)
+
+      case request : HttpRequest =>
+        request.discardEntityBytes()
+        HttpResponse(status = StatusCodes.NotFound).toFuture
+    }
   }
 }

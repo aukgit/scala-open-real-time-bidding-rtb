@@ -67,7 +67,7 @@ trait AdditionalLogger {
 
   def additionalLoggingException(
     message : String,
-    exception : Option[Exception],
+    exception : Option[Throwable],
     newError : Option[Error],
     logLevelType : LogLevelType = LogLevelType.ERROR,
     stackIndex : Int = defaultSecondStackIndex + 1,

@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 class AkkaServerCore(
   val serviceModel : ServiceBaseModel,
-  akkaGetPostMethod : AkkaGetPostMethod,
+  val akkaGetPostMethod : AkkaGetPostMethod,
   val apiPrefixEndPoint : String = "/api/")
   extends AkkHttpServerContracts {
 

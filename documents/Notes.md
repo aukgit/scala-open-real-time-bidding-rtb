@@ -70,6 +70,7 @@
 - Play Error handle : https://bit.ly/2BaSXRt
 - Play Status Code : https://bit.ly/2XF6mZk | https://bit.ly/2zGh35Y | https://bit.ly/2B9XFil
 - Play Cookies Builder : https://bit.ly/2XB7ltM 
+- Akka Routing Pattern Matching : https://bit.ly/2yNulgG
 
 ```scala
 def anyTypeToByteArray(value: Any): Array[Byte] = {

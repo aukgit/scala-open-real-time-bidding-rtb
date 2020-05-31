@@ -4,6 +4,7 @@ import shared.com.ortb.constants.AppConstants
 import shared.com.ortb.manager.AppManager
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.config.{ ConfigModel, ServerInfoModel, ServicesModel }
+import shared.io.extensions.TypeConvertExtensions._
 
 trait ServiceProperties {
   lazy val appManager : AppManager = AppConstants.AppManager
@@ -11,5 +12,11 @@ trait ServiceProperties {
   lazy val serverConfig : ServerInfoModel = config.server
   lazy val services : ServicesModel = serverConfig.services
   lazy val endPointPrefixes : String = serviceModel.prefixRouting
+  lazy val globalDomainHost : String = serverConfig.globalDomainHost
+  lazy val servicePort : Int = serviceModel.port
+  lazy val finalDomainHost : String = serviceModel
+    .domainHost
+    .getOrElseDefault(globalDomainHost)
+
   val serviceModel : ServiceBaseModel
 }

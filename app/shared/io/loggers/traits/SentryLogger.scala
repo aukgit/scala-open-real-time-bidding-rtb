@@ -19,7 +19,7 @@ trait SentryLogger {
 
   def exceptionLogToSentry(
     message : String,
-    exception : Option[Exception],
+    exception : Option[Throwable],
     logLevelType : LogLevelType) : Unit = {
     if (!isUseSentry) {
       return

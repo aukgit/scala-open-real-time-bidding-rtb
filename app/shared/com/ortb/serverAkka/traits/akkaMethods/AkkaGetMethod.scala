@@ -1,6 +1,5 @@
 package shared.com.ortb.serverAkka.traits.akkaMethods
 
-import shared.com.ortb.manager.traits.CreateDefaultContext._
 import akka.http.scaladsl.model.HttpResponse
 import shared.com.ortb.controllers.traits.ConfigBasedLogger
 import shared.com.ortb.manager.traits.CreateDefaultContext
@@ -17,5 +16,5 @@ trait AkkaGetMethod extends AkkaMethodEssentials {
       ConfigBasedLogger.log(s"GET : ${ akkaRequest.uri.path.toString() }")
       ConfigBasedLogger.log(s"Request : ${ akkaRequest.entityString }")
       get(akkaRequest)
-    }
+    }(CreateDefaultContext.createDefaultContext())
 }

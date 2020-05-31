@@ -1,6 +1,6 @@
 package shared.com.ortb.model.config.core
 
 abstract class DomainPortBaseModel {
-  val domain : String
+  val domainHost : String
   val port : Int
 }

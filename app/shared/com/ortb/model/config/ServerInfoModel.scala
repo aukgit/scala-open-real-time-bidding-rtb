@@ -1,7 +1,7 @@
 package shared.com.ortb.model.config
 
 case class ServerInfoModel(
-  commonDomain : String,
+  globalDomainHost : String,
   services : ServicesModel,
   isUseDefaultDomainForAll : Boolean,
   demandSidePlatformConfiguration : DemandSidePlatformConfigurationModel,

@@ -2,7 +2,7 @@ package shared.com.ortb.serverAkka.traits.akkaMethods
 
 import akka.http.scaladsl.model.HttpResponse
 import shared.com.ortb.controllers.traits.ConfigBasedLogger
-import shared.com.ortb.manager.traits.CreateDefaultContext._
+import shared.com.ortb.manager.traits.CreateDefaultContext
 import shared.com.ortb.model.requests.AkkaRequestModel
 
 import scala.concurrent.Future
@@ -14,5 +14,5 @@ trait AkkaPostMethod extends AkkaMethodEssentials {
     ConfigBasedLogger.log(s"POST : ${ akkaRequest.uri.toString() }")
     ConfigBasedLogger.log(s"Request : ${ akkaRequest.entityString }")
     post(akkaRequest)
-  }
+  }(CreateDefaultContext.createDefaultContext())
 }

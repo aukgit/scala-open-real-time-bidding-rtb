@@ -8,7 +8,7 @@ object AkkaHttpServer2Runner extends App with ServiceProperties {
   lazy override val serviceModel = services.monitorService
   lazy val akkaPostGet = new AkkaMessageGetPostConcreteMethod
   lazy val monitorServer = new AkkaServerDefinition(serviceModel, akkaPostGet)
-  monitorServer.serverRunAt()
+  monitorServer.serverRun()
 }
 
 import akka.actor.ActorSystem
