@@ -19,6 +19,7 @@ class AkkaMessageGetConcreteMethod(
                      |$queryString
                      |Headers:${ akkaRequest.headers.toJoinStringLineSeparator }
                      |""".stripMargin
+
     HttpResponse(
       status = StatusCodes.Accepted,
       entity = HttpEntity(
