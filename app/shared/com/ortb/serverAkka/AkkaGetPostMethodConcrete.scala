@@ -6,4 +6,6 @@ class AkkaGetPostMethodConcrete(
   protected val akkaPost : AkkaPostMethod,
   protected val akkaGet : AkkaGetMethod,
   val additionalEndPointSuffix : String = "")
-  extends AkkaGetPostMethod
+  extends AkkaGetPostMethod {
+  lazy override val isMethodImplemented : Boolean = isPostImplemented || isGetImplemented
+}

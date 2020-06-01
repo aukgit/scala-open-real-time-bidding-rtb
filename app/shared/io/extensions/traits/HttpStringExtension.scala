@@ -1,5 +1,6 @@
 package shared.io.extensions.traits
 
+import akka.http.scaladsl.model._
 import shared.com.ortb.constants.AppConstants
 import shared.io.extensions.traits.primitiveTypes.StringExtensionForExistence
 import shared.io.helpers.PathHelper
@@ -23,4 +24,6 @@ trait HttpStringExtension extends StringExtensionForExistence {
 
   def combineWith(separator : String, paths : String*) : String =
     s"$s${ separator }" + PathHelper.getCombinedPathWithSequence(separator, paths)
+
+  def toHttpJsonResponse(statusCodes : StatusCode = StatusCodes.Accepted,) =
 }

@@ -27,4 +27,7 @@ class AkkaMessageGetConcreteMethod(
         content
       ))
   }
+
+  lazy override val isGetImplemented : Boolean = true
+  lazy override val isMethodImplemented : Boolean = true
 }

@@ -24,4 +24,7 @@ class AkkaMessagePostConcreteMethod(
         content
       ))
   }
+
+  lazy override val isPostImplemented : Boolean = true
+  lazy override val isMethodImplemented : Boolean = true
 }

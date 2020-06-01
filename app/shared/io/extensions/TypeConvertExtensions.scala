@@ -43,6 +43,10 @@ object TypeConvertExtensions {
 
   implicit class GenericVectorConverter[T](protected val vector : Vector[T]) extends TypeConvertGenericVector[T]
 
+  implicit class StringIterableConverter(protected val anyItems : Iterable[String]) extends TypeConvertStringIterable
+
+  implicit class StringArrayConverter(protected val array : Array[String]) extends TypeConvertStringArray
+
   implicit class GenericIterableConverter[T](protected val anyItems : Iterable[T]) extends TypeConvertGenericIterable[T]
 
   implicit class GenericJsonConverter[T](protected val anyItem : T) extends TypeConvertGenericJson[T]

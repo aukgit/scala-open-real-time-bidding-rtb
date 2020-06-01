@@ -1,17 +1,17 @@
 package shared.com.ortb.serverAkka.framework.sampleCodes
 
-import shared.io.extensions.HttpExtensions._
 import akka.http.scaladsl.model.{ HttpRequest, _ }
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.requests.AkkaRequestModel
 import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
 import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaRequestHandlerGetPostMethods
+import shared.io.extensions.HttpExtensions._
 import shared.io.extensions.TypeConvertExtensions._
 
 import scala.concurrent.Future
 
 class AkkaServerDefinition(
-  val serviceModel : ServiceBaseModel,
+  val currentServiceModel : ServiceBaseModel,
   val akkaGetPostMethods : AkkaRequestHandlerGetPostMethods,
   val apiPrefixEndPoint : String = "api")
   extends AkkHttpServerContracts {
@@ -27,10 +27,22 @@ class AkkaServerDefinition(
       return response.get
     }
 
-    akkaRequest.fullPath match {
-      case s"/" =>
-        throw new NotImplementedError()
+    lazy val routingPrefix = this.routingPrefix
+
+    akkaRequest.relativePath match {
+      case s"${routingPrefix}/commands" | s"${endPointPrefix}/available-commands" =>
+        return allRoutesJsonString.to
     }
+
+    NotImplementedResponse(akkaRequest)
+  }
+
+  private def NotImplementedResponse(akkaRequest : => AkkaRequestModel) = {
+    val message = s"""${ akkaRequest.httpMethodName } Request path : "${ akkaRequest.relativePath }" is not supported in the system.
+                     |Available Possible Routes :
+                     |$allRoutesJsonString""".stripMargin
+
+    HttpResponse(StatusCodes.BadRequest, entity = message).toFuture
   }
 
   protected def getMatchedAkkaMethod(akkaRequest : AkkaRequestModel) : Option[Future[HttpResponse]] = {
@@ -44,9 +56,13 @@ class AkkaServerDefinition(
 
     val method = methodsMapping(path)
 
-    if (akkaRequest.isHttpGetMethod) {
+    if (!method.isMethodImplemented) {
+      return None
+    }
+
+    if (akkaRequest.isHttpGetMethod && method.isGetImplemented) {
       return method.getEventual(akkaRequest).toSome
-    } else if (akkaRequest.isHttpPostMethod) {
+    } else if (akkaRequest.isHttpPostMethod && method.isPostImplemented) {
       return method.postEventual(akkaRequest).toSome
     }
 

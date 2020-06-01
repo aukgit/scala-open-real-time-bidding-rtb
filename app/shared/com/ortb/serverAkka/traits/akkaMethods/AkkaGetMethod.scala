@@ -8,6 +8,7 @@ import shared.com.ortb.model.requests.AkkaRequestModel
 import scala.concurrent.Future
 
 trait AkkaGetMethod extends AkkaMethodEssentials {
+  val isGetImplemented : Boolean
 
   def get(akkaRequest : AkkaRequestModel) : HttpResponse
 
