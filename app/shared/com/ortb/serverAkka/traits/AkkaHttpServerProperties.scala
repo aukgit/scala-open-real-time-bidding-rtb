@@ -1,5 +1,5 @@
 package shared.com.ortb.serverAkka.traits
-
+import shared.io.extensions.HttpExtensions._
 import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import shared.com.ortb.serverAkka.traits.akkaMethods.{ AkkaGetPostMethod, AkkaRequestHandlerGetPostMethods }
 
@@ -12,7 +12,8 @@ trait AkkaHttpServerProperties extends ServiceProperties {
   lazy val hostFullEndpoint = s"http://$finalDomainHost:$servicePort$hostSuffixEndpoint"
   lazy val methodsMapping : Map[String, AkkaGetPostMethod] = akkaGetPostMethods
     .akkaMethodsMap
-    .map(w => s"$hostSuffixEndpoint/${ w._1 }" -> w._2)
+    .map(w => s"$hostSuffixEndpoint/${ w._1 }".safeTrimForwardSlashBothEnds -> w._2)
+
   val apiPrefixEndPoint : String
   val akkaGetPostMethods : AkkaRequestHandlerGetPostMethods
   val requestHandler : HttpRequest => Future[HttpResponse]

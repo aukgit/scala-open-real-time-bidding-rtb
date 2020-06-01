@@ -1,5 +1,6 @@
 package shared.com.ortb.serverAkka.framework.sampleCodes
 
+import shared.io.extensions.HttpExtensions._
 import akka.http.scaladsl.model.{ HttpRequest, _ }
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.requests.AkkaRequestModel
@@ -33,7 +34,10 @@ class AkkaServerDefinition(
   }
 
   protected def getMatchedAkkaMethod(akkaRequest : AkkaRequestModel) : Option[Future[HttpResponse]] = {
-    val path = akkaRequest.fullPath
+    val path = akkaRequest
+      .relativePath
+      .safeTrimForwardSlashBothEnds
+
     if (!methodsMapping.contains(path)) {
       return None
     }

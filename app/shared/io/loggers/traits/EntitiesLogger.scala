@@ -83,7 +83,7 @@ trait EntitiesLogger {
       .get
       .productFieldModels
       .map(w => w.toStringField)
-    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.join(Some(headers), " , ") }${ AppConstants.SystemNewLine }"
+    s"${ AppConstants.DoubleSpace }0. ${ ToStringHelper.safeJoin(Some(headers), " , ") }${ AppConstants.SystemNewLine }"
   }
 
   def getLogMessageForEntities[T](

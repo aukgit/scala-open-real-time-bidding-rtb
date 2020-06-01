@@ -12,12 +12,15 @@ sealed class PathConstants {
   lazy val DirectorySeparator : String = File.separator
   lazy val GenericPathSeparator : String = "/"
 
-  lazy val ResourcePath : String = PathHelper.getResourcePath
+  lazy val ResourceDirectory : String = PathHelper.getResourcePath
 
-  AppLogger.debug("ResourcePath", ResourcePath)
+  AppLogger.debug("ResourcePath", ResourceDirectory)
+
+  lazy val ConfigDefaultDirectory : String =
+    s"${ ResourceDirectory }${ DirectorySeparator }"
 
   lazy val ConfigDefaultPath : String =
-    s"${ResourcePath}${DirectorySeparator}${AppConstants.DefaultConfigFileNameWithExtension}"
+    s"${ ConfigDefaultDirectory }${ AppConstants.DefaultConfigFileNameWithExtension }"
 }
 
 

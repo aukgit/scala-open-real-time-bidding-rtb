@@ -107,4 +107,29 @@ object AppConstants {
 
   lazy val Repositories : Repositories = new Repositories(AppManager)
   lazy val BiddingConstants = new BiddingConstants
+
+  lazy val BooleanYesString = "yes"
+  lazy val BooleanTrueString = "true"
+  lazy val BooleanFalseString = "false"
+
+  /**
+   * "//"
+   */
+  lazy val DoubleForwardSlash = "//"
+
+
+  /**
+   * "//"
+   */
+  lazy val DoubleBackwardSlash = s"$BackwardSlash$BackwardSlash"
+
+  /**
+   * "/"
+   */
+  lazy val ForwardSlash = "/"
+
+  /**
+   * "\\"
+   */
+  lazy val BackwardSlash = "\\"
 }

@@ -1,9 +1,10 @@
 package shared.io.helpers
 
+import com.github.dwickern.macros.NameOf._
 import shared.io.loggers.AppLogger
 
 object ToStringHelper {
-  def join(
+  def safeJoin(
     items : Option[Iterable[String]],
     joiner : String) : String = {
     if (EmptyValidateHelper.isItemsEmpty(items)) {
@@ -18,13 +19,15 @@ object ToStringHelper {
       return None
     }
 
+    val methodName = nameOf(toStringOf _)
+
     try {
       val typeName = ReflectionHelper.getTypeName(value)
       return Some(s"$typeName : ${ value.get.toString }")
     }
     catch {
       case e : Exception =>
-        AppLogger.error(e, "Failed at [toStringOf]")
+        AppLogger.error(e, s"Failed at [${ methodName }]")
         AppLogger.logMaybeItem("Failed to make toString of :", value)
     }
 
