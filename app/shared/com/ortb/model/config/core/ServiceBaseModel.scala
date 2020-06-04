@@ -5,4 +5,5 @@ abstract class ServiceBaseModel extends DomainPortBaseModel {
   val description : String
   val routing : Array[String]
   val prefixRouting : String
+  val help : String
 }

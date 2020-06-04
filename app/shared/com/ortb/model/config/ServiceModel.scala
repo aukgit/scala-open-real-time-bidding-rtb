@@ -8,5 +8,6 @@ case class ServiceModel(
   description : String,
   domainHost : String,
   port : Int,
-  routing : Array[String]
+  routing : Array[String],
+  help : String
 ) extends ServiceBaseModel

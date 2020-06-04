@@ -17,6 +17,11 @@ trait HttpStringExtension extends StringExtensionForExistence {
     .replace(AppConstants.DoubleBackwardSlash, AppConstants.BackwardSlash)
 
   lazy val safeTrimForwardSlashBothEnds : String = safeTrim(AppConstants.ForwardSlash)
+  lazy val safeTrimForwardSlashStarting : String = s
+    .stripPrefix(AppConstants.ForwardSlash)
+
+  lazy val safeTrimForwardSlashEnding : String = s
+    .stripSuffix(AppConstants.ForwardSlash)
 
   def trim(trimmer : String) : String = s
     .stripPrefix(trimmer)

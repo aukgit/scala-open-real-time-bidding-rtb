@@ -5,6 +5,13 @@
     "globalDomainHost": "localhost",
     "prefixRouting": "services",
     "isUseDefaultDomainForAll": true,
+    "serviceGlobalRoutesPrefixes": [
+      "commands",
+      "serviceName",
+      "service-name",
+      "commands-url",
+      "help"
+    ],
     "demandSidePlatformConfiguration": {
       "noBiddingResponseConfig": {
         "isWellFormedBidRequest": true,
@@ -68,6 +75,7 @@
         "port": 0,
         "title": "",
         "description": "",
+        "help": "",
         "routing": []
       },
       "requestSimulatorService": {
@@ -76,6 +84,7 @@
         "port": 0,
         "title": "Request Simulator Service",
         "description": "Gives a JSON BID REQUEST Sample based on request.",
+        "help": "",
         "routing": [
           "banner-json",
           "banner-minmax",
@@ -93,13 +102,21 @@
         "port": 8254,
         "title": "Monitor Service",
         "description": "Application monitor service",
-        "routing": []
+        "help": "monitor help",
+        "routing": [
+          "services-online",
+          "start-services",
+          "stop-services",
+          "stop-service/$name",
+          "start-service/$name"
+        ]
       },
       "exchangeService": {
         "title": "Exchange Server",
         "description": "Decides to take pre-cached bid or take a bidding from DSPs and selects the final winner",
         "prefixRouting": "",
         "domainHost": "",
+        "help": "",
         "port": 0,
         "routing": []
       },
@@ -109,6 +126,7 @@
         "port": 0,
         "title": "",
         "description": "",
+        "help": "",
         "routing": []
       },
       "bidderService": {
@@ -117,6 +135,7 @@
         "port": 0,
         "title": "",
         "description": "",
+        "help": "",
         "routing": []
       },
       "supplySidePlatformService": {
@@ -125,6 +144,7 @@
         "port": 0,
         "title": "",
         "description": "",
+        "help": "",
         "routing": []
       },
       "preCachedBidService": {
@@ -133,6 +153,7 @@
         "port": 0,
         "title": "",
         "description": "",
+        "help": "",
         "routing": []
       },
       "demandSidePlatforms": [
@@ -142,6 +163,7 @@
           "prefixRouting": "",
           "domainHost": "",
           "port": 0,
+          "help": "",
           "routing": [],
           "demandSidePlatformId": 1,
           "ownBiddingRandomRange": {
@@ -155,6 +177,7 @@
           "prefixRouting": "",
           "domainHost": "",
           "port": 0,
+          "help": "",
           "routing": [],
           "ownBiddingRandomRange": {
             "start": 0.00015,
@@ -167,6 +190,7 @@
           "prefixRouting": "",
           "domainHost": "",
           "port": 0,
+          "help": "",
           "routing": [],
           "ownBiddingRandomRange": {
             "start": 0.00014,

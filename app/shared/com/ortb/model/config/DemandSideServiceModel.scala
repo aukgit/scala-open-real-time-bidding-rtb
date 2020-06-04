@@ -10,5 +10,6 @@ case class DemandSideServiceModel(
   domainHost : String,
   port : Int,
   routing : Array[String],
-  ownBiddingRandomRange : RangeDoubleModel
+  ownBiddingRandomRange : RangeDoubleModel,
+  help : String
 ) extends ServiceBaseModel

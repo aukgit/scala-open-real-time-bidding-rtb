@@ -6,11 +6,12 @@ import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
 import shared.com.ortb.serverAkka.framework.restClient.softler.context.AkkaHttpContext._
+import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
 import shared.io.extensions.TypeConvertExtensions._
 
 import scala.concurrent.Future
 
-case class AkkaRequestModel(httpRequest : HttpRequest) {
+case class AkkaRequestModel(httpRequest : HttpRequest, akkaServer : AkkHttpServerContracts) {
   lazy val uri : Uri = httpRequest.uri
   lazy val headers : Seq[HttpHeader] = httpRequest.headers
   lazy val entity : RequestEntity = httpRequest.entity

@@ -15,17 +15,33 @@ trait AkkaHttpServerProperties extends ServiceProperties {
   lazy val hostFullEndpoint = s"$hostEndpointPrefix$routingPrefix"
   lazy val methodsMapping : Map[String, AkkaGetPostMethod] = akkaGetPostMethods
     .akkaMethodsMap
-    .map(w => s"$routingPrefix/${ w._1 }".safeTrimForwardSlashBothEnds -> w._2)
+    .map(w => getRouteRelativePath(w._1) -> w._2)
 
   lazy val implementedRoutes : Iterable[String] = methodsMapping.keys
-  lazy val possibleRoutes : Iterable[String] = currentServiceModel.routing
-  lazy val allRoutes : List[String] = implementedRoutes.concat(possibleRoutes).toList.distinct
+  lazy val currentServicePossibleRoutes : Iterable[String] = currentServiceModel
+    .routing
+    .map(w => getRouteRelativePath(w))
+
+  lazy val allRoutes : List[String] = implementedRoutes
+    .concat(currentServicePossibleRoutes)
+    .concat(globalRoutePrefixes)
+    .toList
+    .sortBy(w => w)
+    .distinct
+
   lazy val allRoutesJsonString : String = allRoutes.toJsonStringPretty
   lazy val allRoutesUrlJsonString : String = allRoutes
     .map(w => hostEndpointPrefix.combineWithForwardSlash(w))
     .toJsonStringPretty
 
+  lazy private val globalRoutePrefixes = serverConfig
+    .serviceGlobalRoutesPrefixes
+    .map(w => getRouteRelativePath(w))
+
   val apiPrefixEndPoint : String
   val akkaGetPostMethods : AkkaRequestHandlerGetPostMethods
   val requestHandler : HttpRequest => Future[HttpResponse]
+
+  private def getRouteRelativePath(routeSuffixEnding : String) =
+    s"$routingPrefix/${ routeSuffixEnding }".safeTrimForwardSlashBothEnds
 }

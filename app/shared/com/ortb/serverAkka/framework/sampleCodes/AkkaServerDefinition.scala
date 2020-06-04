@@ -19,7 +19,7 @@ class AkkaServerDefinition(
   lazy val requestHandler : HttpRequest => Future[HttpResponse] = processHttpRequest
 
   def processHttpRequest(httpRequest : HttpRequest) : Future[HttpResponse] = {
-    lazy val akkaRequest = AkkaRequestModel(httpRequest)
+    lazy val akkaRequest = AkkaRequestModel(httpRequest, this)
     log(s"${ akkaRequest.httpMethodName } : Requested Path", akkaRequest.fullPath)
     val response = getMatchedAkkaMethod(akkaRequest)
 
@@ -27,15 +27,27 @@ class AkkaServerDefinition(
       return response.get
     }
 
-    akkaRequest.relativePath match {
-      case s"${routingPrefix}/commands" =>
-        return allRoutesJsonString.toHttpJsonResponseFuture()
+    getServiceCommonResponse(akkaRequest)
+  }
 
-      case s"${routingPrefix}/available-commands" =>
-        return allRoutesJsonString.toHttpJsonResponseFuture()
+  private def getServiceCommonResponse(akkaRequest : => AkkaRequestModel) : Future[HttpResponse] = {
+    val commandRoute1 = s"${ routingPrefix }/commands"
+    val commandRoute2 = s"${ routingPrefix }/available-commands"
+    val commandUrlRoute = s"${ routingPrefix }/commands-url"
+    val helpRoute = s"${ routingPrefix }/help"
+    val relativePath = akkaRequest.relativePath.safeTrimForwardSlashEnding
+    val isCommandRoute = relativePath.equalsIgnoreCase(commandRoute1) ||
+      relativePath.equalsIgnoreCase(commandRoute2)
+    val isCommandUrl = relativePath.equalsIgnoreCase(commandUrlRoute)
+    val isHelp = relativePath.equalsIgnoreCase(helpRoute)
 
-      case s"${routingPrefix}/commands-url" =>
-        return allRoutesUrlJsonString.toHttpJsonResponseFuture()
+    if (isCommandRoute) {
+      return allRoutesJsonString.toHttpJsonResponseFuture()
+    } else if (isCommandUrl) {
+      return allRoutesUrlJsonString.toHttpJsonResponseFuture()
+    } else if (isHelp) {
+      // TODO fix the return type to HTML
+      return currentServiceModel.help.toHttpJsonResponseFuture()
     }
 
     NotImplementedResponse(akkaRequest)
@@ -44,7 +56,7 @@ class AkkaServerDefinition(
   private def NotImplementedResponse(akkaRequest : => AkkaRequestModel) = {
     val message = s"""${ akkaRequest.httpMethodName } Request path : "${ akkaRequest.relativePath }" is not supported in the system.
                      |Available Possible Routes :
-                     |$allRoutesJsonString""".stripMargin
+                     |$allRoutesUrlJsonString""".stripMargin
 
     HttpResponse(StatusCodes.BadRequest, entity = message).toFuture
   }
