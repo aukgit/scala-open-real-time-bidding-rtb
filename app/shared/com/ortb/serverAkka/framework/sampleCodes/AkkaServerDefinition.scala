@@ -27,11 +27,15 @@ class AkkaServerDefinition(
       return response.get
     }
 
-    lazy val routingPrefix = this.routingPrefix
-
     akkaRequest.relativePath match {
-      case s"${routingPrefix}/commands" | s"${endPointPrefix}/available-commands" =>
-        return allRoutesJsonString.to
+      case s"${routingPrefix}/commands" =>
+        return allRoutesJsonString.toHttpJsonResponseFuture()
+
+      case s"${routingPrefix}/available-commands" =>
+        return allRoutesJsonString.toHttpJsonResponseFuture()
+
+      case s"${routingPrefix}/commands-url" =>
+        return allRoutesUrlJsonString.toHttpJsonResponseFuture()
     }
 
     NotImplementedResponse(akkaRequest)
