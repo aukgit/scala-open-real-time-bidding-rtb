@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka
+package shared.com.ortb.serverAkka.implementations
 
 import akka.http.scaladsl.model.{ ContentTypes, HttpEntity, HttpResponse, StatusCodes }
 import shared.com.ortb.model.requests.AkkaRequestModel

@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka
+package shared.com.ortb.serverAkka.implementations
 
 import akka.http.scaladsl.model._
 import shared.com.ortb.model.requests.AkkaRequestModel
@@ -30,17 +30,3 @@ class AkkaMessagePostConcreteMethod(
 }
 
 
-class AkkaMonitorStartServiceConcreteGetMethod extends AkkaGetMethod {
-  lazy override val isGetImplemented : Boolean = true
-  lazy override val isMethodImplemented : Boolean = true
-  lazy override val additionalEndPointSuffix : String = "start-service"
-
-  override def get(akkaRequest : AkkaRequestModel) : HttpResponse = {
-    HttpResponse(
-      status = StatusCodes.Accepted,
-      entity = HttpEntity(
-        ContentTypes.`application/json`,
-        "Starting Service"
-      ))
-  }
-}

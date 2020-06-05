@@ -1,6 +1,4 @@
-package shared.com.ortb.serverAkka
-
-import shared.com.ortb.serverAkka.traits.akkaMethods.{ AkkaNonImplementGetMethod, AkkaNonImplementPostMethod }
+package shared.com.ortb.serverAkka.implementations
 
 class AkkaMessageGetPostConcreteMethod(
   getMessage : String = "GET : Hello World",

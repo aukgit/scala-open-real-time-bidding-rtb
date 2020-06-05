@@ -1,0 +1,4 @@
+package shared.com.ortb.serverAkka.implementations
+
+sealed class AkkaMonitorServiceMethods
+  extends AkkaRequestHandlerGetPostConcreteMethods(new AkkaMonitorStartServiceGetPostConcreteMethod)

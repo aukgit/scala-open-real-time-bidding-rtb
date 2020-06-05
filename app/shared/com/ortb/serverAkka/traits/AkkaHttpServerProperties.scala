@@ -4,6 +4,7 @@ import akka.http.scaladsl.model.{ HttpRequest, HttpResponse }
 import shared.com.ortb.serverAkka.traits.akkaMethods.{ AkkaGetPostMethod, AkkaRequestHandlerGetPostMethods }
 import shared.io.extensions.HttpExtensions._
 import shared.io.extensions.TypeConvertExtensions._
+import shared.io.helpers.PathHelper
 
 import scala.concurrent.Future
 
@@ -29,6 +30,11 @@ trait AkkaHttpServerProperties extends ServiceProperties {
     .sortBy(w => w)
     .distinct
 
+  lazy val placeHoldersRouting : Map[String, String] = allRoutes
+    .filter(w => w.contains(PathHelper.routingPlaceHolderStarting))
+    .map(w => PathHelper.extractFirstPartOfPlaceHolderRouting(w) -> w)
+    .toMap
+
   lazy val allRoutesJsonString : String = allRoutes.toJsonStringPretty
   lazy val allRoutesUrlJsonString : String = allRoutes
     .map(w => hostEndpointPrefix.combineWithForwardSlash(w))
@@ -37,6 +43,7 @@ trait AkkaHttpServerProperties extends ServiceProperties {
   lazy private val globalRoutePrefixes = serverConfig
     .serviceGlobalRoutesPrefixes
     .map(w => getRouteRelativePath(w))
+
 
   val apiPrefixEndPoint : String
   val akkaGetPostMethods : AkkaRequestHandlerGetPostMethods

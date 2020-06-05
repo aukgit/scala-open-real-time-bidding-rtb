@@ -1,4 +1,5 @@
-package shared.com.ortb.serverAkka
+package shared.com.ortb.serverAkka.implementations
 
 sealed class AkkaSimpleMessagingMethods
   extends AkkaRequestHandlerGetPostConcreteMethods(new AkkaMessageGetPostConcreteMethod)
+

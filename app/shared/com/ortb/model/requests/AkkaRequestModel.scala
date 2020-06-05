@@ -37,5 +37,5 @@ case class AkkaRequestModel(httpRequest : HttpRequest, akkaServer : AkkHttpServe
   lazy val isHttpPutMethod : Boolean = httpRequest.method == HttpMethods.PUT
   lazy val isHttpDeleteMethod : Boolean = httpRequest.method == HttpMethods.DELETE
   lazy val isHttpPatchMethod : Boolean = httpRequest.method == HttpMethods.PATCH
-  val httpMethodName : String = httpRequest.method.toString()
+  lazy val httpMethodName : String = httpRequest.method.toString()
 }

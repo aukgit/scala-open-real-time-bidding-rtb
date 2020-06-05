@@ -1,4 +1,4 @@
-package shared.com.ortb.serverAkka
+package shared.com.ortb.serverAkka.implementations
 
 import shared.com.ortb.serverAkka.traits.akkaMethods.{ AkkaGetPostMethod, AkkaRequestHandlerGetPostMethods }
 

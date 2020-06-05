@@ -3,6 +3,7 @@ package shared.com.ortb.serverAkka.framework.sampleCodes
 import akka.http.scaladsl.model.{ HttpRequest, _ }
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.requests.AkkaRequestModel
+import shared.com.ortb.model.routing.RoutingEnhancedModel
 import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
 import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaRequestHandlerGetPostMethods
 import shared.io.extensions.HttpExtensions._
@@ -31,21 +32,13 @@ class AkkaServerDefinition(
   }
 
   private def getServiceCommonResponse(akkaRequest : => AkkaRequestModel) : Future[HttpResponse] = {
-    val commandRoute1 = s"${ routingPrefix }/commands"
-    val commandRoute2 = s"${ routingPrefix }/available-commands"
-    val commandUrlRoute = s"${ routingPrefix }/commands-url"
-    val helpRoute = s"${ routingPrefix }/help"
-    val relativePath = akkaRequest.relativePath.safeTrimForwardSlashEnding
-    val isCommandRoute = relativePath.equalsIgnoreCase(commandRoute1) ||
-      relativePath.equalsIgnoreCase(commandRoute2)
-    val isCommandUrl = relativePath.equalsIgnoreCase(commandUrlRoute)
-    val isHelp = relativePath.equalsIgnoreCase(helpRoute)
+    val enhancedRouting = RoutingEnhancedModel(akkaRequest)
 
-    if (isCommandRoute) {
+    if (enhancedRouting.isCommandRoute) {
       return allRoutesJsonString.toHttpJsonResponseFuture()
-    } else if (isCommandUrl) {
+    } else if (enhancedRouting.isCommandUrl) {
       return allRoutesUrlJsonString.toHttpJsonResponseFuture()
-    } else if (isHelp) {
+    } else if (enhancedRouting.isHelp) {
       // TODO fix the return type to HTML
       return currentServiceModel.help.toHttpJsonResponseFuture()
     }

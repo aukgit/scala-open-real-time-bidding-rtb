@@ -107,8 +107,8 @@
           "services-online",
           "start-services",
           "stop-services",
-          "stop-service/$name",
-          "start-service/$name"
+          "start-service/$name/then/$do",
+          "stop-service/$name/then/$do"
         ]
       },
       "exchangeService": {

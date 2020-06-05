@@ -1,9 +1,7 @@
-package shared.com.ortb.serverAkka
-
-import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaNonImplementPostMethod
+package shared.com.ortb.serverAkka.implementations
 
 class AkkaMonitorStartServiceGetPostConcreteMethod(
-  additionalEndPointSuffix : String = "")
+  additionalEndPointSuffix : String = "start-services")
   extends AkkaGetPostMethodConcrete(
     new AkkaNonImplementPostMethod,
     new AkkaMonitorStartServiceConcreteGetMethod,

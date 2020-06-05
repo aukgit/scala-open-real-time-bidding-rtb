@@ -13,8 +13,23 @@ object PathHelper extends ResourcePathGetter {
   lazy val resourceDirectory : String = AppConstants.PathConstants.ResourceDirectory
   lazy val configDirectory : String = AppConstants.PathConstants.ConfigDefaultDirectory
 
+  /**
+   * "/$"
+   */
+  lazy val routingPlaceHolderStarting = "/$"
+
   def getCombinedPathWith(separator : String, relativePathInResources : String*) : String = {
     getCombinedPathWithSequence(separator, relativePathInResources)
+  }
+
+  def extractFirstPartOfPlaceHolderRouting(fullRouteWithoutHost : String) : String = {
+    val index = fullRouteWithoutHost.indexOf(routingPlaceHolderStarting)
+
+    if (index > -1) {
+      return fullRouteWithoutHost.substring(0, index - 1)
+    }
+
+    AppConstants.EmptyString
   }
 
   /**
