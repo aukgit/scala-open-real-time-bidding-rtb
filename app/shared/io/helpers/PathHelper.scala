@@ -1,10 +1,13 @@
 package shared.io.helpers
 
 import shared.com.ortb.constants.AppConstants
-import shared.com.ortb.controllers.traits.ConfigBasedLogger
+import shared.com.ortb.model.routing.PlaceHolderRoutingDetailsModel
+import shared.io.extensions.HttpExtensions._
 import shared.io.extensions.TypeConvertExtensions._
 import shared.io.helpers.traits.file.ResourcePathGetter
 import shared.io.loggers.AppLogger
+
+import scala.collection.mutable
 
 object PathHelper extends ResourcePathGetter {
 
@@ -18,9 +21,37 @@ object PathHelper extends ResourcePathGetter {
    */
   lazy val routingPlaceHolderStarting = "/$"
 
+  def getPlaceHoldersRoutingMapsDetailsModel(
+    placeHolderRoute : String,
+    currentRouting : String) : PlaceHolderRoutingDetailsModel = {
+    if (placeHolderRoute.isStringEmpty) {
+      return null
+    }
+
+    val placeHolderSplits = placeHolderRoute
+      .safeNormalizeDoubleForwardSlashToSingle
+      .split(AppConstants.ForwardSlash)
+    val currentRoutingSplits = currentRouting
+      .safeNormalizeDoubleForwardSlashToSingle
+      .split(AppConstants.ForwardSlash)
+
+    val map = new mutable.HashMap[String, String](placeHolderSplits.length - 2, 1.2)
+
+    for (i <- placeHolderSplits.indices) {
+      val placeHolder = placeHolderSplits(i)
+      val currentRouteValue = currentRoutingSplits(i)
+      map.addOne(placeHolder -> currentRouteValue)
+    }
+
+    PlaceHolderRoutingDetailsModel(map.toMap)
+  }
+
   def getCombinedPathWith(separator : String, relativePathInResources : String*) : String = {
     getCombinedPathWithSequence(separator, relativePathInResources)
   }
+
+  def getCombinedPathWithSequence(separator : String = pathSeparator, relativePathInResources : Seq[String]) : String =
+    relativePathInResources.mkString(separator).replace(s"${ separator }${ separator }", separator)
 
   def extractFirstPartOfPlaceHolderRouting(fullRouteWithoutHost : String) : String = {
     val index = fullRouteWithoutHost.indexOf(routingPlaceHolderStarting)
@@ -70,9 +101,6 @@ object PathHelper extends ResourcePathGetter {
 
     null
   }
-
-  def getCombinedPathWithSequence(separator : String = pathSeparator, relativePathInResources : Seq[String]) : String =
-    relativePathInResources.mkString(separator).replace(s"${ separator }${ separator }", separator)
 
   /**
    * Expand variables to specific paths ${WorkingDirectory},${WDir}, ${WDir} to Working Directory (Root).

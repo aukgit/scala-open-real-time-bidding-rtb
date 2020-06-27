@@ -54,10 +54,18 @@ trait TypeConvertBoolean {
     }
   }
 
-  def dosOnTrue[T, T2](functions : (() => Unit)*) : Unit = {
+  def dosOnTrue(functions : (() => Unit)*) : Unit = {
     if (b) {
       functions.foreach(function => function())
     }
+  }
+
+  def getIfTrue[T](function : () => T) : T = {
+    if (b) {
+      return function()
+    }
+
+    null.asInstanceOf[T]
   }
 
   def dosAsyncOnTrue[T, T2](functions : (() => Unit)*) : ArrayBuffer[Future[Unit]] = {

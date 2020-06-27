@@ -6,6 +6,8 @@ import shared.com.ortb.model.error.FileErrorModel
 import shared.io.helpers.PathHelper
 import shared.io.loggers.AppLogger
 
+import scala.util.matching.Regex
+
 sealed class PathConstants {
   lazy val WorkingDirectory : String = new java.io.File(AppConstants.Dot).getCanonicalPath
 
@@ -22,6 +24,3 @@ sealed class PathConstants {
   lazy val ConfigDefaultPath : String =
     s"${ ConfigDefaultDirectory }${ AppConstants.DefaultConfigFileNameWithExtension }"
 }
-
-
-

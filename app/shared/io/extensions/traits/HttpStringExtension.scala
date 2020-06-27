@@ -3,13 +3,13 @@ package shared.io.extensions.traits
 import akka.http.scaladsl.model._
 import shared.com.ortb.constants.AppConstants
 import shared.io.extensions.TypeConvertExtensions._
-import shared.io.extensions.traits.primitiveTypes.StringExtensionForExistence
+import shared.io.extensions.traits.primitiveTypes.{ StringExtensionEssentials, StringExtensionForExistence }
 import shared.io.helpers.PathHelper
 
 import scala.collection.immutable
 import scala.concurrent.Future
 
-trait HttpStringExtension extends StringExtensionForExistence {
+trait HttpStringExtension extends StringExtensionEssentials {
   lazy val safeNormalizeDoubleForwardSlashToSingle : String = safeString
     .replace(AppConstants.DoubleForwardSlash, AppConstants.ForwardSlash)
 

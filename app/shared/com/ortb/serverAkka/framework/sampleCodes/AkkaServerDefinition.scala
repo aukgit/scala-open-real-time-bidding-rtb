@@ -1,6 +1,7 @@
 package shared.com.ortb.serverAkka.framework.sampleCodes
 
 import akka.http.scaladsl.model.{ HttpRequest, _ }
+import shared.com.ortb.controllers.traits.ConfigBasedLogger
 import shared.com.ortb.model.config.core.ServiceBaseModel
 import shared.com.ortb.model.requests.AkkaRequestModel
 import shared.com.ortb.model.routing.RoutingEnhancedModel
@@ -8,6 +9,7 @@ import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
 import shared.com.ortb.serverAkka.traits.akkaMethods.AkkaRequestHandlerGetPostMethods
 import shared.io.extensions.HttpExtensions._
 import shared.io.extensions.TypeConvertExtensions._
+import shared.io.loggers.AppLogger
 
 import scala.concurrent.Future
 
@@ -54,10 +56,19 @@ class AkkaServerDefinition(
     HttpResponse(StatusCodes.BadRequest, entity = message).toFuture
   }
 
+  def getResponseOfPlaceHolderRouting(akkaRequest : AkkaRequestModel) : Option[Future[HttpResponse]] = {
+    log("PlaceHolder Routing Found", akkaRequest.routingPlaceHolderModel.placeHolderRoute)
+    
+  }
+
   protected def getMatchedAkkaMethod(akkaRequest : AkkaRequestModel) : Option[Future[HttpResponse]] = {
     val path = akkaRequest
       .relativePath
       .safeTrimForwardSlashBothEnds
+
+    if(akkaRequest.routingPlaceHolderModel.hasPlaceHolderRouting) {
+      return getResponseOfPlaceHolderRouting(akkaRequest)
+    }
 
     if (!methodsMapping.contains(path)) {
       return None
@@ -74,6 +85,8 @@ class AkkaServerDefinition(
     } else if (akkaRequest.isHttpPostMethod && method.isPostImplemented) {
       return method.postEventual(akkaRequest).toSome
     }
+
+
 
     None
   }

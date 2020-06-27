@@ -132,4 +132,6 @@ object AppConstants {
    * "\\"
    */
   lazy val BackwardSlash = "\\"
+
+  lazy val RegExConstants = new RegExConstants
 }

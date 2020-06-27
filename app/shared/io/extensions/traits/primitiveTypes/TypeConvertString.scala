@@ -9,15 +9,14 @@ trait TypeConvertString
 
   lazy val toBoolString : String = toBoolean.toString
   lazy val toBoolean : Boolean = if (isTrue) true else false
+  lazy val getLines : Array[String] = s.split(AppConstants.NewLine)
   lazy private val isTrueString =
     hasCharacter &&
       s.equalsIgnoreCase(AppConstants.BooleanTrueString)
-
   lazy private val isTrue =
     isTrueString ||
       s == "1" ||
       isYesString
-
   lazy private val isYesString =
     hasCharacter &&
       s.equalsIgnoreCase(AppConstants.BooleanYesString)
@@ -53,8 +52,6 @@ trait TypeConvertString
 
     onExist
   }
-
-  lazy val getLines : Array[String] = s.split(AppConstants.NewLine)
 
   def getLinesWithLineNumbers(lineJoiner : String = " . ") : Array[String] = {
     var lineNumber = 0

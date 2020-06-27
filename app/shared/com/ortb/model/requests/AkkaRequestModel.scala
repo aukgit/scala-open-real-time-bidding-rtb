@@ -5,6 +5,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import shapeless.Lazy
+import shared.com.ortb.model.routing.PlaceHolderRoutingModel
 import shared.com.ortb.serverAkka.framework.restClient.softler.context.AkkaHttpContext._
 import shared.com.ortb.serverAkka.traits.AkkHttpServerContracts
 import shared.io.extensions.TypeConvertExtensions._
@@ -38,4 +39,6 @@ case class AkkaRequestModel(httpRequest : HttpRequest, akkaServer : AkkHttpServe
   lazy val isHttpDeleteMethod : Boolean = httpRequest.method == HttpMethods.DELETE
   lazy val isHttpPatchMethod : Boolean = httpRequest.method == HttpMethods.PATCH
   lazy val httpMethodName : String = httpRequest.method.toString()
+
+  lazy val routingPlaceHolderModel : PlaceHolderRoutingModel = PlaceHolderRoutingModel(this)
 }
